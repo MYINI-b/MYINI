@@ -1,0 +1,13 @@
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIAUHTKEKS3E4XZWSBK
+      secretKey: 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
+    s3:
+      bucket: myini
+      path: https://myini.s3.ap-northeast-2.amazonaws.com/
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
