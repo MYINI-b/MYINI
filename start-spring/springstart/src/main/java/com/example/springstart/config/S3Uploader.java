@@ -28,13 +28,22 @@ public class S3Uploader {
     public String getPath(String path){
         return amazonS3Client.getUrl(bucket, path).toString();
     }
-    public String upload(MultipartFile multipartFile, String dirName) throws IOException{
-        File uploadFile = convert(multipartFile).orElseThrow(() -> new IllegalArgumentException("파일 전환 실패"));
 
-        return upload(uploadFile, dirName);
-    }
+//    public String upload(MultipartFile multipartFile, String dirName) throws IOException{
+//        File uploadFile = convert(multipartFile).orElseThrow(() -> new IllegalArgumentException("파일 전환 실패"));
+//        return upload(uploadFile, dirName);
+//    }
+
     // S3로 파일 업로드하기
-    private String upload(File uploadFile, String dirName) {
+//    private String upload(File uploadFile, String dirName) {
+//        String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();   // S3에 저장된 파일 이름
+//        putS3(uploadFile, fileName); // s3로 업로드
+//        removeNewFile(uploadFile);
+//        return fileName;
+//    }
+
+    // S3로 파일 업로드하기
+    public String upload(File uploadFile, String dirName) {
         String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();   // S3에 저장된 파일 이름
         putS3(uploadFile, fileName); // s3로 업로드
         removeNewFile(uploadFile);

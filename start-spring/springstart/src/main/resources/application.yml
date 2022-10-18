@@ -1,8 +1,8 @@
 cloud:
   aws:
     credentials:
-      accessKey: AKIAUHTKEKS3E4XZWSBK
-      secretKey: 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
+      accessKey: AKIAUHTKEKS3LORXUVUB
+      secretKey: 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
     s3:
       bucket: myini
       path: https://myini.s3.ap-northeast-2.amazonaws.com/
