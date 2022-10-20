@@ -26,3 +26,17 @@
 ![image-20221020012931654](TIL.assets/image-20221020012931654.png)
 
 ![image-20221020013035519](TIL.assets/image-20221020013035519.png)
+
+
+
+# 1020
+
+* 와이어프레임(피그마)
+  * 웹페이지(랜딩페이지)
+    * 기능 소개 추가
+    * 추가 할일 : 랜딩페이지 myINI 소개 줄이기 / 첫페이지 icon 변경
+  * 웹페이지(DOCS)
+    * 간단한 글 작성
+    * 추가 할일 : 컨트리뷰션 가이드글 추가 작성 / myINI 소개글 작성
+
+![image-20221020171028340](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20221020171028340.png)
