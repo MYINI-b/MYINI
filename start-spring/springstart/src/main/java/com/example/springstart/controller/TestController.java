@@ -14,9 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     private final TestService testService;
 
-    @GetMapping()
+    @GetMapping("/init")
     public ResponseEntity<?> initProject() {
         testService.initProject();
-        return ResponseEntity.status(HttpStatus.OK).body("success");
+        return ResponseEntity.status(HttpStatus.OK).body("project init success");
+    }
+
+    @GetMapping("/dto")
+    public ResponseEntity<?> createDto(){
+        testService.createDto();
+        return ResponseEntity.status(HttpStatus.OK).body("dto create success");
     }
 }
