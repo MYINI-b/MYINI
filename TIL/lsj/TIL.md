@@ -40,3 +40,11 @@
     * 추가 할일 : 컨트리뷰션 가이드글 추가 작성 / myINI 소개글 작성
 
 ![image-20221020171028340](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20221020171028340.png)
+
+
+
+# 1021
+
+* 와이어프레임(피그마) 완료
+
+![image-20221021175601153](TIL.assets/image-20221021175601153.png)
