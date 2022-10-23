@@ -1,0 +1,48 @@
+plugins {
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+ext {
+    queryDslVersion = "5.0.0"
+}
+
+dependencies {
+    implementation(project(":myini-common"))
+    implementation(project(":myini-external"))
+    implementation group: 'org.json', name: 'json', version: '20220320'
+    api 'org.springframework.boot:spring-boot-starter-data-jpa'
+    api "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    api "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+    runtimeOnly group: 'com.h2database', name: 'h2', version: '1.3.176'
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    implementation 'com.google.code.gson:gson'
+}
+
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+    main.java.srcDir querydslDir
+}
+
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
