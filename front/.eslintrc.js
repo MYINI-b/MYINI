@@ -3,10 +3,11 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
   },
-  plugins: ['@typescript-eslint', 'prettier'],
+  plugins: ['@typescript-eslint', 'prettier', 'react'],
   extends: [
     'airbnb', // or airbnb-base
     'airbnb/hooks',
+    'prettier',
     'plugin:react/recommended',
     'plugin:jsx-a11y/recommended', // 설치 한경우
     'plugin:import/errors', // 설치한 경우
@@ -36,6 +37,8 @@ module.exports = {
       'error',
       {
         endOfLine: 'auto',
+        singleQuote: true,
+        tabWidth: 2,
       },
     ],
   },
