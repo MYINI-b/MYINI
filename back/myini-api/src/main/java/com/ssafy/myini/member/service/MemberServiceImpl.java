@@ -22,7 +22,7 @@ public class MemberServiceImpl implements MemberService {
     private String accessTokenExpirationTime;
 
     @Override
-    public String generateToken(int memberId) {
+    public String generateToken(Long memberId) {
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
 
