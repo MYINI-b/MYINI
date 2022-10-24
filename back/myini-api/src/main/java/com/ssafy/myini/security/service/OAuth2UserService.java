@@ -1,6 +1,6 @@
 package com.ssafy.myini.security.service;
 
-import com.ssafy.myini.member.MemberRepository;
+import com.ssafy.myini.member.domain.MemberRepository;
 import com.ssafy.myini.member.domain.Member;
 import com.ssafy.myini.member.domain.type.Provider;
 import com.ssafy.myini.member.domain.type.Role;
@@ -58,8 +58,9 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         String memberNickname = oAuth2UserInfo.getUserNickname();
         String memberProviderId = oAuth2UserInfo.getUserProviderId();
         String memberName = oAuth2UserInfo.getUserName();
+        String memberEmail = oAuth2UserInfo.getUserEmail();
 
-        Member member = Member.createMember(memberProvider, memberProviderId, memberName, Role.ROLE_USER, memberNickname);
+        Member member = Member.createMember(memberProvider, memberProviderId, memberName, memberEmail, memberNickname, Role.ROLE_USER);
 
         return memberRepository.save(member);
     }
