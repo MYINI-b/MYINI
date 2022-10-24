@@ -1,0 +1,151 @@
+@import 'variables.scss';
+
+html {
+  width: 100%;
+  height: 100%;
+  font-size: 16px;
+  background-color: $white;
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $third;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $third;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: darken($third, 5%);
+  }
+}
+
+ul {
+  padding: 0;
+}
+
+button {
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a:focus {
+  text-decoration: none;
+}
+
+a:hover,
+a:active {
+  text-decoration: none;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: $eng-content;
+}
+
+#root {
+  width: 100%;
+}
+
+textarea {
+  border: none;
+  resize: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 36px;
+}
+
+h2 {
+  font-weight: bold;
+  font-size: 30px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+h4 {
+  font-size: 18px;
+}
+
+i {
+  font-style: initial;
+  cursor: pointer;
+}
+
+li {
+  cursor: pointer;
+}
+
+input {
+  &::placeholder {
+    color: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+  }
+}
+
+input:focus {
+  outline: none;
+}
+
+@font-face {
+  font-weight: normal;
+  font-family: 'AppleNeoB';
+  font-style: normal;
+  src: url('../fonts/AppleSDGothicNeoB.ttf') format('truetype');
+}
+
+@font-face {
+  font-weight: normal;
+  font-family: 'Gmarket';
+  font-style: normal;
+  src: url('../fonts/GmarketSansTTFMedium.ttf') format('truetype');
+}
+
+@font-face {
+  font-weight: normal;
+  font-family: 'Multicolore';
+  font-style: normal;
+  src: url('../fonts/Multicolore.otf') format('opentype');
+}
