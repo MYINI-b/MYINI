@@ -18,7 +18,7 @@ public interface ERDService {
     void createTableRelation(Member member, Long projectId, TableRelationCreateRequest tableRelationCreateRequest);
     void deleteTableRelation(Member member, Long projectId, Long tableRelationId);
     List<RelationListResponse> findAllRelation();
-    List<ConstraintListResponse> findListConstraint();
+    List<ConstraintListResponse> findAllConstraint();
     void createTableColumn(Member member, Long projectId, Long tableId);
     void updateTableColumn(Member member,
                            Long projectId,

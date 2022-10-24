@@ -43,7 +43,7 @@ public class ERDServiceImpl implements ERDService{
     }
 
     @Override
-    public List<ConstraintListResponse> findListConstraint() {
+    public List<ConstraintListResponse> findAllConstraint() {
         return null;
     }
 
