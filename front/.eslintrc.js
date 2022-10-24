@@ -1,8 +1,12 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: './tsconfig.json',
+  },
   plugins: ['@typescript-eslint', 'prettier'],
   extends: [
     'airbnb', // or airbnb-base
+    'airbnb/hooks',
     'plugin:react/recommended',
     'plugin:jsx-a11y/recommended', // 설치 한경우
     'plugin:import/errors', // 설치한 경우
