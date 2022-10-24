@@ -14,14 +14,11 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Member extends BaseEntity{
+public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Integer memberId;
-
-    @Column(nullable = false)
-    private String memberName;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -31,22 +28,31 @@ public class Member extends BaseEntity{
     private String memberProviderId;
 
     @Column(nullable = false)
+    private String memberName;
+
+    @Column(nullable = false)
+    private String memberEmail;
+
+    @Column(nullable = false)
     private String memberNickname;
+
+    @Column(nullable = false)
+    private String memberProfileImg;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
 
-    @Column(nullable = false)
-    private String memberProfileImg;
 
-    public static Member createMember(Provider memberProvider, String memberProviderId, String memberName, Role role, String memberNickname) {
+    public static Member createMember(Provider memberProvider, String memberProviderId, String memberName, String memberEmail, String memberNickname, Role role) {
         Member member = new Member();
         member.memberProvider = memberProvider;
         member.memberProviderId = memberProviderId;
         member.memberName = memberName;
-        member.role = role;
+        member.memberEmail = memberEmail;
         member.memberNickname = memberNickname;
+        member.memberProfileImg = null;
+        member.role = role;
         return member;
     }
 }
