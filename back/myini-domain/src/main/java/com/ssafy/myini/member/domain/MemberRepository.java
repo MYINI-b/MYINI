@@ -1,4 +1,4 @@
-package com.ssafy.myini.member;
+package com.ssafy.myini.member.domain;
 
 import com.ssafy.myini.member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
