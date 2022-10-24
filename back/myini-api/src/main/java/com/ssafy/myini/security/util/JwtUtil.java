@@ -17,7 +17,7 @@ public class JwtUtil {
     private String secretKey;
 
     //회원 가입할시의 토큰 생성
-    public String createToken(int userId, String role, String expirationTime) {
+    public String createToken(Long userId, String role, String expirationTime) {
         Date now = new Date();
         return Jwts.builder()
                 .setSubject(String.valueOf(userId))
