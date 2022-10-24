@@ -1,6 +1,6 @@
 package com.ssafy.myini.ERD.response;
 
-import com.ssafy.myini.ERD.dto.ColumnDto;
+import com.ssafy.myini.ERD.dto.TableColumnDto;
 import com.ssafy.myini.ERD.dto.TableRelationDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +17,6 @@ public class TableListResponse {
     private Double tableX;
     private Double tableY;
     private String tableColor;
-    List<ColumnDto> columnDtos;
+    List<TableColumnDto> tableColumnDtos;
     List<TableRelationDto> tableRelationDtos;
 }

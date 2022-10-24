@@ -9,8 +9,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ColumnUpdateRequest {
-    private String columnName;
+public class TableColumnUpdateRequest {
+    private String tableColumnName;
     private List<Long> constraintIds;
 
 }

@@ -9,8 +9,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ColumnDto {
-    private Long columnId;
-    private String columnName;
+public class TableColumnDto {
+    private Long tableColumnId;
+    private String tableColumnName;
     private List<ConstraintDto> constraintDtos;
 }

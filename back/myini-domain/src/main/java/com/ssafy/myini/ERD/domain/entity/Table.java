@@ -1,5 +1,6 @@
 package com.ssafy.myini.ERD.domain.entity;
 
+import com.ssafy.myini.project.domain.Project;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -40,6 +41,10 @@ public class Table {
 
     @OneToMany(mappedBy = "table", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<TableColumn> tableColumns = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     public static Table createTable(){
         return null;
