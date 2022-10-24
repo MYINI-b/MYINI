@@ -1,7 +1,7 @@
 package com.ssafy.myini.security.service;
 
 import com.ssafy.myini.NotFoundException;
-import com.ssafy.myini.member.MemberRepository;
+import com.ssafy.myini.member.domain.MemberRepository;
 import com.ssafy.myini.member.domain.Member;
 import com.ssafy.myini.security.oauth.LoginUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class UserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        Member findMember = memberRepository.findById(Integer.parseInt(userId))
+        Member findMember = memberRepository.findById(Long.parseLong(userId))
                 .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();

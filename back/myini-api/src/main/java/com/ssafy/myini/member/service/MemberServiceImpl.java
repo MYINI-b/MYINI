@@ -1,7 +1,7 @@
 package com.ssafy.myini.member.service;
 
 import com.ssafy.myini.NotFoundException;
-import com.ssafy.myini.member.MemberRepository;
+import com.ssafy.myini.member.domain.MemberRepository;
 import com.ssafy.myini.member.domain.Member;
 import com.ssafy.myini.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class MemberServiceImpl implements MemberService {
     private String accessTokenExpirationTime;
 
     @Override
-    public String generateToken(int memberId) {
+    public String generateToken(Long memberId) {
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
 

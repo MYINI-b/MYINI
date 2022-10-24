@@ -16,16 +16,17 @@ import java.util.Map;
 @Data
 public class CustomOAuth2User implements OAuth2User {
 
-    private int userId;
+    private Long userId;
     private Provider userProvider;
     private String userProviderId;
     private String userName;
+    private String userEmail;
     private Role role;
 
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
-    public CustomOAuth2User(int userId, Provider userProvider, String userProviderId, String userName, Role role, Collection<? extends GrantedAuthority> authorities,Map<String, Object> attributes) {
+    public CustomOAuth2User(Long userId, Provider userProvider, String userProviderId, String userName, Role role, Collection<? extends GrantedAuthority> authorities,Map<String, Object> attributes) {
         this.userId = userId;
         this.userProvider = userProvider;
         this.userProviderId = userProviderId;
