@@ -33,6 +33,11 @@ public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
     }
 
     @Override
+    public String getUserEmail() {
+        return attributesAccount.get("email").toString();
+    }
+
+    @Override
     public String getUserProviderId() {
         return String.valueOf(attributes.get("id"));
     }

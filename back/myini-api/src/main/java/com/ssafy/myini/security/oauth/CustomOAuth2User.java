@@ -20,6 +20,7 @@ public class CustomOAuth2User implements OAuth2User {
     private Provider userProvider;
     private String userProviderId;
     private String userName;
+    private String userEmail;
     private Role role;
 
     private Collection<? extends GrantedAuthority> authorities;

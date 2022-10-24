@@ -33,4 +33,6 @@ public abstract class OAuth2UserInfo {
     public abstract String getUserProviderId();
 
     public abstract String getUserName();
+
+    public abstract String getUserEmail();
 }
