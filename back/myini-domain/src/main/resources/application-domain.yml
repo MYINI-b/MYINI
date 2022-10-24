@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/myini?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&autoReconnect=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=Asia/Seoul
+    username: root
+    password: root
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+      #update -> 삭제안하고싶을때 #none -> 배포시에(운영환경)
+    properties:
+      hibernate:
+        default_batch_fetch_size: 500
+        #        show_sql: false
+        format_sql: true
+    open-in-view: false
+  #    generate-ddl: true
+logging:
+  level:
+    org.hibernate.SQL: debug
