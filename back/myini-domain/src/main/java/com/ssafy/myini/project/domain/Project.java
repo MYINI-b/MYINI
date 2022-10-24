@@ -1,5 +1,6 @@
 package com.ssafy.myini.project.domain;
 
+import com.ssafy.myini.apidocs.domain.ApiController;
 import com.ssafy.myini.member.domain.MemberProject;
 import com.ssafy.myini.requirement.domain.Requirement;
 import com.ssafy.myini.requirement.domain.RequirementCategory;
@@ -50,6 +51,9 @@ public class Project {
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Requirement> requirements = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ApiController> apiControllers = new ArrayList<>();
 
     public static Project createProject() {
         Project project = new Project();
