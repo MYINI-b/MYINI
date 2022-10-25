@@ -24,43 +24,54 @@ public class ERDController {
     private final ERDService erdService;
 
     @PostMapping("/{project_id}/table")
-    public ResponseEntity<Void> createTable(@LoginMember Member member, Long projectId, TableCreateRequest tableCreateRequest){
-        erdService.createTable(member, projectId, tableCreateRequest);
+    public ResponseEntity<Void> createTable(@PathVariable("project_id") Long projectId,
+                                            @RequestBody TableCreateRequest tableCreateRequest){
+        erdService.createTable(projectId, tableCreateRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{project_id}/table")
-    public ResponseEntity<List<TableListResponse>> findAllTable(@LoginMember Member member, Long projectId){
-        List<TableListResponse> body = erdService.findAllTable(member, projectId);
+    public ResponseEntity<List<TableListResponse>> findAllTable(
+                                                                @PathVariable("project_id") Long projectId){
+        List<TableListResponse> body = erdService.findAllTable( projectId);
 
         return ResponseEntity.ok().body(body);
     }
 
     @PutMapping("/{project_id}/table/{table_id}")
-    public ResponseEntity<Void> updateTable(@LoginMember Member member, Long projectId, Long tableId, TableUpdateRequest tableUpdateRequest){
-        erdService.updateTable(member,projectId,tableId,tableUpdateRequest);
+    public ResponseEntity<Void> updateTable(
+                                            @PathVariable("project_id") Long projectId,
+                                            @PathVariable("table_id") Long tableId,
+                                            @RequestBody TableUpdateRequest tableUpdateRequest){
+        erdService.updateTable(projectId,tableId,tableUpdateRequest);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/{project_id}/table/{table_id}")
-    public ResponseEntity<Void> deleteTable(@LoginMember Member member, Long projectId, Long tableId){
-        erdService.deleteTable(member,projectId,tableId);
+    public ResponseEntity<Void> deleteTable(
+                                            @PathVariable("project_id") Long projectId,
+                                            @PathVariable("table_id") Long tableId){
+        erdService.deleteTable(projectId,tableId);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PostMapping("/{project_id}/tablerelation")
-    public ResponseEntity<Void> createTableRelation(@LoginMember Member member, Long projectId, TableRelationCreateRequest tableRelationCreateRequest){
-        erdService.createTableRelation(member,projectId,tableRelationCreateRequest);
+    public ResponseEntity<Void> createTableRelation(
+                                                    @PathVariable("project_id") Long projectId,
+                                                    @RequestBody TableRelationCreateRequest tableRelationCreateRequest){
+        erdService.createTableRelation(projectId,tableRelationCreateRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/{project_id}/tablerelation/{table_relation_id}")
-    public ResponseEntity<Void> deleteTableRelation(@LoginMember Member member, Long projectId, Long tableRelationId){
-        erdService.deleteTableRelation(member,projectId,tableRelationId);
+    public ResponseEntity<Void> deleteTableRelation(
+                                                    @PathVariable("project_id") Long projectId,
+                                                    @PathVariable("table_relation_id") Long tableRelationId){
+        erdService.deleteTableRelation(projectId,tableRelationId);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -80,26 +91,28 @@ public class ERDController {
     }
 
     @GetMapping("/{project_id}/table/{table_id}/tablecolumn")
-    public ResponseEntity<Void> createTableColumn(@LoginMember Member member, Long projectId, Long tableId){
-        erdService.createTableColumn(member,projectId,tableId);
+    public ResponseEntity<Void> createTableColumn(
+                                                  @PathVariable("project_id") Long projectId,
+                                                  @PathVariable("table_id")Long tableId){
+        erdService.createTableColumn(projectId,tableId);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/{project_id}/table/{table_id}/tablecolumn/{column_id}")
-    public ResponseEntity<Void> updateTableColumn(@LoginMember Member member,
-                           Long projectId,
-                           Long tableId,
-                           Long tableColumnId,
-                           TableColumnUpdateRequest tableColumnUpdateRequest){
-        erdService.updateTableColumn(member,projectId,tableId,tableColumnId,tableColumnUpdateRequest);
-
+    @GetMapping("/{project_id}/table/{table_id}/tablecolumn/{table_column_id}")
+    public ResponseEntity<Void> updateTableColumn(@PathVariable("project_id") Long projectId,
+                                                  @PathVariable("table_id") Long tableId,
+                                                  @PathVariable("table_column_id") Long tableColumnId,
+                                                  @RequestBody TableColumnUpdateRequest tableColumnUpdateRequest){
+        erdService.updateTableColumn(projectId,tableId,tableColumnId,tableColumnUpdateRequest);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/{project_id}/table/{table_id}/column/{column_id}")
-    public ResponseEntity<Void> deleteTableColumn(@LoginMember Member member, Long projectId, Long tableColumnId){
-        erdService.deleteTableColumn(member,projectId,tableColumnId);
+    @GetMapping("/{project_id}/table/{table_id}/column/{table_column_id}")
+    public ResponseEntity<Void> deleteTableColumn(
+                                                  @PathVariable("project_id") Long projectId,
+                                                  @PathVariable("table_column_id") Long tableColumnId){
+        erdService.deleteTableColumn(projectId,tableColumnId);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }

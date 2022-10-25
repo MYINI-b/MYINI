@@ -2,6 +2,7 @@ package com.ssafy.myini.ERD.domain.entity;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -11,15 +12,16 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Constraint {
+@Getter
+public class Condition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "constraint_id")
-    private Long constraintId;
+    @Column(name = "condition_id")
+    private Long conditionId;
 
     @Column(nullable = false)
-    private String constraintName;
+    private String conditionName;
 
-    @OneToMany(mappedBy = "constraint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<ColumnConstraint> columnConstraints  = new ArrayList<>();
+    @OneToMany(mappedBy = "condition", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ColumnCondition> columnConditions = new ArrayList<>();
 }

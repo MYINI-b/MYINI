@@ -1,14 +1,10 @@
 package com.ssafy.myini.project.domain;
 
-import com.ssafy.myini.ERD.domain.entity.Table;
-import com.ssafy.myini.ERD.domain.entity.TableColumn;
+import com.ssafy.myini.ERD.domain.entity.ErdTable;
 import com.ssafy.myini.member.domain.MemberProject;
 import com.ssafy.myini.requirement.domain.Requirement;
 import com.ssafy.myini.requirement.domain.RequirementCategory;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -54,7 +50,7 @@ public class Project {
     private List<Requirement> requirements = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<Table> tables  = new ArrayList<>();
+    private List<ErdTable> tables  = new ArrayList<>();
 
     public static Project createProject() {
         Project project = new Project();

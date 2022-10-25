@@ -1,6 +1,11 @@
 package com.ssafy.myini.ERD.domain.repository;
 
+import com.ssafy.myini.ERD.domain.entity.ErdTable;
+import com.ssafy.myini.project.domain.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TableRepository extends JpaRepository<TableRepository, Long> {
+import java.util.List;
+
+public interface TableRepository extends JpaRepository<ErdTable, Long> {
+    List<ErdTable> findAllByProject(Project project);
 }

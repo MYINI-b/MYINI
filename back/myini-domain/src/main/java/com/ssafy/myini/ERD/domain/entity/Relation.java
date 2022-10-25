@@ -2,6 +2,7 @@ package com.ssafy.myini.ERD.domain.entity;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Getter
 public class Relation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,5 +24,5 @@ public class Relation {
     private String relationName;
 
     @OneToMany(mappedBy = "relation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<TableRelation> tableRelations = new ArrayList<>();
+    private List<TableRelation> tableRelations = new ArrayList<>();
 }

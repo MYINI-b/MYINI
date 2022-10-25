@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class TableRelationCreateRequest {
     private Long toTableId;
     private Long fromTableId;
+    private Long relationId;
 }

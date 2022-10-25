@@ -1,0 +1,29 @@
+package com.ssafy.myini.ERD;
+
+import com.ssafy.myini.ERD.request.TableColumnUpdateRequest;
+import com.ssafy.myini.ERD.request.TableCreateRequest;
+import com.ssafy.myini.ERD.request.TableRelationCreateRequest;
+import com.ssafy.myini.ERD.request.TableUpdateRequest;
+import com.ssafy.myini.ERD.response.*;
+
+import java.util.List;
+
+public class ERDFixture {
+    public static final Long ID = 1L;
+    public static final String CONTENT = "내용";
+    public static final String NAME = "이름";
+    public static final Double X = 1.0;
+    public static final List<Long> LIST1 = null;
+    public static final List<TableColumnDto> LIST2 = null;
+    public static final List<TableRelationDto> LIST3 = null;
+
+    public static final TableCreateRequest TEST_TABLE_CREATE_REQUEST = new TableCreateRequest(NAME,X,X,CONTENT);
+    public static final TableUpdateRequest TEST_TABLE_UPDATE_REQUEST = new TableUpdateRequest(NAME,X,X,CONTENT);
+    public static final TableRelationCreateRequest TEST_RELATION_CREATE_REQUEST = new TableRelationCreateRequest(ID,ID,ID);
+    public static final TableColumnUpdateRequest TEST_COLUMN_UPDATE_REQUEST = new TableColumnUpdateRequest(CONTENT, LIST1);
+
+    public static final ConstraintListResponse TEST_CONSTRAINT_LIST_RESPONSE = new ConstraintListResponse(ID,NAME);
+    public static final RelationListResponse TEST_RELATION_LIST_RESPONSE = new RelationListResponse(ID,NAME);
+    public static final TableListResponse TEST_TABLE_LIST_RESPONSE = new TableListResponse(ID,NAME,X,X,CONTENT,LIST2,LIST3);
+
+}
