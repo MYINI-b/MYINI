@@ -1,9 +1,92 @@
 import './style.scss';
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import TableRow from './TableRow';
+import RowModal from './RowModal';
 
 export default function Requirement() {
+  const [isRowModalOpen, setIsRowModalOpen] = useState(false);
+  const rows = [
+    {
+      id: 1,
+      category: '회원',
+      requirement: '로그인을 한다',
+      description:
+        '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
+      division: 'FE',
+      manager: '한윤석',
+      importance: 'high',
+      point: 4,
+    },
+    {
+      id: 2,
+      category: '회원',
+      requirement: '로그인을 한다',
+      description:
+        '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
+      division: 'FE',
+      manager: '한윤석',
+      importance: 'high',
+      point: 4,
+    },
+    {
+      id: 3,
+      category: '회원',
+      requirement: '로그인을 한다',
+      description:
+        '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
+      division: 'FE',
+      manager: '한윤석',
+      importance: 'high',
+      point: 4,
+    },
+    {
+      id: 4,
+      category: '회원',
+      requirement: '로그인을 한다',
+      description:
+        '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
+      division: 'FE',
+      manager: '한윤석',
+      importance: 'high',
+      point: 4,
+    },
+    {
+      id: 5,
+      category: '회원',
+      requirement: '로그인을 한다',
+      description:
+        '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
+      division: 'FE',
+      manager: '한윤석',
+      importance: 'high',
+      point: 4,
+    },
+    {
+      id: 6,
+      category: '회원',
+      requirement: '로그인을 한다',
+      description:
+        '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
+      division: 'FE',
+      manager: '한윤석',
+      importance: 'high',
+      point: 4,
+    },
+    {
+      id: 7,
+      category: '회원',
+      requirement: '로그인을 한다',
+      description:
+        '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
+      division: 'FE',
+      manager: '한윤석',
+      importance: 'high',
+      point: 4,
+    },
+  ];
   return (
     <>
       {' '}
@@ -37,17 +120,33 @@ export default function Requirement() {
 
         <section className="requirement-table-section">
           <article className="table-title-article">
-            <h5 className="table-col one">ID</h5>
-            <h5 className="table-col one-half">카테고리</h5>
-            <h5 className="table-col one-half">요구사항 명</h5>
-            <h5 className="table-col two">내용</h5>
-            <h5 className="table-col one">구분</h5>
-            <h5 className="table-col one">담당자</h5>
-            <h5 className="table-col one">중요도</h5>
-            <h5 className="table-col one">포인트</h5>
+            <h5 className="table-col title one">ID</h5>
+            <h5 className="table-col title one-half">카테고리</h5>
+            <h5 className="table-col title one-half">요구사항 명</h5>
+            <h5 className="table-col title two">내용</h5>
+            <h5 className="table-col title one">구분</h5>
+            <h5 className="table-col title one">담당자</h5>
+            <h5 className="table-col title one">중요도</h5>
+            <h5 className="table-col title one">포인트</h5>
+          </article>
+
+          <article className="table-content-article">
+            {rows.map((e) => {
+              return (
+                <TableRow
+                  row={e}
+                  setIsRowModalOpen={setIsRowModalOpen}
+                  key={e.id}
+                />
+              );
+            })}
+            <button className="table-more-button" type="button">
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
           </article>
         </section>
       </div>
+      {isRowModalOpen && <RowModal setIsRowModalOpen={setIsRowModalOpen} />}
     </>
   );
 }

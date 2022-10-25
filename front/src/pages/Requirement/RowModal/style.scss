@@ -1,0 +1,25 @@
+@import 'variables.scss';
+
+.rowmodal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  @include STRETCH;
+  @include FLEX-CENTER;
+
+  .rowmodal-content-container {
+    @include BORDER-PAPER;
+    @include FLEX-COLUMN;
+    align-items: center;
+    padding: rem(6) rem(10);
+    border-radius: rem(10);
+
+    .rowmodal-menu {
+      @include FLEX-CENTER;
+      margin: rem(6) 0;
+      color: $gray;
+      font-size: rem(14);
+    }
+  }
+}
