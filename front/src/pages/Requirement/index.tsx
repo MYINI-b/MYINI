@@ -1,13 +1,17 @@
 import './style.scss';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faClose } from '@fortawesome/free-solid-svg-icons';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
+
 import TableRow from './TableRow';
 import RowModal from './RowModal';
 
 export default function Requirement() {
   const [isRowModalOpen, setIsRowModalOpen] = useState(false);
+  const [isCategoryListOpen, setIsCategoryListOpen] = useState(false);
+  const [categoryInput, setCategoryInput] = useState('');
+  const [categories, setCategories] = useState(['회원', '프로젝트', 'ERD']);
   const rows = [
     {
       id: 1,
@@ -87,6 +91,28 @@ export default function Requirement() {
       point: 4,
     },
   ];
+
+  const addNewCategory = (e: any) => {
+    if (e.key === 'Enter') {
+      setCategories([...categories, categoryInput]);
+      setCategoryInput('');
+      e.target.value = '';
+    }
+  };
+
+  const onChangeCategoryInput = useCallback((e: any) => {
+    setCategoryInput(e.target.value);
+  }, []);
+
+  const deleteCategory = useCallback(
+    (idx: number) => {
+      const copyCategories = [...categories];
+      copyCategories.splice(idx, 1);
+      setCategories(copyCategories);
+    },
+    [categories],
+  );
+
   return (
     <>
       <div className="header" />
@@ -120,7 +146,36 @@ export default function Requirement() {
         <section className="requirement-table-section">
           <article className="table-title-article">
             <h5 className="table-col title one">ID</h5>
-            <h5 className="table-col title one-half">카테고리</h5>
+            <h5
+              className="table-col title one-half category-container"
+              onClick={() => setIsCategoryListOpen(true)}
+              onKeyDown={() => {}}
+            >
+              카테고리
+              {isCategoryListOpen && (
+                <div className="category-list-container">
+                  <input
+                    type="text"
+                    className="category-search-input"
+                    placeholder="카테고리 등록"
+                    onChange={onChangeCategoryInput}
+                    onKeyDown={addNewCategory}
+                  />
+                  {categories.map((e, i) => {
+                    return (
+                      <span className="category-row" key={i}>
+                        {e}
+                        <FontAwesomeIcon
+                          icon={faClose}
+                          className="category-delete-button"
+                          onClick={() => deleteCategory(i)}
+                        />
+                      </span>
+                    );
+                  })}
+                </div>
+              )}
+            </h5>
             <h5 className="table-col title one-half">요구사항 명</h5>
             <h5 className="table-col title two">내용</h5>
             <h5 className="table-col title one">구분</h5>
@@ -145,6 +200,7 @@ export default function Requirement() {
           </article>
         </section>
       </div>
+
       {isRowModalOpen && <RowModal setIsRowModalOpen={setIsRowModalOpen} />}
     </>
   );
