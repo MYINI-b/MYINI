@@ -1,0 +1,108 @@
+@import 'variables.scss';
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: rem(70);
+  background-color: black;
+}
+
+.requirement-container {
+  @include STRETCH;
+  @include FLEX-COLUMN;
+  padding: rem(88) rem(30);
+
+  .requirement-stepper-container {
+    width: 100%;
+    @include FLEX-BETWEEN;
+
+    .stepper-btn-wrapper {
+      @include FLEX-COLUMN;
+      align-items: center;
+
+      .stepper-btn {
+        @include CIRCLE-BTN;
+        .stepper-arrow {
+          width: 20px;
+          height: 20px;
+          background-color: transparent;
+          border-color: $white;
+          border-top: 4px solid $white;
+          border-left: 4px solid $white;
+          border-radius: 2px;
+          content: '';
+
+          &.left {
+            transform: rotate(-45deg);
+          }
+          &.right {
+            transform: rotate(135deg);
+          }
+        }
+      }
+
+      .stepper-btn-text {
+        color: $primary;
+      }
+    }
+  }
+
+  .requirement-title {
+    margin-top: rem(40);
+    font-weight: bold;
+    font-size: rem(36);
+  }
+
+  .requirement-info-section {
+    width: 100%;
+    @include FLEX-BETWEEN;
+
+    .requirement-project-title {
+      margin-top: rem(16);
+      color: $primary;
+      font-size: rem(20);
+      font-family: $eng-title;
+    }
+
+    .requirement-save-button {
+      @include CIRCLE-BTN;
+      @include BTN-COLOR($third);
+      width: rem(50);
+      height: rem(50);
+      font-size: rem(24);
+    }
+  }
+
+  .requirement-table-section {
+    @include STRETCH;
+    @include FLEX-COLUMN;
+    margin-top: rem(30);
+
+    .table-title-article {
+      width: 100%;
+      @include FLEX-BETWEEN;
+
+      .table-col {
+        height: rem(50);
+        padding: 0 rem(24);
+        font-size: rem(20);
+        font-family: $eng-title;
+        background-color: $third;
+        border-radius: 20px;
+        @include FLEX-CENTER;
+
+        &.one {
+          flex: 0.08;
+        }
+        &.one-half {
+          flex: 0.12;
+        }
+        &.two {
+          flex: 0.26;
+        }
+      }
+    }
+  }
+}
