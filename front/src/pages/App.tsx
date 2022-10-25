@@ -4,6 +4,7 @@ import React from 'react';
 import './global.scss';
 import Onboarding from './Onboarding';
 import Requirement from './Requirement';
+import SettingPage from './Setting';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         {' '}
         <Route path="/" element={<Onboarding />} />
         <Route path="/requirement" element={<Requirement />} />
+        <Route path="/setting" element={<SettingPage />} />
       </Routes>
     </BrowserRouter>
   );
