@@ -1,6 +1,5 @@
 import MainHeader from 'components/MainHeader';
 import CardLogo from '../../assets/card-logo.png';
-import { ReactComponent as Footer } from '../../assets/footer_bg.svg';
 import './style.scss';
 
 export default function MainPage() {
@@ -8,6 +7,11 @@ export default function MainPage() {
     '이 프로젝트는 1953년 영국에서부터 전해져와 이 글을 읽을 시 3명에게 복사해서 보내지 않을 경우 수상하지 못합니다.';
   return (
     <div>
+      <div className="wave-container">
+        <div className="wave -one" />
+        <div className="wave -two" />
+        <div className="wave -three" />
+      </div>
       <MainHeader />
       <div className="main-page">
         <span className="user-name">한윤석</span>
@@ -86,24 +90,9 @@ export default function MainPage() {
                 </p>
               </div>
             </div>
-            <div className="card">
-              <img
-                src="https://picsum.photos/300"
-                alt=""
-                className="card-img"
-              />
-            </div>
-            <div className="card">
-              <img
-                src="https://picsum.photos/300"
-                alt=""
-                className="card-img"
-              />
-            </div>
           </div>
         </div>
       </div>
-      <Footer className="footer1" />
     </div>
   );
 }

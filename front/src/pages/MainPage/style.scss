@@ -4,8 +4,8 @@
   width: 100%;
   height: 100%;
   padding: rem(75);
-  // margin: rem(60);
-  // margin-top: rem(80);
+  z-index: 5;
+  position: relative;
 }
 
 .user-name {
@@ -54,10 +54,14 @@
   overflow-x: scroll;
   overflow-y: hidden;
   padding-bottom: 0.5rem;
+  background-color: $white;
+  z-index: 100;
 }
 
 .card-scroll {
   display: flex;
+  background-color: $white;
+  z-index: 100;
 }
 
 .project-start {
@@ -70,6 +74,7 @@
   border-radius: 30px;
   margin-right: 4rem;
   box-shadow: $shadow;
+  background-color: $white;
 }
 
 .card {
@@ -86,6 +91,7 @@
 
 .card-img {
   border-radius: 30px;
+
 }
 
 .card-header {
@@ -131,7 +137,6 @@
   overflow: hidden;
 	height: 180px;
 	margin: 5px 20px;
-  z-index: 2;
 }
 
 .card:hover .card-body-context {
@@ -160,9 +165,3 @@
   margin-left: 0.5rem;
 }
 
-.footer1 {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: rem(100);
-}
