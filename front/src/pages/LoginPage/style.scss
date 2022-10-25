@@ -1,0 +1,111 @@
+@import 'variables.scss';
+
+.login-page {
+  @include FLEX-CENTER();
+}
+
+.MY {
+  color: $primary;
+  font-size: rem(90);
+  font-family: $eng-title;
+}
+
+.INI {
+  font-size: rem(90);
+  font-family: $eng-title;
+}
+
+.logo-container {
+  position: relative;
+  top: 12rem;
+  right: 35%;
+  margin-right: 3rem;
+}
+
+.logo {
+  position: absolute;
+  top: -11rem;
+  left: 1rem;
+  z-index: 1;
+  width: rem(400);
+  height: rem(400);
+}
+
+.logo-bg {
+  position: absolute;
+  z-index: 0;
+  width: rem(450);
+  height: rem(250);
+}
+
+.title-container {
+  position: relative;
+  bottom: 6rem;
+  left: 22%;
+  @include FLEX-CENTER();
+}
+
+.login-container {
+  position: absolute;
+  top: 20rem;
+}
+
+.login-btn {
+  width: rem(410);
+  height: rem(90);
+}
+
+.title-bg {
+  position: absolute;
+  top: 3.5rem;
+  width: rem(610);
+  height: rem(650);
+}
+
+.footer {
+  position: fixed;
+  bottom: 0%;
+  width: 100%;
+  height: rem(100);
+}
+
+.wave-container {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  overflow: hidden;
+}
+
+.wave {
+  position: absolute;
+  top: 134%;
+  left: -60%;
+  width: 4000px;
+  height: 4000px;
+  margin-top: -250px;
+  margin-left: -250px;
+  background: $white;
+  border-radius: 43%;
+  transform-origin: 50% 48%;
+  opacity: 0.4;
+  animation: drift 3000ms infinite linear;
+}
+
+.wave.-three {
+  animation: drift 5000ms infinite linear;
+}
+
+.wave.-two {
+  background: $secondary;
+  opacity: 0.1;
+  animation: drift 7000ms infinite linear;
+}
+
+@keyframes drift {
+  from {
+    transform: rotate(0deg);
+  }
+  from {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,48 @@
+@import 'variables.scss';
+
+.main-header {
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  height: rem(60);
+  background-color: $white;
+  border-bottom: solid 1px $gray;
+}
+
+.dropdown {
+  position: absolute;
+  right: 0;
+  display: inline-block;
+  margin: 0.5rem;
+  margin-left: auto;
+}
+
+.profile-img {
+  width: rem(40);
+  height: rem(40);
+  background-color: gray;
+  border-radius: 50px;
+}
+
+.dropdown-content {
+  position: absolute;
+  right: 1%;
+  z-index: 1; /*다른 요소들보다 앞에 배치*/
+  display: none;
+  min-width: 100px;
+  font-weight: 400;
+  background-color: #f9f9f9;
+}
+
+.dropdown-content p {
+  display: block;
+  padding: 12px 20px;
+  color: rgb(37, 37, 37);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
