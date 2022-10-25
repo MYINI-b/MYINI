@@ -1,10 +1,11 @@
-import { SetStateAction, Dispatch } from 'react';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronUp,
   faChevronDown,
   faGripLines,
 } from '@fortawesome/free-solid-svg-icons';
+import RowModal from '../RowModal';
 
 interface Row {
   id: number;
@@ -19,12 +20,20 @@ interface Row {
 
 interface Props {
   row: Row;
-  setIsRowModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function TableRow({ row, setIsRowModalOpen }: Props) {
+interface MousePos {
+  x: number;
+  y: number;
+}
+
+export default function TableRow({ row }: Props) {
+  const [isRowModalOpen, setIsRowModalOpen] = useState(false);
+  const [clickMousePos, setClickMousePos] = useState<MousePos>({ x: 0, y: 0 });
+
   const onRightClick = (e: any) => {
     e.preventDefault();
+    setClickMousePos({ x: e.clientX, y: e.clientY });
     setIsRowModalOpen(true);
   };
 
@@ -62,6 +71,13 @@ export default function TableRow({ row, setIsRowModalOpen }: Props) {
         )}
       </span>
       <span className="table-col content one">{row.point}</span>
+
+      {isRowModalOpen && (
+        <RowModal
+          setIsRowModalOpen={setIsRowModalOpen}
+          clickMousePos={clickMousePos}
+        />
+      )}
     </div>
   );
 }

@@ -1,17 +1,29 @@
 import './style.scss';
 import React, { useState, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faClose } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 
 import TableRow from './TableRow';
-import RowModal from './RowModal';
+import Stepper from './Stepper';
+import CategoryListModal from './CategoryListModal';
+
+interface ElementPos {
+  x: number;
+  y: number;
+  width: number;
+}
 
 export default function Requirement() {
-  const [isRowModalOpen, setIsRowModalOpen] = useState(false);
+  const [step, setStep] = useState(1);
   const [isCategoryListOpen, setIsCategoryListOpen] = useState(false);
   const [categoryInput, setCategoryInput] = useState('');
   const [categories, setCategories] = useState(['회원', '프로젝트', 'ERD']);
+  const [clickElementPos, setClickElementPos] = useState<ElementPos>({
+    x: 0,
+    y: 0,
+    width: 0,
+  });
   const rows = [
     {
       id: 1,
@@ -92,47 +104,24 @@ export default function Requirement() {
     },
   ];
 
-  const addNewCategory = (e: any) => {
-    if (e.key === 'Enter') {
-      setCategories([...categories, categoryInput]);
-      setCategoryInput('');
-      e.target.value = '';
-    }
-  };
-
-  const onChangeCategoryInput = useCallback((e: any) => {
-    setCategoryInput(e.target.value);
+  const closeCategoryList = useCallback(() => {
+    setIsCategoryListOpen(false);
   }, []);
 
-  const deleteCategory = useCallback(
-    (idx: number) => {
-      const copyCategories = [...categories];
-      copyCategories.splice(idx, 1);
-      setCategories(copyCategories);
-    },
-    [categories],
-  );
+  const openCategoryList = useCallback((e: any) => {
+    setIsCategoryListOpen(true);
+    setClickElementPos({
+      y: e.target.getBoundingClientRect().top + 40,
+      x: e.target.getBoundingClientRect().left,
+      width: e.target.offsetWidth,
+    });
+  }, []);
 
   return (
     <>
       <div className="header" />
       <div className="requirement-container">
-        <section className="requirement-stepper-container">
-          <div className="stepper-btn-wrapper">
-            <button type="button" className="stepper-btn">
-              <span className="stepper-arrow left" />
-            </button>
-            <p className="stepper-btn-text">요구사항 명세서</p>
-          </div>
-
-          <div className="stepper-step-wrapper">s</div>
-
-          <div className="stepper-btn-wrapper">
-            <button type="button" className="stepper-btn">
-              <span className="stepper-arrow right" />
-            </button>
-          </div>
-        </section>
+        <Stepper step={step} setStep={setStep} />
 
         <h1 className="requirement-title">요구사항명세서</h1>
 
@@ -148,33 +137,9 @@ export default function Requirement() {
             <h5 className="table-col title one">ID</h5>
             <h5
               className="table-col title one-half category-container"
-              onClick={() => setIsCategoryListOpen(true)}
-              onKeyDown={() => {}}
+              onClick={openCategoryList}
             >
               카테고리
-              {isCategoryListOpen && (
-                <div className="category-list-container">
-                  <input
-                    type="text"
-                    className="category-search-input"
-                    placeholder="카테고리 등록"
-                    onChange={onChangeCategoryInput}
-                    onKeyDown={addNewCategory}
-                  />
-                  {categories.map((e, i) => {
-                    return (
-                      <span className="category-row" key={i}>
-                        {e}
-                        <FontAwesomeIcon
-                          icon={faClose}
-                          className="category-delete-button"
-                          onClick={() => deleteCategory(i)}
-                        />
-                      </span>
-                    );
-                  })}
-                </div>
-              )}
             </h5>
             <h5 className="table-col title one-half">요구사항 명</h5>
             <h5 className="table-col title two">내용</h5>
@@ -186,13 +151,7 @@ export default function Requirement() {
 
           <article className="table-content-article">
             {rows.map((e) => {
-              return (
-                <TableRow
-                  row={e}
-                  setIsRowModalOpen={setIsRowModalOpen}
-                  key={e.id}
-                />
-              );
+              return <TableRow row={e} key={e.id} />;
             })}
             <button className="table-more-button" type="button">
               <FontAwesomeIcon icon={faPlus} />
@@ -200,8 +159,16 @@ export default function Requirement() {
           </article>
         </section>
       </div>
-
-      {isRowModalOpen && <RowModal setIsRowModalOpen={setIsRowModalOpen} />}
+      {isCategoryListOpen && (
+        <CategoryListModal
+          categories={categories}
+          setCategories={setCategories}
+          categoryInput={categoryInput}
+          setCategoryInput={setCategoryInput}
+          closeCategoryList={closeCategoryList}
+          clickElementPos={clickElementPos}
+        />
+      )}
     </>
   );
 }

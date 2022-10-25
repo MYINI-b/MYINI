@@ -6,14 +6,14 @@
   left: 0;
   background-color: transparent;
   @include STRETCH;
-  @include FLEX-CENTER;
 
   .rowmodal-content-container {
-    @include BORDER-PAPER;
-    @include FLEX-COLUMN;
+    position: fixed;
     align-items: center;
     padding: rem(6) rem(10);
     border-radius: rem(10);
+    @include BORDER-PAPER;
+    @include FLEX-COLUMN;
 
     .rowmodal-menu {
       @include FLEX-CENTER;

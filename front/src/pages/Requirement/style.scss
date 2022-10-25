@@ -15,41 +15,6 @@
   padding: rem(88) rem(30) rem(30) rem(30);
   @include FLEX-COLUMN;
 
-  .requirement-stepper-container {
-    width: 100%;
-    @include FLEX-BETWEEN;
-
-    .stepper-btn-wrapper {
-      @include FLEX-COLUMN;
-      align-items: center;
-
-      .stepper-btn {
-        @include CIRCLE-BTN;
-        .stepper-arrow {
-          width: 20px;
-          height: 20px;
-          background-color: transparent;
-          border-color: $white;
-          border-top: 4px solid $white;
-          border-left: 4px solid $white;
-          border-radius: 2px;
-          content: '';
-
-          &.left {
-            transform: rotate(-45deg);
-          }
-          &.right {
-            transform: rotate(135deg);
-          }
-        }
-      }
-
-      .stepper-btn-text {
-        color: $primary;
-      }
-    }
-  }
-
   .requirement-title {
     margin-top: rem(40);
     font-weight: bold;
@@ -114,9 +79,10 @@
       @include FLEX-CENTER;
 
       &.title {
-        height: rem(50);
+        height: rem(40);
         font-size: rem(20);
         font-family: $eng-title;
+        white-space: nowrap;
         background-color: $third;
       }
 
@@ -137,65 +103,6 @@
 
       &.category-container {
         position: relative;
-
-        .category-list-container {
-          @include BORDER-PAPER;
-          position: absolute;
-          top: 50px;
-          left: 0;
-          align-items: center;
-          width: 100%;
-          max-height: rem(250);
-          padding: rem(12) rem(12);
-          overflow-y: auto;
-          border-top: initial;
-          border-top-left-radius: 0;
-          border-top-right-radius: 0;
-          box-shadow: $shadow;
-          @include FLEX-COLUMN;
-
-          .category-search-input {
-            width: 100%;
-            height: rem(30);
-            padding: rem(4);
-            color: $black;
-            font-family: $eng-content;
-            border: 1px solid $light-gray;
-            border-radius: 30px;
-
-            &::placeholder {
-              color: $light-gray;
-            }
-          }
-          .category-row {
-            position: relative;
-            width: 100%;
-            padding: rem(6) 0;
-            overflow: hidden;
-            color: $gray;
-            font-size: rem(14);
-            font-family: $eng-content;
-
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            @include FLEX-CENTER;
-            &:hover {
-              .category-delete-button {
-                opacity: 1;
-              }
-            }
-
-            .category-delete-button {
-              position: absolute;
-              top: 5px;
-              right: 0;
-              color: $delete;
-              font-size: rem(16);
-              opacity: 0;
-              transition: 0.3s ease;
-            }
-          }
-        }
       }
 
       .desc-block {
