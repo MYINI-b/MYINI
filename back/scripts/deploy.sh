@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-echo $PASSWORD | docker login -u $USERNAME --password-stdin
-
 RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://k7b203.p.ssafy.io/api/port)
 
 echo "> 응답 코드 $RESPONSE_CODE"
