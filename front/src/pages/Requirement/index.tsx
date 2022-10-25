@@ -1,8 +1,8 @@
 import './style.scss';
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faSave } from '@fortawesome/free-regular-svg-icons';
 import TableRow from './TableRow';
 import RowModal from './RowModal';
 
@@ -17,7 +17,7 @@ export default function Requirement() {
         '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
       division: 'FE',
       manager: '한윤석',
-      importance: 'high',
+      importance: 1,
       point: 4,
     },
     {
@@ -28,7 +28,7 @@ export default function Requirement() {
         '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
       division: 'FE',
       manager: '한윤석',
-      importance: 'high',
+      importance: 2,
       point: 4,
     },
     {
@@ -39,7 +39,7 @@ export default function Requirement() {
         '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
       division: 'FE',
       manager: '한윤석',
-      importance: 'high',
+      importance: 3,
       point: 4,
     },
     {
@@ -50,7 +50,7 @@ export default function Requirement() {
         '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
       division: 'FE',
       manager: '한윤석',
-      importance: 'high',
+      importance: 4,
       point: 4,
     },
     {
@@ -61,7 +61,7 @@ export default function Requirement() {
         '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
       division: 'FE',
       manager: '한윤석',
-      importance: 'high',
+      importance: 5,
       point: 4,
     },
     {
@@ -72,7 +72,7 @@ export default function Requirement() {
         '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
       division: 'FE',
       manager: '한윤석',
-      importance: 'high',
+      importance: 1,
       point: 4,
     },
     {
@@ -83,13 +83,12 @@ export default function Requirement() {
         '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
       division: 'FE',
       manager: '한윤석',
-      importance: 'high',
+      importance: 1,
       point: 4,
     },
   ];
   return (
     <>
-      {' '}
       <div className="header" />
       <div className="requirement-container">
         <section className="requirement-stepper-container">

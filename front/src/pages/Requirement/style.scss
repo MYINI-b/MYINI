@@ -88,6 +88,7 @@
 
     .table-title-article {
       width: 100%;
+      padding-right: 8px;
       @include FLEX-BETWEEN;
     }
 
@@ -147,6 +148,20 @@
         }
         &.COMMON {
           background-color: $COMMON;
+        }
+      }
+
+      .double-chevron {
+        position: relative;
+        svg {
+          position: absolute;
+          top: -3px;
+          left: 0;
+          transform: translate(-50%, -50%);
+        }
+
+        svg + svg {
+          top: 3px;
         }
       }
     }

@@ -30,6 +30,7 @@ module.exports = {
     'react/no-array-index-key':0,
     'react/destructuring-assignment':0,
     "@typescript-eslint/no-empty-function":0,
+    "no-nested-ternary":0,
     'react/jsx-filename-extension': [
       2,
       { extensions: ['.js', '.jsx', '.ts', '.tsx'] },

@@ -1,4 +1,10 @@
 import { SetStateAction, Dispatch } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faChevronUp,
+  faChevronDown,
+  faGripLines,
+} from '@fortawesome/free-solid-svg-icons';
 
 interface Row {
   id: number;
@@ -7,7 +13,7 @@ interface Row {
   description: string;
   division: string;
   manager: string;
-  importance: string;
+  importance: number;
   point: number;
 }
 
@@ -34,7 +40,27 @@ export default function TableRow({ row, setIsRowModalOpen }: Props) {
         <div className={`desc-block ${row.division}`}>{row.division}</div>
       </span>
       <span className="table-col content one">{row.manager}</span>
-      <span className="table-col content one">{row.importance}</span>
+      <span className="table-col content one">
+        {row.importance === 1 ? (
+          <div className="double-chevron">
+            <FontAwesomeIcon icon={faChevronUp} />
+            <FontAwesomeIcon icon={faChevronUp} />
+          </div>
+        ) : row.importance === 2 ? (
+          <FontAwesomeIcon icon={faChevronUp} />
+        ) : row.importance === 3 ? (
+          <FontAwesomeIcon icon={faGripLines} />
+        ) : row.importance === 4 ? (
+          <FontAwesomeIcon icon={faChevronDown} />
+        ) : row.importance === 5 ? (
+          <div className="double-chevron">
+            <FontAwesomeIcon icon={faChevronDown} />
+            <FontAwesomeIcon icon={faChevronDown} />
+          </div>
+        ) : (
+          ''
+        )}
+      </span>
       <span className="table-col content one">{row.point}</span>
     </div>
   );
