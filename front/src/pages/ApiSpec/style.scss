@@ -1,0 +1,43 @@
+@import 'variables.scss';
+
+.apispec-container {
+  width: 100%;
+  height: 100vh;
+  padding: rem(88) rem(30) rem(30) rem(30);
+  background-color: $white;
+  @include FLEX-COLUMN;
+
+  .apispec-title {
+    margin-top: rem(40);
+    font-weight: bold;
+    font-size: rem(36);
+  }
+
+  .apispec-info-section {
+    width: 100%;
+    margin-top: rem(16);
+    @include FLEX-ALIGN-CENTER;
+
+    .apispec-project-title {
+      margin-right: rem(20);
+      color: $primary;
+      font-size: rem(20);
+      font-family: $eng-title;
+      @include FLEX-ALIGN-CENTER;
+    }
+
+    .apispec-status-span {
+      @include FLEX-ALIGN-CENTER;
+
+      .apispec-status-icon {
+        font-size: rem(14);
+        &.on {
+          color: $get;
+        }
+        &.off {
+          color: $delete;
+        }
+      }
+    }
+  }
+}
