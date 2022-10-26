@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface TableRepository extends JpaRepository<ErdTable, Long> {
+public interface ErdTableRepository extends JpaRepository<ErdTable, Long> {
     List<ErdTable> findAllByProject(Project project);
 }

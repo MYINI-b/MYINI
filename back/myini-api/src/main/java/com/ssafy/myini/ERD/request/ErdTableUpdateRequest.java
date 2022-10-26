@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TableCreateRequest {
+public class ErdTableUpdateRequest {
     private String tableName;
     private Double tableX;
     private Double tableY;

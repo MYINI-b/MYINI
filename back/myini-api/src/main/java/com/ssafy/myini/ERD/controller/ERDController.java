@@ -1,15 +1,13 @@
 package com.ssafy.myini.ERD.controller;
 
 import com.ssafy.myini.ERD.request.TableColumnUpdateRequest;
-import com.ssafy.myini.ERD.request.TableCreateRequest;
+import com.ssafy.myini.ERD.request.ErdTableCreateRequest;
 import com.ssafy.myini.ERD.request.TableRelationCreateRequest;
-import com.ssafy.myini.ERD.request.TableUpdateRequest;
+import com.ssafy.myini.ERD.request.ErdTableUpdateRequest;
 import com.ssafy.myini.ERD.response.ConstraintListResponse;
 import com.ssafy.myini.ERD.response.RelationListResponse;
-import com.ssafy.myini.ERD.response.TableListResponse;
+import com.ssafy.myini.ERD.response.ErdTableListResponse;
 import com.ssafy.myini.ERD.service.ERDService;
-import com.ssafy.myini.config.LoginMember;
-import com.ssafy.myini.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,16 +23,16 @@ public class ERDController {
 
     @PostMapping("/{project_id}/table")
     public ResponseEntity<Void> createTable(@PathVariable("project_id") Long projectId,
-                                            @RequestBody TableCreateRequest tableCreateRequest){
-        erdService.createTable(projectId, tableCreateRequest);
+                                            @RequestBody ErdTableCreateRequest erdTableCreateRequest){
+        erdService.createTable(projectId, erdTableCreateRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{project_id}/table")
-    public ResponseEntity<List<TableListResponse>> findAllTable(
+    public ResponseEntity<List<ErdTableListResponse>> findAllTable(
                                                                 @PathVariable("project_id") Long projectId){
-        List<TableListResponse> body = erdService.findAllTable( projectId);
+        List<ErdTableListResponse> body = erdService.findAllTable( projectId);
 
         return ResponseEntity.ok().body(body);
     }
@@ -43,8 +41,8 @@ public class ERDController {
     public ResponseEntity<Void> updateTable(
                                             @PathVariable("project_id") Long projectId,
                                             @PathVariable("table_id") Long tableId,
-                                            @RequestBody TableUpdateRequest tableUpdateRequest){
-        erdService.updateTable(projectId,tableId,tableUpdateRequest);
+                                            @RequestBody ErdTableUpdateRequest erdTableUpdateRequest){
+        erdService.updateTable(projectId,tableId, erdTableUpdateRequest);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
