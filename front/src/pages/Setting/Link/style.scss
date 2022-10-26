@@ -11,6 +11,9 @@
   .image-icon {
     height:rem(30);
     width:rem(30);
+    background-color: $third;
+    background-blend-mode: multiply;
+    border-radius: 70%;
   }
   .detail-word {
     display: flex;
