@@ -6,20 +6,7 @@ $fourth: #FFE6DC;
 $black: #393939;
 $gray : #838383;
 $light-gray : #dedede;
-$lightx2-gray:#efefef;
-$pure-white:#ffffff;
 $white: #fbfbfb;
-
-$FE:#D3E5EF;
-$BE:#FBC9C9;
-$COMMON:#ECD8F2;
-
-$get:#22B24D;
-$post:#17C7FF;
-$put:#FDA032;
-$delete:#FD5E48;
-$patch:#F499F1;
-
 
 
 $kor: "AppleNeoB"; //한글 포함 폰트
@@ -89,9 +76,8 @@ $shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
   color: $white;
   width: rem(60);
   height: rem(60);
-  border-radius: 60px;
   @include FLEX-CENTER();
-  @include BTN-COLOR($primary);
+  @include BTN-COLOR($secondary);
 }
 
 @mixin WHITE-BTN() {

@@ -5,6 +5,7 @@ import './global.scss';
 import LoginPage from './LoginPage';
 import MainPage from './MainPage';
 import ERDPage from './ERDPage';
+import Requirement from './Requirement';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route path="/main" element={<MainPage />} />
         <Route path="/erd" element={<ERDPage />} />
+        <Route path="/requirement" element={<Requirement />} />
       </Routes>
     </BrowserRouter>
   );
