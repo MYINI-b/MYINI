@@ -4,14 +4,16 @@
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 10;
   background-color: rgba(131, 131, 131, 0.3);
   @include STRETCH;
   @include FLEX-CENTER;
 }
 
-.controller-add-modal-content {
+.api-add-modal-content {
   @include BORDER-PAPER;
   @include FLEX-COLUMN;
+  width: 80%;
 
   .closebtn-container {
     @include FLEX-ALIGN-RIGHT;
@@ -21,7 +23,17 @@
     }
   }
 
-  .controller-add-input {
+  .api-add-content-container {
+    width: 100%;
+    @include FLEX-ALIGN-CENTER;
+
+    .api-add-content-right {
+      @include FLEX-COLUMN;
+      flex: 1;
+      width: 100%;
+    }
+  }
+  .api-add-input {
     padding: rem(18) 0;
     font-size: rem(24);
     font-family: $eng-content;
@@ -35,7 +47,7 @@
     }
   }
 
-  .controller-add-submit {
+  .api-add-submit {
     @include SUBMIT-BTN;
     margin-top: rem(18);
   }

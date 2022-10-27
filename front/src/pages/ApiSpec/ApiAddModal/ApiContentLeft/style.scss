@@ -1,0 +1,156 @@
+@import 'variables.scss';
+
+.api-add-content-left {
+  @include FLEX-COLUMN;
+  flex: 1;
+  width: 100%;
+
+  .api-method-code-wrapper {
+    @include FLEX-BETWEEN;
+    width: 100%;
+    margin-top: rem(38);
+
+    .method-code-div {
+      flex: 1;
+      @include FLEX-ALIGN-CENTER;
+
+      .method-code-title {
+        margin-right: rem(16);
+        font-weight: bold;
+        font-size: rem(24);
+      }
+
+      .method-code-block {
+        &.get {
+          @include METHOD-BLOCK($get);
+        }
+        &.post {
+          @include METHOD-BLOCK($post);
+        }
+        &.put {
+          @include METHOD-BLOCK($put);
+        }
+        &.delete {
+          @include METHOD-BLOCK($delete);
+        }
+        &.patch {
+          @include METHOD-BLOCK($patch);
+        }
+        &.code {
+          @include METHOD-BLOCK($code);
+        }
+      }
+    }
+
+    .method-code-div + .method-code-div {
+      justify-content: flex-end;
+      border-left: 1px solid $lightx2-gray;
+    }
+  }
+
+  .api-url-wrapper {
+    width: 100%;
+    margin-top: rem(40);
+    @include FLEX-ALIGN-CENTER;
+
+    .api-url-title {
+      margin-right: rem(16);
+      font-weight: bold;
+      font-size: rem(24);
+      font-family: $eng-title;
+    }
+
+    .api-url-input {
+      width: 100%;
+      color: $black;
+      font-weight: bold;
+      font-size: rem(20);
+      border: none;
+      border-bottom: 1px solid $light-gray;
+    }
+  }
+
+  .api-query-wrapper {
+    @include FLEX-COLUMN;
+    width: 100%;
+    margin-top: rem(26);
+
+    .api-query-title-container {
+      width: 100%;
+      @include FLEX-ALIGN-CENTER;
+
+      .api-query-title {
+        margin-right: rem(12);
+        padding: rem(12) rem(26);
+        font-size: rem(24);
+        font-family: $eng-title;
+        border: 1px solid $secondary;
+        border-bottom: none;
+        border-top-left-radius: rem(15);
+        border-top-right-radius: rem(15);
+        cursor: pointer;
+        transition: 0.3s ease;
+
+        &:hover {
+          color: $white;
+          background-color: $secondary;
+        }
+
+        &.select {
+          color: $white;
+          background-color: $secondary;
+        }
+      }
+    }
+
+    .api-query-content-container {
+      width: 100%;
+      max-height: rem(200);
+      padding: rem(16) rem(22);
+      background-color: $lightx2-gray;
+      box-shadow: $shadow;
+
+      .api-query-input-container {
+        width: 100%;
+        @include FLEX-ALIGN-CENTER;
+
+        &:hover {
+          .api-query-delete {
+            opacity: 1;
+          }
+        }
+
+        .api-query-input {
+          flex: 1;
+          width: 100%;
+          color: $gray;
+          font-size: rem(20);
+          font-family: $eng-content;
+          background-color: transparent;
+          border: none;
+
+          &::placeholder {
+            color: $gray;
+            font-size: rem(24);
+            font-family: $eng-title;
+          }
+        }
+        .api-query-delete {
+          margin-left: rem(6);
+          color: $delete;
+          cursor: pointer;
+          opacity: 0;
+          transition: 0.3s ease;
+
+          &:hover {
+            transform: scale(1.1);
+          }
+        }
+      }
+
+      .api-query-input-container + .api-query-input-container {
+        margin-top: rem(10);
+      }
+    }
+  }
+}

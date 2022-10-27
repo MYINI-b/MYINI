@@ -1,5 +1,10 @@
+import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+
 import './style.scss';
 import ICON from 'assets/icon.png';
+import ApiAddModal from '../ApiAddModal';
 
 interface API {
   id: number;
@@ -21,6 +26,8 @@ interface Props {
 }
 
 export default function APIList({ controllers, controllerIdx, apis }: Props) {
+  const [isApiAddModalOpen, setIsApiAddModalOpen] = useState(false);
+
   return (
     <section className="apilist-container">
       <p className="controller-desc">
@@ -60,9 +67,21 @@ export default function APIList({ controllers, controllerIdx, apis }: Props) {
                   </div>
                 );
               })}
+
+            <button
+              type="button"
+              className="api-add-button"
+              onClick={() => setIsApiAddModalOpen(true)}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
           </div>
         </div>
       </article>
+
+      {isApiAddModalOpen && (
+        <ApiAddModal setIsApiAddModalOpen={setIsApiAddModalOpen} />
+      )}
     </section>
   );
 }

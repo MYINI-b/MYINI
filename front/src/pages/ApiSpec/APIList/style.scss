@@ -79,6 +79,19 @@
       }
     }
 
+    .api-add-button {
+      @include CIRCLE-BTN;
+      flex-shrink: 0;
+      width: rem(45);
+      height: rem(45);
+      margin: rem(6) 0;
+      color: $primary;
+      font-weight: bold;
+      font-size: rem(20);
+      border: 1px solid $primary;
+      @include BTN-COLOR($pure-white);
+    }
+
     .api-table-tbody {
       @include STRETCH;
       overflow-y: hidden;

@@ -31,7 +31,7 @@ export default function ApiSpec() {
     { name: 'user', desc: '회원 관리를 위한 컨트롤러 입니다', baseurl: 'user' },
   ]); // 컨트롤러 목록
   const [controllerIdx, setControllerIdx] = useState(0); // 현재 선택된 컨트롤러 인덱스
-  const [apis, setApis] = useState([
+  const [apis, setApis] = useState<Array<Array<API>>>([
     [
       {
         id: 1,

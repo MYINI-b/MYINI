@@ -19,8 +19,7 @@ $post:#17C7FF;
 $put:#FDA032;
 $delete:#FD5E48;
 $patch:#F499F1;
-
-
+$code : #DFF7FF;
 
 $kor: "AppleNeoB"; //한글 포함 폰트
 
@@ -112,6 +111,14 @@ $shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
   color: $black;
   border: 1px solid $secondary;
   @include FLEX-CENTER();
+}
+
+@mixin METHOD-BLOCK($method){
+  padding: rem(6) rem(18);
+  font-size: rem(18);
+  font-family: $eng-title;
+  border-radius: rem(5);
+  background-color: $method;
 }
 
 @mixin ELLIPSIS-LINE($line) {

@@ -58,8 +58,8 @@ export default function ControllerAddModal({
         onClick={(e) => e.stopPropagation()}
         onSubmit={addController}
       >
-        <div className="closebtn-container" onClick={closeModal}>
-          <FontAwesomeIcon icon={faClose} />
+        <div className="closebtn-container">
+          <FontAwesomeIcon icon={faClose} onClick={closeModal} />
         </div>
         <input
           type="text"
