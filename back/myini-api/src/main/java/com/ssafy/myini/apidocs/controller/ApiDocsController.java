@@ -209,7 +209,7 @@ public class ApiDocsController {
 
     // 자료형 리스트 조회
     @GetMapping("/{project_id}/type")
-    public ResponseEntity<List<TypeListResponse>> findTypeList(@PathVariable("project_id")Long projectId){
+    public ResponseEntity<TypeListResponse> findTypeList(@PathVariable("project_id")Long projectId){
         return null;
     }
 }
