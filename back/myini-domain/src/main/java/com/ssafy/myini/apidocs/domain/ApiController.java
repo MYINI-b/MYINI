@@ -34,5 +34,18 @@ public class ApiController extends BaseEntity {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    public static ApiController createApiController(String apiControllerName, String apiControllerBaseUrl, String apiControllerDescription, Project project) {
+        ApiController apiController = new ApiController();
+        apiController.apiControllerName = apiControllerName;
+        apiController.apiControllerBaseUrl = apiControllerBaseUrl;
+        apiController.apiControllerDescription = apiControllerDescription;
+        apiController.project = project;
+        return apiController;
+    }
 
+    public void updateApiController(String apiControllerName, String apiControllerBaseUrl, String apiControllerDescription){
+        this.apiControllerName = apiControllerName;
+        this.apiControllerBaseUrl = apiControllerBaseUrl;
+        this.apiControllerDescription = apiControllerDescription;
+    }
 }
