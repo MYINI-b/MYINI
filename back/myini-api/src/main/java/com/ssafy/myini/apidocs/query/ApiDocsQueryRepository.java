@@ -2,9 +2,12 @@ package com.ssafy.myini.apidocs.query;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.myini.apidocs.domain.*;
+import com.ssafy.myini.project.domain.Project;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+
+import java.util.List;
 
 import static com.ssafy.myini.apidocs.domain.QApi.api;
 import static com.ssafy.myini.apidocs.domain.QApiController.apiController;
@@ -44,7 +47,11 @@ public class ApiDocsQueryRepository {
                 .fetchOne();
     }
 
-    public Dto findByProjectId(){
-        return null;
+    public List<ApiController> findByProjectId(Project project){
+        return queryFactory
+                .selectFrom(apiController)
+                .join(apiController, api.apiController).fetchJoin()
+                .where(apiController.project.eq(project))
+                .fetch();
     }
 }
