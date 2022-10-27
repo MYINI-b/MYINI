@@ -10,4 +10,4 @@ COPY . .
 
 CMD ["npm", "start"]
 
-COPY --from=build /usr/src/app/build /var/jenkins_home/workspace/front-docs/front-web
+COPY --from=build /var/jenkins_home/workspace/front-docs/front-web /usr/src/app/build
