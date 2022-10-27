@@ -22,6 +22,8 @@ public class TableColumn {
     @Column(nullable = false)
     private String tableColumnName;
 
+    private String tableColumnType;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "erd_table_id")
     private ErdTable erdTable;
@@ -37,7 +39,8 @@ public class TableColumn {
         return tableColumn;
     }
 
-    public void updateTableColumn(String tableColumnName){
+    public void updateTableColumn(String tableColumnName, String tableColumnType){
         this.tableColumnName = tableColumnName;
+        this.tableColumnType = tableColumnType;
     }
 }

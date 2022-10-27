@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class TableColumnUpdateRequest {
     private String tableColumnName;
+    private String tableColumnType;
     private List<Long> conditionItemIds;
 
 }

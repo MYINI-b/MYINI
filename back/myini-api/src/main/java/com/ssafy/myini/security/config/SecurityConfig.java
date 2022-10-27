@@ -51,22 +51,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/ws-stomp/**", "/api/port", "/actuator/health", "/oauth2/**", "/api/docs/**", "/docs/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/users/login",
-                        "/api/erds/{project_id}/erdtable",
-                        "/api/erds/{project_id}/tablerelation",
-                        "/api/erds/{project_id}/erdtable/{erd_table_id}/tablecolumn").permitAll()
+                        "/api/erds/{projectid}/erdtables",
+                        "/api/erds/{projectid}/tablerelations",
+                        "/api/erds/erdtable/{erdtableid}/tablecolumns",
+                        "/api/initializers/{projectid}").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/users/login",
-                        "/api/erds/{project_id}/erdtable",
-                        "/api/erds/relationitem",
-                        "/api/erds/conditionitem").permitAll()
+                        "/api/erds/{projectid}/erdtables",
+                        "/api/erds/relationitems",
+                        "/api/erds/conditionitems",
+                        "/api/initializers/{projectid}/ispossible").permitAll()
                 .antMatchers(HttpMethod.PUT, "/api/users/login",
-                        "/api/erds/{project_id}/erdtable/{erd_table_id}",
-                        "/api/erds/{project_id}/erdtable/{erd_table_id}/tablecolumn/{table_column_id}",
+                        "/api/erds/erdtables/{erdtableid}",
+                        "/api/erds/tablecolumns/{tablecolumnid}",
                         "/api/erds").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/api/users/login",
-                        "/api/erds/{project_id}/erdtable/{erd_table_id}",
-                        "/api/erds/{project_id}/tablerelation/{table_relation_id}",
-                        "/api/erds/{project_id}/erdtable/{erd_table_id}/tablecolumn",
-                        "/api/erds/{project_id}/erdtable/{erd_table_id}/tablecolumn/{table_column_id}").permitAll()
+                        "/api/erds/erdtables/{erdtableid}",
+                        "/api/erds/tablerelations/{tablerelationid}",
+                        "/api/erds/tablecolumns/{tablecolumnid}").permitAll()
                 .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and()
                 .exceptionHandling()

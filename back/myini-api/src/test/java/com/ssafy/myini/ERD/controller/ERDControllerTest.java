@@ -32,15 +32,15 @@ public class ERDControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("테이블 생성입니다.")
-    void createErdTable() throws Exception{
+    public void createErdTable() throws Exception{
         willDoNothing().given(erdService).createErdTable(any(),any());
 
-        mockMvc.perform(post("api/erds/{project_id}/erdtable")
+        mockMvc.perform(post("/api/erds/{project_id}/erdtable",1L)
                 .header(HttpHeaders.AUTHORIZATION)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(TEST_TABLE_CREATE_REQUEST)))
                 .andExpect(status().isCreated())
-                .andDo(document("api/erds/{project_id}/erdtable/create",
+                .andDo(document("/api/erds/{project_id}/erdtable/create",
                         requestHeaders( headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")),
                         requestFields(
                                 fieldWithPath("erdTableName").type(JsonFieldType.STRING).description("테이블이름"),

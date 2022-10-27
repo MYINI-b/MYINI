@@ -10,8 +10,6 @@ import com.ssafy.myini.ERD.response.ConditionItemListResponse;
 import com.ssafy.myini.ERD.response.RelationItemListResponse;
 import com.ssafy.myini.ERD.response.ErdTableListResponse;
 import com.ssafy.myini.NotFoundException;
-import com.ssafy.myini.NotMatchException;
-import com.ssafy.myini.member.domain.MemberRepository;
 import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +20,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.ssafy.myini.NotFoundException.*;
-import static com.ssafy.myini.NotMatchException.*;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class ERDServiceImpl implements ERDService{
     private final ErdTableRepository erdTableRepository;
-    private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
     private final TableRelationRepository tableRelationRepository;
     private final TableColumnRepository tableColumnRepository;
@@ -53,61 +49,52 @@ public class ERDServiceImpl implements ERDService{
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
         List<ErdTable> tables = erdTableRepository.findAllByProject(project);
 
-        List<ErdTableListResponse> erdTableListRespons = tables.stream().map(ErdTableListResponse::from).collect(Collectors.toList());
+        List<ErdTableListResponse> erdTableListResponse = tables.stream().map(ErdTableListResponse::from).collect(Collectors.toList());
 
-        return erdTableListRespons;
+        System.out.println(erdTableListResponse.get(1).getTableColumnDtos().get(1).getTableColumnType());
+        return erdTableListResponse;
     }
 
     @Override
     @Transactional
-    public void updateErdTable(Long projectId, Long erdTableId, ErdTableUpdateRequest erdTableUpdateRequest) {
+    public void updateErdTable(Long erdTableId, ErdTableUpdateRequest erdTableUpdateRequest) {
         ErdTable erdTable = erdTableRepository.findById(erdTableId).orElseThrow(() -> new NotFoundException(TABLE_NOT_FOUND));
 
-        if(projectId.equals(erdTable.getProject().getProjectId())) {
+
             erdTable.updateErdTable(erdTableUpdateRequest.getErdTableName(), erdTableUpdateRequest.getErdTableX(), erdTableUpdateRequest.getErdTableY(), erdTableUpdateRequest.getErdTableColor());
-        }else{
-            new NotMatchException(PROJECT_NOT_MATCH);
-        }
+
     }
 
     @Override
     @Transactional
-    public void deleteErdTable(Long projectId, Long erdTableId) {
+    public void deleteErdTable(Long erdTableId) {
         ErdTable erdTable = erdTableRepository.findById(erdTableId).orElseThrow(() -> new NotFoundException(TABLE_NOT_FOUND));
-        if(projectId.equals(erdTable.getProject().getProjectId())) {
+
             erdTableRepository.delete(erdTable);
-        }else{
-            new NotMatchException(PROJECT_NOT_MATCH);
-        }
+
 
     }
 
     @Override
     @Transactional
-    public void createTableRelation(Long projectId, TableRelationCreateRequest tableRelationCreateRequest) {
+    public void createTableRelation(TableRelationCreateRequest tableRelationCreateRequest) {
         ErdTable toErdTable = erdTableRepository.findById(tableRelationCreateRequest.getToErdTableId()).orElseThrow(() -> new NotFoundException(TABLE_NOT_FOUND));
         ErdTable fromErdTable = erdTableRepository.findById(tableRelationCreateRequest.getFromErdTableId()).orElseThrow(() -> new NotFoundException(TABLE_NOT_FOUND));
         RelationItem relationItem = relationItemRepository.findById(tableRelationCreateRequest.getRelationItemId()).orElseThrow(() -> new NotFoundException(RELATION_NOT_FOUND));
 
-        if(projectId.equals(toErdTable.getProject().getProjectId()) && projectId.equals(fromErdTable.getProject().getProjectId())){
-            TableRelation tableRelation = TableRelation.createTableRelation(toErdTable, fromErdTable, relationItem);
+           TableRelation tableRelation = TableRelation.createTableRelation(toErdTable, fromErdTable, relationItem);
             tableRelationRepository.save(tableRelation);
-        }else{
-            new NotMatchException(PROJECT_NOT_MATCH);
-        }
+
 
 
     }
 
     @Override
     @Transactional
-    public void deleteTableRelation(Long projectId, Long tableRelationId) {
+    public void deleteTableRelation(Long tableRelationId) {
         TableRelation tableRelation = tableRelationRepository.findById(tableRelationId).orElseThrow(() -> new NotFoundException(RELATION_NOT_FOUND));
-        if (projectId.equals(tableRelation.getToErdTable().getProject().getProjectId()) && projectId.equals(tableRelation.getFromErdTable().getProject().getProjectId())){
-            tableRelationRepository.delete(tableRelation);
-        }else{
-            new NotMatchException(PROJECT_NOT_MATCH);
-        }
+          tableRelationRepository.delete(tableRelation);
+
     }
 
     @Override
@@ -128,51 +115,37 @@ public class ERDServiceImpl implements ERDService{
 
     @Override
     @Transactional
-    public void createTableColumn(Long projectId, Long erdTableId) {
+    public void createTableColumn(Long erdTableId) {
         ErdTable erdTable = erdTableRepository.findById(erdTableId).orElseThrow(() -> new NotFoundException(TABLE_NOT_FOUND));
-        if(projectId.equals(erdTable.getProject().getProjectId())){
-            TableColumn tableColumn = TableColumn.createTableColumn(erdTable);
+          TableColumn tableColumn = TableColumn.createTableColumn(erdTable);
             tableColumnRepository.save(tableColumn);
-        }else{
-            new NotMatchException(PROJECT_NOT_MATCH);
-        }
+
 
     }
 
     @Override
     @Transactional
-    public void updateTableColumn(Long projectId, Long erdTableId, Long tableColumnId, TableColumnUpdateRequest tableColumnUpdateRequest) {
-        ErdTable erdTable = erdTableRepository.findById(erdTableId).orElseThrow(() -> new NotFoundException(TABLE_NOT_FOUND));
-        if(projectId.equals(erdTable.getProject().getProjectId())){
-            TableColumn tableColumn = tableColumnRepository.findById(tableColumnId).orElseThrow(() -> new NotFoundException(TABLE_COLUMN_NOT_FOUND));
-            if(erdTableId.equals(tableColumn.getErdTable().getErdTableId())){
-                //컬럼이름 바꾸기
-                tableColumn.updateTableColumn(tableColumnUpdateRequest.getTableColumnName());
-                //컬럼에 딸린 제약조건 다 삭제하고
-                columnConditionRepository.deleteAllInBatchByTableColumn_TableColumnId(tableColumn.getTableColumnId());
-                //새롭게 제약조건 설정
-                for (Long conditionItemId : tableColumnUpdateRequest.getConditionItemIds()) {
-                    ConditionItem conditionItem = conditionItemRepository.findById(conditionItemId).orElseThrow(() -> new NotFoundException(CONSTRAINT_NOT_FOUND));
-                    ColumnCondition columnCondition = ColumnCondition.createColumnCondition(tableColumn, conditionItem);
-                    columnConditionRepository.save(columnCondition);
-                }
-            }else{
-                new NotMatchException(TABLE_NOT_MATCH);
-            }
-        }else{
-            new NotMatchException(PROJECT_NOT_MATCH);
+    public void updateTableColumn(Long tableColumnId, TableColumnUpdateRequest tableColumnUpdateRequest) {
+         TableColumn tableColumn = tableColumnRepository.findById(tableColumnId).orElseThrow(() -> new NotFoundException(TABLE_COLUMN_NOT_FOUND));
+
+         //컬럼이름 바꾸기
+        tableColumn.updateTableColumn(tableColumnUpdateRequest.getTableColumnName(), tableColumnUpdateRequest.getTableColumnType());
+        //컬럼에 딸린 제약조건 다 삭제하고
+        columnConditionRepository.deleteAllInBatchByTableColumn_TableColumnId(tableColumn.getTableColumnId());
+        //새롭게 제약조건 설정
+        for (Long conditionItemId : tableColumnUpdateRequest.getConditionItemIds()) {
+            ConditionItem conditionItem = conditionItemRepository.findById(conditionItemId).orElseThrow(() -> new NotFoundException(CONSTRAINT_NOT_FOUND));
+            ColumnCondition columnCondition = ColumnCondition.createColumnCondition(tableColumn, conditionItem);
+            columnConditionRepository.save(columnCondition);
         }
     }
 
     @Override
     @Transactional
-    public void deleteTableColumn(Long projectId, Long tableColumnId) {
+    public void deleteTableColumn( Long tableColumnId) {
         TableColumn tableColumn = tableColumnRepository.findById(tableColumnId).orElseThrow(() -> new NotFoundException(TABLE_COLUMN_NOT_FOUND));
-        if(projectId.equals(tableColumn.getErdTable().getProject().getProjectId())){
-            tableColumnRepository.delete(tableColumn);
-        }else{
-            new NotMatchException(PROJECT_NOT_MATCH);
-        }
+          tableColumnRepository.delete(tableColumn);
+
 
     }
 

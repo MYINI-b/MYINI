@@ -14,12 +14,14 @@ import java.util.stream.Collectors;
 public class TableColumnDto {
     private Long tableColumnId;
     private String tableColumnName;
+    private String tableColumnType;
     private List<ConditionItemDto> conditionItemDtos;
 
     public static TableColumnDto from(TableColumn tableColumn){
         TableColumnDto tableColumnDto = new TableColumnDto();
         tableColumnDto.tableColumnId = tableColumn.getTableColumnId();
         tableColumnDto.tableColumnName = tableColumn.getTableColumnName();
+        tableColumnDto.tableColumnType = tableColumn.getTableColumnType();
         tableColumnDto.conditionItemDtos = tableColumn.getColumnConditions().stream().map(ConditionItemDto::from).collect(Collectors.toList());
 
         return tableColumnDto;

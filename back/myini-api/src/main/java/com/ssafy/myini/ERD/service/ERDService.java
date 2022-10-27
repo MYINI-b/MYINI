@@ -13,18 +13,14 @@ import java.util.List;
 public interface ERDService {
     void createErdTable(Long projectId, ErdTableCreateRequest erdTableCreateRequest);
     List<ErdTableListResponse> findAllErdTable(Long projectId);
-    void updateErdTable(Long projectId, Long tableId, ErdTableUpdateRequest erdTableUpdateRequest);
-    void deleteErdTable(Long projectId, Long tableId);
-    void createTableRelation(Long projectId, TableRelationCreateRequest tableRelationCreateRequest);
-    void deleteTableRelation(Long projectId, Long tableRelationId);
+    void updateErdTable(Long tableId, ErdTableUpdateRequest erdTableUpdateRequest);
+    void deleteErdTable(Long tableId);
+    void createTableRelation(TableRelationCreateRequest tableRelationCreateRequest);
+    void deleteTableRelation(Long tableRelationId);
     List<RelationItemListResponse> findAllRelationItem();
     List<ConditionItemListResponse> findAllConditionItem();
-    void createTableColumn(Long projectId, Long tableId);
-    void updateTableColumn(
-                           Long projectId,
-                           Long tableId,
-                           Long tableColumnId,
-                           TableColumnUpdateRequest tableColumnUpdateRequest);
-    void deleteTableColumn(Long projectId, Long tableColumnId);
+    void createTableColumn(Long tableId);
+    void updateTableColumn(Long tableColumnId,TableColumnUpdateRequest tableColumnUpdateRequest);
+    void deleteTableColumn(Long tableColumnId);
 
 }
