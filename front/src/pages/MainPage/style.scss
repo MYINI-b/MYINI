@@ -54,14 +54,15 @@
   overflow-x: scroll;
   overflow-y: hidden;
   padding-bottom: 0.5rem;
-  background-color: $white;
   z-index: 100;
+  padding-top: 2rem;
+  @include STRETCH;
 }
 
 .card-scroll {
   display: flex;
-  background-color: $white;
   z-index: 100;
+  @include STRETCH;
 }
 
 .project-start {
@@ -70,11 +71,17 @@
   flex-shrink: 0;
   width: rem(300);
   height: rem(300);
-  border: dashed;
+  border: solid 2px;
   border-radius: 30px;
   margin-right: 4rem;
   box-shadow: $shadow;
   background-color: $white;
+}
+
+.project-start:hover {
+  cursor: pointer;
+  border: 2px solid $primary;
+  color: $primary;
 }
 
 .card {
@@ -122,7 +129,8 @@
 
 .card-body-header{
 	line-height: 25px;
-	margin: 20px 20px 20px 20px;
+  padding-top: 20px;
+	margin: 0px 20px 10px 20px;
 }
 
 .card-body-context {
@@ -139,6 +147,10 @@
 	margin: 5px 20px;
 }
 
+.card-body {
+  background-color: $white;
+}
+
 .card:hover .card-body-context {
   opacity: 1;
   -webkit-transition: .5s ease-in-out;
@@ -151,6 +163,7 @@
 
 .project-info-title {
   padding-bottom: 1rem;
+  color: $primary;
 }
 
 .members {

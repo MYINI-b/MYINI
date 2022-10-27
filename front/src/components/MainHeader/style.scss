@@ -1,11 +1,12 @@
 @import 'variables.scss';
 
 .main-header {
-  position: absolute;
+  position: fixed;
   top: 0;
+  left: 0;
   z-index: 100;
   width: 100%;
-  height: rem(60);
+  height: rem(70);
   background-color: $white;
   border-bottom: solid 1px $gray;
 }
@@ -19,10 +20,10 @@
 }
 
 .profile-img {
-  width: rem(40);
-  height: rem(40);
+  width: rem(50);
+  height: rem(50);
   background-color: gray;
-  border-radius: 50px;
+  border-radius: 50%;
 }
 
 .dropdown-content {

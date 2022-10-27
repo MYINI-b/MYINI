@@ -3,8 +3,6 @@ import CardLogo from '../../assets/card-logo.png';
 import './style.scss';
 
 export default function MainPage() {
-  const dummyText =
-    '이 프로젝트는 1953년 영국에서부터 전해져와 이 글을 읽을 시 3명에게 복사해서 보내지 않을 경우 수상하지 못합니다.';
   return (
     <div>
       <div className="wave-container">
@@ -28,7 +26,7 @@ export default function MainPage() {
             </div>
           </div>
         </div>
-        <div className="card-container">
+        <section className="card-container">
           <div className="card-scroll">
             <div className="project-start">
               <img src={CardLogo} alt="" className="card-logo" />
@@ -42,25 +40,7 @@ export default function MainPage() {
                 <div className="card-body-header">
                   <h1>프로젝트명</h1>
                 </div>
-                <p className="card-body-context">
-                  {dummyText}
-                  <div className="members">
-                    <div className="member" />
-                    <div className="member" />
-                    <div className="member" />
-                  </div>
-                </p>
-              </div>
-            </div>
-            <div className="card">
-              <div className="card-header">
-                <div className="card-header-title">프로젝트명</div>
-              </div>
-              <div className="card-body">
-                <div className="card-body-header">
-                  <h1>프로젝트명</h1>
-                </div>
-                <p className="card-body-context">
+                <div className="card-body-context">
                   이 프로젝트는 1953년 영국에서부터 전해져와 이 글을 읽을 시
                   3명에게 복사해서 보내지 않을 경우 수상하지 못합니다.
                   <div className="members">
@@ -68,30 +48,11 @@ export default function MainPage() {
                     <div className="member" />
                     <div className="member" />
                   </div>
-                </p>
-              </div>
-            </div>
-            <div className="card">
-              <div className="card-header">
-                <div className="card-header-title">프로젝트명</div>
-              </div>
-              <div className="card-body">
-                <div className="card-body-header">
-                  <h1>프로젝트명</h1>
                 </div>
-                <p className="card-body-context">
-                  이 프로젝트는 1953년 영국에서부터 전해져와 이 글을 읽을 시
-                  3명에게 복사해서 보내지 않을 경우 수상하지 못합니다.
-                  <div className="members">
-                    <div className="member" />
-                    <div className="member" />
-                    <div className="member" />
-                  </div>
-                </p>
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );
