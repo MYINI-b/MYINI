@@ -1,0 +1,16 @@
+@import 'variables.scss';
+
+.confirm-code {
+  @include FLEX-COLUMN;
+  @include BORDER-PAPER;
+  height: 70%;
+  width: 40%;
+  margin-left: rem(25);
+}
+
+.confirm-title {
+  font-family: $eng-title;
+  font-size: rem(25);
+  display: flex;
+  justify-content: center;
+}

@@ -1,0 +1,39 @@
+@import 'variables.scss';
+
+.init-container {
+  @include FLEX-COLUMN;
+  @include BORDER-PAPER;
+  height: 70%;
+  width: 40%;
+  .tab-item {
+    padding-top: rem(22);
+    .item-row {
+      display: flex;
+      flex-direction: row;
+      justify-content:first baseline;
+    }
+    .button-item {
+      font-family: $eng-content;
+      font-size: rem(16);
+      width: 40%;
+      .item-element {
+        padding-bottom: rem(35);
+      }
+    }
+    .button-select {
+      width: 100%;
+    }
+    .text-box {
+      display: flex;
+      justify-content: center;
+      width: 90%;
+    }
+  }
+}
+
+.title-item {
+  font-family: $eng-title;
+  font-size: rem(25);
+  display: flex;
+  justify-content: center;
+}

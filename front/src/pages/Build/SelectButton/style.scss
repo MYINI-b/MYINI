@@ -1,0 +1,35 @@
+@import 'variables.scss';
+
+.button-container {
+  @include FLEX-COLUMN;
+  .button-child {
+    @include FLEX-COLUMN;
+  }
+  
+  .ul {
+  }
+  
+  .button-list {
+    .li {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      list-style-type: none;
+      float: left;
+      width: 20%;
+      padding-bottom: rem(35);
+      .title-name {
+        font-size: rem(16);
+        font-family: $eng-content;
+        border-radius: 10%;
+      }
+    }
+    button {
+      background-color: $white;
+    }
+    .active>button {
+      width: 100%;
+      background: $secondary;
+    }
+  }
+}
