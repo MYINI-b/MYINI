@@ -8,9 +8,14 @@ interface API {
   method: string;
   code: number;
 }
+interface CONTROLLER {
+  name: string;
+  desc: string;
+  baseurl: string;
+}
 
 interface Props {
-  controllers: string[];
+  controllers: Array<CONTROLLER>;
   controllerIdx: number;
   apis: API[][];
 }
@@ -19,9 +24,11 @@ export default function APIList({ controllers, controllerIdx, apis }: Props) {
   return (
     <section className="apilist-container">
       <p className="controller-desc">
-        Description : 회원관리에 사용되는 컨트롤러 입니다.
+        Description : {controllers[controllerIdx].desc}
       </p>
-      <p className="controller-desc">BaseUrl : /user</p>
+      <p className="controller-desc">
+        BaseUrl : /{controllers[controllerIdx].baseurl}
+      </p>
       <article className="api-table-wrapper">
         <div className="api-table-row">
           <div className="api-table-col one" />
@@ -34,24 +41,25 @@ export default function APIList({ controllers, controllerIdx, apis }: Props) {
 
         <div className="api-table-tbody">
           <div className="api-table-overflow">
-            {apis[controllerIdx].map((api) => {
-              return (
-                <div className="api-table-row content" key={api.id}>
-                  <div className="api-table-col one">
-                    <img src={ICON} alt="" className="active-img" />
+            {apis[controllerIdx].length > 0 &&
+              apis[controllerIdx].map((api) => {
+                return (
+                  <div className="api-table-row content" key={api.id}>
+                    <div className="api-table-col one">
+                      <img src={ICON} alt="" className="active-img" />
+                    </div>
+                    <h3 className="api-table-col two">{`${controllers[controllerIdx].name}-${api.id}`}</h3>
+                    <h3 className="api-table-col three">{api.name}</h3>
+                    <h3 className="api-table-col three">{api.url}</h3>
+                    <h3 className="api-table-col two">
+                      <span className={`api-method-block ${api.method}`}>
+                        {api.method}
+                      </span>
+                    </h3>
+                    <h3 className="api-table-col two">{api.code}</h3>
                   </div>
-                  <h3 className="api-table-col two">{`${controllers[controllerIdx]}-${api.id}`}</h3>
-                  <h3 className="api-table-col three">{api.name}</h3>
-                  <h3 className="api-table-col three">{api.url}</h3>
-                  <h3 className="api-table-col two">
-                    <span className={`api-method-block ${api.method}`}>
-                      {api.method}
-                    </span>
-                  </h3>
-                  <h3 className="api-table-col two">{api.code}</h3>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
         </div>
       </article>

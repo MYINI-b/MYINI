@@ -63,6 +63,12 @@ $shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
   align-items: center;
 }
 
+@mixin FLEX-ALIGN-RIGHT(){
+  display:flex;
+  width:100%;
+  justify-content: flex-end;
+}
+
 @mixin STRETCH() {
   width: 100%;
   height: 100%;
@@ -81,7 +87,11 @@ $shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
   width: 100%;
   padding: rem(6) rem(12);
   transition: 0.3s ease;
-  @include BTN-COLOR($secondary);
+  font-size: rem(24);
+  color:$white;
+  font-family: $eng-content;
+  border-radius: rem(15);
+  @include BTN-COLOR($primary);
   @include FLEX-CENTER();
 }
 

@@ -9,7 +9,7 @@ import {
 
 import './style.scss';
 import Stepper from 'pages/Requirement/Stepper';
-import ControllerList from './APIList';
+import APIList from './APIList';
 import ControllerAddModal from './ControllerAddModal';
 
 interface API {
@@ -19,19 +19,16 @@ interface API {
   method: string;
   code: number;
 }
+interface CONTROLLER {
+  name: string;
+  desc: string;
+  baseurl: string;
+}
 
 export default function ApiSpec() {
   const [step, setStep] = useState(1);
-  const [controllers, setControllers] = useState([
-    'user',
-    'exercise',
-    'user',
-    'exercise',
-    'user',
-    'exercise',
-    'user',
-    'exercise',
-    'exercise',
+  const [controllers, setControllers] = useState<Array<CONTROLLER>>([
+    { name: 'user', desc: '회원 관리를 위한 컨트롤러 입니다', baseurl: 'user' },
   ]); // 컨트롤러 목록
   const [controllerIdx, setControllerIdx] = useState(0); // 현재 선택된 컨트롤러 인덱스
   const [apis, setApis] = useState([
@@ -118,6 +115,10 @@ export default function ApiSpec() {
     setControllerIdx(idx);
   }, []);
 
+  const onAddControllerClick = useCallback(() => {
+    setIsControllerAddModalOpen(true);
+  }, []);
+
   return (
     <div className="apispec-container">
       <Stepper step={step} setStep={setStep} />
@@ -144,11 +145,14 @@ export default function ApiSpec() {
                   onClick={() => onControllerBlockClick(i)}
                   key={i}
                 >
-                  {controller} &nbsp; <FontAwesomeIcon icon={faPen} />
+                  {controller.name} &nbsp; <FontAwesomeIcon icon={faPen} />
                 </div>
               );
             })}
-            <div className="controller-block plus">
+            <div
+              className="controller-block plus"
+              onClick={onAddControllerClick}
+            >
               <FontAwesomeIcon icon={faPlus} />
             </div>
           </div>
@@ -159,7 +163,7 @@ export default function ApiSpec() {
         </article>
       </section>
 
-      <ControllerList
+      <APIList
         controllers={controllers}
         controllerIdx={controllerIdx}
         apis={apis}
@@ -168,6 +172,8 @@ export default function ApiSpec() {
       {isControllerAddModalOpen && (
         <ControllerAddModal
           setIsControllerAddModalOpen={setIsControllerAddModalOpen}
+          setControllers={setControllers}
+          controllers={controllers}
         />
       )}
     </div>
