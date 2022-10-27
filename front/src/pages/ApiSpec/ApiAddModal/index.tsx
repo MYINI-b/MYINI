@@ -6,11 +6,22 @@ import './style.scss';
 import ApiContentLeft from './ApiContentLeft';
 import ApiContentRight from './ApiContentRight';
 
+interface CONTROLLER {
+  name: string;
+  desc: string;
+  baseurl: string;
+}
 interface Props {
+  controllers: Array<CONTROLLER>;
+  controllerIdx: number;
   setIsApiAddModalOpen: Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function ApiAddModal({ setIsApiAddModalOpen }: Props) {
+export default function ApiAddModal({
+  controllers,
+  controllerIdx,
+  setIsApiAddModalOpen,
+}: Props) {
   return (
     <section
       className="modal-empty"
@@ -28,7 +39,10 @@ export default function ApiAddModal({ setIsApiAddModalOpen }: Props) {
         </article>
 
         <article className="api-add-content-container">
-          <ApiContentLeft />
+          <ApiContentLeft
+            controllers={controllers}
+            controllerIdx={controllerIdx}
+          />
           <ApiContentRight />
         </article>
 

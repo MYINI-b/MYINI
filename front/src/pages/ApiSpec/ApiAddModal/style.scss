@@ -14,6 +14,7 @@
   @include BORDER-PAPER;
   @include FLEX-COLUMN;
   width: 80%;
+  height: rem(700);
 
   .closebtn-container {
     @include FLEX-ALIGN-RIGHT;
@@ -24,7 +25,7 @@
   }
 
   .api-add-content-container {
-    width: 100%;
+    @include STRETCH;
     @include FLEX-ALIGN-CENTER;
 
     .api-add-content-right {

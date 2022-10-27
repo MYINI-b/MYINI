@@ -11,8 +11,18 @@ interface QUERY {
   type: '';
 }
 
-export default function ApiContentLeft() {
-  const [queryStep, setQueryStep] = useState(1);
+interface CONTROLLER {
+  name: string;
+  desc: string;
+  baseurl: string;
+}
+interface Props {
+  controllers: Array<CONTROLLER>;
+  controllerIdx: number;
+}
+
+export default function ApiContentLeft({ controllers, controllerIdx }: Props) {
+  const [queryStep, setQueryStep] = useState(0);
   const [apiUrl, setApiUrl] = useState('');
   const [pathList, setPathList] = useState<Array<PATHVARIABLES>>([{ key: '' }]);
   const [pathVarList, setPathVarList] = useState<Array<PATHVARIABLES>>([
@@ -145,13 +155,19 @@ export default function ApiContentLeft() {
         <input
           type="text"
           className="api-url-input"
-          value={`/exercise${apiUrl}`}
+          value={`/${controllers[controllerIdx].name}${apiUrl}`}
           readOnly
         />
       </div>
 
       <div className="api-query-wrapper">
         <div className="api-query-title-container">
+          <h3
+            className={`api-query-title ${queryStep === 0 && 'select'}`}
+            onClick={() => setQueryStep(0)}
+          >
+            PATH
+          </h3>
           <h3
             className={`api-query-title ${queryStep === 1 && 'select'}`}
             onClick={() => setQueryStep(1)}
@@ -166,7 +182,26 @@ export default function ApiContentLeft() {
           </h3>
         </div>
         <div className="api-query-content-container">
-          {queryStep === 1
+          {queryStep === 0
+            ? pathList.map((path, i) => {
+                return (
+                  <div className="api-query-input-container" key={i}>
+                    <input
+                      type="text"
+                      className="api-query-input"
+                      placeholder="KEY"
+                      onChange={(e) => onKeyChange(i, e)}
+                      value={path.key}
+                    />
+                    <FontAwesomeIcon
+                      icon={faClose}
+                      className="api-query-delete"
+                      onClick={() => deleteKey(i)}
+                    />
+                  </div>
+                );
+              })
+            : queryStep === 1
             ? pathVarList.map((pathvar, i) => {
                 return (
                   <div className="api-query-input-container" key={i}>

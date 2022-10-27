@@ -1,0 +1,82 @@
+@import 'variables.scss';
+
+.api-add-content-right {
+  @include FLEX-COLUMN;
+  @include STRETCH;
+  align-items: center;
+
+  .content-section {
+    flex: 1;
+    align-items: center;
+    @include STRETCH;
+    @include FLEX-COLUMN;
+
+    .content-right-title {
+      font-size: rem(24);
+      font-family: $eng-title;
+    }
+
+    .content-right-box {
+      @include STRETCH;
+      padding: rem(16);
+      border: 1px solid $light-gray;
+      border-radius: rem(12);
+
+      .content-right-boxtitle-wrapper {
+        width: 100%;
+        @include FLEX-ALIGN-CENTER;
+
+        .content-right-boxtitle {
+          width: 100%;
+          font-size: rem(20);
+          @include FLEX-CENTER;
+
+          &.static {
+            flex-shrink: 0;
+            width: rem(200);
+            border-right: 1px solid $light-gray;
+          }
+        }
+      }
+    }
+
+    .content-right-boxcontent-wrapper {
+      @include STRETCH;
+      @include FLEX-COLUMN;
+      padding: rem(14) 0;
+
+      .content-right-normal-boxcontent {
+        @include FLEX-ALIGN-CENTER;
+        width: 100%;
+
+        .content-right-boxcontent-input {
+          @include STRETCH;
+          padding-left: rem(6);
+          font-size: rem(18);
+          background-color: transparent;
+          border: none;
+          border-bottom: 1px solid $light-gray;
+
+          &::placeholder {
+            color: $light-gray;
+            font-size: rem(18);
+          }
+        }
+      }
+    }
+  }
+
+  .datatype-wrapper {
+    width: rem(200);
+    @include FLEX-CENTER;
+  }
+  .datatype-block {
+    width: fit-content;
+    max-width: rem(200);
+    padding: rem(10) rem(14);
+    font-size: rem(20);
+    background-color: $light-gray;
+    border: none;
+    border-radius: rem(5);
+  }
+}

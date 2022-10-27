@@ -80,7 +80,11 @@ export default function APIList({ controllers, controllerIdx, apis }: Props) {
       </article>
 
       {isApiAddModalOpen && (
-        <ApiAddModal setIsApiAddModalOpen={setIsApiAddModalOpen} />
+        <ApiAddModal
+          setIsApiAddModalOpen={setIsApiAddModalOpen}
+          controllers={controllers}
+          controllerIdx={controllerIdx}
+        />
       )}
     </section>
   );
