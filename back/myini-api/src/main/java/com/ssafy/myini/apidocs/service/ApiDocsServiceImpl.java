@@ -56,7 +56,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
 
     // API컨트롤러 조회
     @Override
-    public ApiControllerResponse findByApiControllerId(Long projectId, Long apiControllerId) {
+    public ApiControllerResponse findByApiControllerId(Long apiControllerId) {
         ApiController findApiController = apiControllerRepository.findById(apiControllerId)
                 .orElseThrow(() -> new NotFoundException(APICONTROLLER_NOT_FOUND));
 
@@ -67,7 +67,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // API컨트롤러 수정
     @Transactional
     @Override
-    public void updateApiController(Long projectId, Long apiControllerId, UpdateApiControllerRequest request) {
+    public void updateApiController(Long apiControllerId, UpdateApiControllerRequest request) {
         ApiController findApiController = apiControllerRepository.findById(apiControllerId)
                 .orElseThrow(() -> new NotFoundException(APICONTROLLER_NOT_FOUND));
 
@@ -77,7 +77,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // API컨트롤러 삭제
     @Transactional
     @Override
-    public void deleteApiController(Long projectId, Long apiControllerId) {
+    public void deleteApiController(Long apiControllerId) {
         ApiController findApiController = apiControllerRepository.findById(apiControllerId)
                 .orElseThrow(() -> new NotFoundException(APICONTROLLER_NOT_FOUND));
 
@@ -87,7 +87,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // API 생성
     @Transactional
     @Override
-    public void createApi(Long projectId, Long apiControllerId, CreateApiRequest request) {
+    public void createApi(Long apiControllerId, CreateApiRequest request) {
         ApiController findApiController = apiControllerRepository.findById(apiControllerId)
                 .orElseThrow(() -> new NotFoundException(APICONTROLLER_NOT_FOUND));
 
@@ -98,7 +98,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // API 수정
     @Transactional
     @Override
-    public void updateApi(Long projectId, Long apiControllerId, Long apiId, UpdateApiRequest request) {
+    public void updateApi(Long apiId, UpdateApiRequest request) {
         Api findApi = apiRepository.findById(apiId)
                 .orElseThrow(() -> new NotFoundException(API_NOT_FOUND));
 
@@ -108,7 +108,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // API 삭제
     @Transactional
     @Override
-    public void deleteApi(Long projectId, Long apiControllerId, Long apiId) {
+    public void deleteApi(Long apiId) {
         Api findApi = apiRepository.findById(apiId)
                 .orElseThrow(() -> new NotFoundException(API_NOT_FOUND));
 
@@ -117,17 +117,17 @@ public class ApiDocsServiceImpl implements ApiDocsService {
 
     // API 조회
     @Override
-    public ApiInfoResponse findByApiId(Long projectId, Long apiControllerId, Long apiId) {
+    public ApiInfoResponse findByApiId(Long apiId) {
         Api findApi = apiRepository.findById(apiId)
                 .orElseThrow(() -> new NotFoundException(API_NOT_FOUND));
-        apiDocsQueryRepository.findByApiId(findApi);
-        return null;
+        Api findApiInfo = apiDocsQueryRepository.findByApiId(findApi);
+        return ApiInfoResponse.from(findApiInfo);
     }
 
     // PathVariable 생성
     @Transactional
     @Override
-    public void createPathVariable(Long projectId, Long apiControllerId, Long apiId, CreatePathVariableRequest request) {
+    public void createPathVariable(Long apiId, CreatePathVariableRequest request) {
         apiRepository.findById(apiId)
                 .orElseThrow(() -> new NotFoundException(API_NOT_FOUND));
 
@@ -138,7 +138,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // PathVariable 수정
     @Transactional
     @Override
-    public void updatePathVariable(Long projectId, Long apiControllerId, Long apiId, Long pathVariableId, UpdatePathVariableRequest request) {
+    public void updatePathVariable(Long pathVariableId, UpdatePathVariableRequest request) {
         PathVariable findPathVariable = pathVariableRepository.findById(pathVariableId)
                 .orElseThrow(() -> new NotFoundException(PATHVARIABLE_NOT_FOUND));
 
@@ -148,7 +148,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // PathVariable 삭제
     @Transactional
     @Override
-    public void deletePathVariable(Long projectId, Long apiControllerId, Long apiId, Long pathVariableId) {
+    public void deletePathVariable(Long pathVariableId) {
         PathVariable findPathVariable = pathVariableRepository.findById(pathVariableId)
                 .orElseThrow(() -> new NotFoundException(PATHVARIABLE_NOT_FOUND));
 
@@ -158,7 +158,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // QueryString 생성
     @Transactional
     @Override
-    public void createQueryString(Long projectId, Long apiControllerId, Long apiId, CreateQueryStringRequest request) {
+    public void createQueryString(Long apiId, CreateQueryStringRequest request) {
         apiRepository.findById(apiId)
                 .orElseThrow(() -> new NotFoundException(API_NOT_FOUND));
 
@@ -169,7 +169,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // QueryString 수정
     @Transactional
     @Override
-    public void updateQueryString(Long projectId, Long apiControllerId, Long apiId, Long queryStringId, UpdateQueryStringRequest request) {
+    public void updateQueryString(Long queryStringId, UpdateQueryStringRequest request) {
         QueryString findQueryString = queryStringRepository.findById(queryStringId)
                 .orElseThrow(() -> new NotFoundException(QUERYSTRING_NOT_FOUND));
 
@@ -179,7 +179,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // QueryString 삭제
     @Transactional
     @Override
-    public void deleteQueryString(Long projectId, Long apiControllerId, Long apiId, Long queryStringId) {
+    public void deleteQueryString(Long queryStringId) {
         QueryString findQueryString = queryStringRepository.findById(queryStringId)
                 .orElseThrow(() -> new NotFoundException(QUERYSTRING_NOT_FOUND));
 
@@ -189,7 +189,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // Dto 생성
     @Transactional
     @Override
-    public void createDto(Long projectId, Long apiControllerId, Long apiId, CreateDtoRequest request) {
+    public void createDto(Long apiId, CreateDtoRequest request) {
         apiRepository.findById(apiId)
                 .orElseThrow(() -> new NotFoundException(API_NOT_FOUND));
 
@@ -200,7 +200,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // Dto 수정
     @Transactional
     @Override
-    public void updateDto(Long projectId, Long apiControllerId, Long apiId, Long dtoId, UpdateDtoRequest request) {
+    public void updateDto(Long dtoId, UpdateDtoRequest request) {
         Dto findDto = dtoRepository.findById(dtoId)
                 .orElseThrow(() -> new NotFoundException(DTO_NOT_FOUND));
 
@@ -210,7 +210,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // Dto 삭제
     @Transactional
     @Override
-    public void deleteDto(Long projectId, Long apiControllerId, Long apiId, Long dtoId) {
+    public void deleteDto(Long dtoId) {
         Dto findDto = dtoRepository.findById(dtoId)
                 .orElseThrow(() -> new NotFoundException(DTO_NOT_FOUND));
 
@@ -219,7 +219,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
 
     // Dto 조회
     @Override
-    public DtoResponse findByDtoId(Long projectId, Long apiControllerId, Long apiId, Long dtoId) {
+    public DtoResponse findByDtoId(Long dtoId) {
         Dto findDto = dtoRepository.findById(dtoId)
                 .orElseThrow(() -> new NotFoundException(DTO_NOT_FOUND));
 
@@ -230,7 +230,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // Dto변수 생성
     @Transactional
     @Override
-    public void createDtoItem(Long projectId, Long apiControllerId, Long apiId, Long dtoId, CreateDtoItemRequest request) {
+    public void createDtoItem(Long dtoId, CreateDtoItemRequest request) {
         dtoRepository.findById(dtoId)
                 .orElseThrow(() -> new NotFoundException(DTO_NOT_FOUND));
         Dto findDto = dtoRepository.findById(request.getDtoClassType())
@@ -245,7 +245,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // Dto변수 수정
     @Transactional
     @Override
-    public void updateDtoItem(Long projectId, Long apiControllerId, Long apiId, Long dtoId, Long dtoItemId, UpdateDtoItemRequest request) {
+    public void updateDtoItem(Long dtoItemId, UpdateDtoItemRequest request) {
         DtoItem findDtoItem = dtoItemRepository.findById(dtoItemId)
                 .orElseThrow(() -> new NotFoundException(DTOITEM_NOT_FOUND));
         Dto findDto = dtoRepository.findById(request.getDtoClassType())
@@ -259,7 +259,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // Dto변수 삭제
     @Transactional
     @Override
-    public void deleteDtoItem(Long projectId, Long apiControllerId, Long apiId, Long dtoId, Long dtoItemId) {
+    public void deleteDtoItem(Long dtoItemId) {
         DtoItem findDtoItem = dtoItemRepository.findById(dtoItemId)
                 .orElseThrow(() -> new NotFoundException(DTOITEM_NOT_FOUND));
 
@@ -269,8 +269,10 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // 자료형 리스트 조회
     @Override
     public TypeListResponse findTypeList(Long projectId) {
+        Project findProject = projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
         List<Primitive> findPrimitives = primitiveRepository.findAll();
-        List<Dto> findDtos = null;
-        return TypeListResponse.from(findPrimitives, findDtos);
+        List<ApiController> findApiControllers = apiDocsQueryRepository.findByProjectId(findProject);
+        return TypeListResponse.from(findPrimitives, null);
     }
 }
