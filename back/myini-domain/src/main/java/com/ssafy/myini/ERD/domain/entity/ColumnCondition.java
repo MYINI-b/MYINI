@@ -24,13 +24,13 @@ public class ColumnCondition {
     private TableColumn tableColumn;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "condition_id")
-    private Condition condition;
+    @JoinColumn(name = "condition_item_id")
+    private ConditionItem conditionItem;
 
-    public static ColumnCondition createColumnCondition(TableColumn tableColumn, Condition condition){
+    public static ColumnCondition createColumnCondition(TableColumn tableColumn, ConditionItem conditionItem){
         ColumnCondition columnCondition = new ColumnCondition();
         columnCondition.tableColumn = tableColumn;
-        columnCondition.condition = condition;
+        columnCondition.conditionItem = conditionItem;
 
         return columnCondition;
     }

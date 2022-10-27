@@ -23,7 +23,7 @@ public class TableColumn {
     private String tableColumnName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "table_id")
+    @JoinColumn(name = "erd_table_id")
     private ErdTable erdTable;
 
     @OneToMany(mappedBy = "tableColumn", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -31,7 +31,7 @@ public class TableColumn {
 
     public static TableColumn createTableColumn(ErdTable erdTable){
         TableColumn tableColumn = new TableColumn();
-        tableColumn.tableColumnName = "이름을 입력해주세요";
+        tableColumn.tableColumnName = "Untitled";
         tableColumn.erdTable = erdTable;
 
         return tableColumn;

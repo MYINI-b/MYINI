@@ -14,15 +14,15 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Relation {
+public class RelationItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "relation_id")
-    private Long relationId;
+    @Column(name = "relation_item_id")
+    private Long relationItemId;
 
     @Column(nullable = false)
-    private String relationName;
+    private String relationItemName;
 
-    @OneToMany(mappedBy = "relation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "relationItem", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<TableRelation> tableRelations = new ArrayList<>();
 }

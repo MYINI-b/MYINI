@@ -12,21 +12,21 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ErdTableListResponse {
-    private Long tableId;
-    private String tableName;
-    private Double tableX;
-    private Double tableY;
-    private String tableColor;
+    private Long erdTableId;
+    private String erdTableName;
+    private Double erdTableX;
+    private Double erdTableY;
+    private String erdTableColor;
     List<TableColumnDto> tableColumnDtos;
     List<TableRelationDto> tableRelationDtos;
 
     public static ErdTableListResponse from(ErdTable erdTable){
         ErdTableListResponse erdTableListResponse = new ErdTableListResponse();
-        erdTableListResponse.tableId = erdTable.getErdTableId();
-        erdTableListResponse.tableName = erdTable.getErdTableName();
-        erdTableListResponse.tableX = erdTableListResponse.getTableX();
-        erdTableListResponse.tableY = erdTableListResponse.getTableY();
-        erdTableListResponse.tableColor = erdTableListResponse.getTableColor();
+        erdTableListResponse.erdTableId = erdTable.getErdTableId();
+        erdTableListResponse.erdTableName = erdTable.getErdTableName();
+        erdTableListResponse.erdTableX = erdTable.getErdTableX();
+        erdTableListResponse.erdTableY = erdTable.getErdTableY();
+        erdTableListResponse.erdTableColor = erdTable.getErdTableColor();
         erdTableListResponse.tableColumnDtos = erdTable.getErdTableColumns().stream().map(TableColumnDto::from).collect(Collectors.toList());
         erdTableListResponse.tableRelationDtos = erdTable.getFromErdTableRelations().stream().map(TableRelationDto::from).collect(Collectors.toList());
 

@@ -22,8 +22,8 @@ public class ERDFixture {
     public static final TableRelationCreateRequest TEST_RELATION_CREATE_REQUEST = new TableRelationCreateRequest(ID,ID,ID);
     public static final TableColumnUpdateRequest TEST_COLUMN_UPDATE_REQUEST = new TableColumnUpdateRequest(CONTENT, LIST1);
 
-    public static final ConstraintListResponse TEST_CONSTRAINT_LIST_RESPONSE = new ConstraintListResponse(ID,NAME);
-    public static final RelationListResponse TEST_RELATION_LIST_RESPONSE = new RelationListResponse(ID,NAME);
+    public static final ConditionItemListResponse TEST_CONSTRAINT_LIST_RESPONSE = new ConditionItemListResponse(ID,NAME);
+    public static final RelationItemListResponse TEST_RELATION_LIST_RESPONSE = new RelationItemListResponse(ID,NAME);
     public static final ErdTableListResponse TEST_TABLE_LIST_RESPONSE = new ErdTableListResponse(ID,NAME,X,X,CONTENT,LIST2,LIST3);
 
 }

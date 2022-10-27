@@ -13,15 +13,15 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Condition {
+public class ConditionItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "condition_id")
-    private Long conditionId;
+    @Column(name = "condition_item_id")
+    private Long conditionItemId;
 
     @Column(nullable = false)
-    private String conditionName;
+    private String conditionItemName;
 
-    @OneToMany(mappedBy = "condition", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "conditionItem", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ColumnCondition> columnConditions = new ArrayList<>();
 }

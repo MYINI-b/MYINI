@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 public class TableColumnDto {
     private Long tableColumnId;
     private String tableColumnName;
-    private List<ConstraintDto> constraintDtos;
+    private List<ConditionItemDto> conditionItemDtos;
 
     public static TableColumnDto from(TableColumn tableColumn){
         TableColumnDto tableColumnDto = new TableColumnDto();
         tableColumnDto.tableColumnId = tableColumn.getTableColumnId();
         tableColumnDto.tableColumnName = tableColumn.getTableColumnName();
-        tableColumnDto.constraintDtos = tableColumn.getColumnConditions().stream().map(ConstraintDto::from).collect(Collectors.toList());
+        tableColumnDto.conditionItemDtos = tableColumn.getColumnConditions().stream().map(ConditionItemDto::from).collect(Collectors.toList());
 
         return tableColumnDto;
     }

@@ -50,7 +50,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/ws-stomp/**", "/api/port", "/actuator/health", "/oauth2/**", "/api/docs/**", "/docs/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/users/login","/api/erds/{project_id}/table").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/users/login",
+                        "/api/erds/{project_id}/erdtable",
+                        "/api/erds/{project_id}/tablerelation",
+                        "/api/erds/{project_id}/erdtable/{erd_table_id}/tablecolumn").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/users/login",
+                        "/api/erds/{project_id}/erdtable",
+                        "/api/erds/relationitem",
+                        "/api/erds/conditionitem").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/users/login",
+                        "/api/erds/{project_id}/erdtable/{erd_table_id}",
+                        "/api/erds/{project_id}/erdtable/{erd_table_id}/tablecolumn/{table_column_id}",
+                        "/api/erds").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/api/users/login",
+                        "/api/erds/{project_id}/erdtable/{erd_table_id}",
+                        "/api/erds/{project_id}/tablerelation/{table_relation_id}",
+                        "/api/erds/{project_id}/erdtable/{erd_table_id}/tablecolumn",
+                        "/api/erds/{project_id}/erdtable/{erd_table_id}/tablecolumn/{table_column_id}").permitAll()
                 .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and()
                 .exceptionHandling()

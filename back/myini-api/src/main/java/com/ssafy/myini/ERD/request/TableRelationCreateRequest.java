@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TableRelationCreateRequest {
-    private Long toTableId;
-    private Long fromTableId;
-    private Long relationId;
+    private Long toErdTableId;
+    private Long fromErdTableId;
+    private Long relationItemId;
 }

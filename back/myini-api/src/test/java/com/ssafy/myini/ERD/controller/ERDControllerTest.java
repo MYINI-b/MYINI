@@ -1,6 +1,7 @@
 package com.ssafy.myini.ERD.controller;
 
 import com.ssafy.myini.ControllerTest;
+import com.ssafy.myini.ERD.request.ErdTableCreateRequest;
 import com.ssafy.myini.ERD.service.ERDService;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -31,25 +32,25 @@ public class ERDControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("테이블 생성입니다.")
-    void createTable() throws Exception{
-        willDoNothing().given(erdService).createTable(any(),any());
+    void createErdTable() throws Exception{
+        willDoNothing().given(erdService).createErdTable(any(),any());
 
-        mockMvc.perform(post("api/erds/{project_id}/table")
+        mockMvc.perform(post("api/erds/{project_id}/erdtable")
                 .header(HttpHeaders.AUTHORIZATION)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(TEST_TABLE_CREATE_REQUEST)))
-                .andExpect(status().isOk())
-                .andDo(document("api/erds/{project_id}/table/create",
+                .andExpect(status().isCreated())
+                .andDo(document("api/erds/{project_id}/erdtable/create",
                         requestHeaders( headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")),
                         requestFields(
-                                fieldWithPath("tableName").type(JsonFieldType.STRING).description("테이블이름"),
-                                fieldWithPath("tableX").type(JsonFieldType.NUMBER).description("테이블x좌표"),
-                                fieldWithPath("tableY").type(JsonFieldType.NUMBER).description("테이블y좌표"),
-                                fieldWithPath("tableColor").type(JsonFieldType.STRING).description("테이블색깔")
+                                fieldWithPath("erdTableName").type(JsonFieldType.STRING).description("테이블이름"),
+                                fieldWithPath("erdTableX").type(JsonFieldType.NUMBER).description("테이블x좌표"),
+                                fieldWithPath("erdTableY").type(JsonFieldType.NUMBER).description("테이블y좌표"),
+                                fieldWithPath("erdTableColor").type(JsonFieldType.STRING).description("테이블색깔")
                         )
                         ));
 
-        then(erdService).should(times(1)).createTable(any(),any());
+        then(erdService).should(times(1)).createErdTable(any(),any());
     }
 
 

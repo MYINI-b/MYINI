@@ -4,8 +4,8 @@ import com.ssafy.myini.ERD.request.TableColumnUpdateRequest;
 import com.ssafy.myini.ERD.request.ErdTableCreateRequest;
 import com.ssafy.myini.ERD.request.TableRelationCreateRequest;
 import com.ssafy.myini.ERD.request.ErdTableUpdateRequest;
-import com.ssafy.myini.ERD.response.ConstraintListResponse;
-import com.ssafy.myini.ERD.response.RelationListResponse;
+import com.ssafy.myini.ERD.response.ConditionItemListResponse;
+import com.ssafy.myini.ERD.response.RelationItemListResponse;
 import com.ssafy.myini.ERD.response.ErdTableListResponse;
 import com.ssafy.myini.ERD.service.ERDService;
 import lombok.RequiredArgsConstructor;
@@ -21,37 +21,37 @@ import java.util.List;
 public class ERDController {
     private final ERDService erdService;
 
-    @PostMapping("/{project_id}/table")
-    public ResponseEntity<Void> createTable(@PathVariable("project_id") Long projectId,
+    @PostMapping("/{project_id}/erdtable")
+    public ResponseEntity<Void> createErdTable(@PathVariable("project_id") Long projectId,
                                             @RequestBody ErdTableCreateRequest erdTableCreateRequest){
-        erdService.createTable(projectId, erdTableCreateRequest);
+        erdService.createErdTable(projectId, erdTableCreateRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/{project_id}/table")
-    public ResponseEntity<List<ErdTableListResponse>> findAllTable(
+    @GetMapping("/{project_id}/erdtable")
+    public ResponseEntity<List<ErdTableListResponse>> findAllErdTable(
                                                                 @PathVariable("project_id") Long projectId){
-        List<ErdTableListResponse> body = erdService.findAllTable( projectId);
+        List<ErdTableListResponse> body = erdService.findAllErdTable(projectId);
 
         return ResponseEntity.ok().body(body);
     }
 
-    @PutMapping("/{project_id}/table/{table_id}")
-    public ResponseEntity<Void> updateTable(
+    @PutMapping("/{project_id}/erdtable/{erd_table_id}")
+    public ResponseEntity<Void> updateErdTable(
                                             @PathVariable("project_id") Long projectId,
-                                            @PathVariable("table_id") Long tableId,
+                                            @PathVariable("erd_table_id") Long erdTableId,
                                             @RequestBody ErdTableUpdateRequest erdTableUpdateRequest){
-        erdService.updateTable(projectId,tableId, erdTableUpdateRequest);
+        erdService.updateErdTable(projectId,erdTableId, erdTableUpdateRequest);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @DeleteMapping("/{project_id}/table/{table_id}")
-    public ResponseEntity<Void> deleteTable(
+    @DeleteMapping("/{project_id}/erdtable/{erd_table_id}")
+    public ResponseEntity<Void> deleteErdTable(
                                             @PathVariable("project_id") Long projectId,
-                                            @PathVariable("table_id") Long tableId){
-        erdService.deleteTable(projectId,tableId);
+                                            @PathVariable("erd_table_id") Long erdTableId){
+        erdService.deleteErdTable(projectId,erdTableId);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -74,39 +74,39 @@ public class ERDController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/relation")
-    public ResponseEntity<List<RelationListResponse>> findAllRelation(){
-        List<RelationListResponse> body = erdService.findAllRelation();
+    @GetMapping("/relationitem")
+    public ResponseEntity<List<RelationItemListResponse>> findAllRelationItem(){
+        List<RelationItemListResponse> body = erdService.findAllRelationItem();
 
         return ResponseEntity.ok().body(body);
     }
 
-    @GetMapping("/constraint")
-    public ResponseEntity<List<ConstraintListResponse>> findListConstraint(){
-        List<ConstraintListResponse> body = erdService.findAllConstraint();
+    @GetMapping("/conditionitem")
+    public ResponseEntity<List<ConditionItemListResponse>> findAllConditionItem(){
+        List<ConditionItemListResponse> body = erdService.findAllConditionItem();
 
         return ResponseEntity.ok().body(body);
     }
 
-    @GetMapping("/{project_id}/table/{table_id}/tablecolumn")
+    @PostMapping("/{project_id}/erdtable/{erd_table_id}/tablecolumn")
     public ResponseEntity<Void> createTableColumn(
                                                   @PathVariable("project_id") Long projectId,
-                                                  @PathVariable("table_id")Long tableId){
-        erdService.createTableColumn(projectId,tableId);
+                                                  @PathVariable("erd_table_id")Long erdTableId){
+        erdService.createTableColumn(projectId,erdTableId);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/{project_id}/table/{table_id}/tablecolumn/{table_column_id}")
+    @PutMapping("/{project_id}/erdtable/{erd_table_id}/tablecolumn/{table_column_id}")
     public ResponseEntity<Void> updateTableColumn(@PathVariable("project_id") Long projectId,
-                                                  @PathVariable("table_id") Long tableId,
+                                                  @PathVariable("erd_table_id") Long erdTableId,
                                                   @PathVariable("table_column_id") Long tableColumnId,
                                                   @RequestBody TableColumnUpdateRequest tableColumnUpdateRequest){
-        erdService.updateTableColumn(projectId,tableId,tableColumnId,tableColumnUpdateRequest);
+        erdService.updateTableColumn(projectId,erdTableId,tableColumnId,tableColumnUpdateRequest);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/{project_id}/table/{table_id}/column/{table_column_id}")
+    @DeleteMapping("/{project_id}/erdtable/{erd_table_id}/tablecolumn/{table_column_id}")
     public ResponseEntity<Void> deleteTableColumn(
                                                   @PathVariable("project_id") Long projectId,
                                                   @PathVariable("table_column_id") Long tableColumnId){

@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ErdTableCreateRequest {
-    private String tableName;
-    private Double tableX;
-    private Double tableY;
-    private String tableColor;
+    private String erdTableName;
+    private Double erdTableX;
+    private Double erdTableY;
+    private String erdTableColor;
 }

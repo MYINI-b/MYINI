@@ -18,7 +18,7 @@ import java.util.List;
 public class ErdTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "erdTable_id")
+    @Column(name = "erd_table_id")
     private Long erdTableId;
 
     @Column(nullable = false)
