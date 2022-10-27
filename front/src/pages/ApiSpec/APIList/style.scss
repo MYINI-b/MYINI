@@ -42,6 +42,11 @@
 
       &.one {
         flex: 0.05;
+        .active-img {
+          width: rem(30);
+          height: rem(30);
+          border-radius: 30px;
+        }
       }
       &.two {
         flex: 0.15;
@@ -52,6 +57,8 @@
 
       .api-method-block {
         padding: rem(6) rem(18);
+        font-size: rem(18);
+        font-family: $eng-title;
         border-radius: rem(5);
 
         &.GET {

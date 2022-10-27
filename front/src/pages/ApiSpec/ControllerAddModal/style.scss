@@ -1,0 +1,13 @@
+@import 'variables.scss';
+
+.modal-empty {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(131, 131, 131, 0.3);
+  @include STRETCH;
+}
+
+.controller-add-modal-content {
+  @include BORDER-PAPER;
+}

@@ -49,7 +49,18 @@
 
     .controller-list {
       width: 100%;
+      overflow-x: hidden;
       @include FLEX-ALIGN-CENTER;
+
+      .controller-list-overflow {
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+        @include FLEX-ALIGN-CENTER;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
 
       .controller-block {
         height: rem(40);
@@ -79,6 +90,7 @@
 
     .datatype-container {
       flex-shrink: 0;
+      margin-left: rem(10);
       font-weight: bold;
       font-size: rem(20);
       @include FLEX-ALIGN-CENTER;

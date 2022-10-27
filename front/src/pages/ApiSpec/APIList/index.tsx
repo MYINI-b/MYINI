@@ -1,4 +1,5 @@
 import './style.scss';
+import ICON from 'assets/icon.png';
 
 interface API {
   id: number;
@@ -36,7 +37,9 @@ export default function APIList({ controllers, controllerIdx, apis }: Props) {
             {apis[controllerIdx].map((api) => {
               return (
                 <div className="api-table-row content" key={api.id}>
-                  <div className="api-table-col one" />
+                  <div className="api-table-col one">
+                    <img src={ICON} alt="" className="active-img" />
+                  </div>
                   <h3 className="api-table-col two">{`${controllers[controllerIdx]}-${api.id}`}</h3>
                   <h3 className="api-table-col three">{api.name}</h3>
                   <h3 className="api-table-col three">{api.url}</h3>

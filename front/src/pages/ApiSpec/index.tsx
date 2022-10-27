@@ -10,6 +10,7 @@ import {
 import './style.scss';
 import Stepper from 'pages/Requirement/Stepper';
 import ControllerList from './APIList';
+import ControllerAddModal from './ControllerAddModal';
 
 interface API {
   id: number;
@@ -21,8 +22,18 @@ interface API {
 
 export default function ApiSpec() {
   const [step, setStep] = useState(1);
-  const [controllers, setControllers] = useState(['user', 'exercise']);
-  const [controllerIdx, setControllerIdx] = useState(0);
+  const [controllers, setControllers] = useState([
+    'user',
+    'exercise',
+    'user',
+    'exercise',
+    'user',
+    'exercise',
+    'user',
+    'exercise',
+    'exercise',
+  ]); // 컨트롤러 목록
+  const [controllerIdx, setControllerIdx] = useState(0); // 현재 선택된 컨트롤러 인덱스
   const [apis, setApis] = useState([
     [
       {
@@ -98,7 +109,9 @@ export default function ApiSpec() {
         code: 200,
       },
     ],
-  ]);
+  ]); // [controllerIdx]의 api 목록
+  const [isControllerAddModalOpen, setIsControllerAddModalOpen] =
+    useState(false);
   const canEdit = false;
 
   const onControllerBlockClick = useCallback((idx: number) => {
@@ -123,19 +136,21 @@ export default function ApiSpec() {
 
       <section className="apispec-controller-container">
         <article className="controller-list">
-          {controllers.map((controller, i) => {
-            return (
-              <div
-                className={`controller-block ${controllerIdx === i && 'on'}`}
-                onClick={() => onControllerBlockClick(i)}
-                key={i}
-              >
-                {controller} &nbsp; <FontAwesomeIcon icon={faPen} />
-              </div>
-            );
-          })}
-          <div className="controller-block plus">
-            <FontAwesomeIcon icon={faPlus} />
+          <div className="controller-list-overflow">
+            {controllers.map((controller, i) => {
+              return (
+                <div
+                  className={`controller-block ${controllerIdx === i && 'on'}`}
+                  onClick={() => onControllerBlockClick(i)}
+                  key={i}
+                >
+                  {controller} &nbsp; <FontAwesomeIcon icon={faPen} />
+                </div>
+              );
+            })}
+            <div className="controller-block plus">
+              <FontAwesomeIcon icon={faPlus} />
+            </div>
           </div>
         </article>
         <article className="datatype-container">
@@ -149,6 +164,12 @@ export default function ApiSpec() {
         controllerIdx={controllerIdx}
         apis={apis}
       />
+
+      {isControllerAddModalOpen && (
+        <ControllerAddModal
+          setIsControllerAddModalOpen={setIsControllerAddModalOpen}
+        />
+      )}
     </div>
   );
 }
