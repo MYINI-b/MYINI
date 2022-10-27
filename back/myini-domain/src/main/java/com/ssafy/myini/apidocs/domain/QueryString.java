@@ -24,4 +24,16 @@ public class QueryString {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "api_id")
     private Api api;
+
+    public static QueryString createQueryString(String queryStringKey, String queryStringType){
+        QueryString queryString = new QueryString();
+        queryString.queryStringKey = queryStringKey;
+        queryString.queryStringType = queryStringType;
+        return queryString;
+    }
+
+    public void updateQueryString(String queryStringKey, String queryStringType){
+        this.queryStringKey = queryStringKey;
+        this.queryStringType = queryStringType;
+    }
 }
