@@ -11,45 +11,45 @@ public interface ApiDocsService {
     //API 컨트롤러 리스트 조회
     List<ApiControllerListResponse> findApiControllerList(Long projectId);
     //API 컨트롤러 조회
-    ApiControllerResponse findByApiControllerId(Long projectId, Long apiControllerId);
+    ApiControllerResponse findByApiControllerId(Long apiControllerId);
     //API 컨트롤러 수정
-    void updateApiController(Long projectId, Long apiControllerId, UpdateApiControllerRequest request);
+    void updateApiController(Long apiControllerId, UpdateApiControllerRequest request);
     //API 컨트롤러 삭제
-    void deleteApiController(Long projectId, Long apiControllerId);
+    void deleteApiController(Long apiControllerId);
     //API 생성
-    void createApi(Long projectId, Long apiControllerId, CreateApiRequest request);
+    void createApi(Long apiControllerId, CreateApiRequest request);
     //API 수정
-    void updateApi(Long projectId, Long apiControllerId, Long apiId, UpdateApiRequest request);
+    void updateApi(Long apiId, UpdateApiRequest request);
     //API 삭제
-    void deleteApi(Long projectId, Long apiControllerId, Long apiId);
+    void deleteApi(Long apiId);
     //API 조회
-    ApiInfoResponse findByApiId(Long projectId, Long apiControllerId, Long apiId);
+    ApiInfoResponse findByApiId(Long apiId);
     //PathVariable 생성
-    void createPathVariable(Long projectId, Long apiControllerId, Long apiId, CreatePathVariableRequest request);
+    void createPathVariable(Long apiId, CreatePathVariableRequest request);
     //PathVariable 수정
-    void updatePathVariable(Long projectId, Long apiControllerId, Long apiId, Long pathVariableId, UpdatePathVariableRequest request);
+    void updatePathVariable(Long pathVariableId, UpdatePathVariableRequest request);
     //PathVariable 삭제
-    void deletePathVariable(Long projectId, Long apiControllerId, Long apiId, Long pathVariableId);
+    void deletePathVariable(Long pathVariableId);
     //QueryString 생성
-    void createQueryString(Long projectId, Long apiControllerId, Long apiId, CreateQueryStringRequest request);
+    void createQueryString(Long apiId, CreateQueryStringRequest request);
     //QueryString 수정
-    void updateQueryString(Long projectId, Long apiControllerId, Long apiId, Long queryStringId, UpdateQueryStringRequest request);
+    void updateQueryString(Long queryStringId, UpdateQueryStringRequest request);
     //QueryString 삭제
-    void deleteQueryString(Long projectId, Long apiControllerId, Long apiId, Long queryStringId);
+    void deleteQueryString(Long queryStringId);
     //DTO 생성
-    void createDto(Long projectId, Long apiControllerId, Long apiId, CreateDtoRequest request);
+    void createDto(Long apiId, CreateDtoRequest request);
     //DTO 수정
-    void updateDto(Long projectId, Long apiControllerId, Long apiId, Long dtoId, UpdateDtoRequest request);
+    void updateDto(Long dtoId, UpdateDtoRequest request);
     //DTO 삭제
-    void deleteDto(Long projectId, Long apiControllerId, Long apiId, Long dtoId);
+    void deleteDto(Long dtoId);
     //DTO 조회
-    DtoResponse findByDtoId(Long projectId, Long apiControllerId, Long apiId, Long dtoId);
+    DtoResponse findByDtoId(Long dtoId);
     //DTO 변수 생성
-    void createDtoItem(Long projectId, Long apiControllerId, Long apiId, Long dtoId, CreateDtoItemRequest request);
+    void createDtoItem(Long dtoId, CreateDtoItemRequest request);
     //DTO 변수 수정
-    void updateDtoItem(Long projectId, Long apiControllerId, Long apiId, Long dtoId, Long dtoItemId, UpdateDtoItemRequest request);
+    void updateDtoItem(Long dtoItemId, UpdateDtoItemRequest request);
     //DTO 변수 삭제
-    void deleteDtoItem(Long projectId, Long apiControllerId, Long apiId, Long dtoId, Long dtoItemId);
+    void deleteDtoItem(Long dtoItemId);
     //자료형 리스트 조회
     TypeListResponse findTypeList(Long projectId);
 }
