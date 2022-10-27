@@ -6,6 +6,8 @@ COPY package.json ./
 
 RUN npm install
 
-COPY ./ ./
+COPY . .
 
 CMD ["npm", "start"]
+
+COPY --from=build /usr/src/app/build /var/jenkins_home/workspace/front-docs/front-web
