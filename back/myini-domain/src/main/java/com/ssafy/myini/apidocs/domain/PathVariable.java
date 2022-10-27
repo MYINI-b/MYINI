@@ -24,4 +24,17 @@ public class PathVariable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "api_id")
     private Api api;
+
+    public static PathVariable createPathVariable(String pathVariableKey, String pathVariableType){
+        PathVariable pathVariable = new PathVariable();
+        pathVariable.pathVariableKey = pathVariableKey;
+        pathVariable.pathVariableType = pathVariableType;
+        return pathVariable;
+    }
+
+    public void updatePathVariable(String pathVariableKey, String pathVariableType){
+        this.pathVariableKey = pathVariableKey;
+        this.pathVariableType = pathVariableType;
+    }
+
 }
