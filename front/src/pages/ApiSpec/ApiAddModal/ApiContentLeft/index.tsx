@@ -1,6 +1,5 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import './style.scss';
-import useInput from 'hooks/useInput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 
@@ -13,8 +12,9 @@ interface QUERY {
 }
 
 export default function ApiContentLeft() {
-  const [isQuery, setIsQuery] = useState(false);
+  const [queryStep, setQueryStep] = useState(1);
   const [apiUrl, setApiUrl] = useState('');
+  const [pathList, setPathList] = useState<Array<PATHVARIABLES>>([{ key: '' }]);
   const [pathVarList, setPathVarList] = useState<Array<PATHVARIABLES>>([
     { key: '' },
   ]);
@@ -24,8 +24,28 @@ export default function ApiContentLeft() {
 
   const onKeyChange = useCallback(
     (idx: number, e: any) => {
-      const parsedApiUrl = apiUrl.split('?');
-      if (isQuery) {
+      const copyList =
+        queryStep === 0
+          ? [...pathList]
+          : queryStep === 1
+          ? [...pathVarList]
+          : [...queryList];
+      const copyObj = { ...copyList[idx] };
+      copyObj.key = e.target.value;
+      copyList[idx] = copyObj;
+
+      if (queryStep === 0) {
+        if (e.target.value !== '' && idx === pathList.length - 1)
+          copyList.push({ key: '' });
+
+        setPathList([...copyList]);
+      } else if (queryStep === 1) {
+        if (e.target.value !== '' && idx === pathVarList.length - 1) {
+          copyList.push({ key: '' });
+        }
+
+        setPathVarList([...copyList]);
+      } else if (queryStep === 2) {
         const copyList = [...queryList];
         const copyObj = { ...queryList[idx] };
         copyObj.key = e.target.value;
@@ -35,114 +55,69 @@ export default function ApiContentLeft() {
           copyList.push({ key: '', type: '' });
         }
 
-        const divisionIdx = apiUrl.indexOf('?');
-
-        if (divisionIdx < 0) {
-          setApiUrl(`${apiUrl}?${e.target.value}=`);
-        } else {
-          const onlyQueryUrl = apiUrl.substring(
-            divisionIdx + 1,
-            apiUrl.length - 1,
-          );
-          if (onlyQueryUrl === '') setApiUrl(apiUrl.substring(0, divisionIdx));
-          else {
-            let parsedQueryArray = onlyQueryUrl.split('&');
-            parsedQueryArray[idx] = e.target.value;
-            parsedQueryArray = parsedQueryArray.map(
-              (query) => `${query.replaceAll('=', '')}=`,
-            );
-            setApiUrl(`${apiUrl.split('?')[0]}?${parsedQueryArray.join('&')}`);
-          }
-        }
-
         setQueryList([...copyList]);
-      } else {
-        const copyList = [...pathVarList];
-        const copyObj = { ...copyList[idx] };
-        copyObj.key = e.target.value;
-        copyList[idx] = copyObj;
-        let parsedApiUrlArray = apiUrl
-          .split('/')
-          .map((url) => url.replaceAll('{', '').replaceAll('}', ''));
-
-        // 마지막 인덱스 수정시작하면 새거 추가
-        if (e.target.value !== '' && idx === pathVarList.length - 1) {
-          copyList.push({ key: '' });
-        }
-
-        console.log(parsedApiUrlArray);
-        // 첫 path variable 추가라면
-        if (parsedApiUrlArray.length === 1)
-          setApiUrl(
-            `/{${e.target.value}}${
-              parsedApiUrl.length > 1 ? `?${parsedApiUrl[1]}` : ''
-            }`,
-          );
-        else {
-          if (e.target.value === '') {
-            copyList.splice(idx, 1);
-          }
-          parsedApiUrlArray[idx + 1] = e.target.value;
-          parsedApiUrlArray = parsedApiUrlArray
-            .filter((url, i) => i === 0 || url !== '')
-            .map((url, i) => (i === 0 ? url : `{${url}}`));
-
-          setApiUrl(
-            `${parsedApiUrlArray.join('/')}${
-              parsedApiUrl.length > 1 ? `?${parsedApiUrl[1]}` : ''
-            }`,
-          );
-        }
-        setPathVarList([...copyList]);
       }
     },
-    [isQuery, pathVarList, apiUrl, queryList],
+    [queryStep, pathVarList, queryList, pathList],
   );
 
   const deleteKey = useCallback(
     (idx: number) => {
-      if (!isQuery) {
-        const copyList = [...pathVarList];
-        const onlyApiUrl = apiUrl.split('?')[0];
-        const divisionIdx = apiUrl.indexOf('?');
+      const copyList =
+        queryStep === 0
+          ? [...pathList]
+          : queryStep === 1
+          ? [...pathVarList]
+          : [...queryList];
 
-        if (idx === 0 && pathVarList.length === 1) {
-          setApiUrl(apiUrl.substring(0, divisionIdx));
-          setQueryList([{ key: '', type: '' }]);
+      if (queryStep === 0) {
+        if (idx === 0 && pathList.length === 1) {
+          setPathList([{ key: '' }]);
           return;
         }
 
-        const parsedApiUrlArray = apiUrl.split('/');
         copyList.splice(idx, 1);
-        parsedApiUrlArray.splice(idx + 1, 1);
+        setPathList([...copyList]);
+      } else if (queryStep === 1) {
+        if (idx === 0 && pathVarList.length === 1) {
+          setPathVarList([{ key: '' }]);
+          return;
+        }
 
-        setApiUrl(parsedApiUrlArray.join('/'));
+        copyList.splice(idx, 1);
         setPathVarList([...copyList]);
-      } else {
+      } else if (queryStep === 2) {
         const copyList = [...queryList];
-        const onlyQueryUrl = apiUrl.split('?')[1];
-        const divisionIdx = apiUrl.indexOf('?');
 
         if (idx === 0 && queryList.length === 1) {
-          setApiUrl(apiUrl.substring(0, divisionIdx));
           setQueryList([{ key: '', type: '' }]);
           return;
         }
 
-        const parsedQueryArray = onlyQueryUrl.split('&');
         copyList.splice(idx, 1);
-        parsedQueryArray.splice(idx, 1);
-
-        setApiUrl(
-          `${apiUrl.substring(0, divisionIdx)}${
-            parsedQueryArray.length > 0 ? `?${parsedQueryArray.join('&')}` : ''
-          }`,
-        );
         setQueryList([...copyList]);
       }
     },
-    [pathVarList, apiUrl, isQuery, queryList],
+    [pathVarList, queryStep, queryList, pathList],
   );
+
+  useEffect(() => {
+    let newApiUrl = '';
+    pathList.forEach((e) => {
+      if (e.key !== '') newApiUrl += `/${e.key}`;
+    });
+
+    pathVarList.forEach((e) => {
+      if (e.key !== '') newApiUrl += `/{${e.key}}`;
+    });
+
+    newApiUrl += queryList.length > 1 || queryList[0].key !== '' ? '?' : '';
+    queryList.forEach((e, i) => {
+      if (e.key !== '') newApiUrl += i > 0 ? `&${e.key}=` : `${e.key}=`;
+    });
+
+    setApiUrl(newApiUrl);
+  }, [pathList, pathVarList, queryList]);
 
   return (
     <div className="api-add-content-left">
@@ -178,20 +153,20 @@ export default function ApiContentLeft() {
       <div className="api-query-wrapper">
         <div className="api-query-title-container">
           <h3
-            className={`api-query-title ${!isQuery && 'select'}`}
-            onClick={() => setIsQuery(false)}
+            className={`api-query-title ${queryStep === 1 && 'select'}`}
+            onClick={() => setQueryStep(1)}
           >
             PATH VARIABLES
           </h3>
           <h3
-            className={`api-query-title ${isQuery && 'select'}`}
-            onClick={() => setIsQuery(true)}
+            className={`api-query-title ${queryStep === 2 && 'select'}`}
+            onClick={() => setQueryStep(2)}
           >
             QUERY
           </h3>
         </div>
         <div className="api-query-content-container">
-          {!isQuery
+          {queryStep === 1
             ? pathVarList.map((pathvar, i) => {
                 return (
                   <div className="api-query-input-container" key={i}>
