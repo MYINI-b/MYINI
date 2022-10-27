@@ -47,11 +47,10 @@ public class ERDServiceImpl implements ERDService{
     @Override
     public List<ErdTableListResponse> findAllErdTable(Long projectId){
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
-        List<ErdTable> tables = erdTableRepository.findAllByProject(project);
 
+        List<ErdTable> tables = erdTableRepository.findAllByProject(project);
         List<ErdTableListResponse> erdTableListResponse = tables.stream().map(ErdTableListResponse::from).collect(Collectors.toList());
 
-        System.out.println(erdTableListResponse.get(1).getTableColumnDtos().get(1).getTableColumnType());
         return erdTableListResponse;
     }
 

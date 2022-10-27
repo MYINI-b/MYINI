@@ -5,6 +5,7 @@ import com.ssafy.myini.ERD.domain.entity.TableColumn;
 import com.ssafy.myini.ERD.domain.repository.ErdTableRepository;
 import com.ssafy.myini.ERD.domain.repository.TableColumnRepository;
 import com.ssafy.myini.ERD.response.ErdTableListResponse;
+import com.ssafy.myini.fileio.EntityWrite;
 import com.ssafy.myini.fileio.InitProjectDownload;
 import com.ssafy.myini.fileio.RepositoryWrite;
 import com.ssafy.myini.NotFoundException;
@@ -64,12 +65,19 @@ public class InitializerServiceImpl implements InitializerService {
     @Override
     @Transactional
     public Void initializerStart(Long projectId, InitializerRequest initializerRequest) {
+        //프로젝트 init
         InitProjectDownload.initProject(initializerRequest);
 
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
         List<ErdTable> erdTables = erdTableRepository.findAllByProject(project);
         List<ErdTableListResponse> erdTableListResponses = erdTables.stream().map(ErdTableListResponse::from).collect(Collectors.toList());
 
+        //Entity 작성
+        for (ErdTableListResponse erdTableListRespons : erdTableListResponses) {
+            EntityWrite.entityWrite(erdTableListRespons, initializerRequest);
+        }
+
+        //Repository 작성
         for (ErdTableListResponse erdTableListResponse : erdTableListResponses) {
             RepositoryWrite.repositoryWrite(erdTableListResponse, initializerRequest);
         }
