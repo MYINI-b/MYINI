@@ -3,39 +3,39 @@ package com.ssafy.myini.fileio;
 import com.ssafy.myini.ERD.response.ConditionItemDto;
 import com.ssafy.myini.ERD.response.ErdTableListResponse;
 import com.ssafy.myini.ERD.response.TableColumnDto;
+import com.ssafy.myini.ERD.response.TableRelationDto;
 import com.ssafy.myini.initializer.request.InitializerRequest;
+import org.springframework.jdbc.support.JdbcUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.List;
 
 public class EntityWrite {
-    public static void entityWrite(ErdTableListResponse erdTableListResponse, InitializerRequest initializerRequest){
+    static String entityImportContents = "";
+
+    public static void entityWrite(List<ErdTableListResponse> erdTableListResponses, ErdTableListResponse erdTableListResponse, InitializerRequest initializerRequest){
+        entityImportContents="";
+        entityImportContents += "import lombok.*;\n"+
+                "import javax.persistence.*;\n";
         String columnContents = columnWrite(erdTableListResponse);
-        String relationContents = relationWrite(erdTableListResponse);
+        String relationContents = relationWrite(erdTableListResponses, erdTableListResponse, initializerRequest);
 
         String contents = "" +
                 "package " + initializerRequest.getSpring_package_name() + ".entity;\n" +
                 "\n"+
-                "import lombok.*\n"+
-                "import javax.persistence.*;\n"+
+                entityImportContents+
                 "\n"+
                 "@Entity\n"+
                 "@NoArgsConstructor(access = AccessLevel.PROTECTED)\n"+
                 "@AllArgsConstructor\n"+
                 "@Getter\n"+
-                "public class "+erdTableListResponse.getErdTableName()+" {\n"+
-                ""+
-                ""+
-                ""+
-                ""+
-                ""+
-                ""+
-                ""+
-                ""+
-                ""+
-                ""
-                ;
+                "public class "+erdTableListResponse.getErdTableName()+" {\n\n"+
+                columnContents+
+                relationContents+
+                "api문서 다써지면 create나 update추가하기\n\n"+
+                "}";
 
         try {
             //폴더 찾아가기
@@ -75,34 +75,83 @@ public class EntityWrite {
 
         for (TableColumnDto tableColumnDto : erdTableListResponse.getTableColumnDtos()) {
             //제약조건 어노테이션 추가
+            String flag = "";
             for (ConditionItemDto conditionItemDto : tableColumnDto.getConditionItemDtos()) {
+
                 //pk일때
                 if (conditionItemDto.getConditionItemName().equals("pk")){
-                    columnContents += "@Id\n@GeneratedValue(strategy = GenerationType.IDENTITY)\n";
+                    columnContents += "@Id\n@GeneratedValue(strategy = GenerationType.IDENTITY)\n"+
+                            "@Column(name=\""+CamelToSnake(erdTableListResponse.getErdTableName())+"_id\")\n";
                 }
                 //unique일때
                 if (conditionItemDto.getConditionItemName().equals("unique")){
-                    columnContents += "@Column(unique = true)\n";
+                    flag += "u";
                 }
                 //notnull일때
                 if (conditionItemDto.getConditionItemName().equals("notnull")){
-                    columnContents += "@Column(nullable = false)\n";
+                    flag += "n";
                 }
             }
 
+            if(flag.contains("u") && flag.contains("n")) columnContents += "@Column(unique = true, nullable = false)\n";
+            else if(flag.contains("u") && !flag.contains("n")) columnContents += "@Column(unique = true)\n";
+            else if(!flag.contains("u") && flag.contains("n")) columnContents += "@Column(nullable = false)\n";
+
             //자료형 + 변수명 추가
-            columnContents += "private " + tableColumnDto.getTableColumnType() + " " + tableColumnDto.getTableColumnName() + ";\n\n";
+                columnContents += "private " + tableColumnDto.getTableColumnType() + " " + JdbcUtils.convertUnderscoreNameToPropertyName(tableColumnDto.getTableColumnName()) + ";\n\n";
+
         }
 
         return columnContents;
     }
 
-    public static String relationWrite(ErdTableListResponse erdTableListResponse){
+    public static String relationWrite(List<ErdTableListResponse> erdTableListResponses, ErdTableListResponse erdTableListResponse, InitializerRequest initializerRequest){
         String relationContents = "";
 
-        
+        //ManyToOne 설정
+        for (ErdTableListResponse erdTableListResponse1 : erdTableListResponses) {
+            for (TableRelationDto tableRelationDto : erdTableListResponse1.getTableRelationDtos()) {
+                if(tableRelationDto.getToTableId() == erdTableListResponse.getErdTableId()){
+                    relationContents += "@ManyToOne(fetch = FetchType.LAZY)\n"+
+                            "@JoinColumn(name = \""+CamelToSnake(erdTableListResponse1.getErdTableName())+"_id\")\n"+
+                            "private "+erdTableListResponse1.getErdTableName()+" "+erdTableListResponse1.getErdTableName().substring(0,1).toLowerCase()+erdTableListResponse1.getErdTableName().substring(1)+";\n\n";
 
+                    entityImportContents += "import "+ initializerRequest.getSpring_package_name() + ".entity." + erdTableListResponse1.getErdTableName()+";\n";
+                }
+            }
+        }
+
+        //OneToMany 설정
+        if(erdTableListResponse.getTableRelationDtos().size() != 0){
+            entityImportContents += "import java.util.ArrayList;\n"+
+                    "import java.util.List;\n";
+            for (TableRelationDto tableRelationDto : erdTableListResponse.getTableRelationDtos()) {
+                relationContents += "@OneToMany(mappedBy = \""+erdTableListResponse.getErdTableName().substring(0,1).toLowerCase()+erdTableListResponse.getErdTableName().substring(1)+"\", fetch = FetchType.LAZY, cascade = CascadeType.ALL)\n"+
+                        "private List<"+tableRelationDto.getToTableName()+"> "+tableRelationDto.getToTableName().substring(0,1).toLowerCase()+tableRelationDto.getToTableName().substring(1)+"List = new ArrayList<>();\n\n";
+            }
+        }
         return relationContents;
+    }
+
+    public static String CamelToSnake(String str){
+        String result = "";
+
+        char c = str.charAt(0);
+        result = result + Character.toLowerCase(c);
+
+        for (int i = 1; i < str.length(); i++) {
+
+            char ch = str.charAt(i);
+            if (Character.isUpperCase(ch)) {
+                result = result + '_';
+                result = result
+                        + Character.toLowerCase(ch);
+            }
+            else {
+                result = result + ch;
+            }
+        }
+        return result;
     }
 
 }

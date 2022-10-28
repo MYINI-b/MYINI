@@ -74,7 +74,7 @@ public class InitializerServiceImpl implements InitializerService {
 
         //Entity 작성
         for (ErdTableListResponse erdTableListRespons : erdTableListResponses) {
-            EntityWrite.entityWrite(erdTableListRespons, initializerRequest);
+            EntityWrite.entityWrite(erdTableListResponses, erdTableListRespons, initializerRequest);
         }
 
         //Repository 작성
