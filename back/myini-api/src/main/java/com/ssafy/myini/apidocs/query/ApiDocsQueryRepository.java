@@ -23,26 +23,26 @@ public class ApiDocsQueryRepository {
 
     public ApiController findByApiControllerId(ApiController findApiController){
         return queryFactory
-                .selectFrom(apiController)
-                .join(apiController, api.apiController).fetchJoin()
+                .selectFrom(apiController).distinct()
+                .leftJoin(apiController.apis, api)
                 .where(apiController.eq(findApiController))
                 .fetchOne();
     }
 
     public Api findByApiId(Api findApi){
         return queryFactory
-                .selectFrom(api)
-                .leftJoin(api, pathVariable.api)
-                .leftJoin(api, queryString.api)
-                .leftJoin(api, dto.api)
+                .selectFrom(api).distinct()
+                .leftJoin(api.pathVariables, pathVariable)
+                .leftJoin(api.queryStrings, queryString)
+                .leftJoin(api.dtos, dto)
                 .where(api.eq(findApi))
                 .fetchOne();
     }
 
     public Dto findByDtoId(Dto findDto){
         return queryFactory
-                .selectFrom(dto)
-                .join(dto, dtoItem.dto).fetchJoin()
+                .selectFrom(dto).distinct()
+                .leftJoin(dto.dtoItems, dtoItem)
                 .where(dto.eq(findDto))
                 .fetchOne();
     }
