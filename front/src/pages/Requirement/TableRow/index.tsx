@@ -5,21 +5,11 @@ import {
   faChevronDown,
   faGripLines,
 } from '@fortawesome/free-solid-svg-icons';
+import { ROW } from 'types/Requirement';
 import RowModal from '../RowModal';
 
-interface Row {
-  id: number;
-  category: string;
-  requirement: string;
-  description: string;
-  division: string;
-  manager: string;
-  importance: number;
-  point: number;
-}
-
 interface Props {
-  row: Row;
+  row: ROW;
 }
 
 interface MousePos {
