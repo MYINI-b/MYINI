@@ -9,22 +9,10 @@ import {
 
 import './style.scss';
 import Stepper from 'pages/Requirement/Stepper';
+import { API, CONTROLLER } from 'types/ApiSpec';
 import APIList from './APIList';
 import ControllerAddModal from './ControllerAddModal';
 import DatatypeModal from './DatatypeModal';
-
-interface API {
-  id: number;
-  name: string;
-  url: string;
-  method: string;
-  code: number;
-}
-interface CONTROLLER {
-  name: string;
-  desc: string;
-  baseurl: string;
-}
 
 export default function ApiSpec() {
   const [step, setStep] = useState(1);
@@ -188,6 +176,7 @@ export default function ApiSpec() {
         dataType={dataType}
         objDataType={objDataType}
         apis={apis}
+        setApis={setApis}
       />
 
       {isControllerAddModalOpen && (

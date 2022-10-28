@@ -18,6 +18,7 @@ interface ATTRIBUTE {
   name: string;
   type: string;
   isList: boolean;
+  attr?: Array<ATTRIBUTE>;
 }
 
 interface ATTRIBUTE_PLUS extends ATTRIBUTE {
@@ -63,7 +64,10 @@ export default function DataTypeList({
         ? dataType[idx]
         : objDataType[idx].name;
       copyArr[selectInfo.idx].isList = isListCheck;
+      if (!isNormal) copyArr[selectInfo.idx].attr = objDataType[idx].attr;
+      else copyArr[selectInfo.idx].attr = [];
       setNewObjAttribute(copyArr);
+      console.log(copyArr);
       closeModal();
     },
     [isListCheck],

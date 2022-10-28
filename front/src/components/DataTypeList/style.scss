@@ -14,9 +14,15 @@
     align-items: center;
     max-width: 500px;
     max-height: 230px;
-    padding: rem(6) rem(10);
+    padding: rem(10) rem(16);
     overflow: auto;
     border-radius: rem(10);
+    box-shadow: $shadow;
+
+    &::-webkit-scrollbar {
+      width: 0px;
+      height: 0px;
+    }
 
     .dtlist-button-container {
       @include FLEX-ALIGN-RIGHT;

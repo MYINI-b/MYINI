@@ -1,36 +1,45 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, Dispatch } from 'react';
 import './style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 
-interface PATHVARIABLES {
-  key: '';
-}
-interface QUERY {
-  key: '';
-  type: '';
-}
+import { PATHVARIABLES, QUERY, CONTROLLER } from 'types/ApiSpec';
 
-interface CONTROLLER {
-  name: string;
-  desc: string;
-  baseurl: string;
-}
 interface Props {
   controllers: Array<CONTROLLER>;
   controllerIdx: number;
+  pathList: PATHVARIABLES[];
+  setPathList: Dispatch<React.SetStateAction<PATHVARIABLES[]>>;
+  pathVarList: PATHVARIABLES[];
+  setPathVarList: Dispatch<React.SetStateAction<PATHVARIABLES[]>>;
+  queryList: QUERY[];
+  setQueryList: Dispatch<React.SetStateAction<QUERY[]>>;
+  apiName: string;
+  setApiName: Dispatch<React.SetStateAction<string>>;
+  methodName: string;
+  setMethodName: Dispatch<React.SetStateAction<string>>;
+  apiDesc: string;
+  setApiDesc: Dispatch<React.SetStateAction<string>>;
 }
 
-export default function ApiContentLeft({ controllers, controllerIdx }: Props) {
+export default function ApiContentLeft({
+  controllers,
+  controllerIdx,
+  pathList,
+  setPathList,
+  pathVarList,
+  setPathVarList,
+  queryList,
+  setQueryList,
+  apiName,
+  setApiName,
+  methodName,
+  setMethodName,
+  apiDesc,
+  setApiDesc,
+}: Props) {
   const [queryStep, setQueryStep] = useState(0);
   const [apiUrl, setApiUrl] = useState('');
-  const [pathList, setPathList] = useState<Array<PATHVARIABLES>>([{ key: '' }]);
-  const [pathVarList, setPathVarList] = useState<Array<PATHVARIABLES>>([
-    { key: '' },
-  ]);
-  const [queryList, setQueryList] = useState<Array<QUERY>>([
-    { key: '', type: '' },
-  ]);
 
   const onKeyChange = useCallback(
     (idx: number, e: any) => {
@@ -131,12 +140,29 @@ export default function ApiContentLeft({ controllers, controllerIdx }: Props) {
 
   return (
     <div className="api-add-content-left">
-      <input type="text" className="api-add-input" placeholder="API Name" />
-      <input type="text" className="api-add-input" placeholder="Method Name" />
+      <input
+        type="text"
+        className="api-add-input"
+        placeholder="API Name"
+        value={apiName}
+        onChange={(e) => setApiName(e.target.value)}
+        required
+      />
+      <input
+        type="text"
+        className="api-add-input"
+        placeholder="Method Name"
+        value={methodName}
+        onChange={(e) => setMethodName(e.target.value)}
+        required
+      />
       <input
         type="text"
         className="api-add-input"
         placeholder="Api Description"
+        value={apiDesc}
+        onChange={(e) => setApiDesc(e.target.value)}
+        required
       />
 
       <div className="api-method-code-wrapper">

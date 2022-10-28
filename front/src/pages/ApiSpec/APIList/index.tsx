@@ -4,25 +4,14 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import './style.scss';
 import ICON from 'assets/icon.png';
+import { API, CONTROLLER } from 'types/ApiSpec';
 import ApiAddModal from '../ApiAddModal';
-
-interface API {
-  id: number;
-  name: string;
-  url: string;
-  method: string;
-  code: number;
-}
-interface CONTROLLER {
-  name: string;
-  desc: string;
-  baseurl: string;
-}
 
 interface Props {
   controllers: Array<CONTROLLER>;
   controllerIdx: number;
   apis: API[][];
+  setApis: React.Dispatch<React.SetStateAction<API[][]>>;
   dataType: string[];
   objDataType: any[];
 }
@@ -31,6 +20,7 @@ export default function APIList({
   controllers,
   controllerIdx,
   apis,
+  setApis,
   dataType,
   objDataType,
 }: Props) {
@@ -94,6 +84,8 @@ export default function APIList({
           controllerIdx={controllerIdx}
           dataType={dataType}
           objDataType={objDataType}
+          apis={apis}
+          setApis={setApis}
         />
       )}
     </section>

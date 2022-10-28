@@ -1,22 +1,27 @@
-import { Dispatch } from 'react';
+import { Dispatch, useState, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 import './style.scss';
+import { API, CONTROLLER } from 'types/ApiSpec';
 import ApiContentLeft from './ApiContentLeft';
 import ApiContentRight from './ApiContentRight';
 
-interface CONTROLLER {
-  name: string;
-  desc: string;
-  baseurl: string;
-}
 interface Props {
   controllers: Array<CONTROLLER>;
   controllerIdx: number;
   setIsApiAddModalOpen: Dispatch<React.SetStateAction<boolean>>;
   dataType: string[];
   objDataType: any[];
+  apis: API[][];
+  setApis: React.Dispatch<React.SetStateAction<API[][]>>;
+}
+interface PATHVARIABLES {
+  key: '';
+}
+interface QUERY {
+  key: '';
+  type: '';
 }
 
 export default function ApiAddModal({
@@ -25,15 +30,35 @@ export default function ApiAddModal({
   setIsApiAddModalOpen,
   dataType,
   objDataType,
+  apis,
+  setApis,
 }: Props) {
+  const [apiName, setApiName] = useState('');
+  const [apiDesc, setApiDesc] = useState('');
+  const [methodName, setMethodName] = useState('');
+
+  const [reqVarName, setReqVarName] = useState('');
+  const [resVarName, setResVarName] = useState('');
+
+  const [pathList, setPathList] = useState<Array<PATHVARIABLES>>([{ key: '' }]);
+  const [pathVarList, setPathVarList] = useState<Array<PATHVARIABLES>>([
+    { key: '' },
+  ]);
+  const [queryList, setQueryList] = useState<Array<QUERY>>([
+    { key: '', type: '' },
+  ]);
+
+  const submitApi = useCallback(() => {}, []);
+
   return (
     <section
       className="modal-empty"
       onClick={() => setIsApiAddModalOpen(false)}
     >
-      <div
+      <form
         className="api-add-modal-content"
         onClick={(e) => e.stopPropagation()}
+        onSubmit={submitApi}
       >
         <article className="closebtn-container">
           <FontAwesomeIcon
@@ -46,16 +71,35 @@ export default function ApiAddModal({
           <ApiContentLeft
             controllers={controllers}
             controllerIdx={controllerIdx}
+            pathList={pathList}
+            setPathList={setPathList}
+            queryList={queryList}
+            setQueryList={setQueryList}
+            pathVarList={pathVarList}
+            setPathVarList={setPathVarList}
+            apiName={apiName}
+            setApiName={setApiName}
+            apiDesc={apiDesc}
+            setApiDesc={setApiDesc}
+            methodName={methodName}
+            setMethodName={setMethodName}
           />
-          <ApiContentRight dataType={dataType} objDataType={objDataType} />
+          <ApiContentRight
+            dataType={dataType}
+            objDataType={objDataType}
+            resVarName={resVarName}
+            reqVarName={reqVarName}
+            setResVarName={setResVarName}
+            setReqVarName={setReqVarName}
+          />
         </article>
 
         <article className="closebtn-container">
-          <button type="button" className="api-add-button">
+          <button type="submit" className="api-add-button">
             등록
           </button>
         </article>
-      </div>
+      </form>
     </section>
   );
 }

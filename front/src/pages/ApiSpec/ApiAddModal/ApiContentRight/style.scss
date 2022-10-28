@@ -66,6 +66,40 @@
       .content-right-detail-boxcontent {
         @include STRETCH;
         overflow: auto;
+
+        .datatype-add-brace {
+          font-size: rem(20);
+
+          &.second {
+            margin-left: rem(20);
+          }
+        }
+
+        .attr-div {
+          @include FLEX-ALIGN-CENTER;
+          margin-left: rem(20);
+
+          &.second {
+            margin-left: rem(40);
+          }
+
+          .attr-type-button {
+            margin-right: rem(10);
+            padding: rem(6);
+            font-weight: bold;
+            font-size: rem(16);
+            background-color: $fourth;
+            border-radius: rem(5);
+          }
+
+          .attr-type-name {
+            height: rem(32);
+            font-size: rem(18);
+            font-family: $eng-content;
+            background-color: transparent;
+            border: none;
+          }
+        }
       }
     }
   }

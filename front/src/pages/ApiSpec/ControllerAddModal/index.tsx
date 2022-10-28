@@ -4,12 +4,7 @@ import { Dispatch, useCallback } from 'react';
 
 import useInput from 'hooks/useInput';
 import './style.scss';
-
-interface CONTROLLER {
-  name: string;
-  desc: string;
-  baseurl: string;
-}
+import { CONTROLLER } from 'types/ApiSpec';
 
 interface Props {
   controllers: Array<CONTROLLER>;

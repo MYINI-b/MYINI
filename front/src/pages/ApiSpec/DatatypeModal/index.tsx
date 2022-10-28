@@ -9,6 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import './style.scss';
+import { ATTRIBUTE, ATTRIBUTE_PLUS, MOUSEPOS } from 'types/ApiSpec';
 import DataTypeList from 'components/DataTypeList';
 
 interface Props {
@@ -18,41 +19,12 @@ interface Props {
   setObjDataType: Dispatch<React.SetStateAction<any[]>>;
 }
 
-interface ATTRIBUTE {
-  name: string;
-  type: string;
-  isList: boolean;
-}
-
-interface ATTRIBUTE_PLUS extends ATTRIBUTE {
-  idx: number;
-}
-
-interface MOUSEPOS {
-  x: number;
-  y: number;
-}
-
 export default function DatatypeModal({
   setIsDatatypeModalOpen,
   dataType,
   objDataType,
   setObjDataType,
 }: Props) {
-  // const [objDataType, setObjDataType] = useState<Array<any>>([
-  //   ...dataType.filter((dt, i) => i >= 10),
-  //   { name: 'testasdasdasdasd', isOpen: true },
-  //   { name: 'test', isOpen: true },
-  //   { name: 'test', isOpen: true },
-  //   { name: 'test', isOpen: true },
-  //   { name: 'test', isOpen: true },
-  //   { name: 'test', isOpen: true },
-  //   { name: 'test', isOpen: true },
-  //   { name: 'test', isOpen: true },
-  //   { name: 'test', isOpen: true },
-  //   { name: 'test', isOpen: true },
-  //   { name: 'test', isOpen: true },
-  // ]);
   const [isDatatypeAddOpen, setIsDatatypeAddOpen] = useState(false);
   const [dtoName, setDtoName] = useState('');
   const [newObjAttribute, setNewObjAttribute] = useState<Array<ATTRIBUTE>>([]);
