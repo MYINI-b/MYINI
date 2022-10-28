@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -128,10 +127,10 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     @Transactional
     @Override
     public void createPathVariable(Long apiId, CreatePathVariableRequest request) {
-        apiRepository.findById(apiId)
+        Api findApi = apiRepository.findById(apiId)
                 .orElseThrow(() -> new NotFoundException(API_NOT_FOUND));
 
-        PathVariable pathVariable = PathVariable.createPathVariable(request.getPathVariableKey(), request.getPathVariableType());
+        PathVariable pathVariable = PathVariable.createPathVariable(request.getPathVariableKey(), request.getPathVariableType(), findApi);
         pathVariableRepository.save(pathVariable);
     }
 
@@ -159,10 +158,10 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     @Transactional
     @Override
     public void createQueryString(Long apiId, CreateQueryStringRequest request) {
-        apiRepository.findById(apiId)
+        Api findApi = apiRepository.findById(apiId)
                 .orElseThrow(() -> new NotFoundException(API_NOT_FOUND));
 
-        QueryString queryString = QueryString.createQueryString(request.getQueryStringKey(), request.getQueryStringType());
+        QueryString queryString = QueryString.createQueryString(request.getQueryStringKey(), request.getQueryStringType(), findApi);
         queryStringRepository.save(queryString);
     }
 
@@ -190,10 +189,10 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     @Transactional
     @Override
     public void createDto(Long apiId, CreateDtoRequest request) {
-        apiRepository.findById(apiId)
+        Api findApi = apiRepository.findById(apiId)
                 .orElseThrow(() -> new NotFoundException(API_NOT_FOUND));
 
-        Dto dto = Dto.createDto(request.getDtoName(), request.getDtoType());
+        Dto dto = Dto.createDto(request.getDtoName(), request.getDtoType(), findApi);
         dtoRepository.save(dto);
     }
 
@@ -231,14 +230,20 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     @Transactional
     @Override
     public void createDtoItem(Long dtoId, CreateDtoItemRequest request) {
-        dtoRepository.findById(dtoId)
+        Dto findDto = dtoRepository.findById(dtoId)
                 .orElseThrow(() -> new NotFoundException(DTO_NOT_FOUND));
-        Dto findDto = dtoRepository.findById(request.getDtoClassType())
-                .orElseThrow(() -> new NotFoundException(DTO_NOT_FOUND));
-        Primitive findPrimitive = primitiveRepository.findById(request.getDtoPrimitiveType())
-                .orElseThrow(() -> new NotFoundException(PRIMITIVE_NOT_FOUND));
+        Dto findDtoClassType = null;
+        Primitive findPrimitive = null;
 
-        DtoItem dtoItem = DtoItem.createDtoItem(request.getDtoItemName(), findDto, findPrimitive, request.getDtoIsList());
+        if(request.getDtoClassType() != null){
+            findDtoClassType = dtoRepository.findById(request.getDtoClassType())
+                    .orElseThrow(() -> new NotFoundException(DTO_NOT_FOUND));
+        }
+        else{
+            findPrimitive = primitiveRepository.findById(request.getDtoPrimitiveType())
+                    .orElseThrow(() -> new NotFoundException(PRIMITIVE_NOT_FOUND));
+        }
+        DtoItem dtoItem = DtoItem.createDtoItem(request.getDtoItemName(), findDto, findDtoClassType, findPrimitive, request.getDtoIsList());
         dtoItemRepository.save(dtoItem);
     }
 
@@ -248,12 +253,19 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     public void updateDtoItem(Long dtoItemId, UpdateDtoItemRequest request) {
         DtoItem findDtoItem = dtoItemRepository.findById(dtoItemId)
                 .orElseThrow(() -> new NotFoundException(DTOITEM_NOT_FOUND));
-        Dto findDto = dtoRepository.findById(request.getDtoClassType())
-                .orElseThrow(() -> new NotFoundException(DTO_NOT_FOUND));
-        Primitive findPrimitive = primitiveRepository.findById(request.getDtoPrimitiveType())
-                .orElseThrow(() -> new NotFoundException(PRIMITIVE_NOT_FOUND));
+        Dto findDtoClassType = null;
+        Primitive findPrimitive = null;
 
-        findDtoItem.updateDtoItem(request.getDtoItemName(), findDto, findPrimitive, request.getDtoIsList());
+        if(request.getDtoClassType() != null){
+            findDtoClassType = dtoRepository.findById(request.getDtoClassType())
+                    .orElseThrow(() -> new NotFoundException(DTO_NOT_FOUND));
+        }
+        else{
+            findPrimitive = primitiveRepository.findById(request.getDtoPrimitiveType())
+                    .orElseThrow(() -> new NotFoundException(PRIMITIVE_NOT_FOUND));
+        }
+
+        findDtoItem.updateDtoItem(request.getDtoItemName(), findDtoClassType, findPrimitive, request.getDtoIsList());
     }
 
     // Dto변수 삭제
