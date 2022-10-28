@@ -5,6 +5,7 @@ import com.ssafy.myini.ERD.domain.entity.TableColumn;
 import com.ssafy.myini.ERD.domain.repository.ErdTableRepository;
 import com.ssafy.myini.ERD.domain.repository.TableColumnRepository;
 import com.ssafy.myini.ERD.response.ErdTableListResponse;
+import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.fileio.EntityWrite;
 import com.ssafy.myini.fileio.InitProjectDownload;
 import com.ssafy.myini.fileio.RepositoryWrite;
@@ -15,9 +16,11 @@ import com.ssafy.myini.member.domain.MemberRepository;
 import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +34,7 @@ public class InitializerServiceImpl implements InitializerService {
     private final MemberRepository memberRepository;
     private final ErdTableRepository erdTableRepository;
     private final TableColumnRepository tableColumnRepository;
+    private final S3Uploader s3Uploader;
 
     @Override
     @Transactional
@@ -84,4 +88,16 @@ public class InitializerServiceImpl implements InitializerService {
 
         return null;
     }
+
+//    @Override
+//    public ByteArrayOutputStream myIniDownload() {
+//        try {
+//            ByteArrayOutputStream byteArrayOutputStream = s3Uploader.downloadFile("test.jpg");
+//
+//            return byteArrayOutputStream;
+//        }catch (Exception e){
+//            System.out.println("e = " + e);
+//        }
+//
+//    }
 }

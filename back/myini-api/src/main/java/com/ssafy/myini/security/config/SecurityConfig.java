@@ -59,7 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/erds/{projectid}/erdtables",
                         "/api/erds/relationitems",
                         "/api/erds/conditionitems",
-                        "/api/initializers/{projectid}/ispossible").permitAll()
+                        "/api/initializers/{projectid}/ispossible",
+                        "/api/initializers/downloads").permitAll()
                 .antMatchers(HttpMethod.PUT, "/api/users/login",
                         "/api/erds/erdtables/{erdtableid}",
                         "/api/erds/tablecolumns/{tablecolumnid}",
