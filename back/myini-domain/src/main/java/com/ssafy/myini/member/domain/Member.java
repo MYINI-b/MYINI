@@ -39,7 +39,6 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String memberNickname;
 
-    @Column(nullable = false)
     private String memberProfileImg;
 
     @Enumerated(EnumType.STRING)
