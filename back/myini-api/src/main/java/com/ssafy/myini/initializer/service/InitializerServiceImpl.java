@@ -34,7 +34,6 @@ public class InitializerServiceImpl implements InitializerService {
     private final MemberRepository memberRepository;
     private final ErdTableRepository erdTableRepository;
     private final TableColumnRepository tableColumnRepository;
-    private final S3Uploader s3Uploader;
 
     @Override
     @Transactional
@@ -60,6 +59,7 @@ public class InitializerServiceImpl implements InitializerService {
                 }
             }
         }
+
         //API명세서 체크
 
         initializerPossibleResponse = new InitializerPossibleResponse(true, "빌드가능");
@@ -88,16 +88,4 @@ public class InitializerServiceImpl implements InitializerService {
 
         return null;
     }
-
-//    @Override
-//    public ByteArrayOutputStream myIniDownload() {
-//        try {
-//            ByteArrayOutputStream byteArrayOutputStream = s3Uploader.downloadFile("test.jpg");
-//
-//            return byteArrayOutputStream;
-//        }catch (Exception e){
-//            System.out.println("e = " + e);
-//        }
-//
-//    }
 }
