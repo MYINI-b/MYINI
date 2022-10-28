@@ -1,0 +1,14 @@
+@import "variables.scss";
+
+.detail-info {
+  .project-info {
+    color: $primary;
+    font-size: 32px;
+    font-family: $kor;
+  }
+  .detail-word {
+    font-size: 20px;
+    @include ELLIPSIS-LINE(2);
+    padding-top: 10px;
+  }
+}
