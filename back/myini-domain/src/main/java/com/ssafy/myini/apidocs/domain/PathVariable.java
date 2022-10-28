@@ -25,10 +25,11 @@ public class PathVariable {
     @JoinColumn(name = "api_id")
     private Api api;
 
-    public static PathVariable createPathVariable(String pathVariableKey, String pathVariableType){
+    public static PathVariable createPathVariable(String pathVariableKey, String pathVariableType, Api api){
         PathVariable pathVariable = new PathVariable();
         pathVariable.pathVariableKey = pathVariableKey;
         pathVariable.pathVariableType = pathVariableType;
+        pathVariable.api = api;
         return pathVariable;
     }
 
