@@ -1,0 +1,77 @@
+@import 'variables.scss';
+
+.login-page {
+  @include FLEX-CENTER();
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.logo {
+  z-index: 100;
+  width: rem(300);
+  height: rem(300);
+  margin-bottom: 1rem;
+}
+
+.login-container {
+  z-index: 100;
+}
+
+.MY {
+  color: $primary;
+  font-size: rem(90);
+  font-family: $eng-title;
+}
+
+.INI {
+  font-size: rem(90);
+  font-family: $eng-title;
+}
+
+.wave-container {
+  position: fixed;
+  bottom: 0;
+  z-index: 0;
+  flex-shrink: 0;
+  width: 100%;
+  height: 45%;
+  overflow: hidden;
+}
+
+.wave {
+  position: absolute;
+  top: 165%;
+  left: -63%;
+  z-index: 0;
+  width: 4000px;
+  height: 4000px;
+  margin-top: -250px;
+  margin-left: -250px;
+  background: $fourth;
+  border-radius: 43%;
+  transform-origin: 50% 48%;
+  opacity: 0.4;
+  animation: drift 8000ms infinite linear;
+}
+
+.wave.-three {
+  z-index: 0;
+  animation: drift 5000ms infinite linear;
+}
+
+.wave.-two {
+  z-index: 0;
+  background: $secondary;
+  opacity: 0.1;
+  animation: drift 7000ms infinite linear;
+}
+
+@keyframes drift {
+  from {
+    transform: rotate(0deg);
+  }
+  from {
+    transform: rotate(360deg);
+  }
+}

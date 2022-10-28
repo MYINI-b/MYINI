@@ -1,0 +1,112 @@
+@import 'variables.scss';
+
+.requirement-stepper-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  .stepper-btn-wrapper {
+    @include FLEX-COLUMN;
+    align-items: center;
+    width: rem(110);
+
+    .stepper-btn {
+      @include CIRCLE-BTN;
+      font-size: rem(30);
+      .stepper-arrow {
+        width: 20px;
+        height: 20px;
+        background-color: transparent;
+        border-color: $white;
+        border-top: 4px solid $white;
+        border-left: 4px solid $white;
+        border-radius: 2px;
+        content: '';
+
+        &.left {
+          transform: rotate(-45deg);
+        }
+        &.right {
+          transform: rotate(135deg);
+        }
+      }
+    }
+
+    .stepper-btn-text {
+      margin-top: rem(10);
+      color: $primary;
+      font-weight: bold;
+    }
+  }
+
+  .stepper-step-wrapper {
+    position: relative;
+    width: rem(750);
+    height: 100%;
+    @include FLEX-ALIGN-CENTER;
+
+    .step-div-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      z-index: 2;
+      width: 100%;
+      transform: translate(0, -50%);
+      @include FLEX-ALIGN-CENTER;
+    }
+
+    .step-div-container {
+      @include FLEX-COLUMN;
+      align-items: center;
+      cursor: pointer;
+      @include STRETCH;
+
+      &.on {
+        .step-circle {
+          color: $pure-white;
+          background-color: $primary;
+        }
+        .step-description {
+          color: $primary;
+        }
+      }
+
+      .step-circle {
+        width: rem(40);
+        height: rem(40);
+        color: $black;
+        font-weight: bold;
+        font-size: rem(16);
+        background-color: $lightx2-gray;
+        border-radius: 40px;
+        @include FLEX-CENTER;
+      }
+
+      .step-description {
+        margin-top: rem(6);
+        font-weight: bold;
+        font-size: rem(13);
+        font-family: $eng-content;
+        white-space: nowrap;
+      }
+    }
+
+    .step-bar {
+      position: absolute;
+      top: 35%;
+      left: 50%;
+      width: 80%;
+      height: 2px;
+      background-color: $lightx2-gray;
+      transform: translate(-50%, -50%);
+      content: '';
+      @include FLEX-ALIGN-CENTER;
+
+      .step-bar-gauge {
+        height: 100%;
+        background-color: $primary;
+        content: '';
+      }
+    }
+  }
+}

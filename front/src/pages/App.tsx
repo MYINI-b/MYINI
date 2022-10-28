@@ -2,7 +2,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import React from 'react';
 
 import './global.scss';
-import Onboarding from './Onboarding';
+import LoginPage from './LoginPage';
+import MainPage from './MainPage';
+import ERDPage from './ERDPage';
 import Requirement from './Requirement';
 import SettingPage from './Setting';
 
@@ -10,8 +12,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {' '}
-        <Route path="/" element={<Onboarding />} />
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/main" element={<MainPage />} />
+        <Route path="/erd" element={<ERDPage />} />
         <Route path="/requirement" element={<Requirement />} />
         <Route path="/setting" element={<SettingPage />} />
       </Routes>
