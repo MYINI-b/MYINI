@@ -1,0 +1,61 @@
+@import 'variables.scss';
+
+.modal-empty {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background-color: rgba(131, 131, 131, 0.3);
+  @include STRETCH;
+  @include FLEX-CENTER;
+}
+
+.api-add-modal-content {
+  @include BORDER-PAPER;
+  @include FLEX-COLUMN;
+  width: 80%;
+  height: 95%;
+  max-height: rem(700);
+  padding: 12px 12px;
+
+  .closebtn-container {
+    @include FLEX-ALIGN-RIGHT;
+    font-size: rem(30);
+    svg {
+      cursor: pointer;
+    }
+  }
+
+  .api-add-content-container {
+    @include STRETCH;
+    @include FLEX-ALIGN-CENTER;
+
+    .api-add-content-right {
+      @include FLEX-COLUMN;
+      flex: 1;
+      width: 100%;
+    }
+  }
+  .api-add-input {
+    padding: rem(18) 0;
+    font-size: rem(24);
+    font-family: $eng-content;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid $light-gray;
+    &::placeholder {
+      color: $light-gray;
+      font-size: rem(20);
+      font-family: inherit;
+    }
+  }
+
+  .api-add-button {
+    @include WHITE-BTN;
+    margin-top: rem(18);
+    padding: rem(6) rem(10);
+    font-weight: bold;
+    font-size: rem(20);
+    font-family: $eng-content;
+  }
+}

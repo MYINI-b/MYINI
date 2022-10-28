@@ -1,7 +1,9 @@
-import { Dispatch } from 'react';
-import './style.scss';
+import { Dispatch, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouseChimney, faWrench } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+
+import './style.scss';
 
 interface Props {
   step: number;
@@ -9,6 +11,7 @@ interface Props {
 }
 
 export default function Stepper({ step, setStep }: Props) {
+  const navigate = useNavigate();
   const leftBtnArr = [
     '',
     '',
@@ -18,10 +21,21 @@ export default function Stepper({ step, setStep }: Props) {
     'API명세서',
   ];
   const rightBtnArr = ['', '요구사항명세서', 'ERD', 'API명세서', '빌드'];
+
+  const onPrevClick = useCallback(() => {
+    if (step > 1) setStep((prev) => prev - 1);
+    else navigate('/');
+  }, [setStep, step, navigate]);
+
+  const onNextClick = useCallback(() => {
+    if (step < 5) setStep((prev) => prev + 1);
+    else navigate('/');
+  }, [setStep, step, navigate]);
+
   return (
     <section className="requirement-stepper-container">
       <div className="stepper-btn-wrapper">
-        <button type="button" className="stepper-btn">
+        <button type="button" className="stepper-btn" onClick={onPrevClick}>
           {step === 1 ? (
             <FontAwesomeIcon icon={faHouseChimney} key={1} />
           ) : (
@@ -79,7 +93,7 @@ export default function Stepper({ step, setStep }: Props) {
       </div>
 
       <div className="stepper-btn-wrapper">
-        <button type="button" className="stepper-btn">
+        <button type="button" className="stepper-btn" onClick={onNextClick}>
           {step === 5 ? (
             <FontAwesomeIcon icon={faWrench} key={1} />
           ) : (

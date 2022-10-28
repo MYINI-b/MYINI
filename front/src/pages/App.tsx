@@ -6,6 +6,7 @@ import LoginPage from './LoginPage';
 import MainPage from './MainPage';
 import ERDPage from './ERDPage';
 import Requirement from './Requirement';
+import ApiSpec from './ApiSpec';
 import SettingPage from './Setting';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/main" element={<MainPage />} />
         <Route path="/erd" element={<ERDPage />} />
         <Route path="/requirement" element={<Requirement />} />
+        <Route path="/apispec" element={<ApiSpec />} />
         <Route path="/setting" element={<SettingPage />} />
       </Routes>
     </BrowserRouter>
