@@ -14,7 +14,9 @@
   @include BORDER-PAPER;
   @include FLEX-COLUMN;
   width: 80%;
-  height: rem(700);
+  height: 95%;
+  max-height: rem(700);
+  padding: 12px 12px;
 
   .closebtn-container {
     @include FLEX-ALIGN-RIGHT;
@@ -48,8 +50,12 @@
     }
   }
 
-  .api-add-submit {
-    @include SUBMIT-BTN;
+  .api-add-button {
+    @include WHITE-BTN;
     margin-top: rem(18);
+    padding: rem(6) rem(10);
+    font-weight: bold;
+    font-size: rem(20);
+    font-family: $eng-content;
   }
 }

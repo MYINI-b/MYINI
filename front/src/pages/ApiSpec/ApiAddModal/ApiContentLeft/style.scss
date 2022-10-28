@@ -51,7 +51,7 @@
 
   .api-url-wrapper {
     width: 100%;
-    margin-top: rem(26);
+    margin-top: rem(10);
     @include FLEX-ALIGN-CENTER;
 
     .api-url-title {
@@ -108,7 +108,7 @@
 
     .api-query-content-container {
       width: 100%;
-      max-height: rem(230);
+      max-height: rem(200);
       padding: rem(16) rem(22);
       overflow-y: auto;
       background-color: $lightx2-gray;
