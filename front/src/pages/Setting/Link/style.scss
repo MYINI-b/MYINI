@@ -1,0 +1,30 @@
+@import "variables.scss";
+
+.project-link {
+  padding-top: rem(22);
+  .link-control {
+    color: $primary;
+    font-size: 32px;
+    font-family: $kor;
+    padding-bottom: rem(10)
+  }
+  .image-icon {
+    height:rem(30);
+    width:rem(30);
+    background-color: $third;
+    background-blend-mode: multiply;
+    border-radius: 70%;
+  }
+  .detail-word {
+    display: flex;
+    align-items: center;
+    padding-bottom: rem(9);
+  }
+  .icon-link {
+    padding-left: 11px;
+    font-size: 10px;
+    @include ELLIPSIS-LINE(1);
+    font-family: $eng-content;
+    color: $gray
+  }
+}

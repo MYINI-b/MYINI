@@ -1,0 +1,6 @@
+rootProject.name = 'myINI'
+include 'myini-api'
+include 'myini-common'
+include 'myini-domain'
+include 'myini-external'
+
