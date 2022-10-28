@@ -35,14 +35,15 @@
 
     .datatype-content {
       width: 100%;
-      @include FLEX-ALIGN-CENTER;
+      background-color: $white;
+      border-bottom: 2px solid $secondary;
+      @include FLEX-COLUMN;
 
       .datatype-title-wrapper {
         @include FLEX-BETWEEN;
         width: 100%;
         padding: rem(10);
-        background-color: $white;
-        border-bottom: 2px solid $secondary;
+
         cursor: pointer;
 
         .datatype-content-title {
@@ -56,6 +57,31 @@
           background-color: $white;
           border-radius: 20px;
           @include FLEX-CENTER;
+        }
+      }
+      .datatype-attr-list {
+        margin-top: rem(10);
+      }
+
+      .attr-div {
+        @include FLEX-ALIGN-CENTER;
+        margin-left: rem(20);
+
+        .attr-type-button {
+          margin-right: rem(10);
+          padding: rem(6);
+          font-weight: bold;
+          font-size: rem(16);
+          background-color: $fourth;
+          border-radius: rem(5);
+        }
+
+        .attr-type-name {
+          height: rem(32);
+          font-size: rem(18);
+          font-family: $eng-content;
+          background-color: transparent;
+          border: none;
         }
       }
     }
@@ -113,6 +139,12 @@
       @include FLEX-ALIGN-CENTER;
       margin-left: rem(20);
 
+      &:hover {
+        .attr-type-delete {
+          opacity: 1;
+        }
+      }
+
       .attr-type-button {
         margin-right: rem(10);
         padding: rem(6);
@@ -133,6 +165,18 @@
         &::placeholder {
           color: $light-gray;
           font-size: inherit;
+        }
+      }
+
+      .attr-type-delete {
+        color: $black;
+        font-size: rem(16);
+        cursor: pointer;
+        opacity: 0;
+        transition: 0.3s ease;
+
+        &:hover {
+          color: $delete;
         }
       }
     }

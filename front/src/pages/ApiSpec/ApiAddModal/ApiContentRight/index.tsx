@@ -1,6 +1,11 @@
 import './style.scss';
 
-export default function ApiContentRight() {
+interface Props {
+  dataType: string[];
+  objDataType: any[];
+}
+
+export default function ApiContentRight({ dataType, objDataType }: Props) {
   return (
     <div className="api-add-content-right">
       <section className="content-section">
@@ -13,7 +18,7 @@ export default function ApiContentRight() {
           <div className="content-right-boxcontent-wrapper">
             <div className="content-right-normal-boxcontent">
               <div className="datatype-wrapper">
-                <input type="text" className="datatype-block" value="Striang" />
+                <div className="datatype-block" />
               </div>
               <input
                 type="text"

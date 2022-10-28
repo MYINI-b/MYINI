@@ -15,12 +15,16 @@ interface Props {
   controllers: Array<CONTROLLER>;
   controllerIdx: number;
   setIsApiAddModalOpen: Dispatch<React.SetStateAction<boolean>>;
+  dataType: string[];
+  objDataType: any[];
 }
 
 export default function ApiAddModal({
   controllers,
   controllerIdx,
   setIsApiAddModalOpen,
+  dataType,
+  objDataType,
 }: Props) {
   return (
     <section
@@ -43,7 +47,7 @@ export default function ApiAddModal({
             controllers={controllers}
             controllerIdx={controllerIdx}
           />
-          <ApiContentRight />
+          <ApiContentRight dataType={dataType} objDataType={objDataType} />
         </article>
 
         <article className="closebtn-container">

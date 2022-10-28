@@ -28,7 +28,7 @@ interface CONTROLLER {
 
 export default function ApiSpec() {
   const [step, setStep] = useState(1);
-  const [dataType, setDataType] = useState<Array<any>>([
+  const [dataType, setDataType] = useState<Array<string>>([
     'string',
     'int',
     'long',
@@ -40,6 +40,7 @@ export default function ApiSpec() {
     'short',
     'byte',
   ]);
+  const [objDataType, setObjDataType] = useState<Array<any>>([]);
   const [controllers, setControllers] = useState<Array<CONTROLLER>>([
     { name: 'user', desc: '회원 관리를 위한 컨트롤러 입니다', baseurl: 'user' },
   ]); // 컨트롤러 목록
@@ -184,6 +185,8 @@ export default function ApiSpec() {
       <APIList
         controllers={controllers}
         controllerIdx={controllerIdx}
+        dataType={dataType}
+        objDataType={objDataType}
         apis={apis}
       />
 
@@ -199,7 +202,8 @@ export default function ApiSpec() {
         <DatatypeModal
           setIsDatatypeModalOpen={setIsDatatypeModalOpen}
           dataType={dataType}
-          setDataType={setDataType}
+          objDataType={objDataType}
+          setObjDataType={setObjDataType}
         />
       )}
     </div>

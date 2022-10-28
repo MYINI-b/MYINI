@@ -71,16 +71,19 @@
   }
 
   .datatype-wrapper {
+    flex-shrink: 0;
     width: rem(200);
+    overflow: hidden;
+    white-space: nowrap;
+
     @include FLEX-CENTER;
   }
   .datatype-block {
-    width: fit-content;
-    max-width: rem(200);
-    padding: rem(10) rem(14);
-    font-size: rem(20);
-    background-color: $light-gray;
-    border: none;
+    flex-shrink: 0;
+    padding: rem(6);
+    font-weight: bold;
+    font-size: rem(16);
+    background-color: $fourth;
     border-radius: rem(5);
   }
 }

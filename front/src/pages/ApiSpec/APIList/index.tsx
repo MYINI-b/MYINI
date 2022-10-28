@@ -23,9 +23,17 @@ interface Props {
   controllers: Array<CONTROLLER>;
   controllerIdx: number;
   apis: API[][];
+  dataType: string[];
+  objDataType: any[];
 }
 
-export default function APIList({ controllers, controllerIdx, apis }: Props) {
+export default function APIList({
+  controllers,
+  controllerIdx,
+  apis,
+  dataType,
+  objDataType,
+}: Props) {
   const [isApiAddModalOpen, setIsApiAddModalOpen] = useState(false);
 
   return (
@@ -84,6 +92,8 @@ export default function APIList({ controllers, controllerIdx, apis }: Props) {
           setIsApiAddModalOpen={setIsApiAddModalOpen}
           controllers={controllers}
           controllerIdx={controllerIdx}
+          dataType={dataType}
+          objDataType={objDataType}
         />
       )}
     </section>
