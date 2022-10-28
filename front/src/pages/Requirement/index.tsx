@@ -4,22 +4,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 
+import { ELEMENTPOS } from 'types/Requirement';
 import TableRow from './TableRow';
 import Stepper from './Stepper';
 import CategoryListModal from './CategoryListModal';
-
-interface ElementPos {
-  x: number;
-  y: number;
-  width: number;
-}
 
 export default function Requirement() {
   const [step, setStep] = useState(1);
   const [isCategoryListOpen, setIsCategoryListOpen] = useState(false);
   const [categoryInput, setCategoryInput] = useState('');
   const [categories, setCategories] = useState(['회원', '프로젝트', 'ERD']);
-  const [clickElementPos, setClickElementPos] = useState<ElementPos>({
+  const [clickElementPos, setClickElementPos] = useState<ELEMENTPOS>({
     x: 0,
     y: 0,
     width: 0,
