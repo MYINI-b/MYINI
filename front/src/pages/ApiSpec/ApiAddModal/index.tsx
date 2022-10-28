@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 import './style.scss';
-import { API, CONTROLLER } from 'types/ApiSpec';
+import { API, CONTROLLER, PATHVARIABLES, QUERY } from 'types/ApiSpec';
 import ApiContentLeft from './ApiContentLeft';
 import ApiContentRight from './ApiContentRight';
 
@@ -15,13 +15,6 @@ interface Props {
   objDataType: any[];
   apis: API[][];
   setApis: React.Dispatch<React.SetStateAction<API[][]>>;
-}
-interface PATHVARIABLES {
-  key: '';
-}
-interface QUERY {
-  key: '';
-  type: '';
 }
 
 export default function ApiAddModal({
