@@ -25,9 +25,11 @@ public class ApiControllerResponse {
         apiControllerResponse.apiControllerName = apiController.getApiControllerName();
         apiControllerResponse.apiControllerBaseUrl = apiController.getApiControllerBaseUrl();
         apiControllerResponse.apiControllerDescription = apiController.getApiControllerDescription();
-        apiControllerResponse.apiResponses = apiController.getApis().stream()
-                .map(ApiResponse::from)
-                .collect(Collectors.toList());
+        if(apiController.getApis() != null){
+            apiControllerResponse.apiResponses = apiController.getApis().stream()
+                    .map(ApiResponse::from)
+                    .collect(Collectors.toList());
+        }
         return apiControllerResponse;
     }
 }
