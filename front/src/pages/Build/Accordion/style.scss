@@ -1,0 +1,26 @@
+@import 'variables.scss';
+
+.title-card {
+  padding-bottom: rem(5);
+  .title-heading {
+    @include FLEX-BETWEEN;
+    background-color: $secondary;
+    padding: rem(11) rem(15);
+    border-radius: rem(10);
+    .title-item {
+      font-family: $eng-content;
+      font-size: rem(24);
+    }
+  }
+  
+  .title-body {
+    display: none;
+    text-align: left;
+    padding: 0 1rem;
+    font-family: $eng-content;
+  }
+  .title-body.active {
+    display: block;
+    height: 200px;
+  }
+}
