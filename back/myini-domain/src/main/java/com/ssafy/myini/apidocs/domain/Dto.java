@@ -35,10 +35,11 @@ public class Dto {
     @OneToMany(mappedBy = "dtoClassType", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<DtoItem> dtoItems = new ArrayList<>();
 
-    public static Dto createDto(String dtoName, String dtoType){
+    public static Dto createDto(String dtoName, String dtoType, Api api){
         Dto dto = new Dto();
         dto.dtoName = dtoName;
         dto.dtoType = DtoType.valueOf(dtoType);
+        dto.api = api;
         return dto;
     }
 
