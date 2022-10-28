@@ -12,27 +12,11 @@ spring:
       client:
         registration:
           google:
-            client-id: 75840019329-o42n4rnj8olh4fur3081845uumt2dfsi.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 645953090464-mufok7b9hb7rp6h2bn317h4j56q95km0.apps.googleusercontent.com
+            client-secret: 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
             scope:
               - email
               - profile
-          kakao:
-            client-id: 3612627a436aaa93ea571be39cb45d6f
-            redirect-uri: http://k7b203.p.ssafy.io/login/oauth2/code/kakao #기본 제공 클라이언트가 아니기 때문에 반드시 적어줘야 함. 그래서 아무거나 적어도 되지만 되도록 규칙에 맞추기
-            client-authentication-method: POST
-            authorization-grant-type: authorization_code #oauth2의 코드 방식 사용
-            scope:
-              - profile_nickname
-              - account_email
-            client-name: Kakao
-
-        provider:
-          kakao:
-            authorization_uri: https://kauth.kakao.com/oauth/authorize
-            token_uri: https://kauth.kakao.com/oauth/token
-            user-info-uri: https://kapi.kakao.com/v2/user/me
-            user_name_attribute: id
 
   servlet:
     multipart:
