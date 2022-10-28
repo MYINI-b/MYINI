@@ -19,8 +19,8 @@ public class DtoItemResponse {
         DtoItemResponse dtoItemResponse = new DtoItemResponse();
         dtoItemResponse.dtoItemId = dtoItem.getDtoItemId();
         dtoItemResponse.dtoItemName = dtoItem.getDtoItemName();
-        dtoItemResponse.dtoClassType = dtoItem.getDtoClassType().getDtoId();
-        dtoItemResponse.dtoPrimitiveType = dtoItem.getPrimitive().getPrimitiveId();
+        if(dtoItem.getDtoClassType() != null) {dtoItemResponse.dtoClassType = dtoItem.getDtoClassType().getDtoId();}
+        else{ dtoItemResponse.dtoPrimitiveType = dtoItem.getPrimitive().getPrimitiveId();}
         dtoItemResponse.dtoIsList = String.valueOf(dtoItem.getDtoIsList());
         return dtoItemResponse;
     }
