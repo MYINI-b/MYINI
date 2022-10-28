@@ -1,4 +1,4 @@
-package com.ssafy.myini.requirement.domain;
+package com.ssafy.myini.requirementdocs.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

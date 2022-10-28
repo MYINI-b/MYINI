@@ -3,7 +3,7 @@ package com.ssafy.myini.member.domain;
 import com.ssafy.myini.common.BaseEntity;
 import com.ssafy.myini.member.domain.type.Provider;
 import com.ssafy.myini.member.domain.type.Role;
-import com.ssafy.myini.requirement.domain.Requirement;
+import com.ssafy.myini.requirementdocs.domain.Requirement;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

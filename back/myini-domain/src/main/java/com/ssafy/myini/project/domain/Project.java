@@ -1,8 +1,8 @@
 package com.ssafy.myini.project.domain;
 
 import com.ssafy.myini.member.domain.MemberProject;
-import com.ssafy.myini.requirement.domain.Requirement;
-import com.ssafy.myini.requirement.domain.RequirementCategory;
+import com.ssafy.myini.requirementdocs.domain.Requirement;
+import com.ssafy.myini.requirementdocs.domain.RequirementCategory;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.ssafy.myini.requirement.domain;
+package com.ssafy.myini.requirementdocs.domain;
 
 import com.ssafy.myini.project.domain.Project;
 import lombok.AccessLevel;
