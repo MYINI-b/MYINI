@@ -35,9 +35,10 @@ public class DtoItem {
     @JoinColumn(name = "primitive_id")
     private Primitive primitive;
 
-    public static DtoItem createDtoItem(String dtoItemName, Dto dtoClassType, Primitive primitive, String dtoIsList){
+    public static DtoItem createDtoItem(String dtoItemName, Dto dto, Dto dtoClassType, Primitive primitive, String dtoIsList){
         DtoItem dtoItem = new DtoItem();
         dtoItem.dtoItemName = dtoItemName;
+        dtoItem.dto = dto;
         dtoItem.dtoClassType = dtoClassType;
         dtoItem.primitive = primitive;
         dtoItem.dtoIsList = YN.valueOf(dtoIsList);
