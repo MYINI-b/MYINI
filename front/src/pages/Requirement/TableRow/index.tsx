@@ -5,31 +5,17 @@ import {
   faChevronDown,
   faGripLines,
 } from '@fortawesome/free-solid-svg-icons';
+import { ROW } from 'types/Requirement';
+import { MOUSEPOS } from 'types/ApiSpec';
 import RowModal from '../RowModal';
 
-interface Row {
-  id: number;
-  category: string;
-  requirement: string;
-  description: string;
-  division: string;
-  manager: string;
-  importance: number;
-  point: number;
-}
-
 interface Props {
-  row: Row;
-}
-
-interface MousePos {
-  x: number;
-  y: number;
+  row: ROW;
 }
 
 export default function TableRow({ row }: Props) {
   const [isRowModalOpen, setIsRowModalOpen] = useState(false);
-  const [clickMousePos, setClickMousePos] = useState<MousePos>({ x: 0, y: 0 });
+  const [clickMousePos, setClickMousePos] = useState<MOUSEPOS>({ x: 0, y: 0 });
 
   const onRightClick = (e: any) => {
     e.preventDefault();

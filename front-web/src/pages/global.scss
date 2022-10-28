@@ -21,20 +21,22 @@ html {
   &::-webkit-scrollbar {
     width: 8px;
     height: 8px;
+    background-color: $fourth;
   }
 
-  &::-webkit-scrollbar-track {
-    background-color: $third;
-  }
+  // &::-webkit-scrollbar-track {
+  //   background-color: $third;
+  // }
 
   &::-webkit-scrollbar-thumb {
     background-color: $third;
     border-radius: 10px;
+    height: 30%;
   }
 
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: darken($third, 5%);
-  }
+  // &::-webkit-scrollbar-thumb:hover {
+  //   background-color: darken($third, 5%);
+  // }
 }
 
 ul {

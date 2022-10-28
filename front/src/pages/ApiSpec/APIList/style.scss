@@ -1,0 +1,107 @@
+@import 'variables.scss';
+
+.apilist-container {
+  @include STRETCH;
+  padding: rem(15);
+  overflow-y: hidden;
+  background-color: $pure-white;
+  @include FLEX-COLUMN;
+
+  .controller-desc {
+    color: $gray;
+    font-size: rem(14);
+    font-family: $kor;
+  }
+
+  .api-table-wrapper {
+    @include STRETCH;
+    @include FLEX-COLUMN;
+    margin-top: rem(20);
+    overflow-y: auto;
+
+    .api-table-row {
+      width: 100%;
+      @include FLEX-ALIGN-CENTER;
+
+      &.content {
+        margin: rem(12) 0;
+      }
+    }
+
+    .api-table-col {
+      @include FLEX-CENTER;
+      font-weight: initial;
+      font-size: rem(20);
+      font-family: $eng-content;
+
+      &.title {
+        font-weight: bold;
+        font-size: rem(26);
+        font-family: $eng-title;
+      }
+
+      &.one {
+        flex: 0.05;
+        .active-img {
+          width: rem(30);
+          height: rem(30);
+          border-radius: 30px;
+        }
+      }
+      &.two {
+        flex: 0.15;
+      }
+      &.three {
+        flex: 0.25;
+      }
+
+      .api-method-block {
+        padding: rem(6) rem(18);
+        font-size: rem(18);
+        font-family: $eng-title;
+        border-radius: rem(5);
+
+        &.GET {
+          background-color: $get;
+        }
+        &.POST {
+          background-color: $post;
+        }
+        &.PUT {
+          background-color: $put;
+        }
+        &.DELETE {
+          background-color: $delete;
+        }
+        &.PATCH {
+          background-color: $patch;
+        }
+      }
+    }
+
+    .api-add-button {
+      @include CIRCLE-BTN;
+      flex-shrink: 0;
+      width: rem(45);
+      height: rem(45);
+      margin: rem(6) 0;
+      color: $primary;
+      font-weight: bold;
+      font-size: rem(20);
+      border: 1px solid $primary;
+      @include BTN-COLOR($pure-white);
+    }
+
+    .api-table-tbody {
+      @include STRETCH;
+      overflow-y: hidden;
+
+      .api-table-overflow {
+        align-items: center;
+        overflow-y: auto;
+        @include STRETCH;
+        @include FLEX-COLUMN;
+      }
+    }
+  }
+}
