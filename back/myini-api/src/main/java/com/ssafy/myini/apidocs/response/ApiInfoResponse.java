@@ -20,6 +20,7 @@ public class ApiInfoResponse {
 
     private List<DtoResponse> dtoResponses;
 
+
     public static ApiInfoResponse from(Api api){
         ApiInfoResponse apiInfoResponse = new ApiInfoResponse();
         apiInfoResponse.apiResponse = ApiResponse.from(api);
