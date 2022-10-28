@@ -1,2 +1,4 @@
-package com.ssafy.myini.project.query;public class ProjectQueryRepository {
+package com.ssafy.myini.project.query;
+
+public class ProjectQueryRepository {
 }
