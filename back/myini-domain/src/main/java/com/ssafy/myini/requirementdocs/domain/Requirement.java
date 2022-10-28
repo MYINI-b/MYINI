@@ -42,4 +42,34 @@ public class Requirement {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
+
+    public static Requirement createRequirement(Project project){
+        Requirement requirement = new Requirement();
+        requirement.project = project;
+        return requirement;
+    }
+
+    public void updateRequirementCategory(RequirementCategory requirementCategory){
+        this.requirementCategory = requirementCategory;
+    }
+    public void updateRequirementName(String requirementName){
+        this.requirementName = requirementName;
+    }
+    public void updateRequirementContent(String requirementContent){
+        this.requirementContent = requirementContent;
+    }
+    public void updateRequirementPart(RequirementPart requirementPart){
+        this.requirementPart = requirementPart;
+    }
+    public void updateRequirementMember(Member member){
+        this.member = member;
+    }
+    public void updateRequirementPriority(Integer requirementPriority){
+        this.requirementPriority = requirementPriority;
+    }
+    public void updateRequirementStoryPoint(Double requirementStoryPoint){
+        this.requirementStoryPoint = requirementStoryPoint;
+    }
+
+
 }
