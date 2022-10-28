@@ -1,8 +1,13 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'prettier'],
+  parserOptions: {
+    project: './tsconfig.json',
+  },
+  plugins: ['@typescript-eslint', 'prettier', 'react'],
   extends: [
     'airbnb', // or airbnb-base
+    'airbnb/hooks',
+    'prettier',
     'plugin:react/recommended',
     'plugin:jsx-a11y/recommended', // 설치 한경우
     'plugin:import/errors', // 설치한 경우
@@ -22,6 +27,14 @@ module.exports = {
     'react/prop-types': 0,
     'no-param-reassign': 0,
     'no-plusplus': 0,
+    'react/no-array-index-key':0,
+    'react/destructuring-assignment':0,
+    "@typescript-eslint/no-empty-function":0,
+    "jsx-a11y/no-static-element-interactions":0,
+    "jsx-a11y/click-events-have-key-events":0,
+    "jsx-a11y/label-has-associated-control":0,
+    "react-hooks/exhaustive-deps":0,
+    "no-nested-ternary":0,
     'react/jsx-filename-extension': [
       2,
       { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
@@ -32,6 +45,8 @@ module.exports = {
       'error',
       {
         endOfLine: 'auto',
+        singleQuote: true,
+        tabWidth: 2,
       },
     ],
   },

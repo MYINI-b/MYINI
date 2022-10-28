@@ -1,0 +1,143 @@
+$primary: #F26B3A;
+$secondary: #FF865A;
+$third: #FCAF92;
+$fourth: #FFE6DC;
+
+$black: #393939;
+$gray : #838383;
+$light-gray : #dedede;
+$lightx2-gray:#efefef;
+$pure-white:#ffffff;
+$white: #fbfbfb;
+
+$FE:#D3E5EF;
+$BE:#FBC9C9;
+$COMMON:#ECD8F2;
+
+$get:#22B24D;
+$post:#17C7FF;
+$put:#FDA032;
+$delete:#FD5E48;
+$patch:#F499F1;
+$code : #DFF7FF;
+
+$kor: "AppleNeoB"; //한글 포함 폰트
+
+$eng-title: "Multicolore"; //영어 제목 (오직 대문자)
+$eng-content: "Gmarket"; //영어 본문
+
+// 그림자
+$shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+
+//px을 파라미터로 넘기면 rem으로 변환
+@function rem($px) {
+  @return #{$px/16}rem;
+}
+
+@mixin FLEX-CENTER() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin FLEX-AROUND() {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+@mixin FLEX-COLUMN() {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin FLEX-BETWEEN() {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin FLEX-ALIGN-CENTER() {
+  display: flex;
+  align-items: center;
+}
+
+@mixin FLEX-ALIGN-RIGHT(){
+  display:flex;
+  width:100%;
+  justify-content: flex-end;
+}
+
+@mixin STRETCH() {
+  width: 100%;
+  height: 100%;
+}
+
+@mixin BTN-COLOR($bgcolor) {
+  background-color: $bgcolor;
+  transition: 0.3s ease;
+
+  &:hover {
+    background-color: darken($bgcolor, 10%);
+  }
+}
+
+@mixin SUBMIT-BTN() {
+  width: 100%;
+  padding: rem(6) rem(12);
+  transition: 0.3s ease;
+  font-size: rem(24);
+  color:$white;
+  font-family: $eng-content;
+  border-radius: rem(15);
+  @include BTN-COLOR($primary);
+  @include FLEX-CENTER();
+}
+
+@mixin CIRCLE-BTN() {
+  color: $white;
+  width: rem(60);
+  height: rem(60);
+  border-radius: 60px;
+  @include FLEX-CENTER();
+  @include BTN-COLOR($primary);
+}
+
+@mixin WHITE-BTN() {
+  border-radius: 5px;
+  background-color: $white;
+  font-size: rem(20);
+  background-color: $white;
+  color: $black;
+  border: 1px solid $secondary;
+  transition:0.3s ease;
+  @include FLEX-CENTER();
+
+  &:hover{
+    background-color: $secondary;
+    color:$white;
+  }
+}
+
+@mixin METHOD-BLOCK($method){
+  padding: rem(6) rem(18);
+  font-size: rem(18);
+  font-family: $eng-title;
+  border-radius: rem(5);
+  background-color: $method;
+}
+
+@mixin ELLIPSIS-LINE($line) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $line; //라인수 정함
+  -webkit-box-orient: vertical;
+}
+
+@mixin BORDER-PAPER() {
+  padding: 20px;
+  border-radius: 20px;
+  background-color: $white;
+  border: 2px solid $third;
+}
