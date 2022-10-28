@@ -18,159 +18,159 @@ public class ApiDocsController {
     private final ApiDocsService apiDocsService;
 
     // API컨트롤러 생성
-    @PostMapping("/{project_id}/controller")
-    public ResponseEntity<Void> createApiController(@PathVariable("project_id")Long projectId,
+    @PostMapping("/{projectid}/controllers")
+    public ResponseEntity<Void> createApiController(@PathVariable("projectid")Long projectId,
                                                     @RequestBody @Valid CreateApiControllerRequest request){
         apiDocsService.createApiController(projectId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // API컨트롤러 리스트 조회
-    @GetMapping("/{project_id}/controller")
-    public ResponseEntity<List<ApiControllerListResponse>> findApiControllerList(@PathVariable("project_id")Long projectId){
+    @GetMapping("/{projectid}/controllers")
+    public ResponseEntity<List<ApiControllerListResponse>> findApiControllerList(@PathVariable("projectid")Long projectId){
         List<ApiControllerListResponse> body = apiDocsService.findApiControllerList(projectId);
         return ResponseEntity.ok().body(body);
     }
 
     // API컨트롤러 조회
-    @GetMapping("/controller/{api_controller_id}")
-    public ResponseEntity<ApiControllerResponse> findByApiControllerId(@PathVariable("api_controller_id")Long apiControllerId){
+    @GetMapping("/controllers/{apicontrollerid}")
+    public ResponseEntity<ApiControllerResponse> findByApiControllerId(@PathVariable("apicontrollerid")Long apiControllerId){
         ApiControllerResponse body = apiDocsService.findByApiControllerId(apiControllerId);
         return ResponseEntity.ok().body(body);
     }
 
     // API컨트롤러 수정
-    @PutMapping("/controller/{api_controller_id}")
-    public ResponseEntity<Void> updateApiController(@PathVariable("api_controller_id")Long apiControllerId,
+    @PutMapping("/controllers/{apicontrollerid}")
+    public ResponseEntity<Void> updateApiController(@PathVariable("apicontrollerid")Long apiControllerId,
                                                     @RequestBody @Valid UpdateApiControllerRequest request){
         apiDocsService.updateApiController(apiControllerId, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // API컨트롤러 삭제
-    @DeleteMapping("/controller/{api_controller_id}")
-    public ResponseEntity<Void> deleteApiController(@PathVariable("api_controller_id")Long apiControllerId){
+    @DeleteMapping("/controllers/{apicontrollerid}")
+    public ResponseEntity<Void> deleteApiController(@PathVariable("apicontrollerid")Long apiControllerId){
         apiDocsService.deleteApiController(apiControllerId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // API 생성
-    @PostMapping("/{api_controller_id}/api")
-    public ResponseEntity<Void> createApi(@PathVariable("api_controller_id")Long apiControllerId,
+    @PostMapping("/{apicontrollerid}/apis")
+    public ResponseEntity<Void> createApi(@PathVariable("apicontrollerid")Long apiControllerId,
                                           @RequestBody @Valid CreateApiRequest request){
         apiDocsService.createApi(apiControllerId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // API 수정
-    @PutMapping("/api/{api_id}")
-    public ResponseEntity<Void> updateApi(@PathVariable("api_id")Long apiId,
+    @PutMapping("/apis/{apiid}")
+    public ResponseEntity<Void> updateApi(@PathVariable("apiid")Long apiId,
                                           @RequestBody @Valid UpdateApiRequest request){
         apiDocsService.updateApi(apiId, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // API 삭제
-    @DeleteMapping("/api/{api_id}")
-    public ResponseEntity<Void> deleteApi(@PathVariable("api_id")Long apiId){
+    @DeleteMapping("/apis/{apiid}")
+    public ResponseEntity<Void> deleteApi(@PathVariable("apiid")Long apiId){
         apiDocsService.deleteApi(apiId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // API 조회
-    @GetMapping("/api/{api_id}")
-    public ResponseEntity<ApiInfoResponse> findByApiId(@PathVariable("api_id")Long apiId){
+    @GetMapping("/apis/{apiid}")
+    public ResponseEntity<ApiInfoResponse> findByApiId(@PathVariable("apiid")Long apiId){
         ApiInfoResponse body = apiDocsService.findByApiId(apiId);
         return ResponseEntity.ok().body(body);
     }
 
     // PathVariable 생성
-    @PostMapping("/{api_id}/pathvariable")
-    public ResponseEntity<Void> createPathVariable(@PathVariable("api_id")Long apiId,
+    @PostMapping("/{apiid}/pathvariables")
+    public ResponseEntity<Void> createPathVariable(@PathVariable("apiid")Long apiId,
                                                    @RequestBody @Valid CreatePathVariableRequest request) {
         apiDocsService.createPathVariable(apiId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // PathVariable 수정
-    @PutMapping("/pathvariable/{path_variable_id}")
-    public ResponseEntity<Void> updatePathVariable(@PathVariable("path_variable_id")Long pathVariableId,
+    @PutMapping("/pathvariables/{pathvariableid}")
+    public ResponseEntity<Void> updatePathVariable(@PathVariable("pathvariableid")Long pathVariableId,
                                                    @RequestBody @Valid UpdatePathVariableRequest request){
         apiDocsService.updatePathVariable(pathVariableId, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // PathVariable 삭제
-    @DeleteMapping("/pathvariable/{path_variable_id}")
-    public ResponseEntity<Void> deletePathVariable(@PathVariable("path_variable_id")Long pathVariableId){
+    @DeleteMapping("/pathvariables/{pathvariableid}")
+    public ResponseEntity<Void> deletePathVariable(@PathVariable("pathvariableid")Long pathVariableId){
         apiDocsService.deletePathVariable(pathVariableId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // QueryString 생성
-    @PostMapping("/{api_id}/querystring")
-    public ResponseEntity<Void> createQueryString(@PathVariable("api_id")Long apiId,
+    @PostMapping("/{apiid}/querystrings")
+    public ResponseEntity<Void> createQueryString(@PathVariable("apiid")Long apiId,
                                                    @RequestBody @Valid CreateQueryStringRequest request) {
         apiDocsService.createQueryString(apiId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // QueryString 수정
-    @PutMapping("/querystring/{query_string_id}")
-    public ResponseEntity<Void> updateQueryString(@PathVariable("query_string_id")Long queryStringId,
+    @PutMapping("/querystrings/{querystringid}")
+    public ResponseEntity<Void> updateQueryString(@PathVariable("querystringid")Long queryStringId,
                                                    @RequestBody @Valid UpdateQueryStringRequest request){
         apiDocsService.updateQueryString(queryStringId, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // QueryString 삭제
-    @DeleteMapping("/querystring/{query_string_id}")
-    public ResponseEntity<Void> deleteQueryString(@PathVariable("query_string_id")Long queryStringId){
+    @DeleteMapping("/querystrings/{querystringid}")
+    public ResponseEntity<Void> deleteQueryString(@PathVariable("querystringid")Long queryStringId){
         apiDocsService.deleteQueryString(queryStringId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // Dto 생성
-    @PostMapping("/{api_id}/dto")
-    public ResponseEntity<Void> createDto(@PathVariable("api_id")Long apiId,
+    @PostMapping("/{apiid}/dtos")
+    public ResponseEntity<Void> createDto(@PathVariable("apiid")Long apiId,
                                                   @RequestBody @Valid CreateDtoRequest request) {
         apiDocsService.createDto(apiId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // Dto 수정
-    @PutMapping("/dto/{dto_id}")
-    public ResponseEntity<Void> updateDto(@PathVariable("dto_id")Long dtoId,
+    @PutMapping("/dtos/{dtoid}")
+    public ResponseEntity<Void> updateDto(@PathVariable("dtoid")Long dtoId,
                                                   @RequestBody @Valid UpdateDtoRequest request){
         apiDocsService.updateDto(dtoId, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // Dto 삭제
-    @DeleteMapping("/dto/{dto_id}")
-    public ResponseEntity<Void> deleteDto(@PathVariable("dto_id")Long dtoId){
+    @DeleteMapping("/dtos/{dtoid}")
+    public ResponseEntity<Void> deleteDto(@PathVariable("dtoid")Long dtoId){
         apiDocsService.deleteDto(dtoId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // Dto 조회
-    @GetMapping("/dto/{dto_id}")
-    public ResponseEntity<DtoResponse> findByDtoId(@PathVariable("dto_id")Long dtoId){
+    @GetMapping("/dtos/{dtoid}")
+    public ResponseEntity<DtoResponse> findByDtoId(@PathVariable("dtoid")Long dtoId){
         DtoResponse body = apiDocsService.findByDtoId(dtoId);
         return ResponseEntity.ok().body(body);
     }
 
     // Dto변수 생성
-    @PostMapping("/{dto_id}/dtoitem")
-    public ResponseEntity<Void> createDtoItem(@PathVariable("dto_id")Long dtoId,
+    @PostMapping("/{dtoid}/dtoitems")
+    public ResponseEntity<Void> createDtoItem(@PathVariable("dtoid")Long dtoId,
                                               @RequestBody @Valid CreateDtoItemRequest request){
         apiDocsService.createDtoItem(dtoId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // Dto변수 수정
-    @PutMapping("/dtoitem/{dto_item_id}")
-    public ResponseEntity<Void> updateDtoItem(@PathVariable("dto_item_id")Long dtoItemId,
+    @PutMapping("/dtoitems/{dtoitemid}")
+    public ResponseEntity<Void> updateDtoItem(@PathVariable("dtoitemid")Long dtoItemId,
                                           @RequestBody @Valid UpdateDtoItemRequest request){
         apiDocsService.updateDtoItem(dtoItemId, request);
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -178,15 +178,15 @@ public class ApiDocsController {
 
 
     // Dto변수 삭제
-    @DeleteMapping("/dtoitem/{dto_item_id}")
-    public ResponseEntity<Void> deleteDtoItem(@PathVariable("dto_item_id")Long dtoItemId){
+    @DeleteMapping("/dtoitems/{dtoitemid}")
+    public ResponseEntity<Void> deleteDtoItem(@PathVariable("dtoitemid")Long dtoItemId){
         apiDocsService.deleteDtoItem(dtoItemId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // 자료형 리스트 조회
-    @GetMapping("/{project_id}/type")
-    public ResponseEntity<TypeListResponse> findTypeList(@PathVariable("project_id")Long projectId){
+    @GetMapping("/{projectid}/types")
+    public ResponseEntity<TypeListResponse> findTypeList(@PathVariable("projectid")Long projectId){
         TypeListResponse body = apiDocsService.findTypeList(projectId);
         return ResponseEntity.ok().body(body);
     }
