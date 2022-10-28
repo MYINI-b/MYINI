@@ -11,6 +11,7 @@ import './style.scss';
 import Stepper from 'pages/Requirement/Stepper';
 import APIList from './APIList';
 import ControllerAddModal from './ControllerAddModal';
+import DatatypeModal from './DatatypeModal';
 
 interface API {
   id: number;
@@ -27,6 +28,18 @@ interface CONTROLLER {
 
 export default function ApiSpec() {
   const [step, setStep] = useState(1);
+  const [dataType, setDataType] = useState<Array<any>>([
+    'string',
+    'int',
+    'long',
+    'double',
+    'float',
+    'datetime',
+    'char',
+    'boolean',
+    'short',
+    'byte',
+  ]);
   const [controllers, setControllers] = useState<Array<CONTROLLER>>([
     { name: 'user', desc: '회원 관리를 위한 컨트롤러 입니다', baseurl: 'user' },
   ]); // 컨트롤러 목록
@@ -109,6 +122,7 @@ export default function ApiSpec() {
   ]); // [controllerIdx]의 api 목록
   const [isControllerAddModalOpen, setIsControllerAddModalOpen] =
     useState(false);
+  const [isDatatypeModalOpen, setIsDatatypeModalOpen] = useState(false);
   const canEdit = false;
 
   const onControllerBlockClick = useCallback((idx: number) => {
@@ -117,6 +131,10 @@ export default function ApiSpec() {
 
   const onAddControllerClick = useCallback(() => {
     setIsControllerAddModalOpen(true);
+  }, []);
+
+  const onDatatypeClick = useCallback(() => {
+    setIsDatatypeModalOpen(true);
   }, []);
 
   return (
@@ -157,7 +175,7 @@ export default function ApiSpec() {
             </div>
           </div>
         </article>
-        <article className="datatype-container">
+        <article className="datatype-container" onClick={onDatatypeClick}>
           <FontAwesomeIcon icon={faPenToSquare} />
           &nbsp; 자료형 관리
         </article>
@@ -174,6 +192,14 @@ export default function ApiSpec() {
           setIsControllerAddModalOpen={setIsControllerAddModalOpen}
           setControllers={setControllers}
           controllers={controllers}
+        />
+      )}
+
+      {isDatatypeModalOpen && (
+        <DatatypeModal
+          setIsDatatypeModalOpen={setIsDatatypeModalOpen}
+          dataType={dataType}
+          setDataType={setDataType}
         />
       )}
     </div>

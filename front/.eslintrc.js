@@ -32,6 +32,7 @@ module.exports = {
     "@typescript-eslint/no-empty-function":0,
     "jsx-a11y/no-static-element-interactions":0,
     "jsx-a11y/click-events-have-key-events":0,
+    "react-hooks/exhaustive-deps":0,
     "no-nested-ternary":0,
     'react/jsx-filename-extension': [
       2,
