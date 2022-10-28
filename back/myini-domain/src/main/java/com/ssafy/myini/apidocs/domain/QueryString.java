@@ -25,10 +25,11 @@ public class QueryString {
     @JoinColumn(name = "api_id")
     private Api api;
 
-    public static QueryString createQueryString(String queryStringKey, String queryStringType){
+    public static QueryString createQueryString(String queryStringKey, String queryStringType, Api api){
         QueryString queryString = new QueryString();
         queryString.queryStringKey = queryStringKey;
         queryString.queryStringType = queryStringType;
+        queryString.api = api;
         return queryString;
     }
 
