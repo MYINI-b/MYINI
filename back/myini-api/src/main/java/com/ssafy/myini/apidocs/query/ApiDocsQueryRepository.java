@@ -25,7 +25,7 @@ public class ApiDocsQueryRepository {
     public ApiController findByApiControllerId(ApiController findApiController){
         return queryFactory
                 .selectFrom(apiController).distinct()
-                .leftJoin(apiController.apis, api)
+                .leftJoin(apiController.apis, api).fetchJoin()
                 .where(apiController.eq(findApiController))
                 .fetchOne();
     }
@@ -43,7 +43,7 @@ public class ApiDocsQueryRepository {
     public Dto findByDtoId(Dto findDto){
         return queryFactory
                 .selectFrom(dto).distinct()
-                .leftJoin(dto.dtoItems, dtoItem)
+                .leftJoin(dto.dtoItems, dtoItem).fetchJoin()
                 .where(dto.eq(findDto))
                 .fetchOne();
     }
