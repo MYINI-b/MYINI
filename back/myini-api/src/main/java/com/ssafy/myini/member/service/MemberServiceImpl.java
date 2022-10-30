@@ -3,6 +3,7 @@ package com.ssafy.myini.member.service;
 import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.member.domain.MemberRepository;
 import com.ssafy.myini.member.domain.Member;
+import com.ssafy.myini.member.response.*;
 import com.ssafy.myini.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,5 +30,12 @@ public class MemberServiceImpl implements MemberService {
         String accessToken = jwtUtil.createToken(findMember.getMemberId(), String.valueOf(findMember.getRole()), accessTokenExpirationTime);
 
         return accessToken;
+    }
+
+    @Override
+    public MemberInfoResponse findMember(Member member) {
+        memberRepository.findById(member.getMemberId())
+                .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
+        return MemberInfoResponse.from(member);
     }
 }

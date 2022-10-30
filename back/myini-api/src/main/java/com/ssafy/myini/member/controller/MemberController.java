@@ -2,6 +2,7 @@ package com.ssafy.myini.member.controller;
 
 import com.ssafy.myini.config.LoginMember;
 import com.ssafy.myini.member.domain.Member;
+import com.ssafy.myini.member.response.*;
 import com.ssafy.myini.member.service.MemberService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
     private final MemberService memberService;
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test(@LoginMember Member member){
+    @GetMapping
+    // 회원정보 조회
+    public ResponseEntity<MemberInfoResponse> findMember(@LoginMember Member member){
+        MemberInfoResponse body = memberService.findMember(member);
+        return ResponseEntity.ok().body(body);
+    }
+
+    @GetMapping("/crew")
+    // 함께했던 회원 조회
+    public ResponseEntity<String> findMemberByProject(@LoginMember Member member){
         return ResponseEntity.ok().body("success");
     }
 }
