@@ -1,14 +1,10 @@
 import { Dispatch, SetStateAction, useRef, useEffect } from 'react';
 import './style.scss';
-
-interface MousePos {
-  x: number;
-  y: number;
-}
+import { MOUSEPOS } from 'types/ApiSpec';
 
 interface Props {
   setIsRowModalOpen: Dispatch<SetStateAction<boolean>>;
-  clickMousePos: MousePos;
+  clickMousePos: MOUSEPOS;
 }
 
 export default function RowModal({ setIsRowModalOpen, clickMousePos }: Props) {
