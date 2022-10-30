@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.ssafy.myini.NotFoundException.MEMBER_NOT_FOUND;
 import static com.ssafy.myini.NotFoundException.PROJECT_NOT_FOUND;
@@ -43,12 +45,18 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectListResponse> findAll(Member member) {
-        return null;
+        List<Project> findMemberProjects = projectQueryRepository.findAll(member);
+        return findMemberProjects.stream()
+                .map(ProjectListResponse::from)
+                .collect(Collectors.toList());
     }
 
     @Override
     public ProjectInfoResponse findByProjectId(Long projectId) {
-        return null;
+        Project findProject = projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+
+        return ProjectInfoResponse.from(findProject);
     }
 
     @Transactional
@@ -71,12 +79,18 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectMemberResponse> findProjectMemberList(Long projectId) {
-        return null;
+        List<MemberProject> findMemberProjects = projectQueryRepository.findProjectMemberList(projectId);
+
+        return findMemberProjects.stream()
+                .map(memberProject -> ProjectMemberResponse.from(memberProject.getMember()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public ProjectMemberResponse findByMemberEmail(FindByMemberEmailRequest request) {
-        return null;
+        Member findMember = memberRepository.findByMemberEmail(request.getMemberEmail())
+                .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
+        return ProjectMemberResponse.from(findMember);
     }
 
     @Transactional
