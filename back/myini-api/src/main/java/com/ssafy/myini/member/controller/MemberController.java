@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.*;
+
 @RequestMapping("/api/members")
 @RestController
 @RequiredArgsConstructor
@@ -26,7 +28,8 @@ public class MemberController {
 
     @GetMapping("/crew")
     // 함께했던 회원 조회
-    public ResponseEntity<String> findMemberByProject(@LoginMember Member member){
-        return ResponseEntity.ok().body("success");
+    public ResponseEntity<List<CrewResponse>> findCrewById(@LoginMember Member member){
+        List<CrewResponse> body = memberService.findCrewById(member);
+        return ResponseEntity.ok().body(body);
     }
 }
