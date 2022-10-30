@@ -27,7 +27,6 @@ public class RequirementListResponse {
         requirementListResponse.requirementName = requirement.getRequirementName();
         requirementListResponse.requirementContent = requirement.getRequirementContent();
         requirementListResponse.requirementPart = requirement.getRequirementPart();
-        System.out.println("requirement = " + requirement.getMember());
         requirementListResponse.memberNickName = requirement.getMember().getMemberNickname();
         requirementListResponse.requirementPriority = requirement.getRequirementPriority();
         requirementListResponse.requirementStoryPoint = requirement.getRequirementStoryPoint();

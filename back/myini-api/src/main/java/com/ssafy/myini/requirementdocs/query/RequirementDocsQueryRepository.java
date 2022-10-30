@@ -8,6 +8,10 @@ import com.ssafy.myini.requirementdocs.domain.Requirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+//import static com.ssafy.myini.requirementdocs.domain.QRequirement.requirement;
+//import static com.ssafy.myini.requirementdocs.domain.QRequirementCategory.requirementCategory;
+//import static com.ssafy.myini.member.domain.QMember.member;
+
 import java.util.List;
 
 @Repository
@@ -22,13 +26,10 @@ public class RequirementDocsQueryRepository {
 
         List<Requirement> requirements = queryFactory
                 .selectFrom(requirement)
-                .join(requirementCategory)
-                .on(requirementCategory.eq(requirement.requirementCategory))
-                .join(member)
-                .on(member.eq(requirement.member))
+                .leftJoin(requirement.requirementCategory, requirementCategory).fetchJoin()
+                .leftJoin(requirement.member, member).fetchJoin()
                 .where(requirement.project.projectId.eq(projectId))
                 .fetch();
-
         return requirements;
     }
 }

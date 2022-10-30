@@ -32,19 +32,10 @@ public class RequirementDocsServiceImpl implements RequirementDocsService{
 
     @Override
     public List<RequirementListResponse> findAllRequirement(Long projectId) {
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(NotFoundException.PROJECT_NOT_FOUND));
-
         List<Requirement> requirements = requirementDocsQueryRepository.findAllRequirement(projectId);
+        List<RequirementListResponse> requirementListResponses = requirements.stream().map(RequirementListResponse::from).collect(Collectors.toList());
 
-        System.out.println("requirements[0] = " + requirements.get(0).getMember().getMemberName());
-
-//        List<Requirement> requirements = requirementRepository.findAllByProject(project);
-//        List<RequirementListResponse> requirementListResponses = requirements.stream().map(RequirementListResponse::from).collect(Collectors.toList());
-
-
-
-
-        return null;
+        return requirementListResponses;
     }
 
     @Override
