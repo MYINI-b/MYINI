@@ -2,6 +2,7 @@ package com.ssafy.myini.erd.service;
 
 import com.ssafy.myini.erd.domain.entity.*;
 import com.ssafy.myini.erd.domain.repository.*;
+import com.ssafy.myini.erd.query.ERDQueryRepository;
 import com.ssafy.myini.erd.request.TableColumnUpdateRequest;
 import com.ssafy.myini.erd.request.ErdTableCreateRequest;
 import com.ssafy.myini.erd.request.TableRelationCreateRequest;
@@ -32,6 +33,7 @@ public class ERDServiceImpl implements ERDService{
     private final RelationItemRepository relationItemRepository;
     private final ConditionItemRepository conditionItemRepository;
     private final ColumnConditionRepository columnConditionRepository;
+    private final ERDQueryRepository erdQueryRepository;
 
 
     @Override
@@ -47,9 +49,9 @@ public class ERDServiceImpl implements ERDService{
     @Override
     public List<ErdTableListResponse> findAllErdTable(Long projectId){
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
-        List<ErdTable> tables = erdTableRepository.findAllByProject(project);
-
-        List<ErdTableListResponse> erdTableListResponse = tables.stream().map(ErdTableListResponse::from).collect(Collectors.toList());
+        List<ErdTable> erdTable = erdTableRepository.findAllByProject(project);
+//        List<ErdTable> erdTable = erdQueryRepository.findAllErdTable(project);
+        List<ErdTableListResponse> erdTableListResponse = erdTable.stream().map(ErdTableListResponse::from).collect(Collectors.toList());
 
         System.out.println(erdTableListResponse.get(1).getTableColumnDtos().get(1).getTableColumnType());
         return erdTableListResponse;
