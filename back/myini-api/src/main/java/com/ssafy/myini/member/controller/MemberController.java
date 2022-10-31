@@ -1,13 +1,43 @@
 package com.ssafy.myini.member.controller;
 
+import com.ssafy.myini.config.LoginMember;
+import com.ssafy.myini.member.domain.Member;
+import com.ssafy.myini.member.response.*;
 import com.ssafy.myini.member.service.MemberService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.*;
 
 @RequestMapping("/api/members")
 @RestController
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+
+    @GetMapping
+    // 회원정보 조회
+    public ResponseEntity<MemberInfoResponse> findMember(@LoginMember Member member) {
+        MemberInfoResponse body = memberService.findMember(member);
+        return ResponseEntity.ok().body(body);
+    }
+
+    @GetMapping("/crew")
+    // 함께했던 회원 조회
+    public ResponseEntity<List<CrewResponse>> findCrewById(@LoginMember Member member) {
+        List<CrewResponse> body = memberService.findCrewById(member);
+        return ResponseEntity.ok().body(body);
+    }
+
+    @PatchMapping("/profile")
+    // 프로필사진 수정
+    public ResponseEntity<Void> updateMemberProfileImg(@LoginMember Member member, MultipartFile profileImg) {
+        memberService.updateMemberProfileImg(member, profileImg);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
 }

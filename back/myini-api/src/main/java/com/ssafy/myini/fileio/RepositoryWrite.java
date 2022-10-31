@@ -1,8 +1,8 @@
 package com.ssafy.myini.fileio;
 
-import com.ssafy.myini.ERD.response.ConditionItemDto;
-import com.ssafy.myini.ERD.response.ErdTableListResponse;
-import com.ssafy.myini.ERD.response.TableColumnDto;
+import com.ssafy.myini.erd.response.ConditionItemDto;
+import com.ssafy.myini.erd.response.ErdTableListResponse;
+import com.ssafy.myini.erd.response.TableColumnDto;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 
 import java.io.BufferedWriter;
@@ -11,11 +11,11 @@ import java.io.FileWriter;
 
 public class RepositoryWrite {
     public static void repositoryWrite(ErdTableListResponse erdTableListResponse, InitializerRequest initializerRequest){
-        String pk = "";
+        String pkType = "";
         la : for (TableColumnDto tableColumnDto : erdTableListResponse.getTableColumnDtos()) {
             for (ConditionItemDto conditionItemDto : tableColumnDto.getConditionItemDtos()) {
                 if(conditionItemDto.getConditionItemName().equals("pk")) {
-                    pk = tableColumnDto.getTableColumnType();
+                    pkType = tableColumnDto.getTableColumnType();
                     break la;
                 }
             }
@@ -27,7 +27,7 @@ public class RepositoryWrite {
                 "import " + initializerRequest.getSpring_package_name() + ".entity."+erdTableListResponse.getErdTableName()+";\n"+
                 "import org.springframework.data.jpa.repository.JpaRepository;\n"+
                 "\n"+
-                "public interface "+ erdTableListResponse.getErdTableName() + "Repository extends JpaRepository<"+erdTableListResponse.getErdTableName()+", "+pk+">{}"
+                "public interface "+ erdTableListResponse.getErdTableName() + "Repository extends JpaRepository<"+erdTableListResponse.getErdTableName()+", "+pkType+">{}"
                 ;
 
         try {

@@ -39,7 +39,6 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String memberNickname;
 
-    @Column(nullable = false)
     private String memberProfileImg;
 
     @Enumerated(EnumType.STRING)
@@ -61,5 +60,9 @@ public class Member extends BaseEntity {
         member.memberNickname = memberNickname;
         member.role = role;
         return member;
+    }
+
+    public void updateMemberProfileImg(String profileImg){
+        this.memberProfileImg = profileImg;
     }
 }
