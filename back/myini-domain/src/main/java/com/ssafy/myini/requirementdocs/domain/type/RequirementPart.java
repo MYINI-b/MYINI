@@ -1,4 +1,4 @@
-package com.ssafy.myini.requirement.domain.type;
+package com.ssafy.myini.requirementdocs.domain.type;
 
 public enum RequirementPart {
     FE,

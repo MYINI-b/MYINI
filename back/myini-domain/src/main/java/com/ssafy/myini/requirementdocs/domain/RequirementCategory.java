@@ -1,4 +1,4 @@
-package com.ssafy.myini.requirement.domain;
+package com.ssafy.myini.requirementdocs.domain;
 
 import com.ssafy.myini.project.domain.Project;
 import lombok.AccessLevel;
@@ -18,7 +18,7 @@ public class RequirementCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "requirement_category_id")
-    private Long projectId;
+    private Long requirementCategoryId;
 
     @Column(nullable = false)
     private String categoryName;
@@ -39,5 +39,10 @@ public class RequirementCategory {
         requirementCategory.categoryColor = categoryColor;
         requirementCategory.project = project;
         return requirementCategory;
+    }
+
+    public void updateRequirementCategory(String categoryName, String categoryColor){
+        this.categoryName = categoryName;
+        this.categoryColor = categoryColor;
     }
 }

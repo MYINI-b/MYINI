@@ -7,5 +7,5 @@ import com.ssafy.myini.member.domain.Member;
 public interface InitializerService {
     InitializerPossibleResponse initializerIsPossible(Long projectId);
     Void initializerStart(Long projectId, InitializerRequest initializerRequest);
-//    Void myIniDownload();
+    Void myIniDownload();
 }

@@ -13,29 +13,24 @@ import java.io.FileWriter;
 import java.util.List;
 
 public class EntityWrite {
-    static String entityImportContents = "";
+    static StringBuilder entityImportContents = new StringBuilder();
 
     public static void entityWrite(List<ErdTableListResponse> erdTableListResponses, ErdTableListResponse erdTableListResponse, InitializerRequest initializerRequest){
-        entityImportContents="";
-        entityImportContents += "import lombok.*;\n"+
-                "import javax.persistence.*;\n";
-        String columnContents = columnWrite(erdTableListResponse);
-        String relationContents = relationWrite(erdTableListResponses, erdTableListResponse, initializerRequest);
+        entityImportContents.append("import lombok.*;\nimport javax.persistence.*;\n");
 
-        String contents = "" +
-                "package " + initializerRequest.getSpring_package_name() + ".entity;\n" +
-                "\n"+
-                entityImportContents+
-                "\n"+
-                "@Entity\n"+
-                "@NoArgsConstructor(access = AccessLevel.PROTECTED)\n"+
-                "@AllArgsConstructor\n"+
-                "@Getter\n"+
-                "public class "+erdTableListResponse.getErdTableName()+" {\n\n"+
-                columnContents+
-                relationContents+
-                "api문서 다써지면 create나 update추가하기\n\n"+
-                "}";
+        StringBuilder columnContents = columnWrite(erdTableListResponse);
+        StringBuilder relationContents = relationWrite(erdTableListResponses, erdTableListResponse, initializerRequest);
+
+        StringBuilder contents = new StringBuilder();
+        contents.append("package " + initializerRequest.getSpring_package_name() + ".entity;\n")
+                .append("\n")
+                .append(entityImportContents)
+                .append("\n")
+                .append("@Entity\n@NoArgsConstructor(access = AccessLevel.PROTECTED)\n@AllArgsConstructor\n@Getter\n")
+                .append("public class "+erdTableListResponse.getErdTableName()+" {\n\n")
+                .append(columnContents)
+                .append(relationContents)
+                .append("}");
 
         try {
             //폴더 찾아가기
@@ -62,7 +57,7 @@ public class EntityWrite {
             //파일 쓰기
             FileWriter fw = new FileWriter(file);
             BufferedWriter writer = new BufferedWriter(fw);
-            writer.write(contents);
+            writer.write(contents.toString());
             writer.close();
 
         }catch (Exception e){
@@ -70,8 +65,8 @@ public class EntityWrite {
         }
     }
     
-    public static String columnWrite(ErdTableListResponse erdTableListResponse){
-        String columnContents = "";
+    public static StringBuilder columnWrite(ErdTableListResponse erdTableListResponse){
+        StringBuilder columnContents = new StringBuilder();
 
         for (TableColumnDto tableColumnDto : erdTableListResponse.getTableColumnDtos()) {
             //제약조건 어노테이션 추가
@@ -80,8 +75,8 @@ public class EntityWrite {
 
                 //pk일때
                 if (conditionItemDto.getConditionItemName().equals("pk")){
-                    columnContents += "@Id\n@GeneratedValue(strategy = GenerationType.IDENTITY)\n"+
-                            "@Column(name=\""+CamelToSnake(erdTableListResponse.getErdTableName())+"_id\")\n";
+                    columnContents.append("@Id\n@GeneratedValue(strategy = GenerationType.IDENTITY)\n"+
+                            "@Column(name=\""+CamelToSnake(erdTableListResponse.getErdTableName())+"_id\")\n");
                 }
                 //unique일때
                 if (conditionItemDto.getConditionItemName().equals("unique")){
@@ -93,41 +88,42 @@ public class EntityWrite {
                 }
             }
 
-            if(flag.contains("u") && flag.contains("n")) columnContents += "@Column(unique = true, nullable = false)\n";
-            else if(flag.contains("u") && !flag.contains("n")) columnContents += "@Column(unique = true)\n";
-            else if(!flag.contains("u") && flag.contains("n")) columnContents += "@Column(nullable = false)\n";
+            if(flag.contains("u") && flag.contains("n")) columnContents.append("@Column(unique = true, nullable = false)\n");
+            else if(flag.contains("u") && !flag.contains("n")) columnContents.append("@Column(unique = true)\n");
+            else if(!flag.contains("u") && flag.contains("n")) columnContents.append("@Column(nullable = false)\n");
 
             //자료형 + 변수명 추가
-                columnContents += "private " + tableColumnDto.getTableColumnType() + " " + JdbcUtils.convertUnderscoreNameToPropertyName(tableColumnDto.getTableColumnName()) + ";\n\n";
+                columnContents.append("private " + tableColumnDto.getTableColumnType() + " " + JdbcUtils.convertUnderscoreNameToPropertyName(tableColumnDto.getTableColumnName()) + ";\n\n");
 
         }
 
         return columnContents;
     }
 
-    public static String relationWrite(List<ErdTableListResponse> erdTableListResponses, ErdTableListResponse erdTableListResponse, InitializerRequest initializerRequest){
-        String relationContents = "";
+    public static StringBuilder relationWrite(List<ErdTableListResponse> erdTableListResponses, ErdTableListResponse erdTableListResponse, InitializerRequest initializerRequest){
+        StringBuilder relationContents = new StringBuilder();
 
         //ManyToOne 설정
         for (ErdTableListResponse erdTableListResponse1 : erdTableListResponses) {
             for (TableRelationDto tableRelationDto : erdTableListResponse1.getTableRelationDtos()) {
                 if(tableRelationDto.getToTableId() == erdTableListResponse.getErdTableId()){
-                    relationContents += "@ManyToOne(fetch = FetchType.LAZY)\n"+
+                    relationContents.append("@ManyToOne(fetch = FetchType.LAZY)\n"+
                             "@JoinColumn(name = \""+CamelToSnake(erdTableListResponse1.getErdTableName())+"_id\")\n"+
-                            "private "+erdTableListResponse1.getErdTableName()+" "+erdTableListResponse1.getErdTableName().substring(0,1).toLowerCase()+erdTableListResponse1.getErdTableName().substring(1)+";\n\n";
-
-                    entityImportContents += "import "+ initializerRequest.getSpring_package_name() + ".entity." + erdTableListResponse1.getErdTableName()+";\n";
+                            "private "+erdTableListResponse1.getErdTableName()+" "+erdTableListResponse1.getErdTableName().substring(0,1).toLowerCase()+erdTableListResponse1.getErdTableName().substring(1)+";\n\n");
+                    entityImportContents.append("import "+ initializerRequest.getSpring_package_name() + ".entity." + erdTableListResponse1.getErdTableName()+";\n");
+//                    entityImportContents += "import "+ initializerRequest.getSpring_package_name() + ".entity." + erdTableListResponse1.getErdTableName()+";\n";
                 }
             }
         }
 
         //OneToMany 설정
         if(erdTableListResponse.getTableRelationDtos().size() != 0){
-            entityImportContents += "import java.util.ArrayList;\n"+
-                    "import java.util.List;\n";
+            entityImportContents.append("import java.util.*;\n");
+//            entityImportContents += "import java.util.ArrayList;\n"+
+//                    "import java.util.List;\n";
             for (TableRelationDto tableRelationDto : erdTableListResponse.getTableRelationDtos()) {
-                relationContents += "@OneToMany(mappedBy = \""+erdTableListResponse.getErdTableName().substring(0,1).toLowerCase()+erdTableListResponse.getErdTableName().substring(1)+"\", fetch = FetchType.LAZY, cascade = CascadeType.ALL)\n"+
-                        "private List<"+tableRelationDto.getToTableName()+"> "+tableRelationDto.getToTableName().substring(0,1).toLowerCase()+tableRelationDto.getToTableName().substring(1)+"List = new ArrayList<>();\n\n";
+                relationContents.append("@OneToMany(mappedBy = \""+erdTableListResponse.getErdTableName().substring(0,1).toLowerCase()+erdTableListResponse.getErdTableName().substring(1)+"\", fetch = FetchType.LAZY, cascade = CascadeType.ALL)\n"+
+                        "private List<"+tableRelationDto.getToTableName()+"> "+tableRelationDto.getToTableName().substring(0,1).toLowerCase()+tableRelationDto.getToTableName().substring(1)+"List = new ArrayList<>();\n\n");
             }
         }
         return relationContents;
