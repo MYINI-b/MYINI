@@ -15,9 +15,6 @@ public class ERDFixture {
     public static final String CONTENT = "내용";
     public static final String NAME = "이름";
     public static final Double X = 1.0;
-    public static final List<Long> LIST1 = null;
-    public static final List<TableColumnDto> LIST2 = null;
-    public static final List<TableRelationDto> LIST3 = null;
 
     public static final ErdTableCreateRequest TEST_TABLE_CREATE_REQUEST = new ErdTableCreateRequest(NAME,X,X,CONTENT);
     public static final ErdTableUpdateRequest TEST_TABLE_UPDATE_REQUEST = new ErdTableUpdateRequest(NAME,X,X,CONTENT);
