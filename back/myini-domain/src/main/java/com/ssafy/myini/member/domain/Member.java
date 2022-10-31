@@ -61,4 +61,8 @@ public class Member extends BaseEntity {
         member.role = role;
         return member;
     }
+
+    public void updateMemberProfileImg(String profileImg){
+        this.memberProfileImg = profileImg;
+    }
 }
