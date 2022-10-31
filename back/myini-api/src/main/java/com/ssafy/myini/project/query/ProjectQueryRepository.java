@@ -1,6 +1,7 @@
 package com.ssafy.myini.project.query;
 
 
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.myini.member.domain.Member;
 import com.ssafy.myini.member.domain.MemberProject;
@@ -31,15 +32,17 @@ public class ProjectQueryRepository {
     }
 
     public List<Project> findAll(Member findMember){
-        QMemberProject conditionMemberProject = new QMemberProject("condition_member_project");
 
         return queryFactory
-                .select(project).distinct()
-                .from(conditionMemberProject)
-                .join(conditionMemberProject.project, project)
-                .leftJoin(project.memberProjects, memberProject)
-                .leftJoin(memberProject.member, member)
-                .where(conditionMemberProject.member.eq(findMember))
+                .selectFrom(project).distinct()
+                .leftJoin(project.memberProjects, memberProject).fetchJoin()
+                .leftJoin(memberProject.member, member).fetchJoin()
+                .where(project.in(
+                        JPAExpressions
+                                .select(project)
+                                .from(memberProject)
+                                .where(memberProject.member.eq(findMember))
+                        ))
                 .fetch();
     }
 }
