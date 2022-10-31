@@ -39,5 +39,4 @@ public class MemberController {
         memberService.updateMemberProfileImg(member, profileImg);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
 }

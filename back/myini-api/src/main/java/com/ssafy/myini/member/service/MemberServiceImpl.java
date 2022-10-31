@@ -72,4 +72,6 @@ public class MemberServiceImpl implements MemberService {
         String fileName = s3Uploader.uploadFile(profileImg, s3Uploader.MEMBER_PROFILE_URL);
         findMember.updateMemberProfileImg(fileName);
     }
+
+
 }
