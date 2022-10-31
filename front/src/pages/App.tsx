@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import React from 'react';
 
 import './global.scss';
@@ -10,7 +10,7 @@ import SettingPage from './Setting';
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/main" element={<MainPage />} />
@@ -18,7 +18,7 @@ function App() {
         <Route path="/requirement" element={<Requirement />} />
         <Route path="/setting" element={<SettingPage />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

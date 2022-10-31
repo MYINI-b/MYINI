@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { ReactComponent as Login } from '../../assets/google_btn.svg';
 import logo from '../../assets/logo.png';
 import './style.scss';
@@ -16,6 +17,9 @@ export default function LoginPage() {
         <div>
           <span className="MY">MY</span>
           <span className="INI">INI</span>
+          <Link to="/setting" className="INI">
+            setting
+          </Link>
         </div>
         <Login className="login-btn" />
       </div>

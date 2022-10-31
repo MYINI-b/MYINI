@@ -1,5 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import React, { useMemo, useState } from 'react';
 import { ProjectImage } from './ImageTitle/index';
 import { DetailInfo } from './ProjectDetail/index';
 import { ProjectPeriod } from './Period/index';
@@ -23,9 +25,29 @@ export default function SettingPage() {
     member: data.member,
   };
   // console.log(data);
+  const [need, setNeed] = useState('');
+  axios
+    .get('https://k7b203.p.ssafy.io/api/erds/relationitem')
+    // 성공시 then 실행
+    .then(function (response) {
+      console.log(response);
+    })
+    // 실패 시 catch 실행
+    .catch(function (error) {
+      console.log(error);
+      setNeed(error.response.data.message);
+    })
+    // 성공이던 실패던 항상 실행
+    .then(function () {
+      // always executed
+    });
   return (
     <div className="setting-page">
       <div className="setting-components">
+        <Link to="/" className="INI">
+          home
+        </Link>
+        <div>{need}</div>
         <div className="top-side">
           <ProjectImage {...Props} className="project-image" />
         </div>
