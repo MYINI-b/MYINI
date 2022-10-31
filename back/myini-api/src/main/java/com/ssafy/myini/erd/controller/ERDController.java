@@ -83,7 +83,7 @@ public class ERDController {
     public ResponseEntity<Void> createTableColumn(@PathVariable("erdtableid")Long erdTableId){
         erdService.createTableColumn(erdTableId);
 
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/tablecolumns/{tablecolumnid}")
