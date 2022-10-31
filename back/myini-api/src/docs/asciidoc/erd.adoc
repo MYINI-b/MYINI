@@ -1,0 +1,148 @@
+:basedir: {docdir}/
+:snippets: {basedir}build/generated-snippets
+
+= RESTFUL Notes API Guide
+:doctype: erd
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectnums:
+:sectlinks:
+:sectanchors:
+
+[[API]]
+=== ERD
+==== ERD Table 생성 API
+===== 요청
+include::{snippets}/api/erds/{projectid}/erdtables/create/http-request.adoc[]
+====== Header
+include::{snippets}/api/erds/{projectid}/erdtables/create/request-headers.adoc[]
+====== Path
+include::{snippets}/api/erds/{projectid}/erdtables/create/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/erds/{projectid}/erdtables/create/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/erds/{projectid}/erdtables/create/http-response.adoc[]
+
+==== ERD Table 전체 조회 API
+===== 요청
+include::{snippets}/api/erds/{projectid}/erdtables/list/http-request.adoc[]
+====== Header
+include::{snippets}/api/erds/{projectid}/erdtables/list/request-headers.adoc[]
+====== Path
+include::{snippets}/api/erds/{projectid}/erdtables/list/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/erds/{projectid}/erdtables/list/http-response.adoc[]
+====== Body
+include::{snippets}/api/erds/{projectid}/erdtables/list/response-fields.adoc[]
+
+==== ERD Table 수정 API
+===== 요청
+include::{snippets}/api/erds/erdtables/{erdtableid}/update/http-request.adoc[]
+====== Header
+include::{snippets}/api/erds/erdtables/{erdtableid}/update/request-headers.adoc[]
+====== Path
+include::{snippets}/api/erds/erdtables/{erdtableid}/update/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/erds/erdtables/{erdtableid}/update/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/erds/erdtables/{erdtableid}/update/http-response.adoc[]
+
+==== ERD Table 삭제 API
+===== 요청
+include::{snippets}/api/erds/erdtables/{erdtableid}/delete/http-request.adoc[]
+====== Header
+include::{snippets}/api/erds/erdtables/{erdtableid}/delete/request-headers.adoc[]
+====== Path
+include::{snippets}/api/erds/erdtables/{erdtableid}/delete/path-parameters.adoc[]
+
+
+===== 응답
+include::{snippets}/api/erds/erdtables/{erdtableid}/delete/http-response.adoc[]
+
+==== 테이블 연관관계 생성 API
+===== 요청
+include::{snippets}/api/erds/tablerelations/create/http-request.adoc[]
+====== Header
+include::{snippets}/api/erds/tablerelations/create/request-headers.adoc[]
+====== Path
+include::{snippets}/api/erds/tablerelations/create/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/erds/tablerelations/create/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/erds/tablerelations/create/http-response.adoc[]
+
+==== 테이블 연관관계 삭제 API
+===== 요청
+include::{snippets}/api/erds/tablerelations/{tablerelationid}/delete/http-request.adoc[]
+====== Header
+include::{snippets}/api/erds/tablerelations/{tablerelationid}/delete/request-headers.adoc[]
+====== Path
+include::{snippets}/api/erds/tablerelations/{tablerelationid}/delete/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/erds/tablerelations/{tablerelationid}/delete/http-response.adoc[]
+
+==== 테이블 연관관계 아이템 전체조회 API
+===== 요청
+include::{snippets}/api/erds/relationitems/list/http-request.adoc[]
+====== Header
+include::{snippets}/api/erds/relationitems/list/request-headers.adoc[]
+
+===== 응답
+include::{snippets}/api/erds/relationitems/list/http-response.adoc[]
+====== Body
+include::{snippets}/api/erds/relationitems/list/response-fields.adoc[]
+
+==== 테이블 컬럼 제약조건 아이템 전체조회 API
+===== 요청
+include::{snippets}/api/erds/conditionitems/list/http-request.adoc[]
+====== Header
+include::{snippets}/api/erds/conditionitems/list/request-headers.adoc[]
+
+===== 응답
+include::{snippets}/api/erds/conditionitems/list/http-response.adoc[]
+====== Body
+include::{snippets}/api/erds/conditionitems/list/response-fields.adoc[]
+
+==== 테이블 컬럼 생성 API
+===== 요청
+include::{snippets}/api/erds/tablerelations/create/http-request.adoc[]
+====== Header
+include::{snippets}/api/erds/tablerelations/create/request-headers.adoc[]
+====== Path
+include::{snippets}/api/erds/tablerelations/create/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/erds/tablerelations/create/request-fields.adoc[]
+
+===== 응답
+include::{snippets}/api/erds/tablerelations/create/http-response.adoc[]
+
+==== 테이블 컬럼 수정 API
+===== 요청
+include::{snippets}/api/erds/tablecolumns/{tablecolumnid}/update/http-request.adoc[]
+====== Header
+include::{snippets}/api/erds/tablecolumns/{tablecolumnid}/update/request-headers.adoc[]
+====== Path
+include::{snippets}/api/erds/tablecolumns/{tablecolumnid}/update/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/erds/tablecolumns/{tablecolumnid}/update/request-fields.adoc[]
+
+===== 응답
+include::{snippets}/api/erds/tablecolumns/{tablecolumnid}/update/http-response.adoc[]
+
+==== 테이블 컬럼 삭제 API
+===== 요청
+include::{snippets}/api/erds/tablecolumns/{tablecolumnid}/delete/http-request.adoc[]
+====== Header
+include::{snippets}/api/erds/tablecolumns/{tablecolumnid}/delete/request-headers.adoc[]
+====== Path
+include::{snippets}/api/erds/tablecolumns/{tablecolumnid}/delete/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/erds/tablecolumns/{tablecolumnid}/delete/http-response.adoc[]
