@@ -1,10 +1,10 @@
 package com.ssafy.myini.initializer.service;
 
-import com.ssafy.myini.ERD.domain.entity.ErdTable;
-import com.ssafy.myini.ERD.domain.entity.TableColumn;
-import com.ssafy.myini.ERD.domain.repository.ErdTableRepository;
-import com.ssafy.myini.ERD.domain.repository.TableColumnRepository;
-import com.ssafy.myini.ERD.response.ErdTableListResponse;
+import com.ssafy.myini.erd.domain.entity.ErdTable;
+import com.ssafy.myini.erd.domain.entity.TableColumn;
+import com.ssafy.myini.erd.domain.repository.ErdTableRepository;
+import com.ssafy.myini.erd.domain.repository.TableColumnRepository;
+import com.ssafy.myini.erd.response.ErdTableListResponse;
 import com.ssafy.myini.fileio.InitProjectDownload;
 import com.ssafy.myini.fileio.RepositoryWrite;
 import com.ssafy.myini.NotFoundException;
