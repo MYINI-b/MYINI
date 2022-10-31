@@ -17,6 +17,9 @@ export default function LoginPage() {
           <span className="MY">MY</span>
           <span className="INI">INI</span>
         </div>
+        <a href="http://localhost:8080/oauth2/authorization/google">
+          로그인하기
+        </a>
         <Login className="login-btn" />
       </div>
     </div>

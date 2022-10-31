@@ -50,25 +50,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/ws-stomp/**", "/api/port", "/actuator/health", "/oauth2/**", "/api/docs/**", "/docs/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/users/login",
-                        "/api/erds/{projectid}/erdtables",
-                        "/api/erds/{projectid}/tablerelations",
-                        "/api/erds/erdtable/{erdtableid}/tablecolumns",
-                        "/api/initializers/{projectid}").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/users/login",
-                        "/api/erds/{projectid}/erdtables",
-                        "/api/erds/relationitems",
-                        "/api/erds/conditionitems",
-                        "/api/initializers/{projectid}/ispossible",
-                        "/api/initializers/downloads").permitAll()
-                .antMatchers(HttpMethod.PUT, "/api/users/login",
-                        "/api/erds/erdtables/{erdtableid}",
-                        "/api/erds/tablecolumns/{tablecolumnid}",
-                        "/api/erds").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/api/users/login",
-                        "/api/erds/erdtables/{erdtableid}",
-                        "/api/erds/tablerelations/{tablerelationid}",
-                        "/api/erds/tablecolumns/{tablecolumnid}").permitAll()
                 .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and()
                 .exceptionHandling()
@@ -83,7 +64,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .successHandler(oAuthAuthenticationSuccessHandler)
                 .failureHandler(oAuthAuthenticationFailureHandler);
-
     }
 
     @Bean
