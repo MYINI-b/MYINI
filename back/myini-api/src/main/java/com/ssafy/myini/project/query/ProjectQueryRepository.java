@@ -36,9 +36,9 @@ public class ProjectQueryRepository {
         return queryFactory
                 .select(project).distinct()
                 .from(conditionMemberProject)
-                .join(conditionMemberProject.project, project).fetchJoin()
-                .join(project.memberProjects, memberProject).fetchJoin()
-                .join(memberProject.member, member).fetchJoin()
+                .join(conditionMemberProject.project, project)
+                .leftJoin(project.memberProjects, memberProject)
+                .leftJoin(memberProject.member, member)
                 .where(conditionMemberProject.member.eq(findMember))
                 .fetch();
     }
