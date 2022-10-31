@@ -1,8 +1,8 @@
 package com.ssafy.myini.fileio;
 
-import com.ssafy.myini.ERD.response.ConditionItemDto;
-import com.ssafy.myini.ERD.response.ErdTableListResponse;
-import com.ssafy.myini.ERD.response.TableColumnDto;
+import com.ssafy.myini.erd.response.ConditionItemDto;
+import com.ssafy.myini.erd.response.ErdTableListResponse;
+import com.ssafy.myini.erd.response.TableColumnDto;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 
 import java.io.BufferedWriter;
@@ -21,14 +21,14 @@ public class RepositoryWrite {
             }
         }
 
-        String contents = "" +
-                "package " + initializerRequest.getSpring_package_name() + ".repository;\n" +
+        StringBuilder contents = new StringBuilder();
+               contents.append("package " + initializerRequest.getSpring_package_name() + ".repository;\n" +
                 "\n"+
                 "import " + initializerRequest.getSpring_package_name() + ".entity."+erdTableListResponse.getErdTableName()+";\n"+
                 "import org.springframework.data.jpa.repository.JpaRepository;\n"+
                 "\n"+
                 "public interface "+ erdTableListResponse.getErdTableName() + "Repository extends JpaRepository<"+erdTableListResponse.getErdTableName()+", "+pkType+">{}"
-                ;
+               ) ;
 
         try {
             //폴더 찾아가기
@@ -55,7 +55,7 @@ public class RepositoryWrite {
             //파일 쓰기
             FileWriter fw = new FileWriter(file);
             BufferedWriter writer = new BufferedWriter(fw);
-            writer.write(contents);
+            writer.write(contents.toString());
             writer.close();
 
         }catch (Exception e){
