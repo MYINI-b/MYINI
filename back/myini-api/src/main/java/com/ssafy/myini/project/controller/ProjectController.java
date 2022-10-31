@@ -33,14 +33,14 @@ public class ProjectController {
     @GetMapping
     public ResponseEntity<List<ProjectListResponse>> findAll(@LoginMember Member member){
         List<ProjectListResponse> body = projectService.findAll(member);
-        return null;
+        return ResponseEntity.ok().body(body);
     }
 
     // 프로젝트 단건 조회
     @GetMapping("{projectid}")
     public ResponseEntity<ProjectInfoResponse> findByProjectId(@PathVariable("projectid")Long projectId){
         ProjectInfoResponse body = projectService.findByProjectId(projectId);
-        return null;
+        return ResponseEntity.ok().body(body);
     }
 
     // 프로젝트 수정
@@ -61,15 +61,15 @@ public class ProjectController {
     // 프로젝트 팀원 리스트 조회
     @GetMapping("/members/{projectid}")
     public ResponseEntity<List<ProjectMemberResponse>> findProjectMemberList(@PathVariable("projectid")Long projectId){
-        projectService.findProjectMemberList(projectId);
-        return null;
+        List<ProjectMemberResponse> body = projectService.findProjectMemberList(projectId);
+        return ResponseEntity.ok().body(body);
     }
 
     // 프로젝트 팀원 검색
     @GetMapping("/members")
     public ResponseEntity<ProjectMemberResponse> findByMemberEmail(@RequestBody @Valid FindByMemberEmailRequest request){
         ProjectMemberResponse body = projectService.findByMemberEmail(request);
-        return null;
+        return ResponseEntity.ok().body(body);
     }
 
     // 프로젝트 팀원 추가
