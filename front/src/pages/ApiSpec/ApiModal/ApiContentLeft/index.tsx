@@ -20,6 +20,12 @@ interface Props {
   setMethodName: Dispatch<React.SetStateAction<string>>;
   apiDesc: string;
   setApiDesc: Dispatch<React.SetStateAction<string>>;
+  apiMethod: string;
+  setApiMethod: Dispatch<React.SetStateAction<string>>;
+  apiCode: number;
+  setApiCode: Dispatch<React.SetStateAction<number>>;
+  apiUrl: string;
+  setApiUrl: Dispatch<React.SetStateAction<string>>;
 }
 
 export default function ApiContentLeft({
@@ -37,9 +43,14 @@ export default function ApiContentLeft({
   setMethodName,
   apiDesc,
   setApiDesc,
+  apiMethod,
+  setApiMethod,
+  apiCode,
+  setApiCode,
+  apiUrl,
+  setApiUrl,
 }: Props) {
   const [queryStep, setQueryStep] = useState(0);
-  const [apiUrl, setApiUrl] = useState('');
 
   const onKeyChange = useCallback(
     (idx: number, e: any) => {
@@ -130,7 +141,10 @@ export default function ApiContentLeft({
       if (e.key !== '') newApiUrl += `/{${e.key}}`;
     });
 
-    newApiUrl += queryList.length > 1 || queryList[0].key !== '' ? '?' : '';
+    newApiUrl +=
+      queryList.length > 1 || (queryList.length > 0 && queryList[0].key !== '')
+        ? '?'
+        : '';
     queryList.forEach((e, i) => {
       if (e.key !== '') newApiUrl += i > 0 ? `&${e.key}=` : `${e.key}=`;
     });

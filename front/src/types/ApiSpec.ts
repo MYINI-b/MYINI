@@ -1,9 +1,16 @@
 export interface API {
   id: number;
-  name: string;
+  apiName: string;
+  desc: string;
+  methodName: string;
   url: string;
   method: string;
   code: number;
+  reqVarName: string;
+  resVarName: string;
+  pathList: PATHVARIABLES[];
+  pathVarList: PATHVARIABLES[];
+  queryList: QUERY[];
 }
 export interface CONTROLLER {
   name: string;

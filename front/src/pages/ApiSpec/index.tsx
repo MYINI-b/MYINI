@@ -37,75 +37,59 @@ export default function ApiSpec() {
     [
       {
         id: 1,
-        name: '운동목록조회',
+        apiName: '운동목록조회',
+        desc: '운동목록조회를 위한 api 입니다.',
+        methodName: 'getExerciseList',
         url: '/exercises',
         method: 'GET',
         code: 200,
+        reqVarName: 'reqvarname',
+        resVarName: 'resvarname',
+        pathList: [],
+        pathVarList: [],
+        queryList: [],
       },
       {
         id: 2,
-        name: '운동목록조회',
+        apiName: '운동목록조회',
+        desc: '운동목록조회를 위한 api 입니다.',
+        methodName: 'getExerciseList',
         url: '/exercises',
-        method: 'POST',
-        code: 200,
-      },
-      {
-        id: 3,
-        name: '운동목록조회',
-        url: '/exercises',
-        method: 'PUT',
-        code: 200,
-      },
-      {
-        id: 4,
-        name: '운동목록조회',
-        url: '/exercises',
-        method: 'DELETE',
-        code: 200,
-      },
-      {
-        id: 5,
-        name: '운동목록조회',
-        url: '/exercises',
-        method: 'PATCH',
-        code: 200,
-      },
-    ],
-    [
-      {
-        id: 1,
-        name: '유저목록조회',
-        url: '/user',
         method: 'GET',
         code: 200,
-      },
-      {
-        id: 2,
-        name: '유저목록조회',
-        url: '/user',
-        method: 'POST',
-        code: 200,
+        reqVarName: 'reqvarname',
+        resVarName: 'resvarname',
+        pathList: [],
+        pathVarList: [],
+        queryList: [],
       },
       {
         id: 3,
-        name: '유저목록조회',
-        url: '/user',
-        method: 'PUT',
+        apiName: '운동목록조회',
+        desc: '운동목록조회를 위한 api 입니다.',
+        methodName: 'getExerciseList',
+        url: '/exercises',
+        method: 'GET',
         code: 200,
+        reqVarName: 'reqvarname',
+        resVarName: 'resvarname',
+        pathList: [],
+        pathVarList: [],
+        queryList: [],
       },
       {
         id: 4,
-        name: '유저목록조회',
-        url: '/user',
-        method: 'DELETE',
+        apiName: '운동목록조회',
+        desc: '운동목록조회를 위한 api 입니다.',
+        methodName: 'getExerciseList',
+        url: '/exercises',
+        method: 'GET',
         code: 200,
-      },
-      {
-        id: 5,
-        name: '유저목록조회',
-        url: '/user',
-        method: 'PATCH',
-        code: 200,
+        reqVarName: 'reqvarname',
+        resVarName: 'resvarname',
+        pathList: [],
+        pathVarList: [],
+        queryList: [],
       },
     ],
   ]); // [controllerIdx]의 api 목록
@@ -118,7 +102,8 @@ export default function ApiSpec() {
     setControllerIdx(idx);
   }, []);
 
-  const onAddControllerClick = useCallback(() => {
+  const onHandleControllerClick = useCallback((idx: number) => {
+    setControllerIdx(idx);
     setIsControllerAddModalOpen(true);
   }, []);
 
@@ -152,13 +137,17 @@ export default function ApiSpec() {
                   onClick={() => onControllerBlockClick(i)}
                   key={i}
                 >
-                  {controller.name} &nbsp; <FontAwesomeIcon icon={faPen} />
+                  {controller.name} &nbsp;{' '}
+                  <FontAwesomeIcon
+                    icon={faPen}
+                    onClick={() => onHandleControllerClick(i)}
+                  />
                 </div>
               );
             })}
             <div
               className="controller-block plus"
-              onClick={onAddControllerClick}
+              onClick={() => onHandleControllerClick(-1)}
             >
               <FontAwesomeIcon icon={faPlus} />
             </div>
@@ -184,6 +173,9 @@ export default function ApiSpec() {
           setIsControllerAddModalOpen={setIsControllerAddModalOpen}
           setControllers={setControllers}
           controllers={controllers}
+          controllerIdx={controllerIdx}
+          apis={apis}
+          setApis={setApis}
         />
       )}
 

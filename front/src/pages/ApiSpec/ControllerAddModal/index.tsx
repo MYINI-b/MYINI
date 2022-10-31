@@ -1,29 +1,47 @@
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dispatch, useCallback } from 'react';
+import { Dispatch, useCallback, useEffect } from 'react';
 
 import useInput from 'hooks/useInput';
 import './style.scss';
-import { CONTROLLER } from 'types/ApiSpec';
+import { CONTROLLER, API } from 'types/ApiSpec';
 
 interface Props {
   controllers: Array<CONTROLLER>;
   setControllers: Dispatch<React.SetStateAction<CONTROLLER[]>>;
   setIsControllerAddModalOpen: Dispatch<React.SetStateAction<boolean>>;
+  controllerIdx: number;
+  apis: API[][];
+  setApis: React.Dispatch<React.SetStateAction<API[][]>>;
 }
 
 export default function ControllerAddModal({
   controllers,
   setControllers,
   setIsControllerAddModalOpen,
+  controllerIdx,
+  apis,
+  setApis,
 }: Props) {
-  const [controllerName, onControllerNameChange] = useInput('');
-  const [controllerDesc, onControllerDescChange] = useInput('');
-  const [controllerBaseURL, onControllerBaseURLChange] = useInput('');
+  const [controllerName, onControllerNameChange, setControllerName] =
+    useInput('');
+  const [controllerDesc, onControllerDescChange, setControllerDesc] =
+    useInput('');
+  const [controllerBaseURL, onControllerBaseURLChange, setControllerBaseURL] =
+    useInput('');
 
   const closeModal = useCallback(() => {
     setIsControllerAddModalOpen(false);
   }, [setIsControllerAddModalOpen]);
+
+  useEffect(() => {
+    if (controllerIdx >= 0) {
+      const curController = { ...controllers[controllerIdx] };
+      setControllerName(curController.name);
+      setControllerDesc(curController.desc);
+      setControllerBaseURL(curController.baseurl);
+    }
+  }, []);
 
   const addController = useCallback(
     (e: any) => {
@@ -33,7 +51,15 @@ export default function ControllerAddModal({
         desc: controllerDesc,
         baseurl: controllerBaseURL,
       };
-      setControllers([...controllers, controllerObj]);
+
+      if (controllerIdx >= 0) {
+        const copyArr = [...controllers];
+        copyArr[controllerIdx] = controllerObj;
+        setControllers(copyArr);
+      } else {
+        setControllers([...controllers, controllerObj]);
+        setApis([...apis, []]);
+      }
       setIsControllerAddModalOpen(false);
     },
     [
