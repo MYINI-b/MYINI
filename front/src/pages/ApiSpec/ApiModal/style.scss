@@ -52,4 +52,8 @@
     font-size: rem(20);
     font-family: $eng-content;
   }
+
+  .api-add-button + .api-add-button {
+    margin-left: rem(10);
+  }
 }

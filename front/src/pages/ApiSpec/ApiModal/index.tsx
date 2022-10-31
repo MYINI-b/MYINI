@@ -47,6 +47,25 @@ export default function ApiModal({
     { key: '', type: '' },
   ]);
 
+  useEffect(() => {
+    const isEditIdx = apiRowIdx >= 0;
+    if (isEditIdx) {
+      const editRow = { ...apis[controllerIdx][apiRowIdx] };
+      setApiName(editRow.apiName);
+      setApiDesc(editRow.desc);
+      setMethodName(editRow.methodName);
+      setApiUrl(editRow.url);
+      setApiMethod(editRow.method);
+      setApiCode(editRow.code);
+      setReqVarName(editRow.reqVarName);
+      setResVarName(editRow.resVarName);
+      setPathList(editRow.pathList);
+      setPathVarList(editRow.pathVarList);
+      setQueryList(editRow.queryList);
+    }
+    setIsEdit(isEditIdx);
+  }, []);
+
   const submitApi = useCallback(
     (e: any) => {
       e.preventDefault();
@@ -92,24 +111,15 @@ export default function ApiModal({
     ],
   );
 
-  useEffect(() => {
-    const isEditIdx = apiRowIdx >= 0;
-    if (isEditIdx) {
-      const editRow = { ...apis[controllerIdx][apiRowIdx] };
-      setApiName(editRow.apiName);
-      setApiDesc(editRow.desc);
-      setMethodName(editRow.methodName);
-      setApiUrl(editRow.url);
-      setApiMethod(editRow.method);
-      setApiCode(editRow.code);
-      setReqVarName(editRow.reqVarName);
-      setResVarName(editRow.resVarName);
-      setPathList(editRow.pathList);
-      setPathVarList(editRow.pathVarList);
-      setQueryList(editRow.queryList);
-    }
-    setIsEdit(isEditIdx);
-  }, []);
+  const onDeleteClick = useCallback(() => {
+    const copyArr = [...[...apis]];
+    const deletedArr = [...copyArr[controllerIdx]].filter(
+      (e, i) => i !== apiRowIdx,
+    );
+    copyArr[controllerIdx] = deletedArr;
+    setApis(copyArr);
+    setIsApiModalOpen(false);
+  }, [apis, apiRowIdx]);
 
   return (
     <section className="modal-empty" onClick={() => setIsApiModalOpen(false)}>
@@ -160,8 +170,17 @@ export default function ApiModal({
 
         <article className="closebtn-container">
           <button type="submit" className="api-add-button">
-            등록
+            {isEdit ? '수정' : '등록'}
           </button>
+          {isEdit && (
+            <button
+              type="button"
+              className="api-add-button"
+              onClick={onDeleteClick}
+            >
+              삭제
+            </button>
+          )}
         </article>
       </form>
     </section>

@@ -52,7 +52,11 @@ export default function ApiContentRight({
     <div className="api-add-content-right">
       <section className="content-section">
         <h1 className="content-right-title">REQUEST BODY</h1>
-        <div className="content-right-box">
+        <div
+          className={`content-right-box ${
+            (apiMethod === 'GET' || apiMethod === 'DELETE') && 'disabled'
+          }`}
+        >
           <div className="content-right-boxtitle-wrapper">
             <h3 className="content-right-boxtitle static">자료형</h3>
             <h3 className="content-right-boxtitle">변수명</h3>
@@ -135,7 +139,9 @@ export default function ApiContentRight({
 
       <section className="content-section">
         <h1 className="content-right-title">RESPONSE BODY</h1>
-        <div className="content-right-box">
+        <div
+          className={`content-right-box ${apiMethod !== 'GET' && 'disabled'}`}
+        >
           <div className="content-right-boxtitle-wrapper">
             <h3 className="content-right-boxtitle static">자료형</h3>
             <h3 className="content-right-boxtitle">변수명</h3>

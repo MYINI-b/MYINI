@@ -23,6 +23,7 @@
 
       .method-code-block {
         position: relative;
+        cursor: pointer;
         &.get {
           @include METHOD-BLOCK($get);
         }

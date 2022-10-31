@@ -23,6 +23,10 @@
       border: 1px solid $light-gray;
       border-radius: rem(12);
 
+      &.disabled {
+        background-color: $lightx2-gray;
+      }
+
       .content-right-boxtitle-wrapper {
         width: 100%;
         @include FLEX-ALIGN-CENTER;
