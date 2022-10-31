@@ -52,7 +52,7 @@ class ProjectControllerTest extends ControllerTest {
                         .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isCreated())
-                .andDo(document("/api/projects",
+                .andDo(document("api/projects",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
                         )
@@ -76,7 +76,7 @@ class ProjectControllerTest extends ControllerTest {
                         .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(Arrays.asList(TEST_PROJECT_LIST_RESPONSE))))
-                .andDo(document("/api/projects/list",
+                .andDo(document("api/projects/list",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
                         ),
@@ -110,7 +110,7 @@ class ProjectControllerTest extends ControllerTest {
                         .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(TEST_PROJECT_INFO_RESPONSE)))
-                .andDo(document("/api/projects/{projectid}",
+                .andDo(document("api/projects/{projectid}",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
                         ),
@@ -148,7 +148,7 @@ class ProjectControllerTest extends ControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(TEST_UPDATE_PROJECT_REQUEST)))
                 .andExpect(status().isOk())
-                .andDo(document("/api/projects/{projectid}/update",
+                .andDo(document("api/projects/{projectid}/update",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
                         ),
@@ -186,7 +186,7 @@ class ProjectControllerTest extends ControllerTest {
                         .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
                         .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andDo(document("/api/projects/{projectid}}/delete",
+                .andDo(document("api/projects/{projectid}/delete",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
                         ),
@@ -212,7 +212,7 @@ class ProjectControllerTest extends ControllerTest {
                         .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(Arrays.asList(TEST_PROJECT_MEMBER_RESPONSE))))
-                .andDo(document("/api/projects//members/{projectid}",
+                .andDo(document("api/projects//members/{projectid}",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
                         ),
@@ -236,15 +236,88 @@ class ProjectControllerTest extends ControllerTest {
     @Test
     @DisplayName("팀원을 검색한다.")
     void findByMemberEmail() throws Exception {
+        // given
+        given(projectService.findByMemberEmail(any()))
+                .willReturn(TEST_PROJECT_MEMBER_RESPONSE);
+
+        // when
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/projects/members", ID)
+                        .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(TEST_FIND_MEMBER_EMAIL_REQUEST)))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(TEST_PROJECT_MEMBER_RESPONSE)))
+                .andDo(document("api/projects/members",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
+                        ),
+                        requestFields(
+                                fieldWithPath("memberEmail").type(JsonFieldType.STRING).description("Member Email")
+                        ),
+                        responseFields(
+                                fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("Member ID"),
+                                fieldWithPath("memberEmail").type(JsonFieldType.STRING).description("Member Email"),
+                                fieldWithPath("memberProfileImg").type(JsonFieldType.STRING).description("Member 프로필이미지"),
+                                fieldWithPath("memberName").type(JsonFieldType.STRING).description("Member 이름")
+                        )));
+
+
+        // then
+        then(projectService).should(times(1)).findByMemberEmail(any());
+
     }
 
     @Test
     @DisplayName("프로젝트 팀원을 추가한다.")
-    void addProjectMember() {
+    void addProjectMember() throws Exception {
+        // given
+        willDoNothing()
+                .given(projectService)
+                .addProjectMember(any(), any());
+
+        // when
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/projects/{projectid}/members/{memberid}", ID, ID)
+                        .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isCreated())
+                .andDo(document("api/projects{projectid}/members/{memberid}",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
+                        ),
+                        pathParameters(
+                                parameterWithName("projectid").description("Project ID"),
+                                parameterWithName("memberid").description("Member ID")
+                        )
+                ));
+
+
+        // then
+        then(projectService).should(times(1)).addProjectMember(any(), any());
     }
 
     @Test
     @DisplayName("프로젝트를 팀원을 삭제한다.")
-    void deleteProjectMember() {
+    void deleteProjectMember() throws Exception {
+        // given
+        willDoNothing()
+                .given(projectService)
+                .deleteProjectMember(any(), any());
+
+        // when
+        mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/projects/{projectid}/members/{memberid}", ID, ID)
+                        .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
+                        .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andDo(document("api/projects/{projectid}/members/{memberid}/delete",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
+                        ),
+                        pathParameters(
+                                parameterWithName("projectid").description("Project ID"),
+                                parameterWithName("memberid").description("Member ID")
+                        )));
+
+        // then
+        then(projectService).should(times(1)).deleteProjectMember(any(), any());
     }
 }
