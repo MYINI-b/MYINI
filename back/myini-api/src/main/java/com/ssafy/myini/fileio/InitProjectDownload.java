@@ -41,7 +41,7 @@ public class InitProjectDownload {
             RestTemplate rt = new RestTemplate();
             ResponseEntity<byte[]> res = rt.getForEntity(url, byte[].class);
             byte[] buffer = res.getBody();
-            System.out.println(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name()+".zip");
+//            System.out.println(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name()+".zip");
             // 로컬 서버에 저장
             Path target = Paths.get(initializerRequest.getSpring_base_path(), initializerRequest.getSpring_name() + ".zip");    // 파일 저장 경로
 

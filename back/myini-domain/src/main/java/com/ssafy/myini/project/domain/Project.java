@@ -3,9 +3,12 @@ package com.ssafy.myini.project.domain;
 import com.ssafy.myini.apidocs.domain.ApiController;
 import com.ssafy.myini.erd.domain.entity.ErdTable;
 import com.ssafy.myini.member.domain.MemberProject;
-import com.ssafy.myini.requirement.domain.Requirement;
-import com.ssafy.myini.requirement.domain.RequirementCategory;
-import lombok.*;
+import com.ssafy.myini.requirementdocs.domain.Requirement;
+import com.ssafy.myini.requirementdocs.domain.RequirementCategory;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
