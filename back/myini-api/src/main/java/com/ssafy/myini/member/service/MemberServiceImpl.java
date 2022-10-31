@@ -60,7 +60,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public void updateMemberProfileImg(Member member, MultipartFile profileImg) {
+    public void updateMemberProfileImg(Member member, MultipartFile img) {
         Member findMember = memberRepository.findById(member.getMemberId())
                 .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
 
@@ -69,7 +69,7 @@ public class MemberServiceImpl implements MemberService {
             s3Uploader.deleteFile(s3Uploader.MEMBER_PROFILE_URL + findMember.getMemberProfileImg());
         }
 
-        String fileName = s3Uploader.uploadFile(profileImg, s3Uploader.MEMBER_PROFILE_URL);
+        String fileName = s3Uploader.uploadFile(img, s3Uploader.MEMBER_PROFILE_URL);
         findMember.updateMemberProfileImg(fileName);
     }
 

@@ -8,13 +8,13 @@ import lombok.*;
 @AllArgsConstructor
 public class CrewResponse {
     private Long memberId;
-    private String memberName;
+    private String memberNickname;
     private String memberProfileImg;
 
     public static CrewResponse from(Member member) {
         CrewResponse crewResponse = new CrewResponse();
         crewResponse.memberId = member.getMemberId();
-        crewResponse.memberName = member.getMemberName();
+        crewResponse.memberNickname = member.getMemberNickname();
         crewResponse.memberProfileImg = member.getMemberProfileImg();
 
         return crewResponse;
