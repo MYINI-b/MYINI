@@ -16,7 +16,7 @@ public class ApiDocsFixture {
     public static final String APIDESCRIPTION = "테스트 설명";
     public static final String DTOTYPE = "RESPONSE"; // enum
     public static final String YN_FIELD = "Y";
-    public static final String KEY = "{id}";
+    public static final String KEY = "id";
     public static final String TYPE = "Long";
 
 
