@@ -22,6 +22,7 @@
       }
 
       .method-code-block {
+        position: relative;
         &.get {
           @include METHOD-BLOCK($get);
         }

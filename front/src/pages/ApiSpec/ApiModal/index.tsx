@@ -29,6 +29,7 @@ export default function ApiModal({
   setApis,
 }: Props) {
   const [isEdit, setIsEdit] = useState(false);
+
   const [apiName, setApiName] = useState('');
   const [apiDesc, setApiDesc] = useState('');
   const [methodName, setMethodName] = useState('');
@@ -54,7 +55,7 @@ export default function ApiModal({
         apiName,
         desc: apiDesc,
         methodName,
-        url: `${controllers[controllerIdx].baseurl}${apiUrl}`,
+        url: apiUrl,
         method: apiMethod,
         code: apiCode,
         reqVarName,
@@ -126,8 +127,6 @@ export default function ApiModal({
 
         <article className="api-add-content-container">
           <ApiContentLeft
-            controllers={controllers}
-            controllerIdx={controllerIdx}
             pathList={pathList}
             setPathList={setPathList}
             queryList={queryList}
@@ -146,8 +145,10 @@ export default function ApiModal({
             setApiCode={setApiCode}
             apiUrl={apiUrl}
             setApiUrl={setApiUrl}
+            apiBaseUrl={`/${controllers[controllerIdx].baseurl}`}
           />
           <ApiContentRight
+            apiMethod={apiMethod}
             dataType={dataType}
             objDataType={objDataType}
             resVarName={resVarName}

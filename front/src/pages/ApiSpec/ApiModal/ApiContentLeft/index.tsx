@@ -3,11 +3,10 @@ import './style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 
-import { PATHVARIABLES, QUERY, CONTROLLER } from 'types/ApiSpec';
+import { PATHVARIABLES, QUERY } from 'types/ApiSpec';
+import ApiMethodList from '../ApiMethodList';
 
 interface Props {
-  controllers: Array<CONTROLLER>;
-  controllerIdx: number;
   pathList: PATHVARIABLES[];
   setPathList: Dispatch<React.SetStateAction<PATHVARIABLES[]>>;
   pathVarList: PATHVARIABLES[];
@@ -26,11 +25,10 @@ interface Props {
   setApiCode: Dispatch<React.SetStateAction<number>>;
   apiUrl: string;
   setApiUrl: Dispatch<React.SetStateAction<string>>;
+  apiBaseUrl: string;
 }
 
 export default function ApiContentLeft({
-  controllers,
-  controllerIdx,
   pathList,
   setPathList,
   pathVarList,
@@ -49,8 +47,10 @@ export default function ApiContentLeft({
   setApiCode,
   apiUrl,
   setApiUrl,
+  apiBaseUrl,
 }: Props) {
   const [queryStep, setQueryStep] = useState(0);
+  const [isApiMethodListOpen, setIsApiMethodListOpen] = useState(false);
 
   const onKeyChange = useCallback(
     (idx: number, e: any) => {
@@ -132,7 +132,7 @@ export default function ApiContentLeft({
   );
 
   useEffect(() => {
-    let newApiUrl = '';
+    let newApiUrl = apiBaseUrl;
     pathList.forEach((e) => {
       if (e.key !== '') newApiUrl += `/${e.key}`;
     });
@@ -151,6 +151,14 @@ export default function ApiContentLeft({
 
     setApiUrl(newApiUrl);
   }, [pathList, pathVarList, queryList]);
+
+  useEffect(() => {
+    if (apiMethod === 'POST') {
+      setApiCode(201);
+    } else {
+      setApiCode(200);
+    }
+  }, [apiMethod]);
 
   return (
     <div className="api-add-content-left">
@@ -182,22 +190,29 @@ export default function ApiContentLeft({
       <div className="api-method-code-wrapper">
         <div className="method-code-div">
           <h3 className="method-code-title">메소드</h3>
-          <span className="method-code-block get">GET</span>
+          <span
+            className={`method-code-block ${apiMethod.toLowerCase()}`}
+            onClick={() => setIsApiMethodListOpen(true)}
+          >
+            {apiMethod}
+            {isApiMethodListOpen && (
+              <ApiMethodList
+                setIsApiMethodListOpen={setIsApiMethodListOpen}
+                apiMethod={apiMethod}
+                setApiMethod={setApiMethod}
+              />
+            )}
+          </span>
         </div>
         <div className="method-code-div">
           <h3 className="method-code-title">코드</h3>
-          <span className="method-code-block code">GET</span>
+          <span className="method-code-block code">{apiCode}</span>
         </div>
       </div>
 
       <div className="api-url-wrapper">
         <h3 className="api-url-title">URL</h3>
-        <input
-          type="text"
-          className="api-url-input"
-          value={`/${controllers[controllerIdx].name}${apiUrl}`}
-          readOnly
-        />
+        <input type="text" className="api-url-input" value={apiUrl} readOnly />
       </div>
 
       <div className="api-query-wrapper">

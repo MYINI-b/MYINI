@@ -6,6 +6,7 @@ import { MOUSEPOS, ATTRIBUTE } from 'types/ApiSpec';
 interface Props {
   dataType: string[];
   objDataType: any[];
+  apiMethod: string;
   resVarName: string;
   setResVarName: Dispatch<React.SetStateAction<string>>;
   reqVarName: string;
@@ -15,6 +16,7 @@ interface Props {
 export default function ApiContentRight({
   dataType,
   objDataType,
+  apiMethod,
   resVarName,
   setResVarName,
   reqVarName,
@@ -71,7 +73,12 @@ export default function ApiContentRight({
                 type="text"
                 className="content-right-boxcontent-input"
                 placeholder="변수명을 입력해주세요"
-                required
+                required={
+                  apiMethod === 'POST' ||
+                  apiMethod === 'PUT' ||
+                  apiMethod === 'PATCH'
+                }
+                disabled={apiMethod === 'GET' || apiMethod === 'DELETE'}
                 value={reqVarName}
                 onChange={(e) => setReqVarName(e.target.value)}
               />
@@ -149,9 +156,10 @@ export default function ApiContentRight({
                 type="text"
                 className="content-right-boxcontent-input"
                 placeholder="변수명을 입력해주세요"
-                required
                 value={resVarName}
                 onChange={(e) => setResVarName(e.target.value)}
+                required={apiMethod === 'GET'}
+                disabled={apiMethod !== 'GET'}
               />
             </div>
             <div className="content-right-detail-boxcontent">
