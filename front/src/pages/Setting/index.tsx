@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useMemo } from 'react';
-import { ProjectImage } from './ImageTitle/index';
+import ImageTitle from './ImageTitle';
 import { DetailInfo } from './ProjectDetail/index';
 import { ProjectPeriod } from './Period/index';
 import { ProjectLink } from './Link/index';
@@ -22,12 +22,12 @@ export default function SettingPage() {
     detailinfo: data.detailinfo,
     member: data.member,
   };
-  // console.log(data);
+
   return (
     <div className="setting-page">
       <div className="setting-components">
         <div className="top-side">
-          <ProjectImage {...Props} className="project-image" />
+          <ImageTitle {...Props} className="project-image" />
         </div>
         <div className="bottom-side">
           <div className="left-side">

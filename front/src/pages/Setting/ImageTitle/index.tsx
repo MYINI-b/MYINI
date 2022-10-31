@@ -1,6 +1,6 @@
 import './style.scss';
 
-export function ProjectImage(props: any) {
+export default function ProjectImage(props: any) {
   const { img, title } = props;
   return (
     <div className="title-img">
