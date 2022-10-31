@@ -65,7 +65,9 @@ export default function APIList({
                         <div className="api-table-col one">
                           <img src={ICON} alt="" className="active-img" />
                         </div>
-                        <h3 className="api-table-col two">{`${controllers[controllerIdx].name}-${api.id}`}</h3>
+                        <h3 className="api-table-col two">{`${
+                          controllers[controllerIdx].name
+                        }-${i + 1}`}</h3>
                         <h3 className="api-table-col three">{api.apiName}</h3>
                         <h3 className="api-table-col three">{api.url}</h3>
                         <h3 className="api-table-col two">

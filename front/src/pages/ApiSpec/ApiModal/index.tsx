@@ -33,7 +33,7 @@ export default function ApiModal({
   const [apiDesc, setApiDesc] = useState('');
   const [methodName, setMethodName] = useState('');
   const [apiUrl, setApiUrl] = useState('');
-  const [apiMethod, setApiMethod] = useState('');
+  const [apiMethod, setApiMethod] = useState('GET');
   const [apiCode, setApiCode] = useState(200);
   const [reqVarName, setReqVarName] = useState('');
   const [resVarName, setResVarName] = useState('');
@@ -72,6 +72,7 @@ export default function ApiModal({
       }
 
       setApis(copyArr);
+      setIsApiModalOpen(false);
     },
     [
       isEdit,

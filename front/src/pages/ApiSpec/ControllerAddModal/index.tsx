@@ -10,7 +10,8 @@ interface Props {
   controllers: Array<CONTROLLER>;
   setControllers: Dispatch<React.SetStateAction<CONTROLLER[]>>;
   setIsControllerAddModalOpen: Dispatch<React.SetStateAction<boolean>>;
-  controllerIdx: number;
+  clickControllerIdx: number;
+  setControllerIdx: Dispatch<React.SetStateAction<number>>;
   apis: API[][];
   setApis: React.Dispatch<React.SetStateAction<API[][]>>;
 }
@@ -19,7 +20,8 @@ export default function ControllerAddModal({
   controllers,
   setControllers,
   setIsControllerAddModalOpen,
-  controllerIdx,
+  clickControllerIdx,
+  setControllerIdx,
   apis,
   setApis,
 }: Props) {
@@ -35,8 +37,8 @@ export default function ControllerAddModal({
   }, [setIsControllerAddModalOpen]);
 
   useEffect(() => {
-    if (controllerIdx >= 0) {
-      const curController = { ...controllers[controllerIdx] };
+    if (clickControllerIdx >= 0) {
+      const curController = { ...controllers[clickControllerIdx] };
       setControllerName(curController.name);
       setControllerDesc(curController.desc);
       setControllerBaseURL(curController.baseurl);
@@ -52,13 +54,15 @@ export default function ControllerAddModal({
         baseurl: controllerBaseURL,
       };
 
-      if (controllerIdx >= 0) {
+      if (clickControllerIdx >= 0) {
         const copyArr = [...controllers];
-        copyArr[controllerIdx] = controllerObj;
+        copyArr[clickControllerIdx] = controllerObj;
         setControllers(copyArr);
+        setControllerIdx(clickControllerIdx);
       } else {
         setControllers([...controllers, controllerObj]);
         setApis([...apis, []]);
+        setControllerIdx(0);
       }
       setIsControllerAddModalOpen(false);
     },
@@ -88,6 +92,7 @@ export default function ControllerAddModal({
           required
           placeholder="컨트롤러 명"
           onChange={onControllerNameChange}
+          value={controllerName}
         />
         <input
           type="text"
@@ -95,6 +100,7 @@ export default function ControllerAddModal({
           required
           placeholder="컨트롤러 설명"
           onChange={onControllerDescChange}
+          value={controllerDesc}
         />
         <input
           type="text"
@@ -102,6 +108,7 @@ export default function ControllerAddModal({
           required
           placeholder="Base URL"
           onChange={onControllerBaseURLChange}
+          value={controllerBaseURL}
         />
         <button className="controller-add-submit" type="submit">
           확인

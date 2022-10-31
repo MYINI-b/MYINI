@@ -77,6 +77,11 @@
           font-size: rem(14);
         }
 
+        .controller-block-edit {
+          opacity: 0;
+          transition: 0.3s ease;
+        }
+
         &.on {
           background-color: $third;
         }
@@ -84,6 +89,12 @@
         &.plus {
           border-top-left-radius: rem(10);
           border-top-right-radius: rem(10);
+        }
+
+        &:hover {
+          .controller-block-edit {
+            opacity: 1;
+          }
         }
       }
     }
