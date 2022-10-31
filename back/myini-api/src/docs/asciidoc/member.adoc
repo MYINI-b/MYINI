@@ -1,0 +1,42 @@
+:basedir: {docdir}/
+:snippets: {basedir}build/generated-snippets
+
+= RESTFUL Notes API Guide
+:doctype: member
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectnums:
+:sectlinks:
+:sectanchors:
+
+[[Member]]
+=== Member
+==== 자신의 회원정보를 조회한다
+===== 요청
+include::{snippets}/api/members/http-request.adoc[]
+====== Header
+include::{snippets}/api/members/request-headers.adoc[]
+
+===== 응답
+include::{snippets}/api/members/http-response.adoc[]
+
+==== 함께 프로젝트를 진행했던 회원을 조회한다
+===== 요청
+include::{snippets}/api/members/crew/http-request.adoc[]
+====== Header
+include::{snippets}/api/members/crew/request-headers.adoc[]
+
+===== 응답
+include::{snippets}/api/members/crew/http-response.adoc[]
+
+==== 프로필 사진을 수정한다
+===== 요청
+include::{snippets}/api/members/profile/http-request.adoc[]
+====== Header
+include::{snippets}/api/members/profile/request-headers.adoc[]
+====== Part
+include::{snippets}/api/members/profile/request-parts.adoc[]
+===== 응답
+include::{snippets}/api/members/profile/http-response.adoc[]

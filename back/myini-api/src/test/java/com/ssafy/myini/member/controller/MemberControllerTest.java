@@ -47,7 +47,7 @@ class MemberControllerTest extends ControllerTest {
     private MemberService memberService;
 
     @Test
-    @DisplayName("회원의 정보를 조회한다")
+    @DisplayName("자신의 회원정보를 조회한다")
     void findMember() throws Exception {
         // given
         given(memberService.findMember(any()))
