@@ -1,7 +1,7 @@
 package com.ssafy.myini;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.myini.config.LoginUserArgumentResolver;
+import com.ssafy.myini.config.LoginMemberArgumentResolver;
 import com.ssafy.myini.security.filter.JwtAuthenticationFilter;
 import com.ssafy.myini.security.handler.CustomAccessDeniedHandler;
 import com.ssafy.myini.security.handler.CustomAuthenticationEntryPoint;
@@ -39,7 +39,7 @@ public abstract class ControllerTest {
     protected UserDetailService userDetailService;
 
     @MockBean
-    protected LoginUserArgumentResolver loginUserArgumentResolver;
+    protected LoginMemberArgumentResolver loginMemberArgumentResolver;
 
     @MockBean
     protected CustomAccessDeniedHandler accessDeniedHandler;

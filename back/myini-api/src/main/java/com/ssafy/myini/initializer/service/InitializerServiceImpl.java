@@ -5,6 +5,7 @@ import com.ssafy.myini.erd.domain.entity.TableColumn;
 import com.ssafy.myini.erd.domain.repository.ErdTableRepository;
 import com.ssafy.myini.erd.domain.repository.TableColumnRepository;
 import com.ssafy.myini.erd.response.ErdTableListResponse;
+import com.ssafy.myini.fileio.EntityWrite;
 import com.ssafy.myini.fileio.InitProjectDownload;
 import com.ssafy.myini.fileio.RepositoryWrite;
 import com.ssafy.myini.NotFoundException;
@@ -14,9 +15,11 @@ import com.ssafy.myini.member.domain.MemberRepository;
 import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,6 +58,7 @@ public class InitializerServiceImpl implements InitializerService {
                 }
             }
         }
+
         //API명세서 체크
 
         initializerPossibleResponse = new InitializerPossibleResponse(true, "빌드가능");
@@ -64,12 +68,19 @@ public class InitializerServiceImpl implements InitializerService {
     @Override
     @Transactional
     public Void initializerStart(Long projectId, InitializerRequest initializerRequest) {
+        //프로젝트 init
         InitProjectDownload.initProject(initializerRequest);
 
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
         List<ErdTable> erdTables = erdTableRepository.findAllByProject(project);
         List<ErdTableListResponse> erdTableListResponses = erdTables.stream().map(ErdTableListResponse::from).collect(Collectors.toList());
 
+        //Entity 작성
+        for (ErdTableListResponse erdTableListRespons : erdTableListResponses) {
+            EntityWrite.entityWrite(erdTableListResponses, erdTableListRespons, initializerRequest);
+        }
+
+        //Repository 작성
         for (ErdTableListResponse erdTableListResponse : erdTableListResponses) {
             RepositoryWrite.repositoryWrite(erdTableListResponse, initializerRequest);
         }

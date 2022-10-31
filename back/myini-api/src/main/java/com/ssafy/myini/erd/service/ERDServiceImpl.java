@@ -53,7 +53,6 @@ public class ERDServiceImpl implements ERDService{
 //        List<ErdTable> erdTable = erdQueryRepository.findAllErdTable(project);
         List<ErdTableListResponse> erdTableListResponse = erdTable.stream().map(ErdTableListResponse::from).collect(Collectors.toList());
 
-        System.out.println(erdTableListResponse.get(1).getTableColumnDtos().get(1).getTableColumnType());
         return erdTableListResponse;
     }
 
