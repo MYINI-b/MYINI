@@ -16,11 +16,11 @@ public class ProjectInfoResponse {
     private String projectDescription;
     private String projectImg;
     private LocalDate projectStartedDate;
-    private LocalDate projectfinishedDate;
+    private LocalDate projectFinishedDate;
     private String projectGithubUrl;
-    private String proejctJiraUrl;
-    private String proejctNotionUrl;
-    private String proejctFigmaUrl;
+    private String projectJiraUrl;
+    private String projectNotionUrl;
+    private String projectFigmaUrl;
 
 
     public static ProjectInfoResponse from(Project project){
@@ -29,11 +29,11 @@ public class ProjectInfoResponse {
         projectInfoResponse.projectDescription = project.getProjectDescription();
         projectInfoResponse.projectImg = project.getProjectImg();
         projectInfoResponse.projectStartedDate = project.getProjectStartedDate();
-        projectInfoResponse.projectfinishedDate = project.getProjectFinishedDate();
+        projectInfoResponse.projectFinishedDate = project.getProjectFinishedDate();
         projectInfoResponse.projectGithubUrl = project.getProjectGithubUrl();
-        projectInfoResponse.proejctJiraUrl = project.getProjectJiraUrl();
-        projectInfoResponse.proejctNotionUrl = project.getProjectNotionUrl();
-        projectInfoResponse.proejctFigmaUrl = project.getProjectFigmaUrl();
+        projectInfoResponse.projectJiraUrl = project.getProjectJiraUrl();
+        projectInfoResponse.projectNotionUrl = project.getProjectNotionUrl();
+        projectInfoResponse.projectFigmaUrl = project.getProjectFigmaUrl();
         return  projectInfoResponse;
     }
 }
