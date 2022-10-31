@@ -10,13 +10,14 @@ public class ApiDocsFixture {
     public static final Long ID = 1L;
     public static final String NAME = "테스트 이름";
     public static final String URL = "테스트 URL";
-    public static final String APIMETHOD = "RESPONSE"; //enum
+    public static final String APIMETHOD = "GET"; //enum
     public static final String APICODE = "200"; //enum
+    public static final String API_METHOD_NAME = "findById";
     public static final String APIDESCRIPTION = "테스트 설명";
-    public static final String DTOTYPE = ""; // enum
+    public static final String DTOTYPE = "RESPONSE"; // enum
     public static final String YN_FIELD = "Y";
-    public static final String KEY = "";
-    public static final String TYPE = "";
+    public static final String KEY = "{id}";
+    public static final String TYPE = "Long";
 
 
 
@@ -25,9 +26,9 @@ public class ApiDocsFixture {
     public static final UpdateApiControllerRequest TEST_UPDATE_API_CONTROLLER_REQUEST
             = new UpdateApiControllerRequest(NAME, URL, APIDESCRIPTION);
     public static final CreateApiRequest TEST_CREATE_API_REQUEST
-            = new CreateApiRequest(ITEM_ID, NAME, URL, APIMETHOD, APICODE, NAME);
+            = new CreateApiRequest(ITEM_ID, NAME, URL, APIMETHOD, APICODE, API_METHOD_NAME);
     public static final UpdateApiRequest TEST_UPDATE_API_REQUEST
-            = new UpdateApiRequest(ITEM_ID, NAME, URL, APIMETHOD, APICODE, NAME);
+            = new UpdateApiRequest(ITEM_ID, NAME, URL, APIMETHOD, APICODE, API_METHOD_NAME);
     public static final CreatePathVariableRequest TEST_CREATE_PATHVARIABLE_REQUEST
             = new CreatePathVariableRequest(KEY, TYPE);
     public static final UpdatePathVariableRequest TEST_UPDATE_PATHVARIABLE_REQUEST
