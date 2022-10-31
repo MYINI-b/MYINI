@@ -3,12 +3,7 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { useCallback, Dispatch, useRef, useEffect } from 'react';
 
 import './style.scss';
-
-interface ElementPos {
-  x: number;
-  y: number;
-  width: number;
-}
+import { ELEMENTPOS } from 'types/Requirement';
 
 interface Props {
   categories: string[];
@@ -16,7 +11,7 @@ interface Props {
   categoryInput: string;
   setCategoryInput: Dispatch<React.SetStateAction<string>>;
   closeCategoryList: () => void;
-  clickElementPos: ElementPos;
+  clickElementPos: ELEMENTPOS;
 }
 
 export default function CategoryListModal({

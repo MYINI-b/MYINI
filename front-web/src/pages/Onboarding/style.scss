@@ -1,0 +1,320 @@
+@import 'variables.scss';
+
+// first-section
+.first-section {
+  background: linear-gradient($white, $fourth);
+  height: 100vh;
+  width: 100%;
+  @include FLEX-CENTER;
+  @include FLEX-COLUMN;
+
+  .bg-img {
+    position: absolute;
+    right: 20%;
+    bottom: 30%;
+    width: 35%;
+    height: 45%;
+    z-index: 100;
+  }
+
+  .head-title {
+    position: absolute;
+    @include FLEX-COLUMN;
+    margin-bottom: 2rem;
+    z-index: 100;
+    left: 16%;
+    bottom: 45%;
+
+    .head-line {
+      padding-bottom: 0.5rem;
+      font-size: rem(40);
+    }
+  }
+
+  .download-btn {
+    position: absolute;
+    left: 16%;
+    bottom: 37%;
+    background-color: $primary;
+    opacity: 80%;
+    font-size: rem(30);
+    font-family: $eng-title;
+    border-radius: 15px;
+    color: $white;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    z-index: 100;
+  }
+
+  .download-btn:hover {
+    z-index: 100;
+  }
+  .wave-container {
+    position: absolute;
+    bottom: 0;
+    z-index: 0;
+    flex-shrink: 0;
+    width: 100%;
+    height: 45%;
+    overflow: hidden;
+  }
+  .wave {
+    position: absolute;
+    top: 181%;
+    left: -63%;
+    z-index: 0;
+    width: 4000px;
+    height: 4000px;
+    margin-top: -250px;
+    margin-left: -250px;
+    background: $fourth;
+    border-radius: 43%;
+    transform-origin: 50% 48%;
+    opacity: 0.4;
+    animation: drift 8000ms infinite linear;
+  }
+
+  .wave.-three {
+    z-index: 0;
+    animation: drift 5000ms infinite linear;
+  }
+
+  .wave.-two {
+    z-index: 0;
+    background: $secondary;
+    opacity: 0.1;
+    animation: drift 7000ms infinite linear;
+  }
+
+  @keyframes drift {
+    from {
+      transform: rotate(0deg);
+    }
+    from {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+//second-section
+.second-section {
+  height: 90vh;
+  width: 100%;
+  @include FLEX-CENTER;
+  position: relative;
+  padding-left: 12rem;
+  padding-right: 12rem;
+
+  .second-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: $third;
+    opacity: 0.4;
+  }
+
+  .bg-img1 {
+    width: 54%;
+    height: 54%;
+    opacity: 0.6;
+    z-index: 500;
+  }
+
+  .second-head-container {
+    z-index: 500;
+
+    .second-head-title {
+      color: $primary;
+      padding-bottom: 7rem;
+    }
+
+    .second-content-box {
+      margin-bottom: 5rem;
+    }
+
+    .second-content {
+      font-size: rem(45);
+    }
+
+    .second-content1 {
+      font-size: rem(45);
+    }
+  }
+}
+
+//third-section
+.third-section {
+  height: 90vh;
+  width: 100%;
+  @include FLEX-AROUND;
+  position: relative;
+  padding-left: 10rem;
+  padding-right: 10rem;
+
+  .third-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient($third, $white);
+    opacity: 0.4;
+  }
+
+  .bg-img2 {
+    width: 54%;
+    height: 54%;
+    opacity: 0.6;
+    z-index: 500;
+    margin-right: 1rem;
+  }
+
+  .third-head-container {
+    z-index: 500;
+
+    .third-head-title {
+      color: $primary;
+      padding-bottom: 6rem;
+    }
+
+    .third-content-box {
+      margin-bottom: 5rem;
+    }
+
+    .third-content {
+      font-size: rem(45);
+    }
+
+    .third-icon-container {
+      @include FLEX-AROUND;
+      padding-top: 2rem;
+
+      .third-content-icon {
+        @include FLEX-CENTER;
+        @include FLEX-COLUMN;
+        background-color: white;
+        box-shadow: $shadow;
+        border-radius: 50%;
+        width: rem(120);
+        height: rem(120);
+        font-family: $eng-title;
+
+        .icons {
+          width: rem(60);
+          height: rem(60);
+          padding-bottom: 0.25rem;
+        }
+      }
+    }
+  }
+}
+
+//fourth section
+.fourth-section {
+  height: 100vh;
+  width: 100%;
+  @include FLEX-CENTER;
+  position: relative;
+  padding-left: 12rem;
+  padding-right: 12rem;
+
+  .bg-container {
+    position: relative;
+    @include FLEX-CENTER;
+    margin-bottom: 7rem;
+
+    .bg-img3 {
+      width: rem(450);
+      height: rem(450);
+      animation: rotate_image 10s linear infinite;
+      transform-origin: 50% 50%;
+      opacity: 0.6;
+      margin-bottom: 0.5rem;
+      margin-right: 0.25rem;
+    }
+
+    .icon-0 {
+      position: absolute;
+      width: rem(150);
+      height: rem(150);
+      opacity: 0.6;
+      padding-bottom: 2rem;
+      padding-right: 1rem;
+    }
+    @keyframes rotate_image {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  }
+
+  .fourth-head-container {
+    position: absolute;
+    @include FLEX-COLUMN;
+    margin-bottom: 7rem;
+
+    .fourth-head-title {
+      color: $primary;
+      padding-bottom: 6rem;
+    }
+
+    .fourth-content-container {
+      @include FLEX-COLUMN;
+      @include FLEX-CENTER;
+    }
+  }
+
+  .wave-container {
+    position: absolute;
+    bottom: 0;
+    z-index: 100;
+    flex-shrink: 0;
+    width: 100%;
+    height: 30%;
+    overflow: hidden;
+    margin-top: 6rem;
+  }
+
+  .wave {
+    position: absolute;
+    top: -1096%;
+    left: -23%;
+    z-index: 0;
+    width: 3000px;
+    height: 3000px;
+    margin-top: -250px;
+    margin-left: -250px;
+    background: $fourth;
+    border-radius: 43%;
+    transform-origin: 50% 48%;
+    opacity: 0.4;
+    animation: drift 8000ms infinite linear;
+  }
+
+  .wave.-three {
+    z-index: 0;
+    animation: drift 5000ms infinite linear;
+  }
+
+  .wave.-two {
+    z-index: 0;
+    background: $secondary;
+    opacity: 0.1;
+    animation: drift 7000ms infinite linear;
+  }
+
+  @keyframes drift {
+    from {
+      transform: rotate(0deg);
+    }
+    from {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+.footer-container {
+  height: 40vh;
+  width: 100%;
+  background-color: $primary;
+}

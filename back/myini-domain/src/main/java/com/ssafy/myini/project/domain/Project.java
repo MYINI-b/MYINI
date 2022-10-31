@@ -1,5 +1,7 @@
 package com.ssafy.myini.project.domain;
 
+import com.ssafy.myini.apidocs.domain.ApiController;
+import com.ssafy.myini.erd.domain.entity.ErdTable;
 import com.ssafy.myini.member.domain.MemberProject;
 import com.ssafy.myini.requirementdocs.domain.Requirement;
 import com.ssafy.myini.requirementdocs.domain.RequirementCategory;
@@ -50,6 +52,12 @@ public class Project {
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Requirement> requirements = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ApiController> apiControllers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ErdTable> tables  = new ArrayList<>();
 
     public static Project createProject() {
         Project project = new Project();

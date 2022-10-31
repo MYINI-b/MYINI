@@ -50,22 +50,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/ws-stomp/**", "/api/port", "/actuator/health", "/oauth2/**", "/api/docs/**", "/docs/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/users/login",
-                        "/api/requirementdocs/{projectid}/requirements",
-                        "/api/requirementdocs/{projectid}/categories").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/users/login",
-                        "/api/requirementdocs/{projectid}",
-                        "/api/requirementdocs/{projectid}/categories").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/api/users/login",
-                        "/api/requirementdocs/requirement/{requirementid}",
-                        "/api/requirementdocs/categories/{requirementcategoryid}").permitAll()
-                .antMatchers(HttpMethod.PUT,"/api/requirementdocs/requirements/{requirementid}/categories",
-                        "/api/requirementdocs/requirements/{requirementid}/names",
-                        "/api/requirementdocs/requirements/{requirementid}/contents",
-                        "/api/requirementdocs/requirements/{requirementid}/members",
-                        "/api/requirementdocs/requirements/{requirementid}/priorities",
-                        "/api/requirementdocs/requirements/{requirementid}/storypoints",
-                        "/api/requirementdocs/requirements/{requirementid}/parts").permitAll()
                 .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and()
                 .exceptionHandling()
@@ -80,7 +64,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .successHandler(oAuthAuthenticationSuccessHandler)
                 .failureHandler(oAuthAuthenticationFailureHandler);
-
     }
 
     @Bean
