@@ -61,4 +61,17 @@ public class Project {
         project.projectName = "Untitled";
         return project;
     }
+
+    public void updateProject(String projectName, String projectDescription, String projectImg, LocalDate projectStartedDate, LocalDate projectFinishedDate,
+                              String projectGithubUrl, String projectJiraUrl, String projectNotionUrl, String projectFigmaUrl){
+        this.projectName = projectName;
+        this.projectDescription = projectDescription;
+        this.projectImg = projectImg;
+        this.projectStartedDate = projectStartedDate;
+        this.projectFinishedDate = projectFinishedDate;
+        this.projectGithubUrl = projectGithubUrl;
+        this.projectJiraUrl = projectJiraUrl;
+        this.projectNotionUrl = projectNotionUrl;
+        this.projectFigmaUrl = projectFigmaUrl;
+    }
 }
