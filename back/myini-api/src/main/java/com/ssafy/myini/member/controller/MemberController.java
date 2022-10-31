@@ -35,9 +35,8 @@ public class MemberController {
 
     @PatchMapping("/profile")
     // 프로필사진 수정
-    public ResponseEntity<Void> updateMemberProfileImg(@LoginMember Member member, MultipartFile profileImg) {
-        memberService.updateMemberProfileImg(member, profileImg);
+    public ResponseEntity<Void> updateMemberProfileImg(@LoginMember Member member, MultipartFile img) {
+        memberService.updateMemberProfileImg(member, img);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
 }
