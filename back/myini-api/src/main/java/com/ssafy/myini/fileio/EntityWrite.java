@@ -1,9 +1,9 @@
 package com.ssafy.myini.fileio;
 
-import com.ssafy.myini.ERD.response.ConditionItemDto;
-import com.ssafy.myini.ERD.response.ErdTableListResponse;
-import com.ssafy.myini.ERD.response.TableColumnDto;
-import com.ssafy.myini.ERD.response.TableRelationDto;
+import com.ssafy.myini.erd.response.ConditionItemDto;
+import com.ssafy.myini.erd.response.ErdTableListResponse;
+import com.ssafy.myini.erd.response.TableColumnDto;
+import com.ssafy.myini.erd.response.TableRelationDto;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 import org.springframework.jdbc.support.JdbcUtils;
 

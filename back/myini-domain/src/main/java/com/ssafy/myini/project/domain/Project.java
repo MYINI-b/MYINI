@@ -1,7 +1,7 @@
 package com.ssafy.myini.project.domain;
 
 import com.ssafy.myini.apidocs.domain.ApiController;
-import com.ssafy.myini.ERD.domain.entity.ErdTable;
+import com.ssafy.myini.erd.domain.entity.ErdTable;
 import com.ssafy.myini.member.domain.MemberProject;
 import com.ssafy.myini.requirement.domain.Requirement;
 import com.ssafy.myini.requirement.domain.RequirementCategory;
