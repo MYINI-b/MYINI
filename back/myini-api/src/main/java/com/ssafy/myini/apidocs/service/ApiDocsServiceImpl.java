@@ -287,4 +287,15 @@ public class ApiDocsServiceImpl implements ApiDocsService {
         List<Dto> findDtos = apiDocsQueryRepository.findByProjectId(findProject);
         return TypeListResponse.from(findPrimitives, findDtos);
     }
+
+    @Override
+    public List<ProjectInfoListResponse> findAll(Long projectId) {
+        Project findProject = projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+
+        List<ApiController> findApiControllers = apiDocsQueryRepository.findAll(findProject);
+        return findApiControllers.stream()
+                .map(ProjectInfoListResponse::from)
+                .collect(Collectors.toList());
+    }
 }

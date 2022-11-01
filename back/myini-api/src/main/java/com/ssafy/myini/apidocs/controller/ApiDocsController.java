@@ -190,4 +190,10 @@ public class ApiDocsController {
         TypeListResponse body = apiDocsService.findTypeList(projectId);
         return ResponseEntity.ok().body(body);
     }
+
+    @GetMapping("/{projectid}/lists")
+    public ResponseEntity<List<ProjectInfoListResponse>> findAll(@PathVariable("projectid")Long projectId){
+        List<ProjectInfoListResponse> body = apiDocsService.findAll(projectId);
+        return ResponseEntity.ok().body(body);
+    }
 }
