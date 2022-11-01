@@ -12,7 +12,10 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/react-router-dom": "^5.3.3",
+    "gojs": "^2.2.17",
+    "gojs-react": "^1.1.1",
     "node-sass": "^7.0.3",
+    "patch-package": "^6.5.0",
     "prettier-plugin-style-order": "^0.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -20,14 +23,15 @@
     "react-scripts": "5.0.1",
     "sass-loader": "^13.1.0",
     "typescript": "^4.8.4",
-    "vuerd": "^2.2.11",
+    "vuerd": "1.3.7",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "npx patch-package"
   },
   "eslintConfig": {
     "extends": [
