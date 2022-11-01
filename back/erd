@@ -1,0 +1,229 @@
+{
+  "test" : "teststring",
+  "canvas": {
+    "version": "2.2.11",
+    "width": 2000,
+    "height": 2000,
+    "scrollTop": -17.599999999999955,
+    "scrollLeft": -65.59999999999998,
+    "zoomLevel": 1,
+    "show": {
+      "tableComment": true,
+      "columnComment": true,
+      "columnDataType": true,
+      "columnDefault": true,
+      "columnAutoIncrement": true,
+      "columnPrimaryKey": true,
+      "columnUnique": true,
+      "columnNotNull": true,
+      "relationship": true
+    },
+    "database": "MySQL",
+    "databaseName": "reniors",
+    "canvasType": "ERD",
+    "language": "GraphQL",
+    "tableCase": "pascalCase",
+    "columnCase": "camelCase",
+    "highlightTheme": "VS2015",
+    "bracketType": "none",
+    "setting": {
+      "relationshipDataTypeSync": true,
+      "relationshipOptimization": false,
+      "columnOrder": [
+        "columnName",
+        "columnDataType",
+        "columnNotNull",
+        "columnUnique",
+        "columnAutoIncrement",
+        "columnDefault",
+        "columnComment"
+      ]
+    },
+    "pluginSerializationMap": {}
+  },
+  "table": {
+    "tables": [
+      {
+        "name": "Company",
+        "comment": "",
+        "columns": [
+          {
+            "name": "company_id",
+            "comment": "",
+            "dataType": "BIGINT",
+            "default": "",
+            "option": {
+              "autoIncrement": true,
+              "primaryKey": true,
+              "unique": true,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 72.23681640625,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "9e0045df-fc06-4d64-a19c-4ed5737e8523"
+          },
+          {
+            "name": "company_name",
+            "comment": "",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": true,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 93.88232421875,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "b168e827-b2e6-4c50-b5f8-a92f7a872f77"
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 205.8,
+          "top": 108,
+          "zIndex": 219,
+          "widthName": 60,
+          "widthComment": 60
+        },
+        "visible": true,
+        "id": "8c49bbb9-1520-41bd-858f-94351334f9eb"
+      },
+      {
+        "name": "JobOpening",
+        "comment": "",
+        "columns": [
+          {
+            "name": "job_opening_id",
+            "comment": "",
+            "dataType": "BIGINT",
+            "default": "",
+            "option": {
+              "autoIncrement": true,
+              "primaryKey": true,
+              "unique": true,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 91.501953125,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "4877afcb-b147-4d62-9a52-38ee41763a0a"
+          },
+          {
+            "name": "job_opening_name",
+            "comment": "",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 113.1474609375,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "b4b6e62b-a5eb-49f5-a6dc-7edcb61635c8"
+          },
+          {
+            "name": "company_id",
+            "comment": "",
+            "dataType": "BIGINT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": true,
+              "pfk": false,
+              "widthName": 72.23681640625,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "c2d7eb6a-b800-4a9f-81f4-974434f5bcb6"
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 732.8,
+          "top": 180,
+          "zIndex": 215,
+          "widthName": 73.15087890625,
+          "widthComment": 60
+        },
+        "visible": true,
+        "id": "d895999c-bd85-4f34-b693-ec9c822978f6"
+      }
+    ],
+    "indexes": []
+  },
+  "memo": {
+    "memos": []
+  },
+  "relationship": {
+    "relationships": [
+      {
+        "identification": false,
+        "relationshipType": "OneN",
+        "startRelationshipType": "Dash",
+        "start": {
+          "tableId": "8c49bbb9-1520-41bd-858f-94351334f9eb",
+          "columnIds": [
+            "9e0045df-fc06-4d64-a19c-4ed5737e8523"
+          ],
+          "x": 633.68232421875,
+          "y": 163,
+          "direction": "right"
+        },
+        "end": {
+          "tableId": "d895999c-bd85-4f34-b693-ec9c822978f6",
+          "columnIds": [
+            "c2d7eb6a-b800-4a9f-81f4-974434f5bcb6"
+          ],
+          "x": 732.8,
+          "y": 245.25,
+          "direction": "left"
+        },
+        "constraintName": "fk_company_to_jobopening",
+        "visible": true,
+        "id": "d5e604d4-5a2f-477d-8988-8a96760ef8ed"
+      }
+    ]
+  }
+}

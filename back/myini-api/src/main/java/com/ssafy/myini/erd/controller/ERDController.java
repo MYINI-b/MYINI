@@ -100,5 +100,10 @@ public class ERDController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-
+//    @PostMapping("/erdparsing/{projectid}")
+//    public ResponseEntity<Void> erdParsing(@PathVariable("projectid") Long projectId){
+//        erdService.erdParsing(projectId);
+//
+//        return ResponseEntity.status(HttpStatus.OK).build();
+//    }
 }

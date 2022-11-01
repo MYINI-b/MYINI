@@ -1,5 +1,6 @@
 package com.ssafy.myini.initializer.service;
 
+import com.ssafy.myini.InitializerException;
 import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.erd.domain.entity.ErdTable;
 import com.ssafy.myini.erd.domain.entity.TableColumn;
@@ -12,17 +13,20 @@ import com.ssafy.myini.fileio.RepositoryWrite;
 import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
-import com.ssafy.myini.member.domain.MemberRepository;
 import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileReader;
+import java.io.Reader;
+import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,11 +82,28 @@ public class InitializerServiceImpl implements InitializerService {
         List<ErdTable> erdTables = erdTableRepository.findAllByProject(project);
         List<ErdTableListResponse> erdTableListResponses = erdTables.stream().map(ErdTableListResponse::from).collect(Collectors.toList());
 
+        try {
+            JSONParser jsonParser = new JSONParser();
+            File file = new File("erd");
+            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/1.vuerd.json"),file);
 
-        //Entity 작성
-        for (ErdTableListResponse erdTableListRespons : erdTableListResponses) {
-            EntityWrite.entityWrite(erdTableListResponses, erdTableListRespons, initializerRequest);
+            Reader reader = new FileReader(file);
+            JSONObject erd = (JSONObject) jsonParser.parse(reader);
+//            ERDParsing.tableParsing(erd);
+            try {
+                EntityWrite.entityWrite(erd, initializerRequest);
+            }catch (Exception e){
+                throw new InitializerException(InitializerException.INITIALIZER_FAIL);
+            }
+        }catch (Exception e){
+            System.out.println("e = " + e);
         }
+
+//        //Entity 작성
+//        for (ErdTableListResponse erdTableListRespons : erdTableListResponses) {
+//
+//            EntityWrite.entityWrite(erdTableListResponses, erdTableListRespons, initializerRequest);
+//        }
 
         //Repository 작성
         for (ErdTableListResponse erdTableListResponse : erdTableListResponses) {
