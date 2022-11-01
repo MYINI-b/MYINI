@@ -67,9 +67,10 @@ export default function ControllerAddModal({
       };
 
       if (clickControllerIdx >= 0) {
-        const copyArr = [...controllers];
-        copyArr[clickControllerIdx] = controllerObj;
-        setControllers(copyArr);
+        const copyControllerArr = [...controllers];
+        copyControllerArr[clickControllerIdx] = controllerObj;
+
+        setControllers(copyControllerArr);
         setControllerIdx(clickControllerIdx);
       } else {
         setControllers([...controllers, controllerObj]);
@@ -83,6 +84,8 @@ export default function ControllerAddModal({
       controllerDesc,
       controllerBaseURL,
       controllers,
+      apis,
+      clickControllerIdx,
       setControllers,
       setIsControllerAddModalOpen,
     ],

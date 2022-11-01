@@ -67,7 +67,7 @@ export default function APIList({
                           controllers[controllerIdx].name
                         }-${i + 1}`}</h3>
                         <h3 className="api-table-col three">{api.apiName}</h3>
-                        <h3 className="api-table-col three">{api.url}</h3>
+                        <h3 className="api-table-col three">{`/${controllers[controllerIdx].baseurl}${api.url}`}</h3>
                         <h3 className="api-table-col two">
                           <span className={`api-method-block ${api.method}`}>
                             {api.method}

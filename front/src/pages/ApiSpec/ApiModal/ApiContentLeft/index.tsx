@@ -125,7 +125,7 @@ export default function ApiContentLeft({
   }, []);
 
   useEffect(() => {
-    let newApiUrl = apiBaseUrl;
+    let newApiUrl = '';
 
     pathVarList.forEach((e) => {
       if (e.key !== '') {
@@ -208,7 +208,12 @@ export default function ApiContentLeft({
 
       <div className="api-url-wrapper">
         <h3 className="api-url-title">URL</h3>
-        <input type="text" className="api-url-input" value={apiUrl} readOnly />
+        <input
+          type="text"
+          className="api-url-input"
+          value={`${apiBaseUrl}${apiUrl}`}
+          readOnly
+        />
       </div>
 
       <div className="api-query-wrapper">
