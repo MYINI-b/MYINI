@@ -8,8 +8,7 @@ export interface API {
   code: number;
   reqVarName: string;
   resVarName: string;
-  pathList: PATHVARIABLES[];
-  pathVarList: PATHVARIABLES[];
+  pathVarList: QUERY[];
   queryList: QUERY[];
 }
 export interface CONTROLLER {
@@ -18,9 +17,6 @@ export interface CONTROLLER {
   baseurl: string;
 }
 
-export interface PATHVARIABLES {
-  key: '';
-}
 export interface QUERY {
   key: '';
   type: '';

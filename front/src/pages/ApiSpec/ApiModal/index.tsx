@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 import './style.scss';
-import { API, CONTROLLER, PATHVARIABLES, QUERY } from 'types/ApiSpec';
+import { API, CONTROLLER, QUERY } from 'types/ApiSpec';
 import ApiContentLeft from './ApiContentLeft';
 import ApiContentRight from './ApiContentRight';
 
@@ -39,9 +39,8 @@ export default function ApiModal({
   const [reqVarName, setReqVarName] = useState('');
   const [resVarName, setResVarName] = useState('');
 
-  const [pathList, setPathList] = useState<Array<PATHVARIABLES>>([{ key: '' }]);
-  const [pathVarList, setPathVarList] = useState<Array<PATHVARIABLES>>([
-    { key: '' },
+  const [pathVarList, setPathVarList] = useState<Array<QUERY>>([
+    { key: '', type: '' },
   ]);
   const [queryList, setQueryList] = useState<Array<QUERY>>([
     { key: '', type: '' },
@@ -59,7 +58,6 @@ export default function ApiModal({
       setApiCode(editRow.code);
       setReqVarName(editRow.reqVarName);
       setResVarName(editRow.resVarName);
-      setPathList(editRow.pathList);
       setPathVarList(editRow.pathVarList);
       setQueryList(editRow.queryList);
     }
@@ -79,7 +77,6 @@ export default function ApiModal({
         code: apiCode,
         reqVarName,
         resVarName,
-        pathList,
         pathVarList,
         queryList,
       };
@@ -105,7 +102,6 @@ export default function ApiModal({
       apiCode,
       reqVarName,
       resVarName,
-      pathList,
       pathVarList,
       queryList,
     ],
@@ -137,8 +133,6 @@ export default function ApiModal({
 
         <article className="api-add-content-container">
           <ApiContentLeft
-            pathList={pathList}
-            setPathList={setPathList}
             queryList={queryList}
             setQueryList={setQueryList}
             pathVarList={pathVarList}
