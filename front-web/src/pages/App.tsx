@@ -3,6 +3,7 @@ import React from 'react';
 
 import './global.scss';
 import Onboarding from './Onboarding';
+import Docs from './Docs';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         {' '}
         <Route path="/" element={<Onboarding />} />
+        <Route path="/docs" element={<Docs />} />
       </Routes>
     </BrowserRouter>
   );
