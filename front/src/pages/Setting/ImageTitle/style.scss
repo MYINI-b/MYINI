@@ -1,40 +1,47 @@
-@import "variables.scss";
+@import 'variables.scss';
 
 .title-img {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
-  width: rem(1000);
+  display:flex;
+  width: 100%;
+  margin-top: rem(40);
   .profile-image {
-    height:rem(240);
-    width:rem(240);
-    border-radius: 20%;
-    padding-right: rem(10);
+    width: rem(250);
+    height: rem(230);
+    border-radius: rem(30);
+    flex-shrink: 0;
   }
-  .project-name {
-    color: $primary;
-    font-size: 32px;
-    font-family: $kor;
+
+  .project-info-container{  
+    width:100%;
+    @include FLEX-COLUMN;
+    justify-content: flex-end;
+    margin-left: rem(10);
   }
-  .project-title {
-    font-size: 70px;
+
+  .project-detail-title {
+    font-size: rem(70);
+    font-weight: bold;
+    font-family: $eng-title; 
+    border:none;
+    width:100%;
+    border-bottom: 1px solid $secondary;
     @include ELLIPSIS-LINE(1);
   }
 }
-@media screen and (max-width : 992px) {
-  .project-name {
-    font-size : 22px;
-  }
-  .project-title {
-    font-size: 55px;
-  }
-}
- 
-@media screen and (max-width : 768px) {
-  .project-name {
-    font-size : 12px;
-  }
-  .project-title {
-    font-size: 42px;
-  }
-}
+// @media screen and (max-width: 992px) {
+//   .project-name {
+//     font-size: 22px;
+//   }
+//   .project-title {
+//     font-size: 55px;
+//   }
+// }
+
+// @media screen and (max-width: 768px) {
+//   .project-name {
+//     font-size: 12px;
+//   }
+//   .project-title {
+//     font-size: 42px;
+//   }
+// }

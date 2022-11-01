@@ -1,5 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
+import useInput from 'hooks/useInput';
+import Stepper from 'pages/Requirement/Stepper';
 import ImageTitle from './ImageTitle';
 import { DetailInfo } from './ProjectDetail/index';
 import { ProjectPeriod } from './Period/index';
@@ -10,10 +12,13 @@ import './style.scss';
 
 export default function SettingPage() {
   const data = useMemo(() => MockData[0], []);
+  const [isEdit, setIsEdit] = useState(false);
+  const [title, onTitleChange] = useInput('');
+  const [step, setStep] = useState(0);
   const Props = {
     id: data.id,
     img: data.img,
-    title: data.title,
+    // title: data.title,
     period: data.period,
     jiralink: data.jiralink,
     notionlink: data.notionlink,
@@ -26,9 +31,12 @@ export default function SettingPage() {
   return (
     <div className="setting-page">
       <div className="setting-components">
-        <div className="top-side">
-          <ImageTitle {...Props} className="project-image" />
-        </div>
+        <Stepper step={step} setStep={setStep} />
+        <ImageTitle
+          img={Props.img}
+          title={title}
+          onTitleChange={onTitleChange}
+        />
         <div className="bottom-side">
           <div className="left-side">
             <DetailInfo {...Props} className="detail-info" />

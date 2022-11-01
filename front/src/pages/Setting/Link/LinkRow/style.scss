@@ -1,0 +1,20 @@
+@import 'variables.scss';
+
+.link-row-container {
+  width: 100%;
+  margin-top: rem(10);
+  @include FLEX-ALIGN-CENTER;
+
+  .image-icon {
+    width: rem(30);
+    height: rem(30);
+    margin-right: rem(12);
+    border-radius: rem(30);
+  }
+
+  .link-row-input {
+    width: 100%;
+    padding: rem(4);
+    border: none;
+  }
+}
