@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -37,22 +38,29 @@ public class ProjectController {
     }
 
     // 프로젝트 단건 조회
-    @GetMapping("{projectid}")
+    @GetMapping("/{projectid}")
     public ResponseEntity<ProjectInfoResponse> findByProjectId(@PathVariable("projectid")Long projectId){
         ProjectInfoResponse body = projectService.findByProjectId(projectId);
         return ResponseEntity.ok().body(body);
     }
 
     // 프로젝트 수정
-    @PutMapping("{projectid}")
+    @PutMapping("/{projectid}")
     public ResponseEntity<Void> updateProject(@PathVariable("projectid")Long projectId,
                                               @RequestBody @Valid UpdateProjectRequest request){
         projectService.updateProject(projectId, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    // 프로젝트 이미지 변경
+    @PatchMapping("/{projectid}/images")
+    public ResponseEntity<Void> updateProjectImg(@PathVariable("projectid")Long projectId, MultipartFile projectImg){
+        projectService.updateProjectImg(projectId, projectImg);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
     // 프로젝트 삭제
-    @DeleteMapping("{projectid}")
+    @DeleteMapping("/{projectid}")
     public ResponseEntity<Void> deleteProject(@PathVariable("projectid")Long projectId){
         projectService.deleteProject(projectId);
         return ResponseEntity.status(HttpStatus.OK).build();
