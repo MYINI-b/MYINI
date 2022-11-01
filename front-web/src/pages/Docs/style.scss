@@ -1,0 +1,54 @@
+@import 'variables.scss';
+
+.docs-wrapper {
+  padding-top: rem(100);
+  padding-left: rem(200);
+  padding-right: rem(200);
+  .docs-title-container {
+    display: flex;
+
+    .docs-title {
+      padding: 0.5rem;
+      padding-right: 1rem;
+      padding-left: 1rem;
+      border-top: 2px solid $primary;
+      border-right: 1px solid $primary;
+      border-left: 1px solid $primary;
+      border-top-right-radius: 15px;
+      border-top-left-radius: 15px;
+    }
+
+    // .docs-title:hover {
+    //   background-color: $secondary;
+    //   cursor: pointer;
+    //   color: white;
+    //   padding: 0.5rem;
+    //   padding-right: 1rem;
+    //   padding-left: 1rem;
+    //   border-radius: 15px;
+    // }
+
+    .docs-title.select {
+      background-color: $secondary;
+      color: white;
+      padding: 0.5rem;
+      padding-right: 1rem;
+      padding-left: 1rem;
+      border-top-right-radius: 15px;
+      border-top-left-radius: 15px;
+    }
+  }
+  .docs-content-container {
+    @include FLEX-CENTER;
+    .docs-content {
+      width: 100%;
+      height: 100%;
+      background-color: $white;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      border-bottom-left-radius: 10px;
+      border: 1px solid $light-gray;
+      box-shadow: $shadow;
+    }
+  }
+}
