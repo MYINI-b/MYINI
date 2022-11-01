@@ -1,11 +1,19 @@
 package com.ssafy.myini.initializer.service;
 
+import com.ssafy.myini.apidocs.domain.ApiController;
+import com.ssafy.myini.apidocs.domain.ApiControllerRepository;
+import com.ssafy.myini.apidocs.domain.ApiRepository;
+import com.ssafy.myini.apidocs.query.ApiDocsQueryRepository;
+import com.ssafy.myini.apidocs.response.ApiControllerListResponse;
+import com.ssafy.myini.apidocs.response.ProjectInfoListResponse;
+import com.ssafy.myini.apidocs.service.ApiDocsService;
 import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.erd.domain.entity.ErdTable;
 import com.ssafy.myini.erd.domain.entity.TableColumn;
 import com.ssafy.myini.erd.domain.repository.ErdTableRepository;
 import com.ssafy.myini.erd.domain.repository.TableColumnRepository;
 import com.ssafy.myini.erd.response.ErdTableListResponse;
+import com.ssafy.myini.fileio.ControllerWrite;
 import com.ssafy.myini.fileio.EntityWrite;
 import com.ssafy.myini.fileio.InitProjectDownload;
 import com.ssafy.myini.fileio.RepositoryWrite;
@@ -36,6 +44,7 @@ public class InitializerServiceImpl implements InitializerService {
     private final ErdTableRepository erdTableRepository;
     private final TableColumnRepository tableColumnRepository;
     private final S3Uploader s3Uploader;
+    private final ApiDocsQueryRepository apiDocsQueryRepository;
 
     @Override
     @Transactional
@@ -77,7 +86,9 @@ public class InitializerServiceImpl implements InitializerService {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
         List<ErdTable> erdTables = erdTableRepository.findAllByProject(project);
         List<ErdTableListResponse> erdTableListResponses = erdTables.stream().map(ErdTableListResponse::from).collect(Collectors.toList());
-
+        List<ProjectInfoListResponse> projectInfoListResponses = apiDocsQueryRepository.findAll(project).stream()
+                .map(ProjectInfoListResponse::from)
+                .collect(Collectors.toList());
 
         //Entity 작성
         for (ErdTableListResponse erdTableListRespons : erdTableListResponses) {
@@ -88,6 +99,10 @@ public class InitializerServiceImpl implements InitializerService {
         for (ErdTableListResponse erdTableListResponse : erdTableListResponses) {
             RepositoryWrite.repositoryWrite(erdTableListResponse, initializerRequest);
         }
+
+        // apicontroller 별로 생성
+        projectInfoListResponses.forEach(projectInfoListResponse -> ControllerWrite.controllerWrite(projectInfoListResponse, initializerRequest));
+
 
         return null;
     }
