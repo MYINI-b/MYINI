@@ -21,10 +21,15 @@
 
     .api-table-row {
       width: 100%;
+      cursor: pointer;
+      transition: 0.3s ease;
       @include FLEX-ALIGN-CENTER;
 
       &.content {
-        margin: rem(12) 0;
+        padding: rem(12) 0;
+        &:hover {
+          background-color: $fourth;
+        }
       }
     }
 

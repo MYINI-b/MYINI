@@ -41,7 +41,6 @@ import static com.ssafy.myini.NotFoundException.*;
 @Transactional
 public class InitializerServiceImpl implements InitializerService {
     private final ProjectRepository projectRepository;
-    private final MemberRepository memberRepository;
     private final ErdTableRepository erdTableRepository;
     private final TableColumnRepository tableColumnRepository;
     private final S3Uploader s3Uploader;
@@ -90,7 +89,8 @@ public class InitializerServiceImpl implements InitializerService {
         List<ProjectInfoListResponse> projectInfoListResponses = apiDocsQueryRepository.findAll(project).stream()
                 .map(ProjectInfoListResponse::from)
                 .collect(Collectors.toList());
-         //Entity 작성
+
+        //Entity 작성
         for (ErdTableListResponse erdTableListRespons : erdTableListResponses) {
             EntityWrite.entityWrite(erdTableListResponses, erdTableListRespons, initializerRequest);
         }
@@ -108,16 +108,10 @@ public class InitializerServiceImpl implements InitializerService {
     }
 
     @Override
-    public Void myIniDownload() {
-        ByteArrayOutputStream byteArrayOutputStream = s3Uploader.downloadFile("test.jpg");
+    public ByteArrayOutputStream myIniDownload() {
+        ByteArrayOutputStream byteArrayOutputStream = s3Uploader.downloadFile("front Setup 0.1.0.exe");
 
-//        .contentType(MediaType.IMAGE_JPEG) //.APPLICATION_OCTET_STREAM
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "test.jpg" + "\"")
-//                .body(byteArrayOutputStream.toByteArray())
-
-
-
-        return null;
+        return byteArrayOutputStream;
     }
 
 }

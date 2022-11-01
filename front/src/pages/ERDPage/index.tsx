@@ -3,6 +3,7 @@ import MainHeader from 'components/MainHeader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 // import Stepper from './Stepper';
+import GenerateVuerd from './GenerateVuerd';
 
 export default function ERDPage() {
   return (
@@ -17,7 +18,9 @@ export default function ERDPage() {
           </button>
         </section>
 
-        <section className="erd-tool">noting here</section>
+        <section className="erd-tool">
+          <GenerateVuerd />
+        </section>
       </div>
     </div>
   );
