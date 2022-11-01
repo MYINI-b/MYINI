@@ -93,16 +93,10 @@ public class InitializerServiceImpl implements InitializerService {
     }
 
     @Override
-    public Void myIniDownload() {
-        ByteArrayOutputStream byteArrayOutputStream = s3Uploader.downloadFile("test.jpg");
+    public ByteArrayOutputStream myIniDownload() {
+        ByteArrayOutputStream byteArrayOutputStream = s3Uploader.downloadFile("front Setup 0.1.0.exe");
 
-//        .contentType(MediaType.IMAGE_JPEG) //.APPLICATION_OCTET_STREAM
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "test.jpg" + "\"")
-//                .body(byteArrayOutputStream.toByteArray())
-
-
-
-        return null;
+        return byteArrayOutputStream;
     }
 
 }
