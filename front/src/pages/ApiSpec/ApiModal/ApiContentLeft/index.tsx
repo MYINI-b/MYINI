@@ -1,10 +1,12 @@
 import { useState, useCallback, useEffect, Dispatch } from 'react';
 import './style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { faClose, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 import { QUERY } from 'types/ApiSpec';
+import { ELEMENTPOS } from 'types/Requirement';
 import ApiMethodList from '../ApiMethodList';
+import PathTypeModal from './PathTypeModal';
 
 interface Props {
   pathVarList: QUERY[];
@@ -47,17 +49,24 @@ export default function ApiContentLeft({
 }: Props) {
   const [isPathVar, setIsPathVar] = useState(true);
   const [isApiMethodListOpen, setIsApiMethodListOpen] = useState(false);
+  const [isPathTypeOpen, setIsPathTypeOpen] = useState(false);
+  const [clickElementPos, setClickElementPos] = useState<ELEMENTPOS>({
+    x: 0,
+    y: 0,
+    width: 0,
+  });
+  const [selectIdx, setSelectIdx] = useState(0);
 
   const onKeyChange = useCallback(
     (idx: number, e: any) => {
       const copyList = isPathVar ? [...pathVarList] : [...queryList];
       const copyObj = { ...copyList[idx] };
-      copyObj.key = e.target.value;
+      copyObj.key = e.target.value.trim();
       copyList[idx] = copyObj;
 
       if (isPathVar) {
         if (e.target.value !== '' && idx === pathVarList.length - 1) {
-          copyList.push({ key: '', type: '' });
+          copyList.push({ key: '', type: 'PATH' });
         }
 
         setPathVarList([...copyList]);
@@ -68,7 +77,7 @@ export default function ApiContentLeft({
         copyList[idx] = copyObj;
 
         if (e.target.value !== '' && idx === queryList.length - 1) {
-          copyList.push({ key: '', type: '' });
+          copyList.push({ key: '', type: 'STRING' });
         }
 
         setQueryList([...copyList]);
@@ -83,7 +92,7 @@ export default function ApiContentLeft({
 
       if (isPathVar) {
         if (idx === 0 && pathVarList.length === 1) {
-          setPathVarList([{ key: '', type: '' }]);
+          setPathVarList([{ key: '', type: 'PATH' }]);
           return;
         }
 
@@ -93,7 +102,7 @@ export default function ApiContentLeft({
         const copyList = [...queryList];
 
         if (idx === 0 && queryList.length === 1) {
-          setQueryList([{ key: '', type: '' }]);
+          setQueryList([{ key: '', type: 'STRING' }]);
           return;
         }
 
@@ -104,11 +113,24 @@ export default function ApiContentLeft({
     [pathVarList, isPathVar, queryList],
   );
 
+  const onPathTypeClick = useCallback((e: any, idx: number) => {
+    setIsPathTypeOpen(true);
+    setClickElementPos({
+      y: e.target.getBoundingClientRect().top + 26,
+      x: e.target.getBoundingClientRect().left,
+      width: e.target.offsetWidth,
+    });
+    setSelectIdx(idx);
+  }, []);
+
   useEffect(() => {
     let newApiUrl = apiBaseUrl;
 
     pathVarList.forEach((e) => {
-      if (e.key !== '') newApiUrl += `/{${e.key}}`;
+      if (e.key !== '') {
+        if (e.type === 'PATH') newApiUrl += `/${e.key}`;
+        else newApiUrl += `/{${e.key}}`;
+      }
     });
 
     newApiUrl +=
@@ -137,7 +159,7 @@ export default function ApiContentLeft({
         className="api-add-input"
         placeholder="API Name"
         value={apiName}
-        onChange={(e) => setApiName(e.target.value)}
+        onChange={(e) => setApiName(e.target.value.trim())}
         required
       />
       <input
@@ -145,7 +167,7 @@ export default function ApiContentLeft({
         className="api-add-input"
         placeholder="Method Name"
         value={methodName}
-        onChange={(e) => setMethodName(e.target.value)}
+        onChange={(e) => setMethodName(e.target.value.trim())}
         required
       />
       <input
@@ -212,11 +234,24 @@ export default function ApiContentLeft({
                       onChange={(e) => onKeyChange(i, e)}
                       value={pathvar.key}
                     />
-                    <input
-                      type="text"
-                      className="api-query-input"
-                      placeholder="TYPE"
-                    />
+                    <div className="api-query-div">
+                      <label onClick={(e) => onPathTypeClick(e, i)}>
+                        {pathvar.type === '' ? 'TYPE' : pathvar.type}{' '}
+                        &nbsp;&nbsp;
+                      </label>
+                      <FontAwesomeIcon icon={faChevronDown} />
+                      {isPathTypeOpen && (
+                        <PathTypeModal
+                          setIsPathTypeOpen={setIsPathTypeOpen}
+                          clickElementPos={clickElementPos}
+                          list={pathVarList}
+                          setList={setPathVarList}
+                          selectIdx={selectIdx}
+                          isPathVar={isPathVar}
+                        />
+                      )}
+                    </div>
+
                     <FontAwesomeIcon
                       icon={faClose}
                       className="api-query-delete"
@@ -235,11 +270,23 @@ export default function ApiContentLeft({
                       onChange={(e) => onKeyChange(i, e)}
                       value={query.key}
                     />
-                    <input
-                      type="text"
-                      className="api-query-input"
-                      placeholder="TYPE"
-                    />
+                    <div className="api-query-div">
+                      <label onClick={(e) => onPathTypeClick(e, i)}>
+                        {query.type === '' ? 'TYPE' : query.type}
+                        &nbsp;&nbsp;
+                      </label>
+                      <FontAwesomeIcon icon={faChevronDown} />
+                      {isPathTypeOpen && (
+                        <PathTypeModal
+                          setIsPathTypeOpen={setIsPathTypeOpen}
+                          clickElementPos={clickElementPos}
+                          list={queryList}
+                          setList={setQueryList}
+                          selectIdx={selectIdx}
+                          isPathVar={isPathVar}
+                        />
+                      )}
+                    </div>
                     <FontAwesomeIcon
                       icon={faClose}
                       className="api-query-delete"

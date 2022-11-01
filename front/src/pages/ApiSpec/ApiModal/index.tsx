@@ -12,7 +12,6 @@ interface Props {
   controllerIdx: number;
   apiRowIdx: number;
   setIsApiModalOpen: Dispatch<React.SetStateAction<boolean>>;
-  dataType: string[];
   objDataType: any[];
   apis: API[][];
   setApis: React.Dispatch<React.SetStateAction<API[][]>>;
@@ -23,7 +22,6 @@ export default function ApiModal({
   controllerIdx,
   apiRowIdx,
   setIsApiModalOpen,
-  dataType,
   objDataType,
   apis,
   setApis,
@@ -40,10 +38,10 @@ export default function ApiModal({
   const [resVarName, setResVarName] = useState('');
 
   const [pathVarList, setPathVarList] = useState<Array<QUERY>>([
-    { key: '', type: '' },
+    { key: '', type: 'PATH' },
   ]);
   const [queryList, setQueryList] = useState<Array<QUERY>>([
-    { key: '', type: '' },
+    { key: '', type: 'STRING' },
   ]);
 
   useEffect(() => {
@@ -153,7 +151,6 @@ export default function ApiModal({
           />
           <ApiContentRight
             apiMethod={apiMethod}
-            dataType={dataType}
             objDataType={objDataType}
             resVarName={resVarName}
             reqVarName={reqVarName}

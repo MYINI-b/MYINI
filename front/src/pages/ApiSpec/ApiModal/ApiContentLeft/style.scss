@@ -131,9 +131,12 @@
         .api-query-input {
           flex: 1;
           width: 100%;
+          height: rem(24);
           color: $gray;
           font-size: rem(20);
           font-family: $eng-content;
+          line-height: 1;
+          line-height: rem(24);
           background-color: transparent;
           border: none;
 
@@ -141,6 +144,34 @@
             color: $gray;
             font-size: rem(24);
             font-family: $eng-title;
+            transform: translateY(17%);
+            @include FLEX-ALIGN-CENTER;
+          }
+          &::-webkit-input-placeholder {
+            transform: translateY(17%);
+          }
+        }
+
+        .api-query-div {
+          flex: 1;
+          width: 100%;
+          color: $gray;
+          font-size: rem(24);
+          font-family: $eng-title;
+          line-height: 1;
+          background-color: transparent;
+
+          @include FLEX-ALIGN-CENTER;
+
+          label {
+            width: 100%;
+            cursor: pointer;
+          }
+          svg {
+            margin: 0 rem(6);
+            font-size: rem(16);
+            cursor: pointer;
+            cursor: pointer;
           }
         }
         .api-query-delete {

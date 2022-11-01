@@ -14,14 +14,12 @@ import DataTypeList from 'components/DataTypeList';
 
 interface Props {
   setIsDatatypeModalOpen: Dispatch<React.SetStateAction<boolean>>;
-  dataType: string[];
   objDataType: any[];
   setObjDataType: Dispatch<React.SetStateAction<any[]>>;
 }
 
 export default function DatatypeModal({
   setIsDatatypeModalOpen,
-  dataType,
   objDataType,
   setObjDataType,
 }: Props) {
@@ -131,7 +129,7 @@ export default function DatatypeModal({
   );
 
   return (
-    <section className="modal-empty">
+    <section className="modal-empty" onClick={closeModal}>
       <div
         className="datatype-modal-content"
         onClick={(e) => e.stopPropagation()}
@@ -266,7 +264,6 @@ export default function DatatypeModal({
         <DataTypeList
           setIsDatatypeListOpen={setIsDatatypeListOpen}
           mousePos={mousePos}
-          dataType={dataType}
           objDataType={objDataType}
           selectInfo={selectInfo}
           newObjAttribute={newObjAttribute}

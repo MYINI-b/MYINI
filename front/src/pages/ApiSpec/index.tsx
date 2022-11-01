@@ -16,83 +16,12 @@ import DatatypeModal from './DatatypeModal';
 
 export default function ApiSpec() {
   const [step, setStep] = useState(1);
-  const [dataType, setDataType] = useState<Array<string>>([
-    'string',
-    'int',
-    'long',
-    'double',
-    'float',
-    'datetime',
-    'char',
-    'boolean',
-    'short',
-    'byte',
-  ]);
   const [objDataType, setObjDataType] = useState<Array<any>>([]);
   const [controllers, setControllers] = useState<Array<CONTROLLER>>([]); // 컨트롤러 목록
   const [controllerIdx, setControllerIdx] = useState(-1); // 현재 선택된 컨트롤러 인덱스
   const [clickControllerIdx, setClickControllerIdx] = useState(0); // 현재 선택된 컨트롤러 인덱스
 
-  const [apis, setApis] = useState<Array<Array<API>>>([
-    // [
-    //   {
-    //     id: 1,
-    //     apiName: '운동목록조회',
-    //     desc: '운동목록조회를 위한 api 입니다.',
-    //     methodName: 'getExerciseList',
-    //     url: '/exercises',
-    //     method: 'GET',
-    //     code: 200,
-    //     reqVarName: 'reqvarname',
-    //     resVarName: 'resvarname',
-    //     pathList: [],
-    //     pathVarList: [],
-    //     queryList: [],
-    //   },
-    //   {
-    //     id: 2,
-    //     apiName: '운동목록조회',
-    //     desc: '운동목록조회를 위한 api 입니다.',
-    //     methodName: 'getExerciseList',
-    //     url: '/exercises',
-    //     method: 'GET',
-    //     code: 200,
-    //     reqVarName: 'reqvarname',
-    //     resVarName: 'resvarname',
-    //     pathList: [],
-    //     pathVarList: [],
-    //     queryList: [],
-    //   },
-    //   {
-    //     id: 3,
-    //     apiName: '운동목록조회',
-    //     desc: '운동목록조회를 위한 api 입니다.',
-    //     methodName: 'getExerciseList',
-    //     url: '/exercises',
-    //     method: 'GET',
-    //     code: 200,
-    //     reqVarName: 'reqvarname',
-    //     resVarName: 'resvarname',
-    //     pathList: [],
-    //     pathVarList: [],
-    //     queryList: [],
-    //   },
-    //   {
-    //     id: 4,
-    //     apiName: '운동목록조회',
-    //     desc: '운동목록조회를 위한 api 입니다.',
-    //     methodName: 'getExerciseList',
-    //     url: '/exercises',
-    //     method: 'GET',
-    //     code: 200,
-    //     reqVarName: 'reqvarname',
-    //     resVarName: 'resvarname',
-    //     pathList: [],
-    //     pathVarList: [],
-    //     queryList: [],
-    //   },
-    // ],
-  ]); // [controllerIdx]의 api 목록
+  const [apis, setApis] = useState<Array<Array<API>>>([]); // [controllerIdx]의 api 목록
   const [isControllerAddModalOpen, setIsControllerAddModalOpen] =
     useState(false);
   const [isDatatypeModalOpen, setIsDatatypeModalOpen] = useState(false);
@@ -163,7 +92,6 @@ export default function ApiSpec() {
       <APIList
         controllers={controllers}
         controllerIdx={controllerIdx}
-        dataType={dataType}
         objDataType={objDataType}
         apis={apis}
         setApis={setApis}
@@ -184,7 +112,6 @@ export default function ApiSpec() {
       {isDatatypeModalOpen && (
         <DatatypeModal
           setIsDatatypeModalOpen={setIsDatatypeModalOpen}
-          dataType={dataType}
           objDataType={objDataType}
           setObjDataType={setObjDataType}
         />

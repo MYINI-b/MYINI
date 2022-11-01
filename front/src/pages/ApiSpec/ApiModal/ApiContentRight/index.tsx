@@ -4,7 +4,6 @@ import './style.scss';
 import { MOUSEPOS, ATTRIBUTE } from 'types/ApiSpec';
 
 interface Props {
-  dataType: string[];
   objDataType: any[];
   apiMethod: string;
   resVarName: string;
@@ -14,7 +13,6 @@ interface Props {
 }
 
 export default function ApiContentRight({
-  dataType,
   objDataType,
   apiMethod,
   resVarName,
@@ -88,7 +86,7 @@ export default function ApiContentRight({
                 }
                 disabled={apiMethod === 'GET' || apiMethod === 'DELETE'}
                 value={reqVarName}
-                onChange={(e) => setReqVarName(e.target.value)}
+                onChange={(e) => setReqVarName(e.target.value.trim())}
               />
             </div>
             <div className="content-right-detail-boxcontent">
@@ -167,7 +165,7 @@ export default function ApiContentRight({
                 className="content-right-boxcontent-input"
                 placeholder="변수명을 입력해주세요"
                 value={resVarName}
-                onChange={(e) => setResVarName(e.target.value)}
+                onChange={(e) => setResVarName(e.target.value.trim())}
                 required={apiMethod === 'GET'}
                 disabled={apiMethod !== 'GET'}
               />
@@ -226,7 +224,6 @@ export default function ApiContentRight({
         <DataTypeList
           setIsDatatypeListOpen={setIsDatatypeListOpen}
           mousePos={mousePos}
-          dataType={dataType}
           objDataType={objDataType}
           selectInfo={
             isReq

@@ -12,7 +12,6 @@ interface Props {
   controllerIdx: number;
   apis: API[][];
   setApis: React.Dispatch<React.SetStateAction<API[][]>>;
-  dataType: string[];
   objDataType: any[];
 }
 
@@ -21,7 +20,6 @@ export default function APIList({
   controllerIdx,
   apis,
   setApis,
-  dataType,
   objDataType,
 }: Props) {
   const [isApiModalOpen, setIsApiModalOpen] = useState(false);
@@ -99,7 +97,6 @@ export default function APIList({
           controllers={controllers}
           controllerIdx={controllerIdx}
           apiRowIdx={apiRowIdx}
-          dataType={dataType}
           objDataType={objDataType}
           apis={apis}
           setApis={setApis}

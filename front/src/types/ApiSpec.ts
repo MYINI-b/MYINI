@@ -18,8 +18,8 @@ export interface CONTROLLER {
 }
 
 export interface QUERY {
-  key: '';
-  type: '';
+  key: string;
+  type: string;
 }
 
 export interface MOUSEPOS {

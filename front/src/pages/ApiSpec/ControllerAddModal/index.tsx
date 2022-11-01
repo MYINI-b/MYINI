@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dispatch, useCallback, useEffect, useState } from 'react';
 
 import useInput from 'hooks/useInput';
+import useNoSpaceInput from 'hooks/useNoSpaceInput';
 import './style.scss';
 import { CONTROLLER, API } from 'types/ApiSpec';
 
@@ -26,11 +27,11 @@ export default function ControllerAddModal({
   setApis,
 }: Props) {
   const [controllerName, onControllerNameChange, setControllerName] =
-    useInput('');
+    useNoSpaceInput('');
   const [controllerDesc, onControllerDescChange, setControllerDesc] =
     useInput('');
-  const [controllerBaseURL, onControllerBaseURLChange, setControllerBaseURL] =
-    useInput('');
+  const [controllerBaseURL, setControllerBaseURL] = useState('');
+
   const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
@@ -46,6 +47,14 @@ export default function ControllerAddModal({
   const closeModal = useCallback(() => {
     setIsControllerAddModalOpen(false);
   }, [setIsControllerAddModalOpen]);
+
+  const onControllerBaseURLChange = useCallback(
+    (e: any) => {
+      const newBaseURL = e.target.value.substring(1);
+      setControllerBaseURL(newBaseURL.trim());
+    },
+    [controllerBaseURL],
+  );
 
   const addController = useCallback(
     (e: any) => {
@@ -120,7 +129,7 @@ export default function ControllerAddModal({
           required
           placeholder="Base URL"
           onChange={onControllerBaseURLChange}
-          value={controllerBaseURL}
+          value={`/${controllerBaseURL}`}
         />
         <div className="controller-btn-wrapper">
           {isEdit ? (
