@@ -11,7 +11,7 @@
 :sectlinks:
 :sectanchors:
 
-[[Member]]
+[[API]]
 === Member
 ==== 자신의 회원정보를 조회한다
 ===== 요청
