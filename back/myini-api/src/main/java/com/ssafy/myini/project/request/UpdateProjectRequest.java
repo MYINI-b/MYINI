@@ -12,7 +12,6 @@ import java.time.LocalDate;
 public class UpdateProjectRequest {
     private String projectName;
     private String projectDescription;
-    private String projectImg;
     private LocalDate projectStartedDate;
     private LocalDate projectFinishedDate;
     private String projectGithubUrl;

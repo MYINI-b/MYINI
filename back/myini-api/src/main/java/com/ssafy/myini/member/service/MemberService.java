@@ -13,5 +13,5 @@ public interface MemberService {
 
     List<CrewResponse> findCrewById(Member member);
 
-    void updateMemberProfileImg(Member member, MultipartFile profileImg);
+    void updateMemberProfileImg(Member member, MultipartFile img);
 }

@@ -1,5 +1,5 @@
-:basedir: {docdir}/
-:snippets: {basedir}build/generated-snippets
+:basedir: {docdir}
+:snippets: {basedir}/build/generated-snippets
 
 = RESTFUL Notes API Guide
 :doctype: requirementdocs

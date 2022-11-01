@@ -33,7 +33,6 @@ import static com.ssafy.myini.NotFoundException.*;
 @Transactional
 public class InitializerServiceImpl implements InitializerService {
     private final ProjectRepository projectRepository;
-    private final MemberRepository memberRepository;
     private final ErdTableRepository erdTableRepository;
     private final TableColumnRepository tableColumnRepository;
     private final S3Uploader s3Uploader;
@@ -78,6 +77,7 @@ public class InitializerServiceImpl implements InitializerService {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
         List<ErdTable> erdTables = erdTableRepository.findAllByProject(project);
         List<ErdTableListResponse> erdTableListResponses = erdTables.stream().map(ErdTableListResponse::from).collect(Collectors.toList());
+
 
         //Entity 작성
         for (ErdTableListResponse erdTableListRespons : erdTableListResponses) {
