@@ -13,8 +13,10 @@
     @include FLEX-COLUMN;
 
     .content-right-title {
+      padding: 0 rem(16);
       font-size: rem(24);
       font-family: $eng-title;
+      @include FLEX-CENTER;
     }
 
     .content-right-box {

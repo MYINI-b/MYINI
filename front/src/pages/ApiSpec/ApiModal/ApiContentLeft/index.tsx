@@ -5,6 +5,7 @@ import { faClose, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 import { QUERY } from 'types/ApiSpec';
 import { ELEMENTPOS } from 'types/Requirement';
+import Tooltip from 'components/Tooltip';
 import ApiMethodList from '../ApiMethodList';
 import PathTypeModal from './PathTypeModal';
 
@@ -162,14 +163,17 @@ export default function ApiContentLeft({
         onChange={(e) => setApiName(e.target.value.trim())}
         required
       />
-      <input
-        type="text"
-        className="api-add-input"
-        placeholder="Method Name"
-        value={methodName}
-        onChange={(e) => setMethodName(e.target.value.trim())}
-        required
-      />
+      <Tooltip text="Camel Case 양식으로 작성해주세요.">
+        <input
+          type="text"
+          className="api-add-input"
+          placeholder="Method Name"
+          value={methodName}
+          onChange={(e) => setMethodName(e.target.value.trim())}
+          required
+        />
+      </Tooltip>
+
       <input
         type="text"
         className="api-add-input"
@@ -208,20 +212,22 @@ export default function ApiContentLeft({
       </div>
 
       <div className="api-query-wrapper">
-        <div className="api-query-title-container">
-          <h3
-            className={`api-query-title ${isPathVar && 'select'}`}
-            onClick={() => setIsPathVar(true)}
-          >
-            PATH VARIABLES
-          </h3>
-          <h3
-            className={`api-query-title ${!isPathVar && 'select'}`}
-            onClick={() => setIsPathVar(false)}
-          >
-            QUERY
-          </h3>
-        </div>
+        <Tooltip text="PATH는 소문자 복수형으로, PATH VARIABLE은 소문자로 작성해주세요.">
+          <div className="api-query-title-container">
+            <h3
+              className={`api-query-title ${isPathVar && 'select'}`}
+              onClick={() => setIsPathVar(true)}
+            >
+              RESOURCE
+            </h3>
+            <h3
+              className={`api-query-title ${!isPathVar && 'select'}`}
+              onClick={() => setIsPathVar(false)}
+            >
+              QUERY
+            </h3>
+          </div>
+        </Tooltip>
         <div className="api-query-content-container">
           {isPathVar
             ? pathVarList.map((pathvar, i) => {
@@ -237,7 +243,6 @@ export default function ApiContentLeft({
                     <div className="api-query-div">
                       <label onClick={(e) => onPathTypeClick(e, i)}>
                         {pathvar.type === '' ? 'TYPE' : pathvar.type}{' '}
-                        &nbsp;&nbsp;
                       </label>
                       <FontAwesomeIcon icon={faChevronDown} />
                       {isPathTypeOpen && (
@@ -273,7 +278,6 @@ export default function ApiContentLeft({
                     <div className="api-query-div">
                       <label onClick={(e) => onPathTypeClick(e, i)}>
                         {query.type === '' ? 'TYPE' : query.type}
-                        &nbsp;&nbsp;
                       </label>
                       <FontAwesomeIcon icon={faChevronDown} />
                       {isPathTypeOpen && (

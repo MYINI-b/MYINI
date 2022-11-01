@@ -30,7 +30,9 @@
     @include STRETCH;
     @include FLEX-ALIGN-CENTER;
   }
+
   .api-add-input {
+    width: 100%;
     padding: rem(18) 0;
     font-size: rem(24);
     font-family: $eng-content;
@@ -49,7 +51,7 @@
     margin-top: rem(18);
     padding: rem(6) rem(10);
     font-weight: bold;
-    font-size: rem(20);
+    font-size: rem(18);
     font-family: $eng-content;
   }
 

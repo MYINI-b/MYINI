@@ -4,6 +4,7 @@ import { Dispatch, useCallback, useEffect, useState } from 'react';
 
 import useInput from 'hooks/useInput';
 import useNoSpaceInput from 'hooks/useNoSpaceInput';
+import Tooltip from 'components/Tooltip';
 import './style.scss';
 import { CONTROLLER, API } from 'types/ApiSpec';
 
@@ -123,14 +124,16 @@ export default function ControllerAddModal({
           onChange={onControllerDescChange}
           value={controllerDesc}
         />
-        <input
-          type="text"
-          className="controller-add-input"
-          required
-          placeholder="Base URL"
-          onChange={onControllerBaseURLChange}
-          value={`/${controllerBaseURL}`}
-        />
+        <Tooltip text="소문자 복수형으로 작성해주세요.">
+          <input
+            type="text"
+            className="controller-add-input"
+            required
+            placeholder="Base URL"
+            onChange={onControllerBaseURLChange}
+            value={`/${controllerBaseURL}`}
+          />
+        </Tooltip>
         <div className="controller-btn-wrapper">
           {isEdit ? (
             <>

@@ -4,7 +4,7 @@
   @include BORDER-PAPER;
   position: fixed;
   align-items: center;
-  width: 100%;
+  width: fit-content;
   max-height: rem(200);
   padding: rem(12) rem(12);
   overflow-y: auto;
@@ -27,7 +27,7 @@
     padding: rem(6) 0;
     overflow: hidden;
     color: $gray;
-    font-size: rem(20);
+    font-size: rem(16);
     font-family: $eng-title;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -35,6 +35,12 @@
     @include FLEX-CENTER;
 
     &:hover {
+      color: $black;
+      font-weight: bold;
+      background-color: $light-gray;
+    }
+
+    &.select {
       color: $black;
       font-weight: bold;
       background-color: $light-gray;

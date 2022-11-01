@@ -26,7 +26,7 @@ export default function PathTypeModal({
   useEffect(() => {
     modalContainer.current.style.left = `${clickElementPos.x}px`;
     modalContainer.current.style.top = `${clickElementPos.y}px`;
-    modalContainer.current.style.width = `${clickElementPos.width}px`;
+    // modalContainer.current.style.width = `${clickElementPos.width}px`;
   }, [clickElementPos]);
 
   const onPathTypeClick = useCallback(
@@ -54,7 +54,9 @@ export default function PathTypeModal({
             ? PATHVARIABLE_TYPE.map((type, i) => {
                 return (
                   <li
-                    className={`pathtype-modal-row `}
+                    className={`pathtype-modal-row ${
+                      list[selectIdx].type === type && 'select'
+                    }`}
                     key={i}
                     onClick={(e) => onPathTypeClick(e, type)}
                   >
@@ -65,7 +67,9 @@ export default function PathTypeModal({
             : DATATYPE.map((type, i) => {
                 return (
                   <li
-                    className={`pathtype-modal-row `}
+                    className={`pathtype-modal-row ${
+                      list[selectIdx].type === type && 'select'
+                    }`}
                     key={i}
                     onClick={(e) => onPathTypeClick(e, type)}
                   >

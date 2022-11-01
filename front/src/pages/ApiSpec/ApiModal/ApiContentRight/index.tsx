@@ -2,6 +2,7 @@ import { useState, useCallback, Dispatch } from 'react';
 import DataTypeList from 'components/DataTypeList';
 import './style.scss';
 import { MOUSEPOS, ATTRIBUTE } from 'types/ApiSpec';
+import Tooltip from 'components/Tooltip';
 
 interface Props {
   objDataType: any[];
@@ -56,7 +57,10 @@ export default function ApiContentRight({
   return (
     <div className="api-add-content-right">
       <section className="content-section">
-        <h1 className="content-right-title">REQUEST BODY</h1>
+        <Tooltip text="변수명은 Camel Case로 작성해주세요.">
+          <h1 className="content-right-title">REQUEST BODY</h1>
+        </Tooltip>
+
         <div
           className={`content-right-box ${
             (apiMethod === 'GET' || apiMethod === 'DELETE') && 'disabled'
