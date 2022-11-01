@@ -2,10 +2,10 @@ FROM node:16.16.0
 
 WORKDIR /usr/src/app
 
-COPY ../front-web/package.json ./
+COPY ../front/package.json ./
 
 RUN npm install
 
-COPY ../front-web ./
+COPY ../front ./
 
 CMD ["npm", "run", "start"]
