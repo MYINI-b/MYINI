@@ -211,7 +211,7 @@
 
 //fourth section
 .fourth-section {
-  height: 100vh;
+  height: 80vh;
   width: 100%;
   @include FLEX-CENTER;
   position: relative;
@@ -264,7 +264,7 @@
     }
   }
 
-  .wave-container {
+  .reverse-wave-container {
     position: absolute;
     bottom: 0;
     z-index: 100;
@@ -275,7 +275,7 @@
     margin-top: 6rem;
   }
 
-  .wave {
+  .reverse-wave {
     position: absolute;
     top: -1096%;
     left: -23%;
@@ -291,12 +291,12 @@
     animation: drift 8000ms infinite linear;
   }
 
-  .wave.-three {
+  .reverse-wave.-three {
     z-index: 0;
     animation: drift 5000ms infinite linear;
   }
 
-  .wave.-two {
+  .reverse-wave.-two {
     z-index: 0;
     background: $secondary;
     opacity: 0.1;
@@ -314,7 +314,37 @@
 }
 
 .footer-container {
-  height: 40vh;
+  height: 35vh;
   width: 100%;
-  background-color: $primary;
+  background-color: $secondary;
+  position: relative;
+
+  .footer-header-container {
+    padding: 2rem;
+
+    .footer-header-title {
+      margin-bottom: 1rem;
+    }
+
+    .footer-header-content {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+
+      .footer-content {
+        font-size: rem(15);
+      }
+    }
+  }
+
+  .footer-footer {
+    position: absolute;
+    bottom: 0;
+    height: 3vh;
+    width: 100%;
+    padding-bottom: 1rem;
+    font-size: rem(13);
+    color: $light-gray;
+    @include FLEX-COLUMN;
+    @include FLEX-CENTER;
+  }
 }

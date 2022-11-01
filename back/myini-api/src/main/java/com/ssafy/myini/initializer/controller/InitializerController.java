@@ -18,7 +18,7 @@ import java.io.ByteArrayOutputStream;
 @RequiredArgsConstructor
 public class InitializerController {
     private final InitializerService initializerService;
-    private final S3Uploader s3Uploader;
+//    private final S3Uploader s3Uploader;
 
     @GetMapping("/{projectid}/ispossible")
     public ResponseEntity<InitializerPossibleResponse> initializerIsPossible(@PathVariable("projectid") Long projectId){
@@ -37,13 +37,11 @@ public class InitializerController {
 
     @GetMapping("/downloads")
     public ResponseEntity<byte[]> myIniDownload(){
-        ByteArrayOutputStream byteArrayOutputStream = s3Uploader.downloadFile("test.jpg");
+        ByteArrayOutputStream byteArrayOutputStream = initializerService.myIniDownload();
 
         return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG) //.APPLICATION_OCTET_STREAM
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "test.jpg" + "\"")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM) //.APPLICATION_OCTET_STREAM
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "front Setup 0.1.0.exe" + "\"")
                 .body(byteArrayOutputStream.toByteArray());
-
-//        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

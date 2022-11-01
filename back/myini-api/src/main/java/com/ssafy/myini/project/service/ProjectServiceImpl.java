@@ -1,6 +1,7 @@
 package com.ssafy.myini.project.service;
 
 import com.ssafy.myini.NotFoundException;
+import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.member.domain.Member;
 import com.ssafy.myini.member.domain.MemberProject;
 import com.ssafy.myini.member.domain.MemberProjectRepository;
@@ -16,6 +17,7 @@ import com.ssafy.myini.project.response.ProjectMemberResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +34,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectQueryRepository projectQueryRepository;
     private final MemberProjectRepository memberProjectRepository;
     private final MemberRepository memberRepository;
+    private final S3Uploader s3Uploader;
 
     @Transactional
     @Override
@@ -47,7 +50,7 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ProjectListResponse> findAll(Member member) {
         List<Project> findMemberProjects = projectQueryRepository.findAll(member);
         return findMemberProjects.stream()
-                .map(ProjectListResponse::from)
+                .map(ProjectListResponse :: from)
                 .collect(Collectors.toList());
     }
 
@@ -65,7 +68,21 @@ public class ProjectServiceImpl implements ProjectService {
         Project findProject = projectRepository.findById(projectId)
                 .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
 
-        findProject.updateProject(request.getProjectName(), request.getProjectDescription(), request.getProjectImg(), request.getProjectStartedDate(), request.getProjectFinishedDate(), request.getProjectGithubUrl(), request.getProjectJiraUrl(), request.getProjectNotionUrl(), request.getProjectFigmaUrl());
+        findProject.updateProject(request.getProjectName(), request.getProjectDescription(), request.getProjectStartedDate(), request.getProjectFinishedDate(), request.getProjectGithubUrl(), request.getProjectJiraUrl(), request.getProjectNotionUrl(), request.getProjectFigmaUrl());
+    }
+
+    @Override
+    public void updateProjectImg(Long projectId, MultipartFile projectImg) {
+        Project findProject = projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+
+        if (findProject.getProjectImg() != null) {
+            s3Uploader.deleteFile(s3Uploader.PROJECT_IMAGE_URL + findProject.getProjectImg());
+        }
+
+        String fileName = s3Uploader.uploadFile(projectImg, s3Uploader.PROJECT_IMAGE_URL);
+        findProject.updateProjectImg(fileName);
+
     }
 
     @Transactional

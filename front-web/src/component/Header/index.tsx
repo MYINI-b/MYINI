@@ -1,4 +1,5 @@
 import './style.scss';
+import { Link } from 'react-router-dom';
 import Logo from '../../assets/icon.png';
 
 export default function Header() {
@@ -12,12 +13,16 @@ export default function Header() {
         </div>
       </div>
       <div className="navbar">
-        <button type="button" className="nav-button">
-          Product
-        </button>
-        <button type="button" className="nav-button">
-          Docs
-        </button>
+        <Link to="/">
+          <button type="button" className="nav-button">
+            Product
+          </button>
+        </Link>
+        <Link to="/docs">
+          <button type="button" className="nav-button">
+            Docs
+          </button>
+        </Link>
         <button type="button" className="nav-button">
           Repository
         </button>

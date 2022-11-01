@@ -29,14 +29,10 @@
   .api-add-content-container {
     @include STRETCH;
     @include FLEX-ALIGN-CENTER;
-
-    .api-add-content-right {
-      @include FLEX-COLUMN;
-      flex: 1;
-      width: 100%;
-    }
   }
+
   .api-add-input {
+    width: 100%;
     padding: rem(18) 0;
     font-size: rem(24);
     font-family: $eng-content;
@@ -55,7 +51,11 @@
     margin-top: rem(18);
     padding: rem(6) rem(10);
     font-weight: bold;
-    font-size: rem(20);
+    font-size: rem(18);
     font-family: $eng-content;
+  }
+
+  .api-add-button + .api-add-button {
+    margin-left: rem(10);
   }
 }

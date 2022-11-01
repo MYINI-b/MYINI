@@ -27,7 +27,7 @@ public class ProjectListResponse {
         projectListResponse.projectMemberResponses = project.getMemberProjects().stream()
                 .map(memberProject -> ProjectMemberResponse.from(memberProject.getMember()))
                 .collect(Collectors.toList());
-        return null;
+        return projectListResponse;
     }
 
 }

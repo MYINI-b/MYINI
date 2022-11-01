@@ -1,5 +1,6 @@
 package com.ssafy.myini.initializer.service;
 
+import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.erd.domain.entity.ErdTable;
 import com.ssafy.myini.erd.domain.entity.TableColumn;
 import com.ssafy.myini.erd.domain.repository.ErdTableRepository;
@@ -15,6 +16,8 @@ import com.ssafy.myini.member.domain.MemberRepository;
 import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,9 +33,9 @@ import static com.ssafy.myini.NotFoundException.*;
 @Transactional
 public class InitializerServiceImpl implements InitializerService {
     private final ProjectRepository projectRepository;
-    private final MemberRepository memberRepository;
     private final ErdTableRepository erdTableRepository;
     private final TableColumnRepository tableColumnRepository;
+    private final S3Uploader s3Uploader;
 
     @Override
     @Transactional
@@ -75,6 +78,7 @@ public class InitializerServiceImpl implements InitializerService {
         List<ErdTable> erdTables = erdTableRepository.findAllByProject(project);
         List<ErdTableListResponse> erdTableListResponses = erdTables.stream().map(ErdTableListResponse::from).collect(Collectors.toList());
 
+
         //Entity 작성
         for (ErdTableListResponse erdTableListRespons : erdTableListResponses) {
             EntityWrite.entityWrite(erdTableListResponses, erdTableListRespons, initializerRequest);
@@ -87,4 +91,12 @@ public class InitializerServiceImpl implements InitializerService {
 
         return null;
     }
+
+    @Override
+    public ByteArrayOutputStream myIniDownload() {
+        ByteArrayOutputStream byteArrayOutputStream = s3Uploader.downloadFile("front Setup 0.1.0.exe");
+
+        return byteArrayOutputStream;
+    }
+
 }
