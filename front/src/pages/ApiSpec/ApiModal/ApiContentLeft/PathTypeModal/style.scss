@@ -1,0 +1,61 @@
+@import 'variables.scss';
+
+.pathtype-modal-container {
+  @include BORDER-PAPER;
+  position: fixed;
+  align-items: center;
+  width: fit-content;
+  max-height: rem(200);
+  padding: rem(12) rem(12);
+  overflow-y: auto;
+  background-color: $lightx2-gray;
+  border: 1px solid $gray;
+  border-top: initial;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  box-shadow: $shadow;
+
+  .pathtype-modal-overflow {
+    @include STRETCH;
+    @include FLEX-COLUMN;
+  }
+
+  .pathtype-modal-row {
+    position: relative;
+    width: 100%;
+    height: rem(28);
+    padding: rem(6) 0;
+    overflow: hidden;
+    color: $gray;
+    font-size: rem(16);
+    font-family: $eng-title;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    transition: 0.3s ease;
+    @include FLEX-CENTER;
+
+    &:hover {
+      color: $black;
+      font-weight: bold;
+      background-color: $light-gray;
+    }
+
+    &.select {
+      color: $black;
+      font-weight: bold;
+      background-color: $light-gray;
+    }
+  }
+
+  .pathtype-modal-row + .pathtype-modal-row {
+    margin-top: rem(4);
+  }
+}
+.pathtype-modal-empty {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  background-color: transparent;
+  @include STRETCH;
+}
