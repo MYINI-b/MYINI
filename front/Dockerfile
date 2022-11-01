@@ -7,6 +7,8 @@ COPY ./package.json ./
 RUN npm install
 RUN npm install node-sass
 RUN npm install sass-loader sass webpack --save-dev
+RUN npm install -D postcss-flexbugs-fixes
+RUN npm install -D postcss-preset-env
 
 COPY ./ ./
 
