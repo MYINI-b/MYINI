@@ -44,8 +44,8 @@ export default function ApiContentRight({
       e.stopPropagation();
       e.preventDefault();
 
-      if (isReq && (apiMethod === 'GET' || apiMethod === 'DELETE')) return;
-      if (!isReq && apiMethod !== 'GET') return;
+      // if (isReq && (apiMethod === 'GET' || apiMethod === 'DELETE')) return;
+      // if (!isReq && apiMethod !== 'GET') return;
 
       setIsReq(isReq);
       setMousePos({ x: e.clientX, y: e.clientY });
@@ -61,11 +61,7 @@ export default function ApiContentRight({
           <h1 className="content-right-title">REQUEST BODY</h1>
         </Tooltip>
 
-        <div
-          className={`content-right-box ${
-            (apiMethod === 'GET' || apiMethod === 'DELETE') && 'disabled'
-          }`}
-        >
+        <div className="content-right-box">
           <div className="content-right-boxtitle-wrapper">
             <h3 className="content-right-boxtitle static">자료형</h3>
             <h3 className="content-right-boxtitle">변수명</h3>
@@ -86,12 +82,7 @@ export default function ApiContentRight({
                 type="text"
                 className="content-right-boxcontent-input"
                 placeholder="변수명을 입력해주세요"
-                required={
-                  apiMethod === 'POST' ||
-                  apiMethod === 'PUT' ||
-                  apiMethod === 'PATCH'
-                }
-                disabled={apiMethod === 'GET' || apiMethod === 'DELETE'}
+                required
                 value={reqVarName}
                 onChange={(e) => setReqVarName(e.target.value.trim())}
               />
@@ -148,9 +139,7 @@ export default function ApiContentRight({
 
       <section className="content-section">
         <h1 className="content-right-title">RESPONSE BODY</h1>
-        <div
-          className={`content-right-box ${apiMethod !== 'GET' && 'disabled'}`}
-        >
+        <div className="content-right-box">
           <div className="content-right-boxtitle-wrapper">
             <h3 className="content-right-boxtitle static">자료형</h3>
             <h3 className="content-right-boxtitle">변수명</h3>
@@ -173,8 +162,6 @@ export default function ApiContentRight({
                 placeholder="변수명을 입력해주세요"
                 value={resVarName}
                 onChange={(e) => setResVarName(e.target.value.trim())}
-                required={apiMethod === 'GET'}
-                disabled={apiMethod !== 'GET'}
               />
             </div>
             <div className="content-right-detail-boxcontent">

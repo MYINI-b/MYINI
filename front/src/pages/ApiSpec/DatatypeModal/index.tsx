@@ -5,8 +5,9 @@ import {
   faChevronDown,
   faChevronUp,
   faPlus,
-  faTrash,
 } from '@fortawesome/free-solid-svg-icons';
+
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
 import './style.scss';
 import { ATTRIBUTE, ATTRIBUTE_PLUS, MOUSEPOS } from 'types/ApiSpec';
@@ -52,26 +53,11 @@ export default function DatatypeModal({
     setIsDatatypeAddOpen(true);
   }, []);
 
-  const addNewAttribute = useCallback(
-    (idx: number) => {
-      const copyArr = [...newObjAttribute];
-      copyArr.splice(idx, 0, { name: '', type: 'string', isList: false });
-      setNewObjAttribute(copyArr);
-    },
-    [newObjAttribute],
-  );
-
-  const addNewAttrWithEnter = useCallback(
-    (idx: number, e: any) => {
-      if (e.key !== 'Enter') return;
-      e.preventDefault();
-
-      const copyArr = [...newObjAttribute];
-      copyArr.splice(idx, 0, { name: '', type: 'string', isList: false });
-      setNewObjAttribute(copyArr);
-    },
-    [newObjAttribute],
-  );
+  const addNewAttribute = useCallback(() => {
+    const copyArr = [...newObjAttribute];
+    copyArr.push({ name: '', type: 'string', isList: false });
+    setNewObjAttribute(copyArr);
+  }, [newObjAttribute]);
 
   const changeAttrName = useCallback(
     (idx: number, e: any) => {
@@ -128,6 +114,14 @@ export default function DatatypeModal({
     [newObjAttribute],
   );
 
+  const deleteDatatype = useCallback(
+    (idx: number) => {
+      const copyArr = [...objDataType];
+      setObjDataType(copyArr.filter((e, i) => i !== idx));
+    },
+    [objDataType],
+  );
+
   return (
     <section className="modal-empty" onClick={closeModal}>
       <div
@@ -150,19 +144,10 @@ export default function DatatypeModal({
                 required
               />
               <div className="datatype-add-body">
-                <p
-                  className="datatype-add-brace"
-                  onClick={() => addNewAttribute(0)}
-                >
-                  &#123;
-                </p>
+                <p className="datatype-add-brace">&#123;</p>
                 {newObjAttribute.map((attr, i) => {
                   return (
-                    <div
-                      className="attr-div"
-                      key={i}
-                      onClick={() => addNewAttribute(i + 1)}
-                    >
+                    <div className="attr-div" key={i}>
                       <button
                         type="button"
                         className="attr-type-button"
@@ -174,19 +159,24 @@ export default function DatatypeModal({
                         type="text"
                         onChange={(e) => changeAttrName(i, e)}
                         value={attr.name}
-                        onClick={(e) => e.stopPropagation()}
-                        onKeyDown={(e) => addNewAttrWithEnter(i + 1, e)}
                         className="attr-type-name"
                       />
 
                       <FontAwesomeIcon
-                        icon={faTrash}
+                        icon={faTrashCan}
                         className="attr-type-delete"
                         onClick={(e) => deleteAttr(i, e)}
                       />
                     </div>
                   );
                 })}
+                <button
+                  type="button"
+                  className="datatype-add-btn"
+                  onClick={addNewAttribute}
+                >
+                  <FontAwesomeIcon icon={faPlus} />
+                </button>
                 <p className="datatype-add-brace">&#125;</p>
               </div>
               <div className="datatype-button-wrapper">
@@ -226,25 +216,37 @@ export default function DatatypeModal({
                     />
                   </div>
                   {dt.isOpen && (
-                    <div className="datatype-attr-list">
-                      <p className="datatype-add-brace">&#123;</p>
-                      {dt.attr.map((atr: any, j: number) => {
-                        return (
-                          <div className="attr-div" key={j}>
-                            <button type="button" className="attr-type-button">
-                              {atr.isList ? `List<${atr.type}>` : atr.type}
-                            </button>
-                            <input
-                              type="text"
-                              value={atr.name}
-                              className="attr-type-name"
-                              readOnly
-                            />
-                          </div>
-                        );
-                      })}
-                      <p className="datatype-add-brace">&#125;</p>
-                    </div>
+                    <>
+                      <div className="datatype-attr-list">
+                        <p className="datatype-add-brace">&#123;</p>
+                        {dt.attr.map((atr: any, j: number) => {
+                          return (
+                            <div className="attr-div" key={j}>
+                              <button
+                                type="button"
+                                className="attr-type-button"
+                              >
+                                {atr.isList ? `List<${atr.type}>` : atr.type}
+                              </button>
+                              <input
+                                type="text"
+                                value={atr.name}
+                                className="attr-type-name"
+                                readOnly
+                              />
+                            </div>
+                          );
+                        })}
+                        <p className="datatype-add-brace">&#125;</p>
+                      </div>{' '}
+                      <div className="datatype-button-wrapper">
+                        <FontAwesomeIcon
+                          icon={faTrashCan}
+                          className="attr-type-delete"
+                          onClick={() => deleteDatatype(i)}
+                        />
+                      </div>
+                    </>
                   )}
                 </div>
               );
