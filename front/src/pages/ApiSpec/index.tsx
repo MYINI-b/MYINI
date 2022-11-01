@@ -16,99 +16,12 @@ import DatatypeModal from './DatatypeModal';
 
 export default function ApiSpec() {
   const [step, setStep] = useState(1);
-  const [dataType, setDataType] = useState<Array<string>>([
-    'string',
-    'int',
-    'long',
-    'double',
-    'float',
-    'datetime',
-    'char',
-    'boolean',
-    'short',
-    'byte',
-  ]);
   const [objDataType, setObjDataType] = useState<Array<any>>([]);
-  const [controllers, setControllers] = useState<Array<CONTROLLER>>([
-    { name: 'user', desc: '회원 관리를 위한 컨트롤러 입니다', baseurl: 'user' },
-  ]); // 컨트롤러 목록
-  const [controllerIdx, setControllerIdx] = useState(0); // 현재 선택된 컨트롤러 인덱스
-  const [apis, setApis] = useState<Array<Array<API>>>([
-    [
-      {
-        id: 1,
-        name: '운동목록조회',
-        url: '/exercises',
-        method: 'GET',
-        code: 200,
-      },
-      {
-        id: 2,
-        name: '운동목록조회',
-        url: '/exercises',
-        method: 'POST',
-        code: 200,
-      },
-      {
-        id: 3,
-        name: '운동목록조회',
-        url: '/exercises',
-        method: 'PUT',
-        code: 200,
-      },
-      {
-        id: 4,
-        name: '운동목록조회',
-        url: '/exercises',
-        method: 'DELETE',
-        code: 200,
-      },
-      {
-        id: 5,
-        name: '운동목록조회',
-        url: '/exercises',
-        method: 'PATCH',
-        code: 200,
-      },
-    ],
-    [
-      {
-        id: 1,
-        name: '유저목록조회',
-        url: '/user',
-        method: 'GET',
-        code: 200,
-      },
-      {
-        id: 2,
-        name: '유저목록조회',
-        url: '/user',
-        method: 'POST',
-        code: 200,
-      },
-      {
-        id: 3,
-        name: '유저목록조회',
-        url: '/user',
-        method: 'PUT',
-        code: 200,
-      },
-      {
-        id: 4,
-        name: '유저목록조회',
-        url: '/user',
-        method: 'DELETE',
-        code: 200,
-      },
-      {
-        id: 5,
-        name: '유저목록조회',
-        url: '/user',
-        method: 'PATCH',
-        code: 200,
-      },
-    ],
-  ]); // [controllerIdx]의 api 목록
+  const [controllers, setControllers] = useState<Array<CONTROLLER>>([]); // 컨트롤러 목록
+  const [controllerIdx, setControllerIdx] = useState(-1); // 현재 선택된 컨트롤러 인덱스
+  const [clickControllerIdx, setClickControllerIdx] = useState(0); // 현재 선택된 컨트롤러 인덱스
+
+  const [apis, setApis] = useState<Array<Array<API>>>([]); // [controllerIdx]의 api 목록
   const [isControllerAddModalOpen, setIsControllerAddModalOpen] =
     useState(false);
   const [isDatatypeModalOpen, setIsDatatypeModalOpen] = useState(false);
@@ -118,7 +31,8 @@ export default function ApiSpec() {
     setControllerIdx(idx);
   }, []);
 
-  const onAddControllerClick = useCallback(() => {
+  const onHandleControllerClick = useCallback((idx: number) => {
+    setClickControllerIdx(idx);
     setIsControllerAddModalOpen(true);
   }, []);
 
@@ -152,13 +66,18 @@ export default function ApiSpec() {
                   onClick={() => onControllerBlockClick(i)}
                   key={i}
                 >
-                  {controller.name} &nbsp; <FontAwesomeIcon icon={faPen} />
+                  {controller.name} &nbsp;{' '}
+                  <FontAwesomeIcon
+                    icon={faPen}
+                    onClick={() => onHandleControllerClick(i)}
+                    className="controller-block-edit"
+                  />
                 </div>
               );
             })}
             <div
               className="controller-block plus"
-              onClick={onAddControllerClick}
+              onClick={() => onHandleControllerClick(-1)}
             >
               <FontAwesomeIcon icon={faPlus} />
             </div>
@@ -173,7 +92,6 @@ export default function ApiSpec() {
       <APIList
         controllers={controllers}
         controllerIdx={controllerIdx}
-        dataType={dataType}
         objDataType={objDataType}
         apis={apis}
         setApis={setApis}
@@ -184,13 +102,16 @@ export default function ApiSpec() {
           setIsControllerAddModalOpen={setIsControllerAddModalOpen}
           setControllers={setControllers}
           controllers={controllers}
+          clickControllerIdx={clickControllerIdx}
+          setControllerIdx={setControllerIdx}
+          apis={apis}
+          setApis={setApis}
         />
       )}
 
       {isDatatypeModalOpen && (
         <DatatypeModal
           setIsDatatypeModalOpen={setIsDatatypeModalOpen}
-          dataType={dataType}
           objDataType={objDataType}
           setObjDataType={setObjDataType}
         />
