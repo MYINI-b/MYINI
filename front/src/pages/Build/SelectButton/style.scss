@@ -1,7 +1,9 @@
 @import 'variables.scss';
+@import '../mixin.scss';
 
 .button-container {
   @include FLEX-COLUMN;
+  width: 100%;
   .button-child {
     @include FLEX-COLUMN;
   }
@@ -19,9 +21,18 @@
       width: 20%;
       padding-bottom: rem(35);
       .title-name {
-        font-size: rem(16);
+        font-size: rem(20);
         font-family: $eng-content;
         border-radius: 10%;
+        @include respond-to('large') {
+          font-size: rem(16);
+        }
+        @include respond-to('medium') {
+          font-size: rem(12);
+        }
+        @include respond-to('small') {
+          font-size: rem(10);
+        }
       }
     }
     button {

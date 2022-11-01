@@ -7,7 +7,7 @@ type Props = {
 };
 
 const Button: React.FC<Props> = ({ children }) => {
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedButton, setSelectedButton] = useState(0);
 
   return (
     <div className="button-container">
@@ -17,12 +17,12 @@ const Button: React.FC<Props> = ({ children }) => {
             key={item.props.index}
             title={item.props.title}
             index={index}
-            setSelectedTab={setSelectedTab}
-            selectedTab={selectedTab}
+            setSelectedButton={setSelectedButton}
+            selectedButton={selectedButton}
           />
         ))}
       </ul>
-      <div className="button-child">{children[selectedTab]}</div>
+      <div className="button-child">{children[selectedButton]}</div>
     </div>
   );
 };

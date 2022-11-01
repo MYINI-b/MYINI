@@ -21,27 +21,31 @@ export default function InitSetting() {
           <div className="item-row">
             <div className="button-item">
               <div className="item-element">Project</div>
-              <div className="item-element">Java</div>
-              <div className="item-element">Spring Boot</div>
-              <div className="item-element">Packaging</div>
-            </div>
-            <div className="button-select">
               <Buttons>
                 <span title="Maven" />
                 <span title="Gradle" />
               </Buttons>
+            </div>
+            <div className="button-item">
+              <div className="item-element">Java</div>
               <Buttons>
                 <span title="19" />
                 <span title="17" />
                 <span title="11" />
                 <span title="8" />
               </Buttons>
+            </div>
+            <div className="button-item">
+              <div className="item-element">Spring Boot</div>
               <Buttons>
                 <span title="3.0.0" />
                 <span title="2.7.5" />
                 <span title="2.7.4" />
                 <span title="2.6.13" />
               </Buttons>
+            </div>
+            <div className="button-item">
+              <div className="item-element">Packaging</div>
               <Buttons>
                 <span title="Jar" />
                 <span title="War" />
@@ -57,29 +61,33 @@ export default function InitSetting() {
               onChange={handleTextArea}
             />
           </form>
-          <div>Dependencies</div>
+          <div className="dependency">Dependencies</div>
         </span>
         <span className="tab-item" title="React">
           <div className="item-row">
             <div className="button-item">
               <div className="item-element">Languages</div>
-              <div className="item-element">Eslint/Prettier</div>
-              <div className="item-element">Router</div>
-              <div className="item-element">Redux</div>
-            </div>
-            <div className="button-select">
               <Buttons>
                 <span title="JS" />
                 <span title="TS" />
               </Buttons>
+            </div>
+            <div className="button-item">
+              <div className="item-element">Eslint/Prettier</div>
               <Buttons>
                 <span title="on" />
                 <span title="off" />
               </Buttons>
+            </div>
+            <div className="button-item">
+              <div className="item-element">Router</div>
               <Buttons>
                 <span title="on" />
                 <span title="off" />
               </Buttons>
+            </div>
+            <div className="button-item">
+              <div className="item-element">Redux</div>
               <Buttons>
                 <span title="on" />
                 <span title="off" />

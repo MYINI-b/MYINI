@@ -60,7 +60,7 @@ const Accordion: React.FC = () => {
           onClick={() => showBody(index)}
         >
           <div className="title-heading">
-            <h3 className="title-item">{item.title}</h3>
+            <div className="title-item">{item.title}</div>
             {titleNum === index ? (
               <FontAwesomeIcon icon={faChevronUp} />
             ) : (

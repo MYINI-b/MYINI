@@ -7,26 +7,27 @@ import React, { useCallback } from 'react';
 type Props = {
   title: string;
   index: number;
-  setSelectedTab: (index: number) => void;
-  selectedTab: number;
+  setSelectedButton: (index: number) => void;
+  selectedButton: number;
 };
 
 const ButtonTitle: React.FC<Props> = ({
   title,
-  setSelectedTab,
+  setSelectedButton,
   index,
-  selectedTab,
+  selectedButton,
 }) => {
   const onClick = useCallback(() => {
-    setSelectedTab(index);
-  }, [setSelectedTab, index]);
+    setSelectedButton(index);
+  }, [setSelectedButton, index]);
 
   return (
     <div className="button-list">
-      <li className={`li ${selectedTab === index ? 'active' : ''}`}>
-        <button className="title-name" onClick={onClick}>
-          {title}
-        </button>
+      <li
+        className={`li ${selectedButton === index ? 'active' : ''}`}
+        onClick={onClick}
+      >
+        <button className="title-name">{title}</button>
       </li>
     </div>
   );
