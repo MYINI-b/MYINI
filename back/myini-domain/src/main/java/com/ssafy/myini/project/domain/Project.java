@@ -1,11 +1,14 @@
 package com.ssafy.myini.project.domain;
 
 import com.ssafy.myini.apidocs.domain.ApiController;
-import com.ssafy.myini.ERD.domain.entity.ErdTable;
+import com.ssafy.myini.erd.domain.entity.ErdTable;
 import com.ssafy.myini.member.domain.MemberProject;
-import com.ssafy.myini.requirement.domain.Requirement;
-import com.ssafy.myini.requirement.domain.RequirementCategory;
-import lombok.*;
+import com.ssafy.myini.requirementdocs.domain.Requirement;
+import com.ssafy.myini.requirementdocs.domain.RequirementCategory;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -60,5 +63,18 @@ public class Project {
         Project project = new Project();
         project.projectName = "Untitled";
         return project;
+    }
+
+    public void updateProject(String projectName, String projectDescription, String projectImg, LocalDate projectStartedDate, LocalDate projectFinishedDate,
+                              String projectGithubUrl, String projectJiraUrl, String projectNotionUrl, String projectFigmaUrl){
+        this.projectName = projectName;
+        this.projectDescription = projectDescription;
+        this.projectImg = projectImg;
+        this.projectStartedDate = projectStartedDate;
+        this.projectFinishedDate = projectFinishedDate;
+        this.projectGithubUrl = projectGithubUrl;
+        this.projectJiraUrl = projectJiraUrl;
+        this.projectNotionUrl = projectNotionUrl;
+        this.projectFigmaUrl = projectFigmaUrl;
     }
 }
