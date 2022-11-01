@@ -22,6 +22,7 @@ import java.util.UUID;
 public class S3Uploader {
 
     public static final String MEMBER_PROFILE_URL = "userProfile/";
+    public static final String PROJECT_IMAGE_URL = "projectProfile/";
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")

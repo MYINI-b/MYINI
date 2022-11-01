@@ -18,6 +18,7 @@ import java.util.Arrays;
 import static com.ssafy.myini.CommonFixture.TEST_AUTHORIZATION;
 import static com.ssafy.myini.apidocs.ApiDocsFixture.*;
 import static com.ssafy.myini.apidocs.ApiDocsFixture.TEST_API_CONTROLLER_LIST_RESPONSE;
+import static com.ssafy.myini.member.MemberFixture.TEST_FILE_REQUEST;
 import static com.ssafy.myini.project.ProjectFixture.*;
 import static com.ssafy.myini.project.ProjectFixture.ID;
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,8 +29,9 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -158,7 +160,6 @@ class ProjectControllerTest extends ControllerTest {
                         requestFields(
                                 fieldWithPath("projectName").type(JsonFieldType.STRING).description("Project 이름"),
                                 fieldWithPath("projectDescription").type(JsonFieldType.STRING).description("Project 설명"),
-                                fieldWithPath("projectImg").type(JsonFieldType.STRING).description("Project 이미지"),
                                 fieldWithPath("projectStartedDate").type(JsonFieldType.STRING).description("Project 시작일"),
                                 fieldWithPath("projectFinishedDate").type(JsonFieldType.STRING).description("Project 종료일"),
                                 fieldWithPath("projectGithubUrl").type(JsonFieldType.STRING).description("Project Gibhub URL"),
@@ -171,6 +172,40 @@ class ProjectControllerTest extends ControllerTest {
         // then
         then(projectService).should(times(1)).updateProject(any(), any());
 
+    }
+
+    @Test
+    @DisplayName("프로젝트 이미지를 수정한다.")
+    void updateProjectImg() throws Exception{
+        // given
+        willDoNothing()
+                .given(projectService)
+                .updateProjectImg(any(), any());
+
+        // when
+        mockMvc.perform(RestDocumentationRequestBuilders.multipart("/api/projects/{projectid}/images", ID)
+                        .file(TEST_UPDATE_PROJECT_IMG_REQUEST)
+                        .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .with(request -> {
+                            request.setMethod("PATCH");
+                            return request;
+                        }))
+                .andExpect(status().isOk())
+                .andDo(document("api/projects/{projectid}/images",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
+                        ),
+                        pathParameters(
+                                parameterWithName("projectid").description("Project ID")
+                        ),
+                        requestParts(
+                                partWithName("projectImg").description("프로젝트 이미지 파일")
+                        )
+                ));
+
+        // then
+        then(projectService).should(times(1)).updateProjectImg(any(), any());
     }
 
     @Test
@@ -212,7 +247,7 @@ class ProjectControllerTest extends ControllerTest {
                         .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(Arrays.asList(TEST_PROJECT_MEMBER_RESPONSE))))
-                .andDo(document("api/projects//members/{projectid}",
+                .andDo(document("api/projects/members/{projectid}",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
                         ),
@@ -280,7 +315,7 @@ class ProjectControllerTest extends ControllerTest {
                         .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isCreated())
-                .andDo(document("api/projects{projectid}/members/{memberid}",
+                .andDo(document("api/projects/{projectid}/members/{memberid}",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
                         ),
