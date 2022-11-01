@@ -1,6 +1,6 @@
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dispatch, useCallback, useEffect } from 'react';
+import { Dispatch, useCallback, useEffect, useState } from 'react';
 
 import useInput from 'hooks/useInput';
 import './style.scss';
@@ -31,10 +31,7 @@ export default function ControllerAddModal({
     useInput('');
   const [controllerBaseURL, onControllerBaseURLChange, setControllerBaseURL] =
     useInput('');
-
-  const closeModal = useCallback(() => {
-    setIsControllerAddModalOpen(false);
-  }, [setIsControllerAddModalOpen]);
+  const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
     if (clickControllerIdx >= 0) {
@@ -42,8 +39,13 @@ export default function ControllerAddModal({
       setControllerName(curController.name);
       setControllerDesc(curController.desc);
       setControllerBaseURL(curController.baseurl);
+      setIsEdit(true);
     }
   }, []);
+
+  const closeModal = useCallback(() => {
+    setIsControllerAddModalOpen(false);
+  }, [setIsControllerAddModalOpen]);
 
   const addController = useCallback(
     (e: any) => {
@@ -75,6 +77,16 @@ export default function ControllerAddModal({
       setIsControllerAddModalOpen,
     ],
   );
+
+  const deleteController = useCallback(() => {
+    const copyControllerArr = [...controllers].filter(
+      (e, i) => i !== clickControllerIdx,
+    );
+    const copyApisArr = [...apis].filter((e, i) => i !== clickControllerIdx);
+    setControllers(copyControllerArr);
+    setApis(copyApisArr);
+    setIsControllerAddModalOpen(false);
+  }, [apis, controllers, clickControllerIdx]);
 
   return (
     <section className="modal-empty" onClick={closeModal}>
@@ -110,9 +122,26 @@ export default function ControllerAddModal({
           onChange={onControllerBaseURLChange}
           value={controllerBaseURL}
         />
-        <button className="controller-add-submit" type="submit">
-          확인
-        </button>
+        <div className="controller-btn-wrapper">
+          {isEdit ? (
+            <>
+              <button
+                className="controller-add-submit "
+                type="button"
+                onClick={deleteController}
+              >
+                삭제
+              </button>
+              <button className="controller-add-submit" type="submit">
+                수정
+              </button>
+            </>
+          ) : (
+            <button className="controller-add-submit" type="submit">
+              확인
+            </button>
+          )}
+        </div>
       </form>
     </section>
   );

@@ -35,8 +35,18 @@
     }
   }
 
-  .controller-add-submit {
-    @include SUBMIT-BTN;
-    margin-top: rem(18);
+  .controller-btn-wrapper {
+    width: 100%;
+    @include FLEX-ALIGN-CENTER;
+
+    .controller-add-submit {
+      @include SUBMIT-BTN;
+      margin-top: rem(18);
+    }
+
+    .controller-add-submit + .controller-add-submit {
+      margin-left: rem(10);
+      @include BTN-COLOR($black);
+    }
   }
 }

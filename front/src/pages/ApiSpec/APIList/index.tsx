@@ -34,7 +34,7 @@ export default function APIList({
 
   return (
     <section className="apilist-container">
-      {controllerIdx >= 0 && (
+      {controllers.length > 0 && (
         <>
           <p className="controller-desc">
             Description : {controllers[controllerIdx].desc}
