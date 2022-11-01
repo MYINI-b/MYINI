@@ -43,6 +43,10 @@ export default function ApiContentRight({
   const openDataTypeList = useCallback((e: any, isReq: boolean) => {
     e.stopPropagation();
     e.preventDefault();
+
+    if (isReq && (apiMethod === 'GET' || apiMethod === 'DELETE')) return;
+    if (!isReq && apiMethod !== 'GET') return;
+
     setIsReq(isReq);
     setMousePos({ x: e.clientX, y: e.clientY });
     setIsDatatypeListOpen((prev) => !prev);
