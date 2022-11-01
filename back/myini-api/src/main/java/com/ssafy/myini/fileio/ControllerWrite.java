@@ -12,13 +12,12 @@ import java.util.List;
 public class ControllerWrite {
     static StringBuilder controllerImportContents = new StringBuilder();
 
-    public static void controllerWrite(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest){
+    public static void controllerWrite(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
         // 필수 import 선언
         controllerImportContents.append("import lombok.RequiredArgsConstructor;\n" +
                 "import org.springframework.http.HttpStatus;\n" +
                 "import org.springframework.http.ResponseEntity;\n" +
                 "import org.springframework.web.bind.annotation.*;\n");
-
 
 
         StringBuilder contents = new StringBuilder();
@@ -27,15 +26,15 @@ public class ControllerWrite {
                 .append("\n")
                 .append(controllerImportContents)
                 .append("\n")
-                .append("@RequestMapping(\""+projectInfoListResponse.getApiControllerBaseUrl()+"\")\n" +
+                .append("@RequestMapping(\"" + projectInfoListResponse.getApiControllerBaseUrl() + "\")\n" +
                         "@RestController\n" +
-                        "@RequiredArgsConstructor")
-                .append("public class "+projectInfoListResponse.getApiControllerName()+"Controller {\n\n")
+                        "@RequiredArgsConstructor\n")
+                .append("public class " + projectInfoListResponse.getApiControllerName() + "Controller {\n\n")
                 .append("}");
 
         try {
             //폴더 찾아가기
-            String controllerPath = initializerRequest.getSpring_base_path()+"\\"+initializerRequest.getSpring_name()+"\\src\\main\\java\\";
+            String controllerPath = initializerRequest.getSpring_base_path() + "\\" + initializerRequest.getSpring_name() + "\\src\\main\\java\\";
 
             String[] packagePath = initializerRequest.getSpring_package_name().split("[.]");
             for (String s : packagePath) {
@@ -50,7 +49,7 @@ public class ControllerWrite {
             }
 
             //파일 만들기
-            File file = new File(controllerPath+projectInfoListResponse.getApiControllerName()+"Controller.java");
+            File file = new File(controllerPath + projectInfoListResponse.getApiControllerName() + "Controller.java");
             if (!file.exists()) {
                 folder.createNewFile();
             }
@@ -61,19 +60,28 @@ public class ControllerWrite {
             writer.write(contents.toString());
             writer.close();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("e = " + e);
         }
 
     }
 
     // apimethod별로 만듦
-    public static StringBuilder methodWrite(List<ApiInfoResponse> apiInfoResponses){
+    public static StringBuilder methodWrite(List<ApiInfoResponse> apiInfoResponses) {
         StringBuilder methodContents = new StringBuilder();
 
-//        for(ApiInfoResponse apiInfoResponse : apiInfoResponses){
-//            methodContents.append("@"+apiInfoResponse.getApiResponse().getApiMethod()+"Mapping")
-//        }
+        for (ApiInfoResponse apiInfoResponse : apiInfoResponses) {
+            // Api Method 추출
+            String apiMethod = getMethodType(apiInfoResponse.getApiResponse().getApiMethod());
+            methodContents.append("@").append(apiMethod).append("Mapping");
+            if(!apiInfoResponse.getApiResponse().getApiUrl().isEmpty()){
+                methodContents.append(apiInfoResponse.getApiResponse().getApiUrl());
+            }
+        }
         return methodContents;
+    }
+
+    public static String getMethodType(String method) {
+        return method.charAt(0) + method.substring(1, method.length()).toLowerCase();
     }
 }
