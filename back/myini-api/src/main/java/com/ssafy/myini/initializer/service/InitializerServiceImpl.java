@@ -82,6 +82,7 @@ public class InitializerServiceImpl implements InitializerService {
         List<ErdTable> erdTables = erdTableRepository.findAllByProject(project);
         List<ErdTableListResponse> erdTableListResponses = erdTables.stream().map(ErdTableListResponse::from).collect(Collectors.toList());
 
+        //ERD json 받아오기
         try {
             JSONParser jsonParser = new JSONParser();
             File file = new File("erd");
@@ -89,9 +90,10 @@ public class InitializerServiceImpl implements InitializerService {
 
             Reader reader = new FileReader(file);
             JSONObject erd = (JSONObject) jsonParser.parse(reader);
-//            ERDParsing.tableParsing(erd);
             try {
+                //entity 작성
                 EntityWrite.entityWrite(erd, initializerRequest);
+                //repository 작성
             }catch (Exception e){
                 throw new InitializerException(InitializerException.INITIALIZER_FAIL);
             }
@@ -99,16 +101,10 @@ public class InitializerServiceImpl implements InitializerService {
             System.out.println("e = " + e);
         }
 
-//        //Entity 작성
-//        for (ErdTableListResponse erdTableListRespons : erdTableListResponses) {
-//
-//            EntityWrite.entityWrite(erdTableListResponses, erdTableListRespons, initializerRequest);
+//        //Repository 작성
+//        for (ErdTableListResponse erdTableListResponse : erdTableListResponses) {
+//            RepositoryWrite.repositoryWrite(erdTableListResponse, initializerRequest);
 //        }
-
-        //Repository 작성
-        for (ErdTableListResponse erdTableListResponse : erdTableListResponses) {
-            RepositoryWrite.repositoryWrite(erdTableListResponse, initializerRequest);
-        }
 
         return null;
     }

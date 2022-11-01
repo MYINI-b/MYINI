@@ -1,9 +1,5 @@
 package com.ssafy.myini.fileio;
 
-import com.ssafy.myini.erd.response.ConditionItemDto;
-import com.ssafy.myini.erd.response.ErdTableListResponse;
-import com.ssafy.myini.erd.response.TableColumnDto;
-import com.ssafy.myini.erd.response.TableRelationDto;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -24,6 +20,7 @@ public class EntityWrite {
     static List<Column> columnList = new ArrayList<>();
     static List<RelationEndColumn> relationEndColumnList = new ArrayList<>();
 
+    //모든 테이블의 ID와 이름 저장
     static class Table {
         String tableId;
         String tableName;
@@ -39,6 +36,7 @@ public class EntityWrite {
         }
     }
 
+    //모든 컬럼의 ID와 이름 저장
     static class Column {
         String columnId;
         String columnName;
@@ -54,6 +52,7 @@ public class EntityWrite {
         }
     }
 
+    //모든 연관관계 n 에서의 컬럼 ID 저장
     static class RelationEndColumn {
         String columnId;
 
@@ -69,7 +68,10 @@ public class EntityWrite {
 
     public static void entityWrite(JSONObject erd, InitializerRequest initializerRequest) throws Exception{
         entityImportContents.append("import lombok.*;\nimport javax.persistence.*;\n");
+
+        //테이블, 컬럼, 연관관계 ID와 NAME 저장하기
         setTableAndColumn(erd);
+
         JSONObject table = (JSONObject) erd.get("table");
         JSONArray tables = (JSONArray) table.get("tables");
         JSONObject relationship = (JSONObject) erd.get("relationship");
@@ -77,11 +79,9 @@ public class EntityWrite {
 
         //테이블
         for (int i=0 ; i<tables.size() ; i++){
-
             StringBuilder contents = new StringBuilder();
             JSONObject tableItem = (JSONObject) tables.get(i);
 
-            //테이블 이름
             String tableName = (String) tableItem.get("name");
             String tableId = (String) tableItem.get("id");
 
@@ -89,6 +89,7 @@ public class EntityWrite {
 
             StringBuilder columnContents = columnWrite(columns);
             StringBuilder relationContents = relationWrite(tableId, relationships, initializerRequest);
+
             contents.append("package " + initializerRequest.getSpring_package_name() + ".entity;\n")
                     .append("\n")
                     .append(entityImportContents)
@@ -152,10 +153,13 @@ public class EntityWrite {
             Boolean primaryKey = (Boolean) option.get("primaryKey");
             Boolean unique = (Boolean) option.get("unique");
             Boolean notNull = (Boolean) option.get("notNull");
+
             if(!relationEndColumnList.contains(columnId)) {
+                Boolean isPk = false;
                 String flag = "";
                 //pk일때
                 if (primaryKey) {
+                    isPk = true;
                     columnContents.append("@Id\n@GeneratedValue(strategy = GenerationType.IDENTITY)\n" +
                             "@Column(name=\"" + columnName + "_id\")\n");
                 }
@@ -168,11 +172,14 @@ public class EntityWrite {
                     flag += "n";
                 }
 
-                if (flag.contains("u") && flag.contains("n"))
-                    columnContents.append("@Column(unique = true, nullable = false)\n");
-                else if (flag.contains("u") && !flag.contains("n")) columnContents.append("@Column(unique = true)\n");
-                else if (!flag.contains("u") && flag.contains("n"))
-                    columnContents.append("@Column(nullable = false)\n");
+                if(!isPk) {
+                    if (flag.contains("u") && flag.contains("n"))
+                        columnContents.append("@Column(unique = true, nullable = false)\n");
+                    else if (flag.contains("u") && !flag.contains("n"))
+                        columnContents.append("@Column(unique = true)\n");
+                    else if (!flag.contains("u") && flag.contains("n"))
+                        columnContents.append("@Column(nullable = false)\n");
+                }
 
                 //자료형 + 변수명 추가
                 columnContents.append("private " + columnDataType + " " + JdbcUtils.convertUnderscoreNameToPropertyName(columnName) + ";\n\n");
@@ -202,9 +209,7 @@ public class EntityWrite {
             String endTableId = (String) end.get("tableId");
             String endTableName = "";
 
-            System.out.println("startTableId = " + startTableId);
             for (Table table : tableList) {
-                System.out.println("table.toString() = " + table.toString());
                 if(table.tableId.equals(endTableId)) endTableName = table.tableName;
             }
 
