@@ -52,4 +52,6 @@ public interface ApiDocsService {
     void deleteDtoItem(Long dtoItemId);
     //자료형 리스트 조회
     TypeListResponse findTypeList(Long projectId);
+
+    List<ProjectInfoListResponse> findAll(Long projectId);
 }
