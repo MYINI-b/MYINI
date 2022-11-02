@@ -4,7 +4,7 @@
   @include FLEX-COLUMN;
   @include STRETCH;
   min-height: 100vh;
-  padding: rem(30) 15% 0 15%;
+  padding: rem(30) 15% rem(30) 15%;
   font-family: $eng-content;
 
   .project-detail-info-title {
@@ -33,4 +33,18 @@
       margin-left: rem(30);
     }
   }
+
+  .project-edit-button {
+    color: $primary;
+    font-size: rem(18);
+    cursor: pointer;
+  }
+  .project-edit-button + .project-edit-button {
+    margin-left: rem(10);
+  }
+}
+
+.project-detail-title-wrapper {
+  @include FLEX-BETWEEN;
+  width: 100%;
 }

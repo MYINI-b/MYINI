@@ -3,7 +3,7 @@ import React, { useMemo, useState } from 'react';
 import useInput from 'hooks/useInput';
 import Stepper from 'pages/Requirement/Stepper';
 import ImageTitle from './ImageTitle';
-import { DetailInfo } from './ProjectDetail/index';
+import ProjectDesc from './ProjectDesc/index';
 import { ProjectPeriod } from './Period/index';
 import { ProjectLink } from './Link/index';
 import { ProjectMember } from './Member/index';
@@ -14,6 +14,7 @@ export default function SettingPage() {
   const data = useMemo(() => MockData[0], []);
   const [isEdit, setIsEdit] = useState(false);
   const [title, onTitleChange] = useInput('');
+  const [desc, onDescChange] = useInput('');
   const [step, setStep] = useState(0);
   const Props = {
     id: data.id,
@@ -39,7 +40,7 @@ export default function SettingPage() {
         />
         <div className="bottom-side">
           <div className="left-side">
-            <DetailInfo {...Props} className="detail-info" />
+            <ProjectDesc desc={desc} onDescChange={onDescChange} />
             <ProjectPeriod {...Props} className="project-period" />
             <ProjectLink {...Props} className="project-link" />
           </div>

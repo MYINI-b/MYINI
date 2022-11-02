@@ -1,18 +1,22 @@
+import { faPen, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState, useCallback } from 'react';
 import './style.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faCheck } from '@fortawesome/free-solid-svg-icons';
 
-export function ProjectPeriod(props: any) {
+interface Props {
+  desc: string;
+  onDescChange: (e: any) => void;
+}
+export default function DetailInfo({ desc, onDescChange }: Props) {
   const [isEdit, setIsEdit] = useState(false);
-  const { period } = props;
+
   const onSubmitClick = useCallback(() => {
     setIsEdit(false);
   }, []);
   return (
-    <div className="project-period">
+    <div className="detail-info">
       <div className="project-detail-title-wrapper">
-        <div className="project-detail-info-title">프로젝트 기간</div>
+        <div className="project-detail-info-title">프로젝트 설명</div>
         {isEdit ? (
           <FontAwesomeIcon
             icon={faCheck}
@@ -27,7 +31,13 @@ export function ProjectPeriod(props: any) {
           />
         )}
       </div>
-      <div className="detail-word">{period}</div>
+
+      <textarea
+        className={`project-info-desc ${isEdit && 'edit'}`}
+        value={desc}
+        onChange={onDescChange}
+        disabled={!isEdit}
+      />
     </div>
   );
 }

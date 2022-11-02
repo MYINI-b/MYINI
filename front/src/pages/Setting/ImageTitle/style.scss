@@ -14,8 +14,13 @@
   .project-info-container{  
     width:100%;
     @include FLEX-COLUMN;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin-left: rem(10);
+
+    .project-edit-button-wrapper{
+      width:100%;
+      @include FLEX-ALIGN-RIGHT;
+    }
   }
 
   .project-detail-title {
@@ -26,6 +31,10 @@
     width:100%;
     border-bottom: 1px solid $secondary;
     @include ELLIPSIS-LINE(1);
+    background-color: transparent;
+    &.edit{
+      background-color: $pure-white;
+    }
   }
 }
 // @media screen and (max-width: 992px) {
@@ -45,3 +54,4 @@
 //     font-size: 42px;
 //   }
 // }
+

@@ -7,6 +7,10 @@
     font-size: 20px;
     @include ELLIPSIS-LINE(2);
   }
+  .project-detail-title-wrapper {
+    @include FLEX-BETWEEN;
+    width: 100%;
+  }
 
   .project-info-desc {
     width: 100%;
@@ -15,7 +19,12 @@
     padding: rem(8);
     font-size: rem(20);
     font-family: $eng-content;
-    border: 1px solid $lightx2-gray;
+    background-color: transparent;
     border-radius: rem(16);
+
+    &.edit {
+      background-color: $pure-white;
+      border: 1px solid $lightx2-gray;
+    }
   }
 }
