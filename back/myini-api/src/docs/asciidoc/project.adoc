@@ -120,7 +120,7 @@ include::{snippets}/api/projects/{projectid}/members/{memberid}/path-parameters.
 ===== 응답
 include::{snippets}/api/projects/{projectid}/members/{memberid}/http-response.adoc[]
 
-==== 프로젝트 팀원 추가
+==== 프로젝트 팀원 삭제
 ===== 요청
 include::{snippets}/api/projects/{projectid}/members/{memberid}/delete/http-request.adoc[]
 ====== Header
