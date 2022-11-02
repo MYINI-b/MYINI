@@ -1,13 +1,12 @@
 package com.ssafy.myini.fileio;
 
 import com.ssafy.myini.apidocs.response.*;
+import com.ssafy.myini.common.type.YN;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class ControllerWrite {
     static StringBuilder controllerImportContents = new StringBuilder();
@@ -19,7 +18,8 @@ public class ControllerWrite {
         controllerImportContents.append("import lombok.RequiredArgsConstructor;\n")
                 .append("import org.springframework.http.HttpStatus;\n")
                 .append("import org.springframework.http.ResponseEntity;\n")
-                .append("import org.springframework.web.bind.annotation.*;\n\n")
+                .append("import org.springframework.web.bind.annotation.*;\n")
+                .append("import java.util.*;\n\n")
                 .append("import ").append(initializerRequest.getSpring_package_name()).append(".request.*\n")
                 .append("import ").append(initializerRequest.getSpring_package_name()).append(".response.*\n")
                 .append("import ").append(initializerRequest.getSpring_package_name()).append(".service.*\n");
@@ -36,13 +36,13 @@ public class ControllerWrite {
                 .append("public class " + projectInfoListResponse.getApiControllerName() + "Controller {\n");
         // 서비스 불러오기
         depth++;
-        appendTab(contents);
-        service = firstIndexToLowerCase(projectInfoListResponse.getApiControllerName());
+        FileUtil.appendTab(contents, depth);
+        service = FileUtil.firstIndexToLowerCase(projectInfoListResponse.getApiControllerName());
         contents.append("private final ")
                 .append(projectInfoListResponse.getApiControllerName()).append("Service ")
                 .append(service).append("Service;\n");
 
-        appendTab(contents);
+        FileUtil.appendTab(contents, depth);
         contents.append("\n").append(methodWrite(projectInfoListResponse.getApiInfoResponses()).toString().replaceAll(",", ", "));
         depth--;
         contents.append("}");
@@ -51,52 +51,18 @@ public class ControllerWrite {
     }
 
     public static void controllerWrite(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
-        String contents = controllerPreview(projectInfoListResponse, initializerRequest);
-
-        try {
-            //폴더 찾아가기
-            String controllerPath = initializerRequest.getSpring_base_path() + "\\" + initializerRequest.getSpring_name() + "\\src\\main\\java\\";
-
-            String[] packagePath = initializerRequest.getSpring_package_name().split("[.]");
-            for (String s : packagePath) {
-                controllerPath = controllerPath + s + "\\";
-            }
-
-            controllerPath += "controller\\";
-
-            // controller 폴더 만들기
-            File folder = new File(controllerPath);
-            if (!folder.exists()) {
-                folder.mkdir();
-            }
-
-            // controller 파일 만들기
-            File file = new File(controllerPath + projectInfoListResponse.getApiControllerName() + "Controller.java");
-            if (!file.exists()) {
-                folder.createNewFile();
-            }
-
-            //파일 쓰기
-            FileWriter fw = new FileWriter(file);
-            BufferedWriter writer = new BufferedWriter(fw);
-            writer.write(contents);
-            writer.close();
-
-        } catch (Exception e) {
-            System.out.println("e = " + e);
-        }
-
+        FileUtil.fileWrite(projectInfoListResponse, initializerRequest, controllerPreview(projectInfoListResponse, initializerRequest), "controller", "Controller");
     }
 
     // apimethod별로 만듦
     public static StringBuilder methodWrite(List<ApiInfoResponse> apiInfoResponses) {
         StringBuilder methodContents = new StringBuilder();
 
-
         for (ApiInfoResponse apiInfoResponse : apiInfoResponses) {
             // Api Method 추출
-            String apiMethod = getMethodType(apiInfoResponse.getApiResponse().getApiMethod());
-            appendTab(methodContents);
+            String apiMethod = FileUtil.getMethodType(apiInfoResponse.getApiResponse().getApiMethod());
+
+            FileUtil.appendTab(methodContents, depth);
             methodContents.append("@").append(apiMethod).append("Mapping");
             if (!apiInfoResponse.getApiResponse().getApiUrl().isEmpty()) {
                 methodContents.append("(\"")
@@ -104,20 +70,23 @@ public class ControllerWrite {
                         .append("\")");
             }
             methodContents.append("\n");
-            appendTab(methodContents);
+            FileUtil.appendTab(methodContents, depth);
             methodContents.append("public ResponseEntity<");
 
             // 메서드 response type
             String response = "Void";
             for (DtoResponse dtoResponse : apiInfoResponse.getDtoResponses()) {
                 if (dtoResponse.getDtoType().equals("RESPONSE")) {
-                    response = firstIndexToUpperCase(dtoResponse.getDtoName());
+                    if (dtoResponse.getDtoIsList().equals("Y")) {
+                        methodContents.append("List<");
+                    }
+                    response = FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName());
                     break;
                 }
             }
 
             // 메서드명
-            methodContents.append(response).append("> ").append(apiInfoResponse.getApiResponse().getApiMethodName());
+            methodContents.append(response).append(">> ").append(apiInfoResponse.getApiResponse().getApiMethodName());
 
             // 매개변수 이름만 저장할 리스트
             List<String> variableNames = new ArrayList<>();
@@ -140,19 +109,19 @@ public class ControllerWrite {
             // 3. requestBody
             for (DtoResponse dtoResponse : apiInfoResponse.getDtoResponses()) {
                 if (dtoResponse.getDtoType().equals("REQUEST")) {
-                    methodContents.append("@RequestBody @Valid ").append(firstIndexToUpperCase(dtoResponse.getDtoName()))
+                    methodContents.append("@RequestBody @Valid ").append(FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName()))
                             .append(" request");
                     variableNames.add("request");
                     break;
                 }
             }
 
-            removeLastComma(methodContents);
+            FileUtil.removeLastComma(methodContents);
 
             // 메서드 바디
             methodContents.append(") {\n");
             depth++;
-            appendTab(methodContents);
+            FileUtil.appendTab(methodContents, depth);
             // 리턴 타입 있을 경우 body 로 받아준다
             if (!response.equals("Void")) {
                 methodContents.append(response).append(" body = ");
@@ -163,11 +132,11 @@ public class ControllerWrite {
             for (String variableName : variableNames) {
                 methodContents.append(variableName).append(",");
             }
-            removeLastComma(methodContents);
+            FileUtil.removeLastComma(methodContents);
             methodContents.append(");\n");
 
             // api method 에 따른 response 형식
-            appendTab(methodContents);
+            FileUtil.appendTab(methodContents, depth);
             methodContents.append("return ResponseEntity.");
 
             String method = apiInfoResponse.getApiResponse().getApiMethod();
@@ -186,35 +155,11 @@ public class ControllerWrite {
             }
 
             depth--;
-            appendTab(methodContents);
+            FileUtil.appendTab(methodContents, depth);
             methodContents.append("}\n");
         }
 
         return methodContents;
     }
 
-    private static void removeLastComma(StringBuilder sb) {
-        // 마지막에 , 있으면 제거
-        if (sb.length() > 0 && sb.charAt(sb.length() - 1) == ',') {
-            sb.deleteCharAt(sb.length() - 1);
-        }
-    }
-
-    private static String firstIndexToLowerCase(String s) {
-        return s.substring(0, 1).toLowerCase() + s.substring(1);
-    }
-
-    private static String firstIndexToUpperCase(String s) {
-        return s.substring(0, 1).toUpperCase() + s.substring(1);
-    }
-
-    private static void appendTab(StringBuilder sb) {
-        for (int i = 0; i < depth; i++) {
-            sb.append("\t");
-        }
-    }
-
-    private static String getMethodType(String method) {
-        return method.charAt(0) + method.substring(1).toLowerCase();
-    }
 }
