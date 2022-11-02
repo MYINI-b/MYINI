@@ -8,15 +8,18 @@
   width: 100%;
   height: rem(70);
   background-color: $white;
-  border-bottom: solid 1px $gray;
+  border-bottom: solid 1px $lightx2-gray;
+  @include FLEX-BETWEEN;
+}
+.empty-space {
+  content: '';
 }
 
 .dropdown {
   position: absolute;
   right: 0;
   display: inline-block;
-  margin: 0.5rem;
-  margin-left: auto;
+  margin-right: rem(10);
 }
 
 .profile-img {
@@ -27,21 +30,33 @@
 }
 
 .dropdown-content {
+  @include FLEX-COLUMN;
+  @include BORDER-PAPER;
   position: absolute;
   right: 1%;
   z-index: 1; /*다른 요소들보다 앞에 배치*/
   display: none;
-  min-width: 100px;
+  padding: rem(10);
   font-weight: 400;
   background-color: #f9f9f9;
 }
 
 .dropdown-content p {
   display: block;
-  padding: 12px 20px;
+  padding: 6px 12px;
   color: rgb(37, 37, 37);
   font-size: 12px;
+  font-family: $eng-content;
+  white-space: nowrap;
   text-decoration: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+  @include FLEX-CENTER;
+
+  &:hover {
+    font-weight: bold;
+    background-color: $fourth;
+  }
 }
 
 .dropdown:hover .dropdown-content {

@@ -42,7 +42,6 @@ export default function ApiSpec() {
 
   return (
     <div className="apispec-container">
-      <Stepper step={step} setStep={setStep} />
       <h1 className="apispec-title">API 명세서</h1>
 
       <section className="apispec-info-section">

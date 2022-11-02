@@ -3,7 +3,7 @@
 .apispec-container {
   width: 100%;
   height: 100vh;
-  padding: rem(30);
+  padding: rem(80) rem(30) rem(30) rem(30);
   background-color: $white;
   @include FLEX-COLUMN;
 

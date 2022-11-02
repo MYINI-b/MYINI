@@ -1,4 +1,3 @@
-import MainHeader from 'components/MainHeader';
 import CardLogo from '../../assets/card-logo.png';
 import './style.scss';
 
@@ -10,7 +9,6 @@ export default function MainPage() {
         <div className="wave -two" />
         <div className="wave -three" />
       </div>
-      <MainHeader />
       <div className="main-page">
         <span className="user-name">한윤석</span>
         <span className="user-ini">`s INI</span>
