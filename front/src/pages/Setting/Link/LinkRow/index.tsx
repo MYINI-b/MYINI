@@ -4,18 +4,13 @@ import './style.scss';
 interface Props {
   img: string;
   link: string;
+  isEdit: boolean;
   setLink: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function LinkRow({ img, link, setLink }: Props) {
-  const [isEdit, setIsEdit] = useState(true);
+export default function LinkRow({ img, link, isEdit, setLink }: Props) {
   const onLinkChange = useCallback((e: any) => {
     setLink(e.target.value);
-  }, []);
-
-  useEffect(() => {
-    // if (link === '') setIsEdit(false);
-    // else setIsEdit(true);
   }, []);
 
   return (
@@ -34,12 +29,7 @@ export default function LinkRow({ img, link, setLink }: Props) {
           }}
         />
       ) : (
-        <a
-          className="link-row-input"
-          href={link}
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a className="link-row-a" href={link} target="_blank" rel="noreferrer">
           {link}
         </a>
       )}

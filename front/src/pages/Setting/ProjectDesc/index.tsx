@@ -15,8 +15,8 @@ export default function DetailInfo({ desc, onDescChange }: Props) {
   }, []);
   return (
     <div className="detail-info">
-      <div className="project-detail-title-wrapper">
-        <div className="project-detail-info-title">프로젝트 설명</div>
+      <div className="project-detail-title-wrapper normal">
+        <div className="project-detail-info-title">프로젝트 설명&nbsp;</div>
         {isEdit ? (
           <FontAwesomeIcon
             icon={faCheck}

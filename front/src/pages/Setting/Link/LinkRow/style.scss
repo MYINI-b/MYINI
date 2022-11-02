@@ -14,10 +14,19 @@
 
   .link-row-input {
     width: 100%;
-    padding: rem(4);
+    height: rem(38);
     padding: rem(10);
     color: $black;
-    border: none;
+    font-size: rem(14);
+    border: 1px solid $lightx2-gray;
     border-radius: rem(10);
+  }
+
+  .link-row-a {
+    width: 100%;
+    height: rem(38);
+    padding: rem(11);
+    color: $black;
+    font-size: rem(14);
   }
 }

@@ -4,7 +4,7 @@
   @include FLEX-COLUMN;
   @include STRETCH;
   min-height: 100vh;
-  padding: rem(30) 15% rem(30) 15%;
+  padding: rem(30) 15% 10% 15%;
   font-family: $eng-content;
 
   .project-detail-info-title {
@@ -19,18 +19,21 @@
   }
 
   .bottom-side {
+    display: flex;
     width: 100%;
     margin-top: rem(36);
-    @include FLEX-ALIGN-CENTER;
 
     .left-side {
       flex: 0.7;
       width: 100%;
+      @include FLEX-COLUMN;
     }
     .right-side {
       flex: 0.3;
       width: 100%;
+      max-height: rem(440);
       margin-left: rem(30);
+      @include FLEX-COLUMN;
     }
   }
 
@@ -47,4 +50,8 @@
 .project-detail-title-wrapper {
   @include FLEX-BETWEEN;
   width: 100%;
+
+  &.normal {
+    justify-content: initial;
+  }
 }

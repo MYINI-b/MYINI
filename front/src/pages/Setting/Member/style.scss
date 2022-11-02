@@ -1,27 +1,23 @@
 @import 'variables.scss';
 
-.project-member {
-  .member-control {
-    padding-bottom: rem(25);
-    color: $primary;
-    font-size: 32px;
-    font-family: $kor;
-  }
-  .profile-image {
-    width: rem(57);
-    height: rem(57);
-    border-radius: 70%;
-  }
-  .team-member {
-    display: flex;
-    align-items: center;
-    padding-bottom: rem(17);
-  }
-  .profile-name {
-    padding-left: rem(10);
-  }
-  .member-scroll {
-    height: rem(363);
-    overflow-y: scroll;
-  }
+.member-control {
+  padding-bottom: rem(25);
+  color: $primary;
+  font-size: 32px;
+  font-family: $kor;
+}
+.profile-image {
+  width: rem(57);
+  height: rem(57);
+  border-radius: 70%;
+}
+.team-member {
+  @include FLEX-ALIGN-CENTER;
+  padding-bottom: rem(17);
+}
+.profile-name {
+  padding-left: rem(10);
+}
+.member-scroll {
+  overflow-y: scroll;
 }

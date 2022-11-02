@@ -3,7 +3,7 @@ import './style.scss';
 export function ProjectMember(props: any) {
   const { member } = props;
   return (
-    <div className="project-member">
+    <>
       <div className="project-detail-info-title">팀원관리</div>
       <div className="member-scroll">
         {member.map((mem: any) => (
@@ -13,6 +13,6 @@ export function ProjectMember(props: any) {
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 }

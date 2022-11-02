@@ -4,8 +4,38 @@
   @include FLEX-COLUMN;
   margin-top: rem(20);
 
-  .detail-word {
-    margin-top: rem(8);
-    font-size: rem(20);
+  .project-date-article {
+    @include FLEX-ALIGN-CENTER;
+    width: 100%;
+    margin-top: rem(10);
+
+    .project-date-icon {
+      margin-right: rem(6);
+    }
+
+    .project-date-box-wrapper {
+      @include FLEX-ALIGN-CENTER;
+    }
+    .project-date-box {
+      position: relative;
+      padding: rem(6) rem(12);
+      background-color: $pure-white;
+      border: 1px solid $gray;
+      border-radius: rem(18);
+      cursor: pointer;
+      transition: 0.3s ease;
+
+      &:hover {
+        color: $white;
+        background-color: $secondary;
+        border: 1px solid $secondary;
+      }
+    }
   }
+}
+
+.date-absolute-div {
+  position: absolute;
+  top: 33px;
+  left: 0;
 }
