@@ -15,6 +15,7 @@ import java.util.List;
 
 public class EntityWrite {
     static StringBuilder entityImportContents;
+    static StringBuilder entityAnnotationContents;
     static List<Table> tableList = new ArrayList<>();
     static List<Column> columnList = new ArrayList<>();
     static List<RelationEndColumn> relationEndColumnList = new ArrayList<>();
@@ -76,7 +77,10 @@ public class EntityWrite {
         //테이블
         for (int i=0 ; i<tables.size() ; i++){
             entityImportContents = new StringBuilder();
+            entityAnnotationContents = new StringBuilder();
+
             entityImportContents.append("import lombok.*;\nimport javax.persistence.*;\n");
+            entityAnnotationContents.append("@Entity\n@NoArgsConstructor(access = AccessLevel.PROTECTED)\n@AllArgsConstructor\n@Getter\n");
             StringBuilder contents = new StringBuilder();
             JSONObject tableItem = (JSONObject) tables.get(i);
 
@@ -91,7 +95,7 @@ public class EntityWrite {
                     .append("\n")
                     .append(entityImportContents)
                     .append("\n")
-                    .append("@Entity\n@NoArgsConstructor(access = AccessLevel.PROTECTED)\n@AllArgsConstructor\n@Getter\n")
+                    .append(entityAnnotationContents)
                     .append("public class "+tableName+" {\n\n")
                     .append(columnContents)
                     .append(relationContents)
@@ -116,7 +120,10 @@ public class EntityWrite {
         //테이블
         for (int i=0 ; i<tables.size() ; i++){
             entityImportContents = new StringBuilder();
+            entityAnnotationContents = new StringBuilder();
+
             entityImportContents.append("import lombok.*;\nimport javax.persistence.*;\n");
+            entityAnnotationContents.append("@Entity\n@NoArgsConstructor(access = AccessLevel.PROTECTED)\n@AllArgsConstructor\n@Getter\n");
             StringBuilder contents = new StringBuilder();
             JSONObject tableItem = (JSONObject) tables.get(i);
 
@@ -131,7 +138,7 @@ public class EntityWrite {
                     .append("\n")
                     .append(entityImportContents)
                     .append("\n")
-                    .append("@Entity\n@NoArgsConstructor(access = AccessLevel.PROTECTED)\n@AllArgsConstructor\n@Getter\n")
+                    .append(entityAnnotationContents)
                     .append("public class "+tableName+" {\n\n")
                     .append(columnContents)
                     .append(relationContents)
@@ -182,14 +189,15 @@ public class EntityWrite {
             String columnName = (String) column.get("name");
             String columnId = (String) column.get("id");
             String columnDataType = (String) column.get("dataType");
-            columnDataType = dataTypeChange(columnDataType);
-//            String columnDefault = (String) column.get("default");
+            String columnJavaDataType = dataTypeChange(columnDataType);
+            String columnDefault = (String) column.get("default");
 
             JSONObject option = (JSONObject) column.get("option");
 
             Boolean primaryKey = (Boolean) option.get("primaryKey");
             Boolean unique = (Boolean) option.get("unique");
             Boolean notNull = (Boolean) option.get("notNull");
+
 
             if(!relationEndColumnList.contains(columnId)) {
                 Boolean isPk = false;
@@ -200,26 +208,43 @@ public class EntityWrite {
                     columnContents.append("@Id\n@GeneratedValue(strategy = GenerationType.IDENTITY)\n" +
                             "@Column(name=\"" + columnName + "\")\n");
                 }
-                //unique일때
+                //unique 일때
                 if (unique) {
                     flag += "u";
                 }
-                //notnull일때
+                //notnull 일때
                 if (notNull) {
                     flag += "n";
                 }
+                //default 일때
+                if (!columnDefault.equals("")) {
+                    flag += "d";
+                }
+                if(flag.contains("d") && !entityAnnotationContents.toString().contains("@DynamicInsert\n@DynamicUpdate\n")) {
+                    entityAnnotationContents.append("@DynamicInsert\n@DynamicUpdate\n");
+                    entityImportContents.append("import org.hibernate.annotations.DynamicInsert;\n" +
+                            "import org.hibernate.annotations.DynamicUpdate;\n");
+                }
 
                 if(!isPk) {
-                    if (flag.contains("u") && flag.contains("n"))
+                    if (flag.contains("u") && flag.contains("n") && flag.contains("d"))
+                        columnContents.append("@Column(unique = true, nullable = false, columnDefinition=\""+columnDataType.split("\\(")[0]+" default "+(columnDataType.contains("VARCHAR") || columnDataType.contains("CHAR")?"'"+columnDefault+"'":columnDefault)+"\")\n");
+                    else if (flag.contains("u") && flag.contains("n") && !flag.contains("d"))
                         columnContents.append("@Column(unique = true, nullable = false)\n");
-                    else if (flag.contains("u") && !flag.contains("n"))
+                    else if (flag.contains("u") && !flag.contains("n") && flag.contains("d"))
+                        columnContents.append("@Column(unique = true, columnDefinition=\""+columnDataType.split("\\(")[0]+" default "+(columnDataType.contains("VARCHAR") || columnDataType.contains("CHAR")?"'"+columnDefault+"'":columnDefault)+"\")\n");
+                    else if (flag.contains("u") && !flag.contains("n") && !flag.contains("d"))
                         columnContents.append("@Column(unique = true)\n");
-                    else if (!flag.contains("u") && flag.contains("n"))
+                    else if (!flag.contains("u") && flag.contains("n") && flag.contains("d"))
+                        columnContents.append("@Column(nullable = false, columnDefinition=\""+columnDataType.split("\\(")[0]+" default "+(columnDataType.contains("VARCHAR") || columnDataType.contains("CHAR")?"'"+columnDefault+"'":columnDefault)+"\")\n");
+                    else if (!flag.contains("u") && flag.contains("n") && !flag.contains("d"))
                         columnContents.append("@Column(nullable = false)\n");
+                    else if (!flag.contains("u") && !flag.contains("n") && flag.contains("d"))
+                        columnContents.append("@Column(columnDefinition=\""+columnDataType.split("\\(")[0]+" default "+(columnDataType.contains("VARCHAR") || columnDataType.contains("CHAR")?"'"+columnDefault+"'":columnDefault)+"\")\n");
                 }
 
                 //자료형 + 변수명 추가
-                columnContents.append("private " + columnDataType + " " + JdbcUtils.convertUnderscoreNameToPropertyName(columnName) + ";\n\n");
+                columnContents.append("private " + columnJavaDataType + " " + JdbcUtils.convertUnderscoreNameToPropertyName(columnName) + ";\n\n");
 
             }
         }
