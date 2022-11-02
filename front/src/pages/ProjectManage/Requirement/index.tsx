@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 
-import { ELEMENTPOS } from 'types/Requirement';
+import { ELEMENTPOS, ROW } from 'types/Requirement';
 import TableRow from './TableRow';
 import CategoryListModal from './CategoryListModal';
 
@@ -18,85 +18,7 @@ export default function Requirement() {
     y: 0,
     width: 0,
   });
-  const rows = [
-    {
-      id: 1,
-      category: '회원',
-      requirement: '로그인을 한다',
-      description:
-        '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
-      division: 'FE',
-      manager: '한윤석',
-      importance: 1,
-      point: 4,
-    },
-    {
-      id: 2,
-      category: '회원',
-      requirement: '로그인을 한다',
-      description:
-        '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
-      division: 'FE',
-      manager: '한윤석',
-      importance: 2,
-      point: 4,
-    },
-    {
-      id: 3,
-      category: '회원',
-      requirement: '로그인을 한다',
-      description:
-        '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
-      division: 'FE',
-      manager: '한윤석',
-      importance: 3,
-      point: 4,
-    },
-    {
-      id: 4,
-      category: '회원',
-      requirement: '로그인을 한다',
-      description:
-        '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
-      division: 'FE',
-      manager: '한윤석',
-      importance: 4,
-      point: 4,
-    },
-    {
-      id: 5,
-      category: '회원',
-      requirement: '로그인을 한다',
-      description:
-        '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
-      division: 'FE',
-      manager: '한윤석',
-      importance: 5,
-      point: 4,
-    },
-    {
-      id: 6,
-      category: '회원',
-      requirement: '로그인을 한다',
-      description:
-        '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
-      division: 'FE',
-      manager: '한윤석',
-      importance: 1,
-      point: 4,
-    },
-    {
-      id: 7,
-      category: '회원',
-      requirement: '로그인을 한다',
-      description:
-        '로그인모달창을 만든다. 내용을 몇 줄이나 적어야 할지 모르겠는데 그냥 계속 이렇게 늘어나게 만들면 되려나',
-      division: 'FE',
-      manager: '한윤석',
-      importance: 1,
-      point: 4,
-    },
-  ];
+  const [rows, setRows] = useState<ROW[]>([]);
 
   const closeCategoryList = useCallback(() => {
     setIsCategoryListOpen(false);
@@ -110,6 +32,21 @@ export default function Requirement() {
       width: e.target.offsetWidth,
     });
   }, []);
+
+  const addTableRow = useCallback(() => {
+    const copyRows = [...rows];
+    copyRows.push({
+      id: 1,
+      category: '',
+      requirement: '',
+      description: '',
+      division: '',
+      manager: '',
+      importance: 0,
+      point: 0,
+    });
+    setRows(copyRows);
+  }, [rows]);
 
   return (
     <>
@@ -141,10 +78,14 @@ export default function Requirement() {
           </article>
 
           <article className="table-content-article">
-            {rows.map((e) => {
-              return <TableRow row={e} key={e.id} />;
+            {rows.map((e, i: number) => {
+              return <TableRow row={e} key={i} setRows={setRows} />;
             })}
-            <button className="table-more-button" type="button">
+            <button
+              className="table-more-button"
+              type="button"
+              onClick={addTableRow}
+            >
               <FontAwesomeIcon icon={faPlus} />
             </button>
           </article>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, Dispatch } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronUp,
@@ -11,9 +11,10 @@ import RowModal from '../RowModal';
 
 interface Props {
   row: ROW;
+  setRows: Dispatch<React.SetStateAction<ROW[]>>;
 }
 
-export default function TableRow({ row }: Props) {
+export default function TableRow({ row, setRows }: Props) {
   const [isRowModalOpen, setIsRowModalOpen] = useState(false);
   const [clickMousePos, setClickMousePos] = useState<MOUSEPOS>({ x: 0, y: 0 });
 

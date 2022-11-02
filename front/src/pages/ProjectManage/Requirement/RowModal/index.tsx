@@ -34,7 +34,8 @@ export default function RowModal({ setIsRowModalOpen, clickMousePos }: Props) {
         onKeyDown={() => {}}
       >
         <p className="rowmodal-menu">행 삭제</p>
-        <p className="rowmodal-menu">되돌리기</p>
+        <p className="rowmodal-menu">행 추가</p>
+        <p className="rowmodal-menu">복제하기</p>
       </div>
     </div>
   );
