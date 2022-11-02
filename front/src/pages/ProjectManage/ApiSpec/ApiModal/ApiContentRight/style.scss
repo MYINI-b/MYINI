@@ -29,6 +29,40 @@
         background-color: $lightx2-gray;
       }
 
+      .content-right-many-wrapper {
+        width: 100%;
+        margin-bottom: rem(10);
+        @include FLEX-ALIGN-CENTER;
+
+        .many-radio-wrapper {
+          @include FLEX-COLUMN;
+          align-items: center;
+          cursor: pointer;
+          .many-radio-button {
+            width: rem(16);
+            height: rem(16);
+            background-color: $pure-white;
+            border: 1px solid $lightx2-gray;
+            border-radius: rem(16);
+
+            content: '';
+
+            &.select {
+              background-color: $get;
+              border: 2px solid $black;
+            }
+          }
+          .many-radio-text {
+            margin-top: rem(4);
+            font-size: rem(14);
+          }
+        }
+
+        .many-radio-wrapper + .many-radio-wrapper {
+          margin-left: rem(10);
+        }
+      }
+
       .content-right-boxtitle-wrapper {
         width: 100%;
         @include FLEX-ALIGN-CENTER;
