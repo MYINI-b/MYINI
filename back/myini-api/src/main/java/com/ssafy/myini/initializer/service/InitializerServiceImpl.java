@@ -2,6 +2,7 @@ package com.ssafy.myini.initializer.service;
 
 import com.ssafy.myini.InitializerException;
 import com.ssafy.myini.apidocs.query.ApiDocsQueryRepository;
+import com.ssafy.myini.apidocs.response.DtoResponse;
 import com.ssafy.myini.apidocs.response.ProjectInfoListResponse;
 import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.erd.domain.entity.ErdTable;
@@ -101,7 +102,7 @@ public class InitializerServiceImpl implements InitializerService {
             //repository 작성
             RepositoryWrite.repositoryWrite(erd, initializerRequest);
 
-            // apicontroller 별로 생성
+            // controller 생성
             projectInfoListResponses.forEach(projectInfoListResponse -> ControllerWrite.controllerWrite(projectInfoListResponse, initializerRequest));
 
             // service 생성
@@ -109,6 +110,11 @@ public class InitializerServiceImpl implements InitializerService {
 
             // serviceImpl 생성
             projectInfoListResponses.forEach(projectInfoListResponse -> ServiceImplWrite.serviceImplWrite(projectInfoListResponse, initializerRequest));
+
+            // dto 생성
+            projectInfoListResponses.forEach(projectInfoListResponse -> DtoWrite.dtoWrite(projectInfoListResponse, initializerRequest));
+
+
         } catch (Exception e) {
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
@@ -127,7 +133,6 @@ public class InitializerServiceImpl implements InitializerService {
         List<ProjectInfoListResponse> projectInfoListResponses = apiDocsQueryRepository.findAll(project).stream()
                 .map(ProjectInfoListResponse::from)
                 .collect(Collectors.toList());
-        System.out.println("1");
         //ERD json 받아오기
         try {
             JSONParser jsonParser = new JSONParser();
@@ -165,6 +170,20 @@ public class InitializerServiceImpl implements InitializerService {
                         new PreviewResponse("serviceImpl",
                                 projectInfoListResponse.getApiControllerName() + "ServiceImpl.java",
                                 ServiceWrite.servicePreview(projectInfoListResponse, initializerRequest)));
+            });
+
+            // dto
+            projectInfoListResponses.forEach(projectInfoListResponse -> {
+                projectInfoListResponse.getApiInfoResponses().forEach(
+                        apiInfoResponse -> {
+                            apiInfoResponse.getDtoResponses().forEach(
+                                    dtoResponse -> {
+                                        previewResponses.add(
+                                                new PreviewResponse("dto",
+                                                        dtoResponse.getDtoName() + ".java",
+                                                        DtoWrite.dtoPreview(dtoResponse, initializerRequest)));
+                                    });
+                        });
             });
 
         } catch (Exception e) {

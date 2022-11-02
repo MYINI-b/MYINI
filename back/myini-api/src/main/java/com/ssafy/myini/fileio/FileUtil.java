@@ -23,14 +23,14 @@ public class FileUtil {
 
             path += folderPath + "\\";
 
-            // controller 폴더 만들기
+            // 폴더 만들기
             File folder = new File(path);
             if (!folder.exists()) {
                 folder.mkdir();
             }
 
-            // controller 파일 만들기
-            File file = new File(path + projectInfoListResponse.getApiControllerName() + fileName + ".java");
+            // 파일 만들기
+            File file = new File(path + fileName + ".java");
             if (!file.exists()) {
                 folder.createNewFile();
             }
