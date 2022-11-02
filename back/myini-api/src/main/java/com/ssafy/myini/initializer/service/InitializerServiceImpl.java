@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,7 +90,7 @@ public class InitializerServiceImpl implements InitializerService {
         try {
             JSONParser jsonParser = new JSONParser();
             File file = new File("erd");
-            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/1.vuerd.json"),file);
+            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/1.vuerd.json"), file);
 
             Reader reader = new FileReader(file);
             JSONObject erd = (JSONObject) jsonParser.parse(reader);
@@ -105,7 +106,7 @@ public class InitializerServiceImpl implements InitializerService {
 
             // service 생성
             projectInfoListResponses.forEach(projectInfoListResponse -> ServiceWrite.serviceWrite(projectInfoListResponse, initializerRequest));
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
 
@@ -120,23 +121,42 @@ public class InitializerServiceImpl implements InitializerService {
     public List<PreviewResponse> initializerPreview(Long projectId, InitializerRequest initializerRequest) {
         List<PreviewResponse> previewResponses = new ArrayList<>();
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
-
+        List<ProjectInfoListResponse> projectInfoListResponses = apiDocsQueryRepository.findAll(project).stream()
+                .map(ProjectInfoListResponse::from)
+                .collect(Collectors.toList());
+        System.out.println("1");
         //ERD json 받아오기
         try {
             JSONParser jsonParser = new JSONParser();
             File file = new File("erd");
-            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/1.vuerd.json"),file);
+            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/1.vuerd.json"), file);
 
             Reader reader = new FileReader(file);
             JSONObject erd = (JSONObject) jsonParser.parse(reader);
 
             //entity 작성
-            previewResponses = EntityWrite.entityPreview(erd, initializerRequest, previewResponses);
+            EntityWrite.entityPreview(erd, initializerRequest, previewResponses);
 
             //repository 작성
-            previewResponses = RepositoryWrite.repositoryPreview(erd, initializerRequest,previewResponses);
+            RepositoryWrite.repositoryPreview(erd, initializerRequest, previewResponses);
 
-        }catch (Exception e){
+            // controller
+            projectInfoListResponses.forEach(projectInfoListResponse -> {
+                previewResponses.add(
+                        new PreviewResponse("controller",
+                                projectInfoListResponse.getApiControllerName() + "Controller.java",
+                                ControllerWrite.controllerPreview(projectInfoListResponse, initializerRequest)));
+            });
+
+            // service
+            projectInfoListResponses.forEach(projectInfoListResponse -> {
+                previewResponses.add(
+                        new PreviewResponse("service",
+                                projectInfoListResponse.getApiControllerName() + "Service.java",
+                                ServiceWrite.servicePreview(projectInfoListResponse, initializerRequest)));
+            });
+
+        } catch (Exception e) {
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
 
