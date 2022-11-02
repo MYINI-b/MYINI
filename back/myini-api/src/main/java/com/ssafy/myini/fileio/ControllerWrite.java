@@ -77,6 +77,9 @@ public class ControllerWrite {
 
             // 메서드 response type
             String response = FileUtil.responseWrite(apiInfoResponse);
+            if (response.equals("void")) {
+                response = FileUtil.firstIndexToUpperCase(response);
+            }
 
             // 메서드명
             methodContents.append(response).append("> ").append(apiInfoResponse.getApiResponse().getApiMethodName());
