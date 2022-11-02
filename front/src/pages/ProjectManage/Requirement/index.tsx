@@ -6,7 +6,6 @@ import { faSave } from '@fortawesome/free-regular-svg-icons';
 
 import { ELEMENTPOS } from 'types/Requirement';
 import TableRow from './TableRow';
-import Stepper from './Stepper';
 import CategoryListModal from './CategoryListModal';
 
 export default function Requirement() {
@@ -114,10 +113,7 @@ export default function Requirement() {
 
   return (
     <>
-      <div className="header" />
       <div className="requirement-container">
-        <Stepper step={step} setStep={setStep} />
-
         <h1 className="requirement-title">요구사항명세서</h1>
 
         <section className="requirement-info-section">

@@ -36,6 +36,7 @@ export default function ApiModal({
   const [apiCode, setApiCode] = useState(200);
   const [reqVarName, setReqVarName] = useState('');
   const [resVarName, setResVarName] = useState('');
+  const [resMany, setResMany] = useState(false);
 
   const [pathVarList, setPathVarList] = useState<Array<QUERY>>([
     { key: '', type: 'PATH' },
@@ -156,6 +157,8 @@ export default function ApiModal({
             reqVarName={reqVarName}
             setResVarName={setResVarName}
             setReqVarName={setReqVarName}
+            resMany={resMany}
+            setResMany={setResMany}
           />
         </article>
 

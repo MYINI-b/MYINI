@@ -1,5 +1,4 @@
 import './style.scss';
-import MainHeader from 'components/MainHeader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 // import Stepper from './Stepper';
@@ -8,7 +7,6 @@ import GenerateVuerd from './GenerateVuerd';
 export default function ERDPage() {
   return (
     <div>
-      <MainHeader />
       <div className="erd-container">
         <h1 className="erd-title">ERD</h1>
         <section className="erd-info-section">
