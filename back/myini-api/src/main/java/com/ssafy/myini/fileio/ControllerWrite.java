@@ -6,6 +6,7 @@ import com.ssafy.myini.initializer.request.InitializerRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 
 public class ControllerWrite {
@@ -50,6 +51,7 @@ public class ControllerWrite {
         depth--;
         contents.append("}");
 
+
         return contents.toString();
     }
 
@@ -67,10 +69,14 @@ public class ControllerWrite {
 
             FileUtil.appendTab(methodContents, depth);
             methodContents.append("@").append(apiMethod).append("Mapping");
-            if (!apiInfoResponse.getApiResponse().getApiUrl().isEmpty()) {
-                methodContents.append("(\"")
-                        .append(apiInfoResponse.getApiResponse().getApiUrl())
-                        .append("\")");
+            if (apiInfoResponse.getApiResponse().getApiUrl() != null && !apiInfoResponse.getApiResponse().getApiUrl().isEmpty()) {
+                int idx = apiInfoResponse.getApiResponse().getApiUrl().indexOf("?");
+                String url = idx == -1 ? apiInfoResponse.getApiResponse().getApiUrl() : apiInfoResponse.getApiResponse().getApiUrl().substring(0, idx);
+                if (!url.isEmpty()) {
+                    methodContents.append("(\"")
+                            .append(url)
+                            .append("\")");
+                }
             }
             methodContents.append("\n");
             FileUtil.appendTab(methodContents, depth);
