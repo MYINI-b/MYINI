@@ -22,8 +22,8 @@ public class DtoResponse {
         dtoResponse.dtoId = dto.getDtoId();
         dtoResponse.dtoName = String.valueOf(dto.getDtoName());
         dtoResponse.dtoType = String.valueOf(dto.getDtoType());
-        if(dto.getDtoItems() != null){
-            dtoResponse.dtoItemResponses = dto.getDtoItems().stream()
+        if(dto.getDtoItemChildren() != null){
+            dtoResponse.dtoItemResponses = dto.getDtoItemChildren().stream()
                     .map(DtoItemResponse :: from)
                     .collect(Collectors.toList());
         }

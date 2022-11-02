@@ -55,7 +55,19 @@ public class ApiDocsQueryRepository {
                 .join(dto.api, api)
                 .join(api.apiController, apiController)
                 .where(apiController.project.eq(findProject),
-                        dto.dtoType.eq(DtoType.RESPONSE))
+                        dto.dtoType.eq(DtoType.RESPONSE),
+                        dto.dtoType.eq(DtoType.CUSTOM))
+                .fetch();
+    }
+
+    public List<ApiController> findAll(Project findProject){
+        return queryFactory
+                .selectFrom(apiController).distinct()
+                .leftJoin(apiController.apis, api).fetchJoin()
+                .leftJoin(api.pathVariables, pathVariable)
+                .leftJoin(api.queryStrings, queryString)
+                .leftJoin(api.dtos, dto)
+                .where(apiController.project.eq(findProject))
                 .fetch();
     }
 }

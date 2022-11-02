@@ -3,6 +3,7 @@
 .api-add-content-right {
   @include FLEX-COLUMN;
   @include STRETCH;
+  flex: 1;
   align-items: center;
 
   .content-section {
@@ -12,8 +13,10 @@
     @include FLEX-COLUMN;
 
     .content-right-title {
+      padding: 0 rem(16);
       font-size: rem(24);
       font-family: $eng-title;
+      @include FLEX-CENTER;
     }
 
     .content-right-box {
@@ -21,6 +24,10 @@
       padding: rem(16);
       border: 1px solid $light-gray;
       border-radius: rem(12);
+
+      &.disabled {
+        background-color: $lightx2-gray;
+      }
 
       .content-right-boxtitle-wrapper {
         width: 100%;
@@ -119,5 +126,6 @@
     font-size: rem(16);
     background-color: $fourth;
     border-radius: rem(5);
+    cursor: pointer;
   }
 }

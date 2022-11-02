@@ -2,10 +2,11 @@ import { useState, useCallback, Dispatch } from 'react';
 import DataTypeList from 'components/DataTypeList';
 import './style.scss';
 import { MOUSEPOS, ATTRIBUTE } from 'types/ApiSpec';
+import Tooltip from 'components/Tooltip';
 
 interface Props {
-  dataType: string[];
   objDataType: any[];
+  apiMethod: string;
   resVarName: string;
   setResVarName: Dispatch<React.SetStateAction<string>>;
   reqVarName: string;
@@ -13,8 +14,8 @@ interface Props {
 }
 
 export default function ApiContentRight({
-  dataType,
   objDataType,
+  apiMethod,
   resVarName,
   setResVarName,
   reqVarName,
@@ -38,18 +39,28 @@ export default function ApiContentRight({
     },
   ]);
 
-  const openDataTypeList = useCallback((e: any, isReq: boolean) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setIsReq(isReq);
-    setMousePos({ x: e.clientX, y: e.clientY });
-    setIsDatatypeListOpen((prev) => !prev);
-  }, []);
+  const openDataTypeList = useCallback(
+    (e: any, isReq: boolean) => {
+      e.stopPropagation();
+      e.preventDefault();
+
+      // if (isReq && (apiMethod === 'GET' || apiMethod === 'DELETE')) return;
+      // if (!isReq && apiMethod !== 'GET') return;
+
+      setIsReq(isReq);
+      setMousePos({ x: e.clientX, y: e.clientY });
+      setIsDatatypeListOpen((prev) => !prev);
+    },
+    [apiMethod],
+  );
 
   return (
     <div className="api-add-content-right">
       <section className="content-section">
-        <h1 className="content-right-title">REQUEST BODY</h1>
+        <Tooltip text="변수명은 Camel Case로 작성해주세요.">
+          <h1 className="content-right-title">REQUEST BODY</h1>
+        </Tooltip>
+
         <div className="content-right-box">
           <div className="content-right-boxtitle-wrapper">
             <h3 className="content-right-boxtitle static">자료형</h3>
@@ -73,7 +84,7 @@ export default function ApiContentRight({
                 placeholder="변수명을 입력해주세요"
                 required
                 value={reqVarName}
-                onChange={(e) => setReqVarName(e.target.value)}
+                onChange={(e) => setReqVarName(e.target.value.trim())}
               />
             </div>
             <div className="content-right-detail-boxcontent">
@@ -149,9 +160,8 @@ export default function ApiContentRight({
                 type="text"
                 className="content-right-boxcontent-input"
                 placeholder="변수명을 입력해주세요"
-                required
                 value={resVarName}
-                onChange={(e) => setResVarName(e.target.value)}
+                onChange={(e) => setResVarName(e.target.value.trim())}
               />
             </div>
             <div className="content-right-detail-boxcontent">
@@ -208,7 +218,6 @@ export default function ApiContentRight({
         <DataTypeList
           setIsDatatypeListOpen={setIsDatatypeListOpen}
           mousePos={mousePos}
-          dataType={dataType}
           objDataType={objDataType}
           selectInfo={
             isReq

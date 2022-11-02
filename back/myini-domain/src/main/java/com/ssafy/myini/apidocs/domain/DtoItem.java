@@ -23,7 +23,7 @@ public class DtoItem {
     @Enumerated(EnumType.STRING)
     private YN dtoIsList;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dto_id")
     private Dto dto;
 

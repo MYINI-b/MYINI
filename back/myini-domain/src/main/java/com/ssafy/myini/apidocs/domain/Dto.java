@@ -29,8 +29,8 @@ public class Dto {
     @JoinColumn(name = "api_id")
     private Api api;
 
-    @OneToOne(mappedBy = "dto", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private DtoItem dtoItem;
+    @OneToMany(mappedBy = "dto", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<DtoItem> dtoItemChildren = new ArrayList<>();
 
     @OneToMany(mappedBy = "dtoClassType", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<DtoItem> dtoItems = new ArrayList<>();
