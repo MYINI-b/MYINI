@@ -1,7 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useMemo } from 'react';
-import { ProjectImage } from './ImageTitle/index';
-import { DetailInfo } from './ProjectDetail/index';
+import React, { useMemo, useState } from 'react';
+import useInput from 'hooks/useInput';
+import Stepper from 'pages/Requirement/Stepper';
+import ImageTitle from './ImageTitle';
+import ProjectDesc from './ProjectDesc/index';
 import { ProjectPeriod } from './Period/index';
 import { ProjectLink } from './Link/index';
 import { ProjectMember } from './Member/index';
@@ -10,10 +12,14 @@ import './style.scss';
 
 export default function SettingPage() {
   const data = useMemo(() => MockData[0], []);
+  const [isEdit, setIsEdit] = useState(false);
+  const [title, onTitleChange] = useInput('');
+  const [desc, onDescChange] = useInput('');
+  const [step, setStep] = useState(0);
   const Props = {
     id: data.id,
     img: data.img,
-    title: data.title,
+    // title: data.title,
     period: data.period,
     jiralink: data.jiralink,
     notionlink: data.notionlink,
@@ -22,16 +28,19 @@ export default function SettingPage() {
     detailinfo: data.detailinfo,
     member: data.member,
   };
-  // console.log(data);
+
   return (
     <div className="setting-page">
       <div className="setting-components">
-        <div className="top-side">
-          <ProjectImage {...Props} className="project-image" />
-        </div>
+        <Stepper step={step} setStep={setStep} />
+        <ImageTitle
+          img={Props.img}
+          title={title}
+          onTitleChange={onTitleChange}
+        />
         <div className="bottom-side">
           <div className="left-side">
-            <DetailInfo {...Props} className="detail-info" />
+            <ProjectDesc desc={desc} onDescChange={onDescChange} />
             <ProjectPeriod {...Props} className="project-period" />
             <ProjectLink {...Props} className="project-link" />
           </div>
