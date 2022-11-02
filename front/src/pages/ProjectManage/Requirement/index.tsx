@@ -6,7 +6,6 @@ import { faSave } from '@fortawesome/free-regular-svg-icons';
 
 import { ELEMENTPOS } from 'types/Requirement';
 import TableRow from './TableRow';
-import Stepper from './Stepper';
 import CategoryListModal from './CategoryListModal';
 
 export default function Requirement() {

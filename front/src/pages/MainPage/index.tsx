@@ -1,9 +1,13 @@
+import { useState } from 'react';
+import MainHeader from 'components/MainHeader';
 import CardLogo from '../../assets/card-logo.png';
 import './style.scss';
 
 export default function MainPage() {
+  const [step, setStep] = useState(0);
   return (
-    <div>
+    <div className="mainpage-highest-container">
+      <MainHeader needStepper={false} step={step} setStep={setStep} />
       <div className="wave-container">
         <div className="wave -one" />
         <div className="wave -two" />

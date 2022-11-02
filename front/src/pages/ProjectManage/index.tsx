@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
-import ApiSpec from 'pages/ApiSpec';
-import ERDPage from 'pages/ERDPage';
-import Setting from 'pages/Setting';
-import Requirement from 'pages/Requirement';
 import MainHeader from 'components/MainHeader';
+import ApiSpec from './ApiSpec';
+import ERDPage from './ERDPage';
+import Setting from './Setting';
+import Requirement from './Requirement';
 
 export default function ProjectManage() {
   const [step, setStep] = useState(1);
