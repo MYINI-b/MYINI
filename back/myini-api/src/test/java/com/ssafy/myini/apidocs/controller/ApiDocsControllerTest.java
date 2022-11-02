@@ -129,7 +129,8 @@ class ApiDocsControllerTest extends ControllerTest {
                                 fieldWithPath("apiResponses.[].apiName").type(JsonFieldType.STRING).description("Api 이름"),
                                 fieldWithPath("apiResponses.[].apiUrl").type(JsonFieldType.STRING).description("Api URL"),
                                 fieldWithPath("apiResponses.[].apiMethod").type(JsonFieldType.STRING).description("Api Method"),
-                                fieldWithPath("apiResponses.[].apiCode").type(JsonFieldType.STRING).description("Api Code")
+                                fieldWithPath("apiResponses.[].apiCode").type(JsonFieldType.STRING).description("Api Code"),
+                                fieldWithPath("apiResponses.[].apiMethodName").type(JsonFieldType.STRING).description("Api 메서드 이름")
                         )));
 
         // then
@@ -316,6 +317,7 @@ class ApiDocsControllerTest extends ControllerTest {
                                 fieldWithPath("apiResponse.apiUrl").type(JsonFieldType.STRING).description("Api URL"),
                                 fieldWithPath("apiResponse.apiMethod").type(JsonFieldType.STRING).description("Api Method"),
                                 fieldWithPath("apiResponse.apiCode").type(JsonFieldType.STRING).description("Api Code"),
+                                fieldWithPath("apiResponse.apiMethodName").type(JsonFieldType.STRING).description("Api 메서드 이름"),
                                 fieldWithPath("pathVariableResponses").type(JsonFieldType.ARRAY).description("PathVariable 조회결과 배열"),
                                 fieldWithPath("pathVariableResponses.[].pathVariableId").type(JsonFieldType.NUMBER).description("Pathvariable ID"),
                                 fieldWithPath("pathVariableResponses.[].pathVariableKey").type(JsonFieldType.STRING).description("Pathvariable Key"),

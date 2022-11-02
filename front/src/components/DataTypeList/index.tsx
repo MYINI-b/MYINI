@@ -9,6 +9,7 @@ import {
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './style.scss';
+import { DATATYPE } from 'constants/';
 
 interface MousePos {
   x: number;
@@ -28,7 +29,6 @@ interface ATTRIBUTE_PLUS extends ATTRIBUTE {
 interface Props {
   setIsDatatypeListOpen: Dispatch<SetStateAction<boolean>>;
   mousePos: MousePos;
-  dataType: string[];
   objDataType: any[];
   selectInfo: ATTRIBUTE_PLUS;
   newObjAttribute: ATTRIBUTE[];
@@ -38,7 +38,6 @@ interface Props {
 export default function DataTypeList({
   setIsDatatypeListOpen,
   mousePos,
-  dataType,
   objDataType,
   selectInfo,
   newObjAttribute,
@@ -61,7 +60,7 @@ export default function DataTypeList({
       const copyArr = [...newObjAttribute];
 
       copyArr[selectInfo.idx].type = isNormal
-        ? dataType[idx]
+        ? DATATYPE[idx]
         : objDataType[idx].name;
       copyArr[selectInfo.idx].isList = isListCheck;
       if (!isNormal) copyArr[selectInfo.idx].attr = objDataType[idx].attr;
@@ -96,7 +95,7 @@ export default function DataTypeList({
           </span>
           <label onClick={changeListCheck}>&nbsp;List</label>
         </div>
-        {dataType.map((dt, i) => (
+        {DATATYPE.map((dt, i) => (
           <p
             className={`dtlist-menu ${dt === selectInfo.type ? 'select' : ''}`}
             key={i}

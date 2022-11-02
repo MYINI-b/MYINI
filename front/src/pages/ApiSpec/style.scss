@@ -67,8 +67,8 @@
         margin-right: rem(12);
         padding: 0 rem(8);
         font-size: rem(20);
-        border-top-left-radius: rem(15);
-        border-top-right-radius: rem(15);
+        border-top-left-radius: rem(8);
+        border-top-right-radius: rem(8);
         cursor: pointer;
         @include BTN-COLOR($fourth);
         @include FLEX-CENTER;
@@ -77,13 +77,24 @@
           font-size: rem(14);
         }
 
+        .controller-block-edit {
+          opacity: 0;
+          transition: 0.3s ease;
+        }
+
         &.on {
           background-color: $third;
         }
 
         &.plus {
-          border-top-left-radius: rem(10);
-          border-top-right-radius: rem(10);
+          border-top-left-radius: rem(8);
+          border-top-right-radius: rem(8);
+        }
+
+        &:hover {
+          .controller-block-edit {
+            opacity: 1;
+          }
         }
       }
     }

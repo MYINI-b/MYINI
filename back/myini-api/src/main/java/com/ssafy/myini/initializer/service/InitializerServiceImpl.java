@@ -1,12 +1,15 @@
 package com.ssafy.myini.initializer.service;
 
 import com.ssafy.myini.InitializerException;
+import com.ssafy.myini.apidocs.query.ApiDocsQueryRepository;
+import com.ssafy.myini.apidocs.response.ProjectInfoListResponse;
 import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.erd.domain.entity.ErdTable;
 import com.ssafy.myini.erd.domain.entity.TableColumn;
 import com.ssafy.myini.erd.domain.repository.ErdTableRepository;
 import com.ssafy.myini.erd.domain.repository.TableColumnRepository;
 import com.ssafy.myini.erd.response.ErdTableListResponse;
+import com.ssafy.myini.fileio.ControllerWrite;
 import com.ssafy.myini.fileio.EntityWrite;
 import com.ssafy.myini.fileio.InitProjectDownload;
 import com.ssafy.myini.fileio.RepositoryWrite;
@@ -42,6 +45,7 @@ public class InitializerServiceImpl implements InitializerService {
     private final ErdTableRepository erdTableRepository;
     private final TableColumnRepository tableColumnRepository;
     private final S3Uploader s3Uploader;
+    private final ApiDocsQueryRepository apiDocsQueryRepository;
 
     @Override
     @Transactional
@@ -81,7 +85,9 @@ public class InitializerServiceImpl implements InitializerService {
         InitProjectDownload.initProject(initializerRequest);
 
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
-
+        List<ProjectInfoListResponse> projectInfoListResponses = apiDocsQueryRepository.findAll(project).stream()
+                .map(ProjectInfoListResponse::from)
+                .collect(Collectors.toList());
         //ERD json 받아오기
         try {
             JSONParser jsonParser = new JSONParser();
@@ -97,6 +103,10 @@ public class InitializerServiceImpl implements InitializerService {
             //repository 작성
             RepositoryWrite.repositoryWrite(erd, initializerRequest);
 
+            // apicontroller 별로 생성
+            projectInfoListResponses.forEach(projectInfoListResponse -> ControllerWrite.controllerWrite(projectInfoListResponse, initializerRequest));
+
+
 
         }catch (Exception e){
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
@@ -106,6 +116,9 @@ public class InitializerServiceImpl implements InitializerService {
 //        for (ErdTableListResponse erdTableListResponse : erdTableListResponses) {
 //            RepositoryWrite.repositoryWrite(erdTableListResponse, initializerRequest);
 //        }
+
+
+
 
         return null;
     }
