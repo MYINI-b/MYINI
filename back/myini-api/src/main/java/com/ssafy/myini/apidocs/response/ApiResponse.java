@@ -16,8 +16,9 @@ public class ApiResponse {
     private String apiUrl;
     private String apiMethod;
     private String apiCode;
+    private String apiMethodName;
 
-    public static ApiResponse from(Api api){
+    public static ApiResponse from(Api api) {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.apiId = api.getApiId();
         apiResponse.apiItemId = api.getApiItemId();
@@ -25,6 +26,7 @@ public class ApiResponse {
         apiResponse.apiUrl = api.getApiUrl();
         apiResponse.apiMethod = String.valueOf(api.getApiMethod());
         apiResponse.apiCode = String.valueOf(api.getApiCode());
+        apiResponse.apiMethodName = api.getApiMethodName();
         return apiResponse;
     }
 }
