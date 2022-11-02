@@ -14,9 +14,16 @@ import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.Reader;
+import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -149,6 +156,24 @@ public class ERDServiceImpl implements ERDService{
 
 
     }
+
+//    @Override
+//    public void erdParsing(Long projectId) {
+//        try {
+//             JSONParser jsonParser = new JSONParser();
+//            File file = new File("erd");
+//            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/1.vuerd.json"),file);
+//
+//            Reader reader = new FileReader(file);
+//            JSONObject erd = (JSONObject) jsonParser.parse(reader);
+//
+//            ERDParsing.tableParsing(erd);
+//
+//        }catch (Exception e){
+//
+//        }
+//
+//    }
 
 
 }
