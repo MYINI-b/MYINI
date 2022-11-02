@@ -13,6 +13,7 @@ import com.ssafy.myini.fileio.RepositoryWrite;
 import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
+import com.ssafy.myini.initializer.response.PreviewResponse;
 import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,8 +81,6 @@ public class InitializerServiceImpl implements InitializerService {
         InitProjectDownload.initProject(initializerRequest);
 
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
-        List<ErdTable> erdTables = erdTableRepository.findAllByProject(project);
-        List<ErdTableListResponse> erdTableListResponses = erdTables.stream().map(ErdTableListResponse::from).collect(Collectors.toList());
 
         //ERD json 받아오기
         try {
@@ -90,15 +90,16 @@ public class InitializerServiceImpl implements InitializerService {
 
             Reader reader = new FileReader(file);
             JSONObject erd = (JSONObject) jsonParser.parse(reader);
-            try {
-                //entity 작성
-                EntityWrite.entityWrite(erd, initializerRequest);
-                //repository 작성
-            }catch (Exception e){
-                throw new InitializerException(InitializerException.INITIALIZER_FAIL);
-            }
+
+            //entity 작성
+            EntityWrite.entityWrite(erd, initializerRequest);
+
+            //repository 작성
+            RepositoryWrite.repositoryWrite(erd, initializerRequest);
+
+
         }catch (Exception e){
-            System.out.println("e = " + e);
+            throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
 
 //        //Repository 작성
@@ -107,6 +108,33 @@ public class InitializerServiceImpl implements InitializerService {
 //        }
 
         return null;
+    }
+
+    @Override
+    public List<PreviewResponse> initializerPreview(Long projectId, InitializerRequest initializerRequest) {
+        List<PreviewResponse> previewResponses = new ArrayList<>();
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+
+        //ERD json 받아오기
+        try {
+            JSONParser jsonParser = new JSONParser();
+            File file = new File("erd");
+            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/1.vuerd.json"),file);
+
+            Reader reader = new FileReader(file);
+            JSONObject erd = (JSONObject) jsonParser.parse(reader);
+
+            //entity 작성
+            previewResponses = EntityWrite.entityPreview(erd, initializerRequest, previewResponses);
+
+            //repository 작성
+            previewResponses = RepositoryWrite.repositoryPreview(erd, initializerRequest,previewResponses);
+
+        }catch (Exception e){
+            throw new InitializerException(InitializerException.INITIALIZER_FAIL);
+        }
+
+        return previewResponses;
     }
 
     @Override

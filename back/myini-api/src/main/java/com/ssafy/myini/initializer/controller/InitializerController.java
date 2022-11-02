@@ -3,6 +3,7 @@ package com.ssafy.myini.initializer.controller;
 import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
+import com.ssafy.myini.initializer.response.PreviewResponse;
 import com.ssafy.myini.initializer.service.InitializerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 @RequestMapping("/api/initializers")
 @RestController
@@ -33,6 +35,14 @@ public class InitializerController {
         initializerService.initializerStart(projectId, initializerRequest);
 
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping("/{projectid}/previews")
+    public ResponseEntity<List<PreviewResponse>> initializerPreview(@PathVariable("projectid") Long projectId,
+                                                 @RequestBody InitializerRequest initializerRequest){
+        List<PreviewResponse> body = initializerService.initializerPreview(projectId, initializerRequest);
+
+        return ResponseEntity.ok().body(body);
     }
 
     @GetMapping("/downloads")

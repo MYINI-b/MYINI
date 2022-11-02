@@ -1,9 +1,11 @@
 package com.ssafy.myini.fileio;
 
 import com.ssafy.myini.initializer.request.InitializerRequest;
+import com.ssafy.myini.initializer.response.PreviewResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.jdbc.support.JdbcUtils;
+import org.springframework.security.core.parameters.P;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,16 +13,13 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-
 public class EntityWrite {
-    static StringBuilder entityImportContents = new StringBuilder();
+    static StringBuilder entityImportContents;
     static List<Table> tableList = new ArrayList<>();
     static List<Column> columnList = new ArrayList<>();
     static List<RelationEndColumn> relationEndColumnList = new ArrayList<>();
 
-    //모든 테이블의 ID와 이름 저장
+    //모든 테이블의 ID와 이름 클래스
     static class Table {
         String tableId;
         String tableName;
@@ -36,7 +35,7 @@ public class EntityWrite {
         }
     }
 
-    //모든 컬럼의 ID와 이름 저장
+    //모든 컬럼의 ID와 이름 클래스
     static class Column {
         String columnId;
         String columnName;
@@ -52,7 +51,7 @@ public class EntityWrite {
         }
     }
 
-    //모든 연관관계 n 에서의 컬럼 ID 저장
+    //모든 연관관계 n 에서의 컬럼 ID 클래스
     static class RelationEndColumn {
         String columnId;
 
@@ -62,13 +61,10 @@ public class EntityWrite {
         }
 
         public String toString(){
-            return columnId + ", " + columnId;
+            return columnId;
         }
     }
-
-    public static void entityWrite(JSONObject erd, InitializerRequest initializerRequest) throws Exception{
-        entityImportContents.append("import lombok.*;\nimport javax.persistence.*;\n");
-
+    public static List<PreviewResponse> entityPreview(JSONObject erd, InitializerRequest initializerRequest, List<PreviewResponse> previewResponses) throws Exception{
         //테이블, 컬럼, 연관관계 ID와 NAME 저장하기
         setTableAndColumn(erd);
 
@@ -79,6 +75,8 @@ public class EntityWrite {
 
         //테이블
         for (int i=0 ; i<tables.size() ; i++){
+            entityImportContents = new StringBuilder();
+            entityImportContents.append("import lombok.*;\nimport javax.persistence.*;\n");
             StringBuilder contents = new StringBuilder();
             JSONObject tableItem = (JSONObject) tables.get(i);
 
@@ -86,7 +84,46 @@ public class EntityWrite {
             String tableId = (String) tableItem.get("id");
 
             JSONArray columns = (JSONArray) tableItem.get("columns");
+            StringBuilder columnContents = columnWrite(columns);
+            StringBuilder relationContents = relationWrite(tableId, relationships, initializerRequest);
 
+            contents.append("package " + initializerRequest.getSpring_package_name() + ".entity;\n")
+                    .append("\n")
+                    .append(entityImportContents)
+                    .append("\n")
+                    .append("@Entity\n@NoArgsConstructor(access = AccessLevel.PROTECTED)\n@AllArgsConstructor\n@Getter\n")
+                    .append("public class "+tableName+" {\n\n")
+                    .append(columnContents)
+                    .append(relationContents)
+                    .append("}");
+
+            PreviewResponse previewResponse = new PreviewResponse("entity", tableName+".java" , contents.toString());
+            previewResponses.add(previewResponse);
+        }
+
+        return previewResponses;
+    }
+
+    public static void entityWrite(JSONObject erd, InitializerRequest initializerRequest) throws Exception{
+        //테이블, 컬럼, 연관관계 ID와 NAME 저장하기
+        setTableAndColumn(erd);
+
+        JSONObject table = (JSONObject) erd.get("table");
+        JSONArray tables = (JSONArray) table.get("tables");
+        JSONObject relationship = (JSONObject) erd.get("relationship");
+        JSONArray relationships = (JSONArray) relationship.get("relationships");
+
+        //테이블
+        for (int i=0 ; i<tables.size() ; i++){
+            entityImportContents = new StringBuilder();
+            entityImportContents.append("import lombok.*;\nimport javax.persistence.*;\n");
+            StringBuilder contents = new StringBuilder();
+            JSONObject tableItem = (JSONObject) tables.get(i);
+
+            String tableName = (String) tableItem.get("name");
+            String tableId = (String) tableItem.get("id");
+
+            JSONArray columns = (JSONArray) tableItem.get("columns");
             StringBuilder columnContents = columnWrite(columns);
             StringBuilder relationContents = relationWrite(tableId, relationships, initializerRequest);
 
@@ -161,7 +198,7 @@ public class EntityWrite {
                 if (primaryKey) {
                     isPk = true;
                     columnContents.append("@Id\n@GeneratedValue(strategy = GenerationType.IDENTITY)\n" +
-                            "@Column(name=\"" + columnName + "_id\")\n");
+                            "@Column(name=\"" + columnName + "\")\n");
                 }
                 //unique일때
                 if (unique) {
@@ -194,9 +231,8 @@ public class EntityWrite {
         StringBuilder relationContents = new StringBuilder();
         StringBuilder ManyToOneContents = new StringBuilder();
         StringBuilder OneToManyContents = new StringBuilder();
-
+        int OneToManyIndex = 1;
         for (int i=0 ; i<relationships.size() ; i++){
-
             JSONObject relationship = (JSONObject) relationships.get(i);
             JSONObject start = (JSONObject) relationship.get("start");
             String startTableId = (String) start.get("tableId");
@@ -223,28 +259,48 @@ public class EntityWrite {
             if(tableId.equals(endTableId)){
                 ManyToOneContents.append("@ManyToOne(fetch = FetchType.LAZY)\n"+
                         "@JoinColumn(name = \""+endColumnName+"\")\n"+
-                        "private "+startTableName+" "+startTableName.substring(0,1).toLowerCase()+startTableName.substring(1)+";\n\n");
+                        "private "+startTableName+" "+JdbcUtils.convertUnderscoreNameToPropertyName(endColumnName.substring(0,endColumnName.length()-3))+";\n\n");
 
                 entityImportContents.append("import "+ initializerRequest.getSpring_package_name() + ".entity." + startTableName+";\n");
             }
 
             if(tableId.equals(startTableId)){
-                System.out.println("startTableName = " + startTableName);
-                System.out.println("endTableName = " + endTableName);
                 entityImportContents.append("import java.util.*;\n");
-                OneToManyContents.append("@OneToMany(mappedBy = \""+startTableName.substring(0,1).toLowerCase()+startTableName.substring(1)+"\", fetch = FetchType.LAZY, cascade = CascadeType.ALL)\n"+
-                        "private List<"+endTableName+"> "+endTableName.substring(0,1).toLowerCase()+endTableName.substring(1)+"List = new ArrayList<>();\n\n");
-
+                if(!OneToManyContents.toString().contains(endTableName.substring(0,1).toLowerCase()+endTableName.substring(1)+"List")){
+                    OneToManyContents.append("@OneToMany(mappedBy = \""+JdbcUtils.convertUnderscoreNameToPropertyName(endColumnName.substring(0,endColumnName.length()-3))+"\", fetch = FetchType.LAZY, cascade = CascadeType.ALL)\n"+
+                            "private List<"+endTableName+"> "+endTableName.substring(0,1).toLowerCase()+endTableName.substring(1)+"List = new ArrayList<>();\n\n");
+                }else{
+                    OneToManyContents.append("@OneToMany(mappedBy = \""+JdbcUtils.convertUnderscoreNameToPropertyName(endColumnName.substring(0,endColumnName.length()-3))+"\", fetch = FetchType.LAZY, cascade = CascadeType.ALL)\n"+
+                            "private List<"+endTableName+"> "+endTableName.substring(0,1).toLowerCase()+endTableName.substring(1)+"List"+(OneToManyIndex++)+" = new ArrayList<>();\n\n");
+                }
             }
         }
         return relationContents.append(ManyToOneContents).append(OneToManyContents);
     }
 
     private static String dataTypeChange(String columnDataType) {
-        if(columnDataType.equals("BIGINT")){
+        if(columnDataType.equals("BIGINT(Long)")){
             return "Long";
-        }else if(columnDataType.equals("VARCHAR")){
+        }else if(columnDataType.equals("INT(Integer)")){
+            return "Integer";
+        }else if(columnDataType.equals("CHAR(Character)")){
+            return "Character";
+        }else if(columnDataType.equals("DOUBLE(Double)")){
+            return "Double";
+        }else if(columnDataType.equals("FLOAT(Float)")){
+            return "Float";
+        }else if(columnDataType.equals("SMALLINT(Short)")){
+            return "Short";
+        }else if(columnDataType.equals("TINYINT(Byte)")){
+            return "Byte";
+        }else if(columnDataType.equals("BOOLEAN(Boolean)")){
+            return "Boolean";
+        }else if(columnDataType.equals("VARCHAR(String)")){
             return "String";
+        }else if(columnDataType.equals("DATETIME")){
+            if (!entityImportContents.toString().contains("import java.time.LocalDateTime;"))
+                entityImportContents.append("import java.time.LocalDateTime;\n");
+            return "LocalDateTime";
         }
 
         return "String";
@@ -258,6 +314,7 @@ public class EntityWrite {
         JSONArray relationships = (JSONArray) relationship.get("relationships");
 
         for (int i=0 ; i<tables.size() ; i++) {
+
             JSONObject tableItem = (JSONObject) tables.get(i);
 
             //테이블 이름
@@ -269,20 +326,20 @@ public class EntityWrite {
 
             JSONArray columns = (JSONArray) tableItem.get("columns");
             for (int j = 0; j < columns.size(); j++) {
-                JSONObject column = (JSONObject) columns.get(i);
+                JSONObject column = (JSONObject) columns.get(j);
                 String ci = (String) column.get("id");
                 String cn = (String) column.get("name");
-
+                
                 columnList.add(new Column(ci, cn));
             }
         }
-
         for (int i=0 ; i<relationships.size() ; i++){
             JSONObject relation = (JSONObject) relationships.get(i);
             JSONObject end = (JSONObject) relation.get("end");
             JSONArray columnIds = (JSONArray) end.get("columnIds");
+
             for (int j=0 ; j<columnIds.size() ; j++){
-                String ci = (String)columnIds.get(i);
+                String ci = (String)columnIds.get(j);
                 relationEndColumnList.add(new RelationEndColumn(ci));
             }
 
