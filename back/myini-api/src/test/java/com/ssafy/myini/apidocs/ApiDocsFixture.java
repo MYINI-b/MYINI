@@ -49,7 +49,7 @@ public class ApiDocsFixture {
     public static final ApiControllerListResponse TEST_API_CONTROLLER_LIST_RESPONSE
             = new ApiControllerListResponse(ID, NAME);
     public static final ApiResponse TEST_API_RESPONSE
-            = new ApiResponse(ID, ITEM_ID, NAME, URL, APIMETHOD, APICODE);
+            = new ApiResponse(ID, ITEM_ID, NAME, URL, APIMETHOD, APICODE, API_METHOD_NAME);
     public static final ApiControllerResponse TEST_API_CONTROLLER_RESPONSE
             = new ApiControllerResponse(ID, NAME, URL, APIDESCRIPTION, Arrays.asList(TEST_API_RESPONSE));
     public static final PathVariableResponse TEST_PATHVARIABLE_RESPONSE
