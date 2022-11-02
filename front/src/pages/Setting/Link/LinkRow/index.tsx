@@ -28,6 +28,8 @@ export default function LinkRow({ img, link, isEdit, setLink }: Props) {
             e.preventDefault();
           }}
         />
+      ) : link === '' ? (
+        <li className="link-row-a"> {link}</li>
       ) : (
         <a className="link-row-a" href={link} target="_blank" rel="noreferrer">
           {link}

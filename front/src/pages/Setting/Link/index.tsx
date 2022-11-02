@@ -7,7 +7,7 @@ import LinkRow from './LinkRow';
 
 export function ProjectLink(props: any) {
   // const { gitlink, notionlink, jiralink, figmalink } = props;
-  const [isEdit, setIsEdit] = useState(true);
+  const [isEdit, setIsEdit] = useState(false);
   const [gitLink, setGitLink] = useState('asdsad');
   const [jiraLink, setJiraLink] = useState('');
   const [notionLink, setNotionLink] = useState('');

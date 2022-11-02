@@ -34,6 +34,8 @@
     background-color: transparent;
     &.edit{
       background-color: $pure-white;
+      border:1px solid $lightx2-gray;
+      border-radius: rem(14);
     }
   }
 }

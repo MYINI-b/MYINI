@@ -13,11 +13,42 @@
 }
 .team-member {
   @include FLEX-ALIGN-CENTER;
-  padding-bottom: rem(17);
+  position: relative;
+  margin-bottom: rem(17);
+
+  &:hover {
+    .profile-delete-button {
+      opacity: 1;
+    }
+  }
 }
 .profile-name {
   padding-left: rem(10);
 }
 .member-scroll {
+  margin-top: rem(6);
   overflow-y: scroll;
+}
+
+.member-search-input {
+  width: 95%;
+  padding: rem(6);
+  font-size: rem(14);
+  border: 1px solid $lightx2-gray;
+  border-radius: rem(14);
+}
+
+.profile-delete-button {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  font-size: rem(14);
+  transform: translate(0, -50%);
+  cursor: pointer;
+  opacity: 0;
+  transition: 0.2s ease;
+
+  &:hover {
+    color: $delete;
+  }
 }
