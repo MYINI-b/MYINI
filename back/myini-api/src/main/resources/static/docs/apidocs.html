@@ -1429,7 +1429,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 785
+Content-Length: 913
 
 {
   "apiResponse" : {
@@ -1458,10 +1458,13 @@ Content-Length: 785
     "dtoItemResponses" : [ {
       "dtoItemId" : 1,
       "dtoItemName" : "테스트 이름",
-      "dtoClassType" : 1,
-      "dtoPrimitiveType" : 1,
-      "dtoIsList" : "Y"
-    } ]
+      "dtoClassTypeId" : 1,
+      "dtoPrimitiveTypeId" : 1,
+      "dtoIsList" : "Y",
+      "dtoClassTypeName" : "테스트 이름",
+      "dtoPrimitiveTypeName" : "테스트 이름"
+    } ],
+    "dtoIsList" : "Y"
   } ]
 }</code></pre>
 </div>
@@ -1583,6 +1586,11 @@ Content-Length: 785
 <td class="tableblock halign-left valign-top"><p class="tableblock">Dto Type</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoIsList</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dto 리스트 여부</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoItemResponses</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem 조회결과 배열</p></td>
@@ -1598,19 +1606,29 @@ Content-Length: 785
 <td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoItemResponses.[].dtoClassType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoItemResponses.[].dtoClassTypeId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoClassType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoClassTypeId</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoItemResponses.[].dtoPrimitiveType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoItemResponses.[].dtoPrimitiveTypeId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoPrimitiveType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoPrimitiveTypeId</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoItemResponses.[].dtoIsList</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">리스트여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoItemResponses.[].dtoClassTypeName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoClassTypeName</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoItemResponses.[].dtoPrimitiveTypeName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoPrimitiveTypeName</p></td>
 </tr>
 </tbody>
 </table>
@@ -2174,12 +2192,13 @@ Vary: Access-Control-Request-Headers</code></pre>
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/apidocs/1/dtos HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer
-Content-Length: 61
+Content-Length: 83
 Host: localhost:8080
 
 {
   "dtoName" : "테스트 이름",
-  "dtoType" : "Long"
+  "dtoType" : "Long",
+  "dtoIsList" : "Y"
 }</code></pre>
 </div>
 </div>
@@ -2252,6 +2271,11 @@ Host: localhost:8080
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Dto Type</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoIsList</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dto 리스트 여부</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -2277,12 +2301,13 @@ Vary: Access-Control-Request-Headers</code></pre>
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/apidocs/dtos/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer
-Content-Length: 61
+Content-Length: 83
 Host: localhost:8080
 
 {
   "dtoName" : "테스트 이름",
-  "dtoType" : "Long"
+  "dtoType" : "Long",
+  "dtoIsList" : "Y"
 }</code></pre>
 </div>
 </div>
@@ -2354,6 +2379,11 @@ Host: localhost:8080
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoType</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Dto Type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoIsList</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dto 리스트 여부</p></td>
 </tr>
 </tbody>
 </table>
@@ -2504,7 +2534,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 253
+Content-Length: 375
 
 {
   "dtoId" : 1,
@@ -2513,10 +2543,13 @@ Content-Length: 253
   "dtoItemResponses" : [ {
     "dtoItemId" : 1,
     "dtoItemName" : "테스트 이름",
-    "dtoClassType" : 1,
-    "dtoPrimitiveType" : 1,
-    "dtoIsList" : "Y"
-  } ]
+    "dtoClassTypeId" : 1,
+    "dtoPrimitiveTypeId" : 1,
+    "dtoIsList" : "Y",
+    "dtoClassTypeName" : "테스트 이름",
+    "dtoPrimitiveTypeName" : "테스트 이름"
+  } ],
+  "dtoIsList" : "Y"
 }</code></pre>
 </div>
 </div>
@@ -2552,6 +2585,11 @@ Content-Length: 253
 <td class="tableblock halign-left valign-top"><p class="tableblock">Dto Type</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoIsList</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dto 리스트 여부</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoItemResponses</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem 조회결과 배열</p></td>
@@ -2567,19 +2605,29 @@ Content-Length: 253
 <td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoItemResponses.[].dtoClassType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoItemResponses.[].dtoClassTypeId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoClassType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoClassTypeId</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoItemResponses.[].dtoPrimitiveType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoItemResponses.[].dtoPrimitiveTypeId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoPrimitiveType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoPrimitiveTypeId</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoItemResponses.[].dtoIsList</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">리스트여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoItemResponses.[].dtoClassTypeName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoClassTypeName</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoItemResponses.[].dtoPrimitiveTypeName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoPrimitiveTypeName</p></td>
 </tr>
 </tbody>
 </table>
@@ -2710,12 +2758,13 @@ Vary: Access-Control-Request-Headers</code></pre>
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/apidocs/dtoitems/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer
-Content-Length: 61
+Content-Length: 83
 Host: localhost:8080
 
 {
   "dtoName" : "테스트 이름",
-  "dtoType" : "Long"
+  "dtoType" : "Long",
+  "dtoIsList" : "Y"
 }</code></pre>
 </div>
 </div>
@@ -2787,6 +2836,11 @@ Host: localhost:8080
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoType</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Dto Type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoIsList</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dto 리스트 여부</p></td>
 </tr>
 </tbody>
 </table>
