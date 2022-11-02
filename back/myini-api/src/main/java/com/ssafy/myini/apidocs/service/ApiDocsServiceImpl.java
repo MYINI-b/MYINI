@@ -192,7 +192,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
         Api findApi = apiRepository.findById(apiId)
                 .orElseThrow(() -> new NotFoundException(API_NOT_FOUND));
 
-        Dto dto = Dto.createDto(request.getDtoName(), request.getDtoType(), findApi);
+        Dto dto = Dto.createDto(request.getDtoName(), request.getDtoType(), findApi, request.getDtoIsList());
         dtoRepository.save(dto);
     }
 
@@ -203,7 +203,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
         Dto findDto = dtoRepository.findById(dtoId)
                 .orElseThrow(() -> new NotFoundException(DTO_NOT_FOUND));
 
-        findDto.updateDto(request.getDtoName(), request.getDtoType());
+        findDto.updateDto(request.getDtoName(), request.getDtoType(), request.getDtoIsList());
     }
 
     // Dto 삭제

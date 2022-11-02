@@ -11,16 +11,23 @@ import lombok.NoArgsConstructor;
 public class DtoItemResponse {
     private Long dtoItemId;
     private String dtoItemName;
-    private Long dtoClassType;
-    private Long dtoPrimitiveType;
+    private Long dtoClassTypeId;
+    private Long dtoPrimitiveTypeId;
     private String dtoIsList;
+    private String dtoClassTypeName;
+    private String dtoPrimitiveTypeName;
 
-    public static DtoItemResponse from(DtoItem dtoItem){
+    public static DtoItemResponse from(DtoItem dtoItem) {
         DtoItemResponse dtoItemResponse = new DtoItemResponse();
         dtoItemResponse.dtoItemId = dtoItem.getDtoItemId();
         dtoItemResponse.dtoItemName = dtoItem.getDtoItemName();
-        if(dtoItem.getDtoClassType() != null) {dtoItemResponse.dtoClassType = dtoItem.getDtoClassType().getDtoId();}
-        else{ dtoItemResponse.dtoPrimitiveType = dtoItem.getPrimitive().getPrimitiveId();}
+        if (dtoItem.getDtoClassType() != null) {
+            dtoItemResponse.dtoClassTypeId = dtoItem.getDtoClassType().getDtoId();
+            dtoItemResponse.dtoClassTypeName = dtoItem.getDtoClassType().getDtoName();
+        } else {
+            dtoItemResponse.dtoPrimitiveTypeId = dtoItem.getPrimitive().getPrimitiveId();
+            dtoItemResponse.dtoPrimitiveTypeName = dtoItem.getPrimitive().getPrimitiveName();
+        }
         dtoItemResponse.dtoIsList = String.valueOf(dtoItem.getDtoIsList());
         return dtoItemResponse;
     }

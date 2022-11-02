@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class UpdateDtoRequest {
     private String dtoName;
     private String dtoType;
+    private String dtoIsList;
 }

@@ -5,15 +5,18 @@ import com.ssafy.myini.initializer.request.InitializerRequest;
 
 import java.util.List;
 
-public class ServiceWrite {
-    static StringBuilder serviceImportContents;
+public class ServiceImplWrite {
+    static StringBuilder serviceImplImportContents;
     private static int depth = 0;
 
-    public static String servicePreview(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
-        serviceImportContents = new StringBuilder();
+    public static String serviceImplPreview(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
+        serviceImplImportContents = new StringBuilder();
 
         // 필수 import 선언
-        serviceImportContents
+        serviceImplImportContents
+                .append("import lombok.RequiredArgsConstructor;\n")
+                .append("import org.springframework.stereotype.Service;\n")
+                .append("import org.springframework.transaction.annotation.Transactional;\n\n")
                 .append("import ").append(initializerRequest.getSpring_package_name()).append(".request.*\n")
                 .append("import ").append(initializerRequest.getSpring_package_name()).append(".response.*\n")
                 .append("import ").append(initializerRequest.getSpring_package_name()).append(".dto.*\n")
@@ -22,12 +25,14 @@ public class ServiceWrite {
         StringBuilder contents = new StringBuilder();
         contents.append("package " + initializerRequest.getSpring_package_name() + ".service;\n")
                 .append("\n")
-                .append(serviceImportContents)
-                .append("\n");
+                .append(serviceImplImportContents)
+                .append("\n")
+                .append("@Service\n")
+                .append("@RequiredArgsConstructor\n")
+                .append("@Transactional\n")
+                .append("public class ").append(projectInfoListResponse.getApiControllerName()).append("ServiceImpl ")
+                .append("implements ").append(projectInfoListResponse.getApiControllerName()).append("Service {\n");
 
-        // 인터페이스 선언부
-        contents.append("public interface ")
-                .append(projectInfoListResponse.getApiControllerName()).append("Service { \n");
         depth++;
         FileUtil.appendTab(contents, depth);
         contents.append(methodWrite(projectInfoListResponse.getApiInfoResponses()).replaceAll(",", ", "));
@@ -38,8 +43,8 @@ public class ServiceWrite {
         return contents.toString();
     }
 
-    public static void serviceWrite(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
-        FileUtil.fileWrite(projectInfoListResponse, initializerRequest, servicePreview(projectInfoListResponse, initializerRequest), "service", projectInfoListResponse.getApiControllerName() + "Service");
+    public static void serviceImplWrite(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
+        FileUtil.fileWrite(projectInfoListResponse, initializerRequest, serviceImplPreview(projectInfoListResponse, initializerRequest), "service", projectInfoListResponse.getApiControllerName() + "ServiceImpl");
     }
 
     // 메서드별 생성
@@ -47,6 +52,9 @@ public class ServiceWrite {
         StringBuilder methodContents = new StringBuilder();
 
         for (ApiInfoResponse apiInfoResponse : apiInfoResponses) {
+
+            methodContents.append("@Override\n");
+            FileUtil.appendTab(methodContents, depth);
             // 메서드 response type
             String response = FileUtil.responseWrite(apiInfoResponse);
             methodContents.append(response).append(" "). // return type
@@ -72,7 +80,17 @@ public class ServiceWrite {
                     break;
                 }
             }
-            methodContents.append(");\n\n");
+            methodContents.append(") {\n");
+            depth++;
+            FileUtil.appendTab(methodContents, depth);
+            methodContents.append("// TODO : ").append(apiInfoResponse.getApiResponse().getApiMethodName()).append(" 코드를 작성하세요.\n");
+            FileUtil.appendTab(methodContents, depth);
+            if (!response.equals("void")) {
+                methodContents.append("return null;\n");
+            }
+            depth--;
+            FileUtil.appendTab(methodContents, depth);
+            methodContents.append("}\n\n");
         }
 
         return methodContents.toString();
