@@ -30,7 +30,7 @@
     border:none;
     width:100%;
     border-bottom: 1px solid $secondary;
-    @include ELLIPSIS-LINE(1);
+    // @include ELLIPSIS-LINE(1);
     background-color: transparent;
     &.edit{
       background-color: $pure-white;

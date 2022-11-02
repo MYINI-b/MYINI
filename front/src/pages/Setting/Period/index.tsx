@@ -31,7 +31,7 @@ export function ProjectPeriod(props: any) {
         setIsEndCalOpen(false);
       }
     },
-    [setStartDay, setEndDay],
+    [setStartDay, setEndDay, startDay, endDay],
   );
 
   useEffect(() => {
