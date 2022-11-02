@@ -24,6 +24,7 @@ public class ControllerWrite {
                 .append("import java.util.*;\n\n")
                 .append("import ").append(initializerRequest.getSpring_package_name()).append(".request.*\n")
                 .append("import ").append(initializerRequest.getSpring_package_name()).append(".response.*\n")
+                .append("import ").append(initializerRequest.getSpring_package_name()).append(".dto.*\n")
                 .append("import ").append(initializerRequest.getSpring_package_name()).append(".service.*\n");
 
         StringBuilder contents = new StringBuilder();
@@ -53,7 +54,7 @@ public class ControllerWrite {
     }
 
     public static void controllerWrite(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
-        FileUtil.fileWrite(projectInfoListResponse, initializerRequest, controllerPreview(projectInfoListResponse, initializerRequest), "controller", "Controller");
+        FileUtil.fileWrite(projectInfoListResponse, initializerRequest, controllerPreview(projectInfoListResponse, initializerRequest), "controller", projectInfoListResponse.getApiControllerName() + "Controller");
     }
 
     // apimethod별로 만듦

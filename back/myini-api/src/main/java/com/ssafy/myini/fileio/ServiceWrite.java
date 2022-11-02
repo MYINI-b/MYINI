@@ -16,6 +16,7 @@ public class ServiceWrite {
         serviceImportContents
                 .append("import ").append(initializerRequest.getSpring_package_name()).append(".request.*\n")
                 .append("import ").append(initializerRequest.getSpring_package_name()).append(".response.*\n")
+                .append("import ").append(initializerRequest.getSpring_package_name()).append(".dto.*\n")
                 .append("import java.util.*;\n\n");
 
         StringBuilder contents = new StringBuilder();
@@ -38,7 +39,7 @@ public class ServiceWrite {
     }
 
     public static void serviceWrite(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
-        FileUtil.fileWrite(projectInfoListResponse, initializerRequest, servicePreview(projectInfoListResponse, initializerRequest), "service", "Service");
+        FileUtil.fileWrite(projectInfoListResponse, initializerRequest, servicePreview(projectInfoListResponse, initializerRequest), "service", projectInfoListResponse.getApiControllerName() + "Service");
     }
 
     // 메서드별 생성
@@ -55,12 +56,12 @@ public class ServiceWrite {
             methodContents.append("(");
             // 1. PathVariable
             for (PathVariableResponse pathVariableResponse : apiInfoResponse.getPathVariableResponses()) {
-                        methodContents.append(pathVariableResponse.getPathVariableType()).append(" ")
+                methodContents.append(pathVariableResponse.getPathVariableType()).append(" ")
                         .append(pathVariableResponse.getPathVariableKey()).append(",");
             }
             // 2. queryString
             for (QueryStringResponse queryStringResponse : apiInfoResponse.getQueryStringResponses()) {
-                        methodContents.append(queryStringResponse.getQueryStringType()).append(" ")
+                methodContents.append(queryStringResponse.getQueryStringType()).append(" ")
                         .append(queryStringResponse.getQueryStringKey()).append(",");
             }
             // 3. requestBody

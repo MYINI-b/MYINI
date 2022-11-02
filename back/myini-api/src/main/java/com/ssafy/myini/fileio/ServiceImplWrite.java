@@ -19,6 +19,7 @@ public class ServiceImplWrite {
                 .append("import org.springframework.transaction.annotation.Transactional;\n\n")
                 .append("import ").append(initializerRequest.getSpring_package_name()).append(".request.*\n")
                 .append("import ").append(initializerRequest.getSpring_package_name()).append(".response.*\n")
+                .append("import ").append(initializerRequest.getSpring_package_name()).append(".dto.*\n")
                 .append("import java.util.*;\n\n");
 
         StringBuilder contents = new StringBuilder();
@@ -43,7 +44,7 @@ public class ServiceImplWrite {
     }
 
     public static void serviceImplWrite(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
-        FileUtil.fileWrite(projectInfoListResponse, initializerRequest, serviceImplPreview(projectInfoListResponse, initializerRequest), "service", "ServiceImpl");
+        FileUtil.fileWrite(projectInfoListResponse, initializerRequest, serviceImplPreview(projectInfoListResponse, initializerRequest), "service", projectInfoListResponse.getApiControllerName() + "ServiceImpl");
     }
 
     // 메서드별 생성
