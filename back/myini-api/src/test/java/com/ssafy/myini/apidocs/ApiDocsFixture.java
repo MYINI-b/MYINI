@@ -38,9 +38,9 @@ public class ApiDocsFixture {
     public static final UpdateQueryStringRequest TEST_UPDATE_QUERYSTRING_REQUEST
             = new UpdateQueryStringRequest(KEY, TYPE);
     public static final CreateDtoRequest TEST_CREATE_DTO_REQUEST
-            = new CreateDtoRequest(NAME, TYPE);
+            = new CreateDtoRequest(NAME, TYPE, YN_FIELD);
     public static final UpdateDtoRequest TEST_UPDATE_DTO_REQUEST
-            = new UpdateDtoRequest(NAME, TYPE);
+            = new UpdateDtoRequest(NAME, TYPE, YN_FIELD);
     public static final CreateDtoItemRequest TEST_CREATE_DTO_ITEM_REQUEST
             = new CreateDtoItemRequest(NAME, ID, ID, YN_FIELD);
     public static final UpdateDtoItemRequest TEST_UPDATE_DTO_ITEM_REQUEST

@@ -540,7 +540,8 @@ class ApiDocsControllerTest extends ControllerTest {
                         ),
                         requestFields(
                                 fieldWithPath("dtoName").type(JsonFieldType.STRING).description("Dto Key"),
-                                fieldWithPath("dtoType").type(JsonFieldType.STRING).description("Dto Type")
+                                fieldWithPath("dtoType").type(JsonFieldType.STRING).description("Dto Type"),
+                                fieldWithPath("dtoIsList").type(JsonFieldType.STRING).description("Dto 리스트 여부")
                         )
                 ));
 
@@ -571,7 +572,8 @@ class ApiDocsControllerTest extends ControllerTest {
                         ),
                         requestFields(
                                 fieldWithPath("dtoName").type(JsonFieldType.STRING).description("Dto Key"),
-                                fieldWithPath("dtoType").type(JsonFieldType.STRING).description("Dto Type")
+                                fieldWithPath("dtoType").type(JsonFieldType.STRING).description("Dto Type"),
+                                fieldWithPath("dtoIsList").type(JsonFieldType.STRING).description("Dto 리스트 여부")
                         )
                 ));
 
@@ -698,7 +700,8 @@ class ApiDocsControllerTest extends ControllerTest {
                         ),
                         requestFields(
                                 fieldWithPath("dtoName").type(JsonFieldType.STRING).description("Dto Key"),
-                                fieldWithPath("dtoType").type(JsonFieldType.STRING).description("Dto Type")
+                                fieldWithPath("dtoType").type(JsonFieldType.STRING).description("Dto Type"),
+                                fieldWithPath("dtoIsList").type(JsonFieldType.STRING).description("Dto 리스트 여부")
                         )
                 ));
 

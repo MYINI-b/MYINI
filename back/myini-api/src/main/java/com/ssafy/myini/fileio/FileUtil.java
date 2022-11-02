@@ -7,7 +7,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 
-public class FileWrite {
+public class FileUtil {
 
     public static void fileWrite(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest, String contents, String folderPath, String fileName) {
         try {
@@ -42,5 +42,34 @@ public class FileWrite {
         } catch (Exception e) {
             System.out.println("e = " + e);
         }
+    }
+
+    public static void removeLastComma(StringBuilder sb) {
+        // 마지막에 , 있으면 제거
+        if (sb.length() > 0 && sb.charAt(sb.length() - 1) == ',') {
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }
+
+    public static String firstIndexToLowerCase(String s) {
+        // 맨 앞글자 소문자로 변환
+        return s.substring(0, 1).toLowerCase() + s.substring(1);
+    }
+
+    public static String firstIndexToUpperCase(String s) {
+        // 맨 앞글자 대문자로 변환
+        return s.substring(0, 1).toUpperCase() + s.substring(1);
+    }
+
+    public static void appendTab(StringBuilder sb, int depth) {
+        // depth에 따라 탭 붙여주는 메서드
+        for (int i = 0; i < depth; i++) {
+            sb.append("\t");
+        }
+    }
+
+    public static String getMethodType(String method) {
+        // GET -> Get
+        return firstIndexToUpperCase(method.toLowerCase());
     }
 }
