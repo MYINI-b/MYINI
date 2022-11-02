@@ -9,11 +9,13 @@ import java.util.List;
 
 
 public class ControllerWrite {
-    static StringBuilder controllerImportContents = new StringBuilder();
+    static StringBuilder controllerImportContents;
     private static int depth = 0;
     private static String service;
 
     public static String controllerPreview(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
+        controllerImportContents = new StringBuilder();
+
         // 필수 import 선언
         controllerImportContents.append("import lombok.RequiredArgsConstructor;\n")
                 .append("import org.springframework.http.HttpStatus;\n")
@@ -74,19 +76,10 @@ public class ControllerWrite {
             methodContents.append("public ResponseEntity<");
 
             // 메서드 response type
-            String response = "Void";
-            for (DtoResponse dtoResponse : apiInfoResponse.getDtoResponses()) {
-                if (dtoResponse.getDtoType().equals("RESPONSE")) {
-                    if (dtoResponse.getDtoIsList().equals("Y")) {
-                        methodContents.append("List<");
-                    }
-                    response = FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName());
-                    break;
-                }
-            }
+            String response = FileUtil.responseWrite(apiInfoResponse);
 
             // 메서드명
-            methodContents.append(response).append(">> ").append(apiInfoResponse.getApiResponse().getApiMethodName());
+            methodContents.append(response).append("> ").append(apiInfoResponse.getApiResponse().getApiMethodName());
 
             // 매개변수 이름만 저장할 리스트
             List<String> variableNames = new ArrayList<>();
