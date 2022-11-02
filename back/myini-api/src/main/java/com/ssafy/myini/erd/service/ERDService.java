@@ -22,5 +22,6 @@ public interface ERDService {
     void createTableColumn(Long tableId);
     void updateTableColumn(Long tableColumnId,TableColumnUpdateRequest tableColumnUpdateRequest);
     void deleteTableColumn(Long tableColumnId);
+//    void erdParsing(Long projectId);
 
 }
