@@ -13,10 +13,7 @@ import com.ssafy.myini.erd.domain.entity.TableColumn;
 import com.ssafy.myini.erd.domain.repository.ErdTableRepository;
 import com.ssafy.myini.erd.domain.repository.TableColumnRepository;
 import com.ssafy.myini.erd.response.ErdTableListResponse;
-import com.ssafy.myini.fileio.ControllerWrite;
-import com.ssafy.myini.fileio.EntityWrite;
-import com.ssafy.myini.fileio.InitProjectDownload;
-import com.ssafy.myini.fileio.RepositoryWrite;
+import com.ssafy.myini.fileio.*;
 import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
@@ -103,6 +100,8 @@ public class InitializerServiceImpl implements InitializerService {
         // apicontroller 별로 생성
         projectInfoListResponses.forEach(projectInfoListResponse -> ControllerWrite.controllerWrite(projectInfoListResponse, initializerRequest));
 
+        // service 생성
+        projectInfoListResponses.forEach(projectInfoListResponse -> ServiceWrite.serviceWrite(projectInfoListResponse, initializerRequest));
 
         return null;
     }
