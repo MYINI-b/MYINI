@@ -1429,7 +1429,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 785
+Content-Length: 809
 
 {
   "apiResponse" : {
@@ -1461,7 +1461,8 @@ Content-Length: 785
       "dtoClassType" : 1,
       "dtoPrimitiveType" : 1,
       "dtoIsList" : "Y"
-    } ]
+    } ],
+    "dtoIsList" : "Y"
   } ]
 }</code></pre>
 </div>
@@ -1581,6 +1582,11 @@ Content-Length: 785
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoType</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Dto Type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoIsList</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dto 리스트 여부</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoItemResponses</code></p></td>
@@ -2516,7 +2522,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 253
+Content-Length: 275
 
 {
   "dtoId" : 1,
@@ -2528,7 +2534,8 @@ Content-Length: 253
     "dtoClassType" : 1,
     "dtoPrimitiveType" : 1,
     "dtoIsList" : "Y"
-  } ]
+  } ],
+  "dtoIsList" : "Y"
 }</code></pre>
 </div>
 </div>
@@ -2562,6 +2569,11 @@ Content-Length: 253
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoType</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Dto Type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoIsList</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dto 리스트 여부</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoItemResponses</code></p></td>
