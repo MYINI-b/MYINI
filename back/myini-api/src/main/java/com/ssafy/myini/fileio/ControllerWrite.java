@@ -14,7 +14,7 @@ public class ControllerWrite {
     private static int depth = 0;
     private static String service;
 
-    public static void controllerWrite(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
+    public static String controllerPreview(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
         // 필수 import 선언
         controllerImportContents.append("import lombok.RequiredArgsConstructor;\n")
                 .append("import org.springframework.http.HttpStatus;\n")
@@ -47,6 +47,12 @@ public class ControllerWrite {
         depth--;
         contents.append("}");
 
+        return contents.toString();
+    }
+
+    public static void controllerWrite(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
+        String contents = controllerPreview(projectInfoListResponse, initializerRequest);
+
         try {
             //폴더 찾아가기
             String controllerPath = initializerRequest.getSpring_base_path() + "\\" + initializerRequest.getSpring_name() + "\\src\\main\\java\\";
@@ -73,7 +79,7 @@ public class ControllerWrite {
             //파일 쓰기
             FileWriter fw = new FileWriter(file);
             BufferedWriter writer = new BufferedWriter(fw);
-            writer.write(contents.toString());
+            writer.write(contents);
             writer.close();
 
         } catch (Exception e) {
@@ -152,7 +158,7 @@ public class ControllerWrite {
                 methodContents.append(response).append(" body = ");
             }
 
-            methodContents.append(service).append(".").append(apiInfoResponse.getApiResponse().getApiMethodName()).append("(");
+            methodContents.append(service).append("Service.").append(apiInfoResponse.getApiResponse().getApiMethodName()).append("(");
             // 매개변수 추가
             for (String variableName : variableNames) {
                 methodContents.append(variableName).append(",");
