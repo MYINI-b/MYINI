@@ -57,7 +57,7 @@ public class ApiDocsFixture {
     public static final QueryStringResponse TEST_QUERYSTRING_RESPONSE
             = new QueryStringResponse(ID, KEY, TYPE);
     public static final DtoItemResponse TEST_DTO_ITEM_RESPONSE
-            = new DtoItemResponse(ID, NAME, ID, ID, YN_FIELD);
+            = new DtoItemResponse(ID, NAME, ID, ID, YN_FIELD, NAME, NAME);
     public static final DtoResponse TEST_DTO_RESPONSE
             = new DtoResponse(ID, NAME, TYPE, Arrays.asList(TEST_DTO_ITEM_RESPONSE), YN_FIELD);
     public static final ApiInfoResponse TEST_API_INFO_RESPONSE

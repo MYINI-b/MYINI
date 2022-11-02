@@ -1429,7 +1429,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 809
+Content-Length: 913
 
 {
   "apiResponse" : {
@@ -1458,9 +1458,11 @@ Content-Length: 809
     "dtoItemResponses" : [ {
       "dtoItemId" : 1,
       "dtoItemName" : "테스트 이름",
-      "dtoClassType" : 1,
-      "dtoPrimitiveType" : 1,
-      "dtoIsList" : "Y"
+      "dtoClassTypeId" : 1,
+      "dtoPrimitiveTypeId" : 1,
+      "dtoIsList" : "Y",
+      "dtoClassTypeName" : "테스트 이름",
+      "dtoPrimitiveTypeName" : "테스트 이름"
     } ],
     "dtoIsList" : "Y"
   } ]
@@ -1604,19 +1606,29 @@ Content-Length: 809
 <td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoItemResponses.[].dtoClassType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoItemResponses.[].dtoClassTypeId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoClassType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoClassTypeId</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoItemResponses.[].dtoPrimitiveType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoItemResponses.[].dtoPrimitiveTypeId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoPrimitiveType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoPrimitiveTypeId</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoItemResponses.[].dtoIsList</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">리스트여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoItemResponses.[].dtoClassTypeName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoClassTypeName</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoResponses.[].dtoItemResponses.[].dtoPrimitiveTypeName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoPrimitiveTypeName</p></td>
 </tr>
 </tbody>
 </table>
@@ -2522,7 +2534,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 275
+Content-Length: 375
 
 {
   "dtoId" : 1,
@@ -2531,9 +2543,11 @@ Content-Length: 275
   "dtoItemResponses" : [ {
     "dtoItemId" : 1,
     "dtoItemName" : "테스트 이름",
-    "dtoClassType" : 1,
-    "dtoPrimitiveType" : 1,
-    "dtoIsList" : "Y"
+    "dtoClassTypeId" : 1,
+    "dtoPrimitiveTypeId" : 1,
+    "dtoIsList" : "Y",
+    "dtoClassTypeName" : "테스트 이름",
+    "dtoPrimitiveTypeName" : "테스트 이름"
   } ],
   "dtoIsList" : "Y"
 }</code></pre>
@@ -2591,19 +2605,29 @@ Content-Length: 275
 <td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoItemResponses.[].dtoClassType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoItemResponses.[].dtoClassTypeId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoClassType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoClassTypeId</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoItemResponses.[].dtoPrimitiveType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoItemResponses.[].dtoPrimitiveTypeId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoPrimitiveType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoPrimitiveTypeId</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoItemResponses.[].dtoIsList</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">리스트여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoItemResponses.[].dtoClassTypeName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoClassTypeName</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dtoItemResponses.[].dtoPrimitiveTypeName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DtoItem DtoPrimitiveTypeName</p></td>
 </tr>
 </tbody>
 </table>
