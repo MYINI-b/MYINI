@@ -103,8 +103,8 @@ public class InitializerServiceImpl implements InitializerService {
             // apicontroller 별로 생성
             projectInfoListResponses.forEach(projectInfoListResponse -> ControllerWrite.controllerWrite(projectInfoListResponse, initializerRequest));
 
-
-
+            // service 생성
+            projectInfoListResponses.forEach(projectInfoListResponse -> ServiceWrite.serviceWrite(projectInfoListResponse, initializerRequest));
         }catch (Exception e){
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
@@ -113,12 +113,6 @@ public class InitializerServiceImpl implements InitializerService {
 //        for (ErdTableListResponse erdTableListResponse : erdTableListResponses) {
 //            RepositoryWrite.repositoryWrite(erdTableListResponse, initializerRequest);
 //        }
-
-
-
-        // service 생성
-        projectInfoListResponses.forEach(projectInfoListResponse -> ServiceWrite.serviceWrite(projectInfoListResponse, initializerRequest));
-
         return null;
     }
 

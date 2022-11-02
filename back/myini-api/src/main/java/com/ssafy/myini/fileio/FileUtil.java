@@ -1,5 +1,7 @@
 package com.ssafy.myini.fileio;
 
+import com.ssafy.myini.apidocs.response.ApiInfoResponse;
+import com.ssafy.myini.apidocs.response.DtoResponse;
 import com.ssafy.myini.apidocs.response.ProjectInfoListResponse;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 
@@ -71,5 +73,19 @@ public class FileUtil {
     public static String getMethodType(String method) {
         // GET -> Get
         return firstIndexToUpperCase(method.toLowerCase());
+    }
+
+    public static String responseWrite(ApiInfoResponse apiInfoResponse) {
+        for (DtoResponse dtoResponse : apiInfoResponse.getDtoResponses()) {
+            if (dtoResponse.getDtoType().equals("RESPONSE")) {
+                String type = FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName());
+                if (dtoResponse.getDtoIsList().equals("Y")) {
+                    return "List<" + type + ">";
+                } else {
+                    return type;
+                }
+            }
+        }
+        return "Void";
     }
 }
