@@ -1,5 +1,10 @@
-import Header from '../../component/Header';
+import React, { useEffect } from 'react';
+import Header from 'component/Header';
 import './style.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import AOS from 'aos';
 import Background from '../../assets/main-bg.png';
 import BackgroundOne from '../../assets/main-bg1.png';
 import BackgroundTwo from '../../assets/main-bg2.png';
@@ -8,8 +13,13 @@ import ApiIcon from '../../assets/browser.gif';
 import SpecIcon from '../../assets/checklist.gif';
 import ErdIcon from '../../assets/diagram.gif';
 import Icon from '../../assets/icon0.png';
+import 'aos/dist/aos.css';
 
 export default function Onboarding() {
+  useEffect(() => {
+    AOS.init();
+  });
+
   return (
     <div>
       <Header />
@@ -34,7 +44,11 @@ export default function Onboarding() {
           <div className="second-bg" />
           <div className="second-head-container">
             <h1 className="second-head-title">PROJECT MANAGEMENT</h1>
-            <div className="second-content-container">
+            <div
+              className="second-content-container"
+              data-aos="zoom-out"
+              data-aos-duration="1000"
+            >
               <div className="second-content-box">
                 <h1 className="second-content">프로젝트 시작,</h1>
                 <h1 className="second-content">설계부터 빌드까지</h1>
@@ -56,10 +70,18 @@ export default function Onboarding() {
           <div className="third-bg" />
           <div className="third-head-container">
             <h1 className="third-head-title">PROJECT PLANNING</h1>
-            <div className="third-content-box">
+            <div
+              className="third-content-box"
+              data-aos="zoom-out"
+              data-aos-duration="1000"
+            >
               <h1 className="third-content">복잡한 기획, 설계</h1>
               <h1 className="third-content">한번에 관리하세요</h1>
-              <div className="third-icon-container">
+              <div
+                className="third-icon-container"
+                data-aos="flip-up"
+                data-aos-duration="2000"
+              >
                 <div className="third-content-icon">
                   <img src={SpecIcon} alt="" className="icons" />
                   SPEC
@@ -84,19 +106,36 @@ export default function Onboarding() {
           </div>
           <div className="fourth-head-container">
             <h1 className="fourth-head-title">PROJECT BUILD</h1>
-            <div className="fourth-content-container">
+            <div
+              className="fourth-content-container"
+              data-aos="zoom-out"
+              data-aos-duration="1000"
+            >
               <h1 className="fourth-content">어려운 초기빌드</h1>
               <h1 className="fourth-content">한번에 해결해드려요</h1>
             </div>
           </div>
-          <div className="wave-container">
-            <div className="wave -one" />
-            <div className="wave -two" />
-            <div className="wave -three" />
-          </div>
         </section>
       </div>
-      <div className="footer-container">asdasdasdsa</div>
+      <section className="footer-container">
+        <div className="footer-header-container">
+          <h1 className="footer-header-title">CONTACT US</h1>
+          <h4>MY INI를 활용하는 방법은 Docs를 확인해주세요.</h4>
+          <h4>그 밖에 문의사항 또는 개선사항은 아래 주소로 연락바랍니다.</h4>
+          <div className="footer-header-content">
+            <div className="footer-content">
+              <FontAwesomeIcon icon={faEnvelope} /> dkwlrdjqtdjdy@gmail.com
+            </div>
+            <div className="footer-content">
+              <FontAwesomeIcon icon={faGithub} />{' '}
+              https://lab.ssafy.com/s07-final/S07P31B203
+            </div>
+          </div>
+        </div>
+        <div className="footer-footer">
+          <p>@2022 | MYINI | All Rights Reserved.</p>
+        </div>
+      </section>
     </div>
   );
 }

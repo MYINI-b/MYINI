@@ -10,13 +10,13 @@ import com.ssafy.myini.security.handler.OAuthAuthenticationSuccessHandler;
 import com.ssafy.myini.security.service.OAuth2UserService;
 import com.ssafy.myini.security.service.UserDetailService;
 import com.ssafy.myini.security.util.JwtUtil;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.junit.jupiter.api.BeforeEach;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -26,8 +26,9 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-@AutoConfigureRestDocs
-@ExtendWith(RestDocumentationExtension.class)
+
+@AutoConfigureRestDocs // RestDocs 자동 설정
+@ExtendWith(RestDocumentationExtension.class) // RestDocs로 확장
 public abstract class ControllerTest {
     @Autowired
     protected ObjectMapper objectMapper;
@@ -39,7 +40,7 @@ public abstract class ControllerTest {
     protected UserDetailService userDetailService;
 
     @MockBean
-    protected LoginMemberArgumentResolver loginMemberArgumentResolver;
+    protected LoginMemberArgumentResolver loginUserArgumentResolver;
 
     @MockBean
     protected CustomAccessDeniedHandler accessDeniedHandler;

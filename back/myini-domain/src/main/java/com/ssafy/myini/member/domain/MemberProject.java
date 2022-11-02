@@ -25,4 +25,11 @@ public class MemberProject {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
+
+    public static MemberProject createMemberProject(Member member, Project project){
+        MemberProject memberProject = new MemberProject();
+        memberProject.member = member;
+        memberProject.project = project;
+        return memberProject;
+    }
 }

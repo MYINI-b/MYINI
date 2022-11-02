@@ -1,0 +1,303 @@
+:basedir: {docdir}
+:snippets: {basedir}/build/generated-snippets
+
+= RESTFUL Notes API Guide
+:doctype: apidocs
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectnums:
+:sectlinks:
+:sectanchors:
+
+[[API]]
+=== Api Docs
+==== API컨트롤러 생성 API
+===== 요청
+include::{snippets}/api/apidocs/{projectid}/controllers/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/{projectid}/controllers/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/{projectid}/controllers/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/apidocs/{projectid}/controllers/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/{projectid}/controllers/http-response.adoc[]
+
+==== API컨트롤러 리스트 조회 API
+===== 요청
+include::{snippets}/api/apidocs/{projectid}/controllers/list/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/{projectid}/controllers/list/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/{projectid}/controllers/list/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/{projectid}/controllers/list/http-response.adoc[]
+====== Body
+include::{snippets}/api/apidocs/{projectid}/controllers/list/response-fields.adoc[]
+
+==== API컨트롤러 조회 API
+===== 요청
+include::{snippets}/api/apidocs/controllers/{apicontrollerid}/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/controllers/{apicontrollerid}/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/controllers/{apicontrollerid}/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/controllers/{apicontrollerid}/http-response.adoc[]
+====== Body
+include::{snippets}/api/apidocs/controllers/{apicontrollerid}/response-fields.adoc[]
+
+==== API컨트롤러 수정 API
+===== 요청
+include::{snippets}/api/apidocs/controllers/{apicontrollerid}/update/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/controllers/{apicontrollerid}/update/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/controllers/{apicontrollerid}/update/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/apidocs/controllers/{apicontrollerid}/update/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/controllers/{apicontrollerid}/update/http-response.adoc[]
+
+==== API컨트롤러 삭제 API
+===== 요청
+include::{snippets}/api/apidocs/controllers/{apicontrollerid}/delete/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/controllers/{apicontrollerid}/delete/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/controllers/{apicontrollerid}/delete/path-parameters.adoc[]
+
+
+===== 응답
+include::{snippets}/api/apidocs/controllers/{apicontrollerid}/delete/http-response.adoc[]
+
+==== API 생성 API
+===== 요청
+include::{snippets}/api/apidocs/{apicontrollerid}/apis/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/{apicontrollerid}/apis/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/{apicontrollerid}/apis/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/apidocs/{apicontrollerid}/apis/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/{apicontrollerid}/apis/http-response.adoc[]
+
+
+==== API 수정 API
+===== 요청
+include::{snippets}/api/apidocs/apis/{apiid}/update/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/apis/{apiid}/update/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/apis/{apiid}/update/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/apidocs/apis/{apiid}/update/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/apis/{apiid}/update/http-response.adoc[]
+
+==== API 삭제 API
+===== 요청
+include::{snippets}/api/apidocs/apis/{apiid}/delete/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/apis/{apiid}/delete/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/apis/{apiid}/delete/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/apis/{apiid}/delete/http-response.adoc[]
+
+==== API 조회 API
+===== 요청
+include::{snippets}/api/apidocs/apis/{apiid}/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/apis/{apiid}/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/apis/{apiid}/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/apis/{apiid}/http-response.adoc[]
+====== Body
+include::{snippets}/api/apidocs/apis/{apiid}/response-fields.adoc[]
+
+==== PathVariable 생성 API
+===== 요청
+include::{snippets}/api/apidocs/{apiid}/pathvariables/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/{apiid}/pathvariables/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/{apiid}/pathvariables/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/apidocs/{apiid}/pathvariables/request-fields.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/{apiid}/pathvariables/http-response.adoc[]
+
+==== PathVariable 수정 API
+===== 요청
+include::{snippets}/api/apidocs/pathvariables/{pathvariableid}/update/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/pathvariables/{pathvariableid}/update/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/pathvariables/{pathvariableid}/update/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/apidocs/pathvariables/{pathvariableid}/update/request-fields.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/pathvariables/{pathvariableid}/update/http-response.adoc[]
+
+==== PathVariable 삭제 API
+===== 요청
+include::{snippets}/api/apidocs/pathvariables/{pathvariableid}/delete/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/pathvariables/{pathvariableid}/delete/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/pathvariables/{pathvariableid}/delete/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/pathvariables/{pathvariableid}/delete/http-response.adoc[]
+
+==== QueryString 생성 API
+===== 요청
+include::{snippets}/api/apidocs/{apiid}/querystrings/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/{apiid}/querystrings/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/{apiid}/querystrings/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/apidocs/{apiid}/querystrings/request-fields.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/{apiid}/querystrings/http-response.adoc[]
+
+==== QueryString 수정 API
+===== 요청
+include::{snippets}/api/apidocs/querystrings/{querystringid}/update/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/querystrings/{querystringid}/update/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/querystrings/{querystringid}/update/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/apidocs/querystrings/{querystringid}/update/request-fields.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/querystrings/{querystringid}/update/http-response.adoc[]
+
+==== QueryString 삭제 API
+===== 요청
+include::{snippets}/api/apidocs/querystrings/{querystringid}/delete/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/querystrings/{querystringid}/delete/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/querystrings/{querystringid}/delete/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/querystrings/{querystringid}/delete/http-response.adoc[]
+
+==== Dto 생성 API
+===== 요청
+include::{snippets}/api/apidocs/{apiid}/dtos/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/{apiid}/dtos/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/{apiid}/dtos/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/apidocs/{apiid}/dtos/request-fields.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/{apiid}/dtos/http-response.adoc[]
+
+==== Dto 수정 API
+===== 요청
+include::{snippets}/api/apidocs/dtos/{dtoid}/update/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/dtos/{dtoid}/update/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/dtos/{dtoid}/update/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/apidocs/dtos/{dtoid}/update/request-fields.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/dtos/{dtoid}/update/http-response.adoc[]
+
+==== Dto 삭제 API
+===== 요청
+include::{snippets}/api/apidocs/dtos/{dtoid}/delete/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/dtos/{dtoid}/delete/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/dtos/{dtoid}/delete/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/dtos/{dtoid}/delete/http-response.adoc[]
+
+==== Dto 조회 API
+===== 요청
+include::{snippets}/api/apidocs/dtos/{dtoid}/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/dtos/{dtoid}/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/dtos/{dtoid}/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/dtos/{dtoid}/http-response.adoc[]
+====== Body
+include::{snippets}/api/apidocs/dtos/{dtoid}/response-fields.adoc[]
+
+==== Dto변수 생성 API
+===== 요청
+include::{snippets}/api/apidocs/{dtoid}/dtoitems/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/{dtoid}/dtoitems/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/{dtoid}/dtoitems/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/apidocs/{dtoid}/dtoitems/request-fields.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/{dtoid}/dtoitems/http-response.adoc[]
+
+==== Dto변수 수정 API
+===== 요청
+include::{snippets}/api/apidocs/dtoitems/{dtoitemid}/update/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/dtoitems/{dtoitemid}/update/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/dtoitems/{dtoitemid}/update/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/apidocs/dtoitems/{dtoitemid}/update/request-fields.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/dtoitems/{dtoitemid}/update/http-response.adoc[]
+
+==== Dto변수 삭제 API
+===== 요청
+include::{snippets}/api/apidocs/dtoitems/{dtoitemid}/delete/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/dtoitems/{dtoitemid}/delete/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/dtoitems/{dtoitemid}/delete/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/dtoitems/{dtoitemid}/delete/http-response.adoc[]
+
+==== API컨트롤러 조회 API
+===== 요청
+include::{snippets}/api/apidocs/{projectid}/types/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/{projectid}/types/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/{projectid}/types/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/{projectid}/types/http-response.adoc[]
+====== Body
+include::{snippets}/api/apidocs/{projectid}/types/response-fields.adoc[]

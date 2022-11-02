@@ -1,0 +1,179 @@
+:basedir: {docdir}
+:snippets: {basedir}/build/generated-snippets
+
+= RESTFUL Notes API Guide
+:doctype: requirementdocs
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectnums:
+:sectlinks:
+:sectanchors:
+
+[[API]]
+=== 요구사항 명세서
+==== 요구사항 생성 API
+===== 요청
+include::{snippets}/api/requirementdocs/{projectid}/requirements/create/http-request.adoc[]
+====== Header
+include::{snippets}/api/requirementdocs/{projectid}/requirements/create/request-headers.adoc[]
+====== Path
+include::{snippets}/api/requirementdocs/{projectid}/requirements/create/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/requirementdocs/{projectid}/requirements/create/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/requirementdocs/{projectid}/requirements/create/http-response.adoc[]
+
+==== 요구사항 전체 조회 API
+===== 요청
+include::{snippets}/api/requirementdocs/{projectid}/list/http-request.adoc[]
+====== Header
+include::{snippets}/api/requirementdocs/{projectid}/list/request-headers.adoc[]
+====== Path
+include::{snippets}/api/requirementdocs/{projectid}/list/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/requirementdocs/{projectid}/list/http-response.adoc[]
+====== Body
+include::{snippets}/api/requirementdocs/{projectid}/list/response-fields.adoc[]
+
+==== 요구사항 카테고리 수정 API
+===== 요청
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/categories/update/http-request.adoc[]
+====== Header
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/categories/update/request-headers.adoc[]
+====== Path
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/categories/update/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/categories/update/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/categories/update/http-response.adoc[]
+
+==== 요구사항 이름 수정 API
+===== 요청
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/names/update/http-request.adoc[]
+====== Header
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/names/update/request-headers.adoc[]
+====== Path
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/names/update/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/names/update/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/names/update/http-response.adoc[]
+
+==== 요구사항 내용 수정 API
+===== 요청
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/contents/update/http-request.adoc[]
+====== Header
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/contents/update/request-headers.adoc[]
+====== Path
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/contents/update/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/contents/update/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/contents/update/http-response.adoc[]
+
+==== 요구사항 파트 수정 API
+===== 요청
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/parts/update/http-request.adoc[]
+====== Header
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/parts/update/request-headers.adoc[]
+====== Path
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/parts/update/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/parts/update/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/parts/update/http-response.adoc[]
+
+==== 요구사항 멤버 수정 API
+===== 요청
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/members/update/http-request.adoc[]
+====== Header
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/members/update/request-headers.adoc[]
+====== Path
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/members/update/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/members/update/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/members/update/http-response.adoc[]
+
+==== 요구사항 우선순위 수정 API
+===== 요청
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/priorities/update/http-request.adoc[]
+====== Header
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/priorities/update/request-headers.adoc[]
+====== Path
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/priorities/update/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/priorities/update/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/priorities/update/http-response.adoc[]
+
+==== 요구사항 스토리포인트 수정 API
+===== 요청
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/storypoints/update/http-request.adoc[]
+====== Header
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/storypoints/update/request-headers.adoc[]
+====== Path
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/storypoints/update/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/storypoints/update/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/storypoints/update/http-response.adoc[]
+
+==== 요구사항 삭제 API
+===== 요청
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/delete/http-request.adoc[]
+====== Header
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/delete/request-headers.adoc[]
+====== Path
+include::{snippets}/api/requirementdocs/requirements/{requirementid}/delete/path-parameters.adoc[]
+
+==== 요구사항 카테고리 전체조회 API
+===== 요청
+include::{snippets}/api/requirementdocs/{projectid}/categories/list/http-request.adoc[]
+====== Header
+include::{snippets}/api/requirementdocs/{projectid}/categories/list/request-headers.adoc[]
+====== Path
+include::{snippets}/api/requirementdocs/{projectid}/categories/list/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/requirementdocs/{projectid}/categories/list/http-response.adoc[]
+====== Body
+include::{snippets}/api/requirementdocs/{projectid}/categories/list/response-fields.adoc[]
+
+==== 요구사항 카테고리 생성 API
+===== 요청
+include::{snippets}/api/requirementdocs/{projectid}/categories/create/http-request.adoc[]
+====== Header
+include::{snippets}/api/requirementdocs/{projectid}/categories/create/request-headers.adoc[]
+====== Path
+include::{snippets}/api/requirementdocs/{projectid}/categories/create/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/requirementdocs/{projectid}/categories/create/request-fields.adoc[]
+
+===== 응답
+include::{snippets}/api/requirementdocs/{projectid}/categories/create/http-response.adoc[]
+
+===== 응답
+include::{snippets}/api/erds/tablecolumns/{tablecolumnid}/update/http-response.adoc[]
+
+==== 요구사항 카테고리 삭제 API
+===== 요청
+include::{snippets}/api/requirementdocs/categories/{requirementcategoryid}/delete/http-request.adoc[]
+====== Header
+include::{snippets}/api/requirementdocs/categories/{requirementcategoryid}/delete/request-headers.adoc[]
+====== Path
+include::{snippets}/api/requirementdocs/categories/{requirementcategoryid}/delete/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/requirementdocs/categories/{requirementcategoryid}/delete/http-response.adoc[]

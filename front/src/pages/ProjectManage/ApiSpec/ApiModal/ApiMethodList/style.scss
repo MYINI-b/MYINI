@@ -1,0 +1,61 @@
+@import 'variables.scss';
+
+.api-method-list-container {
+  position: absolute;
+  top: 32px;
+  left: 0;
+  z-index: 10;
+  background-color: transparent;
+  @include FLEX-CENTER;
+}
+
+.api-method-list-content {
+  @include BORDER-PAPER;
+  @include FLEX-COLUMN;
+  align-items: center;
+  padding: 12px 12px;
+  border-top: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+
+  .api-method-li {
+    padding: rem(4) rem(6);
+    transition: 0.3s ease;
+
+    &.select {
+      &.get {
+        color: $get;
+      }
+      &.post {
+        color: $post;
+      }
+      &.put {
+        color: $put;
+      }
+      &.delete {
+        color: $delete;
+      }
+      &.patch {
+        color: $patch;
+      }
+    }
+
+    &:hover {
+      &.get {
+        color: $get;
+      }
+      &.post {
+        color: $post;
+      }
+      &.put {
+        color: $put;
+      }
+      &.delete {
+        color: $delete;
+      }
+      &.patch {
+        color: $patch;
+      }
+    }
+  }
+}

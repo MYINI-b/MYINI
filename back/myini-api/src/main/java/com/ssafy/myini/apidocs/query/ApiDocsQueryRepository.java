@@ -2,6 +2,7 @@ package com.ssafy.myini.apidocs.query;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.myini.apidocs.domain.*;
+import com.ssafy.myini.apidocs.domain.type.DtoType;
 import com.ssafy.myini.project.domain.Project;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -24,7 +25,7 @@ public class ApiDocsQueryRepository {
     public ApiController findByApiControllerId(ApiController findApiController){
         return queryFactory
                 .selectFrom(apiController).distinct()
-                .leftJoin(apiController.apis, api)
+                .leftJoin(apiController.apis, api).fetchJoin()
                 .where(apiController.eq(findApiController))
                 .fetchOne();
     }
@@ -42,16 +43,31 @@ public class ApiDocsQueryRepository {
     public Dto findByDtoId(Dto findDto){
         return queryFactory
                 .selectFrom(dto).distinct()
-                .leftJoin(dto.dtoItems, dtoItem)
+                .leftJoin(dto.dtoItems, dtoItem).fetchJoin()
                 .where(dto.eq(findDto))
                 .fetchOne();
     }
 
-    public List<ApiController> findByProjectId(Project project){
+    public List<Dto> findByProjectId(Project findProject){
+        // 커스텀도 주기
         return queryFactory
-                .selectFrom(apiController)
-                .join(apiController, api.apiController).fetchJoin()
-                .where(apiController.project.eq(project))
+                .selectFrom(dto)
+                .join(dto.api, api)
+                .join(api.apiController, apiController)
+                .where(apiController.project.eq(findProject),
+                        dto.dtoType.eq(DtoType.RESPONSE),
+                        dto.dtoType.eq(DtoType.CUSTOM))
+                .fetch();
+    }
+
+    public List<ApiController> findAll(Project findProject){
+        return queryFactory
+                .selectFrom(apiController).distinct()
+                .leftJoin(apiController.apis, api).fetchJoin()
+                .leftJoin(api.pathVariables, pathVariable)
+                .leftJoin(api.queryStrings, queryString)
+                .leftJoin(api.dtos, dto)
+                .where(apiController.project.eq(findProject))
                 .fetch();
     }
 }

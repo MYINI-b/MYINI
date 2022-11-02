@@ -83,7 +83,7 @@ public class ERDController {
     public ResponseEntity<Void> createTableColumn(@PathVariable("erdtableid")Long erdTableId){
         erdService.createTableColumn(erdTableId);
 
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/tablecolumns/{tablecolumnid}")
@@ -100,5 +100,10 @@ public class ERDController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-
+//    @PostMapping("/erdparsing/{projectid}")
+//    public ResponseEntity<Void> erdParsing(@PathVariable("projectid") Long projectId){
+//        erdService.erdParsing(projectId);
+//
+//        return ResponseEntity.status(HttpStatus.OK).build();
+//    }
 }

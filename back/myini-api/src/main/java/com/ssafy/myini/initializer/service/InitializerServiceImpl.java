@@ -1,25 +1,37 @@
 package com.ssafy.myini.initializer.service;
 
+import com.ssafy.myini.InitializerException;
+import com.ssafy.myini.apidocs.query.ApiDocsQueryRepository;
+import com.ssafy.myini.apidocs.response.ProjectInfoListResponse;
+import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.erd.domain.entity.ErdTable;
 import com.ssafy.myini.erd.domain.entity.TableColumn;
 import com.ssafy.myini.erd.domain.repository.ErdTableRepository;
 import com.ssafy.myini.erd.domain.repository.TableColumnRepository;
 import com.ssafy.myini.erd.response.ErdTableListResponse;
+import com.ssafy.myini.fileio.ControllerWrite;
 import com.ssafy.myini.fileio.EntityWrite;
 import com.ssafy.myini.fileio.InitProjectDownload;
 import com.ssafy.myini.fileio.RepositoryWrite;
 import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
-import com.ssafy.myini.member.domain.MemberRepository;
+import com.ssafy.myini.initializer.response.PreviewResponse;
 import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileReader;
+import java.io.Reader;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,9 +42,10 @@ import static com.ssafy.myini.NotFoundException.*;
 @Transactional
 public class InitializerServiceImpl implements InitializerService {
     private final ProjectRepository projectRepository;
-    private final MemberRepository memberRepository;
     private final ErdTableRepository erdTableRepository;
     private final TableColumnRepository tableColumnRepository;
+    private final S3Uploader s3Uploader;
+    private final ApiDocsQueryRepository apiDocsQueryRepository;
 
     @Override
     @Transactional
@@ -72,19 +85,76 @@ public class InitializerServiceImpl implements InitializerService {
         InitProjectDownload.initProject(initializerRequest);
 
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
-        List<ErdTable> erdTables = erdTableRepository.findAllByProject(project);
-        List<ErdTableListResponse> erdTableListResponses = erdTables.stream().map(ErdTableListResponse::from).collect(Collectors.toList());
+        List<ProjectInfoListResponse> projectInfoListResponses = apiDocsQueryRepository.findAll(project).stream()
+                .map(ProjectInfoListResponse::from)
+                .collect(Collectors.toList());
+        //ERD json 받아오기
+        try {
+            JSONParser jsonParser = new JSONParser();
+            File file = new File("erd");
+            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/1.vuerd.json"),file);
 
-        //Entity 작성
-        for (ErdTableListResponse erdTableListRespons : erdTableListResponses) {
-            EntityWrite.entityWrite(erdTableListResponses, erdTableListRespons, initializerRequest);
+            Reader reader = new FileReader(file);
+            JSONObject erd = (JSONObject) jsonParser.parse(reader);
+
+            //entity 작성
+            EntityWrite.entityWrite(erd, initializerRequest);
+
+            //repository 작성
+            RepositoryWrite.repositoryWrite(erd, initializerRequest);
+
+            // apicontroller 별로 생성
+            projectInfoListResponses.forEach(projectInfoListResponse -> ControllerWrite.controllerWrite(projectInfoListResponse, initializerRequest));
+
+
+
+        }catch (Exception e){
+            throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
 
-        //Repository 작성
-        for (ErdTableListResponse erdTableListResponse : erdTableListResponses) {
-            RepositoryWrite.repositoryWrite(erdTableListResponse, initializerRequest);
-        }
+//        //Repository 작성
+//        for (ErdTableListResponse erdTableListResponse : erdTableListResponses) {
+//            RepositoryWrite.repositoryWrite(erdTableListResponse, initializerRequest);
+//        }
+
+
+
 
         return null;
     }
+
+    @Override
+    public List<PreviewResponse> initializerPreview(Long projectId, InitializerRequest initializerRequest) {
+        List<PreviewResponse> previewResponses = new ArrayList<>();
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+
+        //ERD json 받아오기
+        try {
+            JSONParser jsonParser = new JSONParser();
+            File file = new File("erd");
+            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/1.vuerd.json"),file);
+
+            Reader reader = new FileReader(file);
+            JSONObject erd = (JSONObject) jsonParser.parse(reader);
+
+            //entity 작성
+            previewResponses = EntityWrite.entityPreview(erd, initializerRequest, previewResponses);
+
+            //repository 작성
+            previewResponses = RepositoryWrite.repositoryPreview(erd, initializerRequest,previewResponses);
+
+        }catch (Exception e){
+            throw new InitializerException(InitializerException.INITIALIZER_FAIL);
+        }
+
+        return previewResponses;
+    }
+
+    @Override
+    public ByteArrayOutputStream myIniDownload() {
+        ByteArrayOutputStream byteArrayOutputStream = s3Uploader.downloadFile("front Setup 0.1.0.exe");
+
+        return byteArrayOutputStream;
+    }
+
 }
