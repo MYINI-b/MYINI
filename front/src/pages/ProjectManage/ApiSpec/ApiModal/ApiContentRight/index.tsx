@@ -11,6 +11,8 @@ interface Props {
   setResVarName: Dispatch<React.SetStateAction<string>>;
   reqVarName: string;
   setReqVarName: Dispatch<React.SetStateAction<string>>;
+  resMany: boolean;
+  setResMany: Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function ApiContentRight({
@@ -20,6 +22,8 @@ export default function ApiContentRight({
   setResVarName,
   reqVarName,
   setReqVarName,
+  resMany,
+  setResMany,
 }: Props) {
   const [isReq, setIsReq] = useState(false);
   const [isDatatypeListOpen, setIsDatatypeListOpen] = useState(false);
@@ -82,7 +86,6 @@ export default function ApiContentRight({
                 type="text"
                 className="content-right-boxcontent-input"
                 placeholder="변수명을 입력해주세요"
-                required
                 value={reqVarName}
                 onChange={(e) => setReqVarName(e.target.value.trim())}
               />
@@ -140,6 +143,22 @@ export default function ApiContentRight({
       <section className="content-section">
         <h1 className="content-right-title">RESPONSE BODY</h1>
         <div className="content-right-box">
+          <div className="content-right-many-wrapper">
+            <div
+              className="many-radio-wrapper"
+              onClick={() => setResMany(false)}
+            >
+              <div className={`many-radio-button ${!resMany && 'select'}`} />
+              <p className="many-radio-text">단건</p>
+            </div>
+            <div
+              className="many-radio-wrapper"
+              onClick={() => setResMany(true)}
+            >
+              <div className={`many-radio-button ${resMany && 'select'}`} />
+              <p className="many-radio-text">다건</p>
+            </div>
+          </div>
           <div className="content-right-boxtitle-wrapper">
             <h3 className="content-right-boxtitle static">자료형</h3>
             <h3 className="content-right-boxtitle">변수명</h3>
