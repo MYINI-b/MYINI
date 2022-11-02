@@ -1,72 +1,66 @@
 import './style.scss';
+import { useState, useCallback } from 'react';
+import { LINK_LIST } from 'constants/index';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen, faCheck } from '@fortawesome/free-solid-svg-icons';
+import LinkRow from './LinkRow';
 
 export function ProjectLink(props: any) {
-  const { gitlink, notionlink, jiralink, figmalink } = props;
+  // const { gitlink, notionlink, jiralink, figmalink } = props;
+  const [isEdit, setIsEdit] = useState(false);
+  const [gitLink, setGitLink] = useState('asdsad');
+  const [jiraLink, setJiraLink] = useState('');
+  const [notionLink, setNotionLink] = useState('');
+  const [figmaLink, setFigmaLink] = useState('');
+
+  const onSubmitClick = useCallback(() => {
+    setIsEdit(false);
+  }, []);
+
   return (
     <div className="project-link">
-      <div className="link-control">링크관리</div>
-      <div>
-        <div className="detail-word">
-          <img
-            className="image-icon"
-            src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
-            alt="git"
+      <div className="project-detail-info-title">
+        링크관리&nbsp;
+        {isEdit ? (
+          <FontAwesomeIcon
+            icon={faCheck}
+            className="project-edit-button"
+            onClick={onSubmitClick}
           />
-          <a
-            className="icon-link"
-            href={gitlink}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {gitlink}
-          </a>
-        </div>
-        <div className="detail-word">
-          <img
-            className="image-icon"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3GvYRs1UzRDOE2WycbFmOCq_nnxhEYlf3nQ&usqp=CAU"
-            alt="jira"
+        ) : (
+          <FontAwesomeIcon
+            icon={faPen}
+            className="project-edit-button"
+            onClick={() => setIsEdit(true)}
           />
-          <a
-            className="icon-link"
-            href={jiralink}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {jiralink}
-          </a>
-        </div>
-        <div className="detail-word">
-          <img
-            className="image-icon"
-            src="https://img.icons8.com/ios/500/notion.png"
-            alt="notion"
-          />
-          <a
-            className="icon-link"
-            href={notionlink}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {notionlink}
-          </a>
-        </div>
-        <div className="detail-word">
-          <img
-            className="image-icon"
-            src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"
-            alt="figma"
-          />
-          <a
-            className="icon-link"
-            href={figmalink}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {figmalink}
-          </a>
-        </div>
+        )}
       </div>
+      <ul className="link-list-ul">
+        <LinkRow
+          img={LINK_LIST[0].img}
+          link={gitLink}
+          setLink={setGitLink}
+          isEdit={isEdit}
+        />
+        <LinkRow
+          img={LINK_LIST[1].img}
+          link={jiraLink}
+          setLink={setJiraLink}
+          isEdit={isEdit}
+        />
+        <LinkRow
+          img={LINK_LIST[2].img}
+          link={notionLink}
+          setLink={setNotionLink}
+          isEdit={isEdit}
+        />
+        <LinkRow
+          img={LINK_LIST[3].img}
+          link={figmaLink}
+          setLink={setFigmaLink}
+          isEdit={isEdit}
+        />
+      </ul>
     </div>
   );
 }
