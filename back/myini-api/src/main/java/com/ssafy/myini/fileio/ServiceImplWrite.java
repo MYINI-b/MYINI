@@ -26,7 +26,6 @@ public class ServiceImplWrite {
         contents.append("package " + initializerRequest.getSpring_package_name() + ".service;\n")
                 .append("\n")
                 .append(serviceImplImportContents)
-                .append("\n")
                 .append("@Service\n")
                 .append("@RequiredArgsConstructor\n")
                 .append("@Transactional\n")
@@ -34,7 +33,6 @@ public class ServiceImplWrite {
                 .append("implements ").append(projectInfoListResponse.getApiControllerName()).append("Service {\n");
 
         depth++;
-        FileUtil.appendTab(contents, depth);
         contents.append(methodWrite(projectInfoListResponse.getApiInfoResponses()).replaceAll(",", ", "));
         depth--;
         FileUtil.appendTab(contents, depth);
@@ -53,6 +51,8 @@ public class ServiceImplWrite {
 
         for (ApiInfoResponse apiInfoResponse : apiInfoResponses) {
 
+            methodContents.append("\n");
+            FileUtil.appendTab(methodContents, depth);
             methodContents.append("@Override\n");
             FileUtil.appendTab(methodContents, depth);
             // 메서드 response type
@@ -80,17 +80,18 @@ public class ServiceImplWrite {
                     break;
                 }
             }
+            FileUtil.removeLastComma(methodContents);
             methodContents.append(") {\n");
             depth++;
             FileUtil.appendTab(methodContents, depth);
             methodContents.append("// TODO : ").append(apiInfoResponse.getApiResponse().getApiMethodName()).append(" 코드를 작성하세요.\n");
-            FileUtil.appendTab(methodContents, depth);
             if (!response.equals("void")) {
+                FileUtil.appendTab(methodContents, depth);
                 methodContents.append("return null;\n");
             }
             depth--;
             FileUtil.appendTab(methodContents, depth);
-            methodContents.append("}\n\n");
+            methodContents.append("}\n");
         }
 
         return methodContents.toString();

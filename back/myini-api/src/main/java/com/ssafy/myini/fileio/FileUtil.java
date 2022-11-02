@@ -78,7 +78,7 @@ public class FileUtil {
     public static String responseWrite(ApiInfoResponse apiInfoResponse) {
         for (DtoResponse dtoResponse : apiInfoResponse.getDtoResponses()) {
             if (dtoResponse.getDtoType().equals("RESPONSE")) {
-                String type = FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName());
+                String type = FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName().trim());
                 if (dtoResponse.getDtoIsList().equals("Y")) {
                     return "List<" + type + ">";
                 } else {

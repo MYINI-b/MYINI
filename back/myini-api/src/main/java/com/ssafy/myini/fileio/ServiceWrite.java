@@ -29,7 +29,6 @@ public class ServiceWrite {
         contents.append("public interface ")
                 .append(projectInfoListResponse.getApiControllerName()).append("Service { \n");
         depth++;
-        FileUtil.appendTab(contents, depth);
         contents.append(methodWrite(projectInfoListResponse.getApiInfoResponses()).replaceAll(",", ", "));
         depth--;
         FileUtil.appendTab(contents, depth);
@@ -47,6 +46,8 @@ public class ServiceWrite {
         StringBuilder methodContents = new StringBuilder();
 
         for (ApiInfoResponse apiInfoResponse : apiInfoResponses) {
+            methodContents.append("\n");
+            FileUtil.appendTab(methodContents, depth);
             // 메서드 response type
             String response = FileUtil.responseWrite(apiInfoResponse);
             methodContents.append(response).append(" "). // return type
@@ -72,7 +73,9 @@ public class ServiceWrite {
                     break;
                 }
             }
-            methodContents.append(");\n\n");
+
+            FileUtil.removeLastComma(methodContents);
+            methodContents.append(");\n");
         }
 
         return methodContents.toString();
