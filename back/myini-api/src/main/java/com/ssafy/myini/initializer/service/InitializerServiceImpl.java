@@ -106,6 +106,9 @@ public class InitializerServiceImpl implements InitializerService {
 
             // service 생성
             projectInfoListResponses.forEach(projectInfoListResponse -> ServiceWrite.serviceWrite(projectInfoListResponse, initializerRequest));
+
+            // serviceImpl 생성
+            projectInfoListResponses.forEach(projectInfoListResponse -> ServiceImplWrite.serviceImplWrite(projectInfoListResponse, initializerRequest));
         } catch (Exception e) {
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
@@ -153,6 +156,14 @@ public class InitializerServiceImpl implements InitializerService {
                 previewResponses.add(
                         new PreviewResponse("service",
                                 projectInfoListResponse.getApiControllerName() + "Service.java",
+                                ServiceWrite.servicePreview(projectInfoListResponse, initializerRequest)));
+            });
+
+            // serviceImpl
+            projectInfoListResponses.forEach(projectInfoListResponse -> {
+                previewResponses.add(
+                        new PreviewResponse("serviceImpl",
+                                projectInfoListResponse.getApiControllerName() + "ServiceImpl.java",
                                 ServiceWrite.servicePreview(projectInfoListResponse, initializerRequest)));
             });
 
