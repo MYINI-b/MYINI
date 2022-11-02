@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import './style.scss';
-
 import 'vuerd';
 
 export default function GenerateVuerd() {
