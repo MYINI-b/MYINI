@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useMemo, useState } from 'react';
 import useInput from 'hooks/useInput';
-import Stepper from 'pages/Requirement/Stepper';
 import ImageTitle from './ImageTitle';
 import ProjectDesc from './ProjectDesc/index';
 import { ProjectPeriod } from './Period/index';
@@ -15,7 +14,6 @@ export default function SettingPage() {
   const [isEdit, setIsEdit] = useState(false);
   const [title, onTitleChange] = useInput('');
   const [desc, onDescChange] = useInput('');
-  const [step, setStep] = useState(0);
   const Props = {
     id: data.id,
     img: data.img,
@@ -32,7 +30,6 @@ export default function SettingPage() {
   return (
     <div className="setting-page">
       <div className="setting-components">
-        <Stepper step={step} setStep={setStep} />
         <ImageTitle
           img={Props.img}
           title={title}

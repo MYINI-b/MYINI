@@ -8,14 +8,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import './style.scss';
-import Stepper from 'pages/Requirement/Stepper';
 import { API, CONTROLLER } from 'types/ApiSpec';
 import APIList from './APIList';
 import ControllerAddModal from './ControllerAddModal';
 import DatatypeModal from './DatatypeModal';
 
 export default function ApiSpec() {
-  const [step, setStep] = useState(1);
   const [objDataType, setObjDataType] = useState<Array<any>>([]);
   const [controllers, setControllers] = useState<Array<CONTROLLER>>([]); // 컨트롤러 목록
   const [controllerIdx, setControllerIdx] = useState(-1); // 현재 선택된 컨트롤러 인덱스
@@ -42,7 +40,6 @@ export default function ApiSpec() {
 
   return (
     <div className="apispec-container">
-      <Stepper step={step} setStep={setStep} />
       <h1 className="apispec-title">API 명세서</h1>
 
       <section className="apispec-info-section">
