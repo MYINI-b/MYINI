@@ -1,0 +1,30 @@
+@import 'variables.scss';
+
+.detail-info {
+  width: 100%;
+
+  .detail-word {
+    font-size: 20px;
+    @include ELLIPSIS-LINE(2);
+  }
+  .project-detail-title-wrapper {
+    @include FLEX-BETWEEN;
+    width: 100%;
+  }
+
+  .project-info-desc {
+    width: 100%;
+    height: rem(70);
+    margin-top: rem(8);
+    padding: rem(8);
+    font-size: rem(20);
+    font-family: $eng-content;
+    background-color: transparent;
+    border-radius: rem(16);
+
+    &.edit {
+      background-color: $pure-white;
+      border: 1px solid $lightx2-gray;
+    }
+  }
+}
