@@ -22,14 +22,15 @@ interface Props {
 export default function TableRow({ row, rows, setRows, idx }: Props) {
   const requireContainer =
     useRef() as React.MutableRefObject<HTMLTextAreaElement>;
-  const contentContainer =
-    useRef() as React.MutableRefObject<HTMLTextAreaElement>;
+  const descContainer = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
 
   const [isRowModalOpen, setIsRowModalOpen] = useState(false);
   const [clickMousePos, setClickMousePos] = useState<MOUSEPOS>({ x: 0, y: 0 });
   const [isCategoryListOpen, setIsCategoryListOpen] = useState(false);
   const [isRequireEdit, setIsRequireEdit] = useState(false);
+  const [isDescEdit, setIsDescEdit] = useState(false);
   const [requirement, onRequirementChange] = useInput('');
+  const [desc, onDescChange] = useInput('');
   const [categories, setCategories] = useState(['회원', '프로젝트', 'ERD']);
   const [clickElementPos, setClickElementPos] = useState<ELEMENTPOS>({
     x: 0,
@@ -56,12 +57,19 @@ export default function TableRow({ row, rows, setRows, idx }: Props) {
     });
   }, []);
 
+  const focusOutDesc = useCallback(() => {
+    const copyRows = [...rows];
+    copyRows[idx].description = desc;
+    setRows(copyRows);
+    setIsDescEdit(false);
+  }, [rows, idx, desc]);
+
   const focusOutRequirement = useCallback(() => {
-    setIsRequireEdit(false);
     const copyRows = [...rows];
     copyRows[idx].requirement = requirement;
     setRows(copyRows);
-  }, [rows, idx]);
+    setIsRequireEdit(false);
+  }, [rows, idx, requirement]);
 
   useEffect(() => {
     if (requireContainer.current)
@@ -69,6 +77,11 @@ export default function TableRow({ row, rows, setRows, idx }: Props) {
         'focusout',
         focusOutRequirement,
       );
+
+    const copyRows = [...rows];
+    copyRows[idx].requirement = requirement;
+
+    setRows(copyRows);
     return () => {
       if (requireContainer.current)
         requireContainer.current.removeEventListener(
@@ -77,6 +90,20 @@ export default function TableRow({ row, rows, setRows, idx }: Props) {
         );
     };
   }, [isRequireEdit]);
+
+  useEffect(() => {
+    if (descContainer.current)
+      descContainer.current.addEventListener('focusout', focusOutDesc);
+
+    const copyRows = [...rows];
+    copyRows[idx].description = desc;
+
+    setRows(copyRows);
+    return () => {
+      if (descContainer.current)
+        descContainer.current.removeEventListener('focusout', focusOutDesc);
+    };
+  }, [isDescEdit]);
 
   return (
     <div className="table-row" onContextMenu={onRightClick}>
@@ -101,8 +128,21 @@ export default function TableRow({ row, rows, setRows, idx }: Props) {
           {row.requirement}
         </span>
       )}
-
-      <span className="table-col content two">{row.description}</span>
+      {isDescEdit ? (
+        <textarea
+          value={desc}
+          ref={descContainer}
+          onChange={onDescChange}
+          className="table-col content two textarea"
+        />
+      ) : (
+        <span
+          className="table-col content two"
+          onDoubleClick={() => setIsDescEdit(true)}
+        >
+          {row.description}
+        </span>
+      )}
       <span className="table-col content one">
         <div className={`desc-block ${row.division}`}>{row.division}</div>
       </span>
