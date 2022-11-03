@@ -35,6 +35,9 @@ public class InitProjectDownload {
             }
         }
         try {
+            //이미 만들어진게 있다면 삭제
+            fileDelete(initializerRequest);
+
             URI url = URI.create(address);
 
             // 원격 파일 다운로드
@@ -47,11 +50,36 @@ public class InitProjectDownload {
 
             FileCopyUtils.copy(buffer, target.toFile());
 
+
+
             File file = new File(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name()+".zip");
             ZipFile zipFile = new ZipFile(file);
             zipFile.extractAll(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name());
         }catch (Exception e){
             System.out.println("e = " + e);
         }
+    }
+
+    private static void fileDelete(InitializerRequest initializerRequest) throws Exception {
+        String path = initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name();
+
+        File deleteZip = new File(path+".zip");
+        if( deleteZip.exists() ){
+            deleteZip.delete();
+        }
+
+        File deleteFolder = new File(path);
+        if(deleteFolder.exists()){
+            File[] deleteFolderList = deleteFolder.listFiles();
+
+            for (int j = 0; j < deleteFolderList.length; j++) {
+                deleteFolderList[j].delete();
+            }
+
+            if(deleteFolderList.length == 0 && deleteFolder.isDirectory()){
+                deleteFolder.delete();
+            }
+        }
+
     }
 }
