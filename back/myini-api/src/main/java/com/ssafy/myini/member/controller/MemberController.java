@@ -4,7 +4,6 @@ import com.ssafy.myini.config.LoginMember;
 import com.ssafy.myini.member.domain.Member;
 import com.ssafy.myini.member.response.*;
 import com.ssafy.myini.member.service.MemberService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

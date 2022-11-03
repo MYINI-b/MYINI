@@ -11,12 +11,13 @@ import './style.scss';
 
 export default function SettingPage() {
   const data = useMemo(() => MockData[0], []);
+  const [img, setImg] = useState('');
   const [isEdit, setIsEdit] = useState(false);
   const [title, onTitleChange] = useInput('');
   const [desc, onDescChange] = useInput('');
   const Props = {
     id: data.id,
-    img: data.img,
+    // img: data.img,
     // title: data.title,
     period: data.period,
     jiralink: data.jiralink,
@@ -31,7 +32,8 @@ export default function SettingPage() {
     <div className="setting-page">
       <div className="setting-components">
         <ImageTitle
-          img={Props.img}
+          img={img}
+          setImg={setImg}
           title={title}
           onTitleChange={onTitleChange}
         />

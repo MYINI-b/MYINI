@@ -5,7 +5,6 @@ import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.member.domain.*;
 import com.ssafy.myini.member.query.*;
 import com.ssafy.myini.member.response.*;
-import com.ssafy.myini.project.domain.*;
 import com.ssafy.myini.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.*;
 
