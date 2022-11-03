@@ -1,0 +1,33 @@
+@import 'variables.scss';
+
+.project-link {
+  margin-top: rem(20);
+
+  .ling-list-ul {
+  }
+  .link-control {
+    padding-bottom: rem(10);
+    color: $primary;
+    font-size: 32px;
+    font-family: $kor;
+  }
+  .image-icon {
+    width: rem(30);
+    height: rem(30);
+    background-color: $third;
+    background-blend-mode: multiply;
+    border-radius: 70%;
+  }
+  .detail-word {
+    display: flex;
+    align-items: center;
+    padding-bottom: rem(9);
+  }
+  .icon-link {
+    padding-left: 11px;
+    color: $gray;
+    font-size: 10px;
+    font-family: $eng-content;
+    @include ELLIPSIS-LINE(1);
+  }
+}

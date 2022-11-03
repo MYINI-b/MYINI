@@ -1,16 +1,28 @@
+/* eslint-disable no-console */
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import MainHeader from 'components/MainHeader';
+import { authAxios } from '../../api/common';
 import CardLogo from '../../assets/card-logo.png';
 import './style.scss';
 
 export default function MainPage() {
+  const [step, setStep] = useState(0);
+
+  useEffect(() => {
+    authAxios.get('/members/').then((res) => {
+      console.log(res, 'res');
+    });
+  });
+
   return (
-    <div>
+    <div className="mainpage-highest-container">
+      <MainHeader needStepper={false} step={step} setStep={setStep} />
       <div className="wave-container">
         <div className="wave -one" />
         <div className="wave -two" />
         <div className="wave -three" />
       </div>
-      <MainHeader />
       <div className="main-page">
         <span className="user-name">한윤석</span>
         <span className="user-ini">`s INI</span>

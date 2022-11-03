@@ -855,7 +855,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 362
+Content-Length: 397
 
 {
   "apiControllerId" : 1,
@@ -868,7 +868,8 @@ Content-Length: 362
     "apiName" : "테스트 이름",
     "apiUrl" : "테스트 URL",
     "apiMethod" : "GET",
-    "apiCode" : "200"
+    "apiCode" : "200",
+    "apiMethodName" : "findById"
   } ]
 }</code></pre>
 </div>
@@ -943,6 +944,11 @@ Content-Length: 362
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>apiResponses.[].apiCode</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Api Code</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>apiResponses.[].apiMethodName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Api 메서드 이름</p></td>
 </tr>
 </tbody>
 </table>
@@ -1423,7 +1429,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 750
+Content-Length: 785
 
 {
   "apiResponse" : {
@@ -1432,7 +1438,8 @@ Content-Length: 750
     "apiName" : "테스트 이름",
     "apiUrl" : "테스트 URL",
     "apiMethod" : "GET",
-    "apiCode" : "200"
+    "apiCode" : "200",
+    "apiMethodName" : "findById"
   },
   "pathVariableResponses" : [ {
     "pathVariableId" : 1,
@@ -1509,6 +1516,11 @@ Content-Length: 750
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>apiResponse.apiCode</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Api Code</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>apiResponse.apiMethodName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Api 메서드 이름</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pathVariableResponses</code></p></td>
@@ -2995,7 +3007,7 @@ Content-Length: 203
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-11-01 09:02:37 +0900
+Last updated 2022-11-01 16:45:10 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
