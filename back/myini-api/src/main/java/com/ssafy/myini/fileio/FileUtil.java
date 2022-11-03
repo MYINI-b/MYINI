@@ -2,16 +2,16 @@ package com.ssafy.myini.fileio;
 
 import com.ssafy.myini.apidocs.response.ApiInfoResponse;
 import com.ssafy.myini.apidocs.response.DtoResponse;
-import com.ssafy.myini.apidocs.response.ProjectInfoListResponse;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Set;
 
 public class FileUtil {
 
-    public static void fileWrite(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest, String contents, String folderPath, String fileName) {
+    public static void fileWrite(InitializerRequest initializerRequest, String contents, String folderPath, String fileName) {
         try {
             //폴더 찾아가기
             String path = initializerRequest.getSpring_base_path() + "\\" + initializerRequest.getSpring_name() + "\\src\\main\\java\\";
@@ -29,17 +29,19 @@ public class FileUtil {
                 folder.mkdir();
             }
 
-            // 파일 만들기
-            File file = new File(path + fileName + ".java");
-            if (!file.exists()) {
-                folder.createNewFile();
-            }
+            if (!fileName.isEmpty()) {
+                // 파일 만들기
+                File file = new File(path + fileName + ".java");
+                if (!file.exists()) {
+                    folder.createNewFile();
+                }
 
-            //파일 쓰기
-            FileWriter fw = new FileWriter(file);
-            BufferedWriter writer = new BufferedWriter(fw);
-            writer.write(contents);
-            writer.close();
+                //파일 쓰기
+                FileWriter fw = new FileWriter(file);
+                BufferedWriter writer = new BufferedWriter(fw);
+                writer.write(contents);
+                writer.close();
+            }
 
         } catch (Exception e) {
             System.out.println("e = " + e);
@@ -75,10 +77,11 @@ public class FileUtil {
         return firstIndexToUpperCase(method.toLowerCase());
     }
 
-    public static String responseWrite(ApiInfoResponse apiInfoResponse) {
+    public static String responseWrite(ApiInfoResponse apiInfoResponse, Set<String> responseImportContents) {
         for (DtoResponse dtoResponse : apiInfoResponse.getDtoResponses()) {
             if (dtoResponse.getDtoType().equals("RESPONSE")) {
                 String type = FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName().trim());
+                responseImportContents.add(type);
                 if (dtoResponse.getDtoIsList().equals("Y")) {
                     return "List<" + type + ">";
                 } else {
