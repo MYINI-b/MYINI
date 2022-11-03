@@ -26,7 +26,7 @@ public class FileUtil {
             // 폴더 만들기
             File folder = new File(path);
             if (!folder.exists()) {
-                folder.mkdir();
+                folder.mkdirs();
             }
 
             if (!fileName.isEmpty()) {
