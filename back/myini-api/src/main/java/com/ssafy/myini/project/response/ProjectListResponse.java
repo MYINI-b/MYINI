@@ -1,7 +1,5 @@
 package com.ssafy.myini.project.response;
 
-import com.ssafy.myini.member.domain.Member;
-import com.ssafy.myini.member.domain.MemberProject;
 import com.ssafy.myini.project.domain.Project;
 import lombok.AllArgsConstructor;
 import lombok.Data;

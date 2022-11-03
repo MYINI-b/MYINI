@@ -46,23 +46,26 @@ public class ProjectController {
 
     // 프로젝트 수정
     @PutMapping("/{projectid}")
-    public ResponseEntity<Void> updateProject(@PathVariable("projectid")Long projectId,
+    public ResponseEntity<Void> updateProject(@LoginMember Member member,
+                                              @PathVariable("projectid")Long projectId,
                                               @RequestBody @Valid UpdateProjectRequest request){
-        projectService.updateProject(projectId, request);
+        projectService.updateProject(member, projectId, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // 프로젝트 이미지 변경
     @PatchMapping("/{projectid}/images")
-    public ResponseEntity<Void> updateProjectImg(@PathVariable("projectid")Long projectId, MultipartFile projectImg){
-        projectService.updateProjectImg(projectId, projectImg);
+    public ResponseEntity<Void> updateProjectImg(@LoginMember Member member,
+                                                 @PathVariable("projectid")Long projectId, MultipartFile projectImg){
+        projectService.updateProjectImg(member, projectId, projectImg);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // 프로젝트 삭제
     @DeleteMapping("/{projectid}")
-    public ResponseEntity<Void> deleteProject(@PathVariable("projectid")Long projectId){
-        projectService.deleteProject(projectId);
+    public ResponseEntity<Void> deleteProject(@LoginMember Member member,
+                                              @PathVariable("projectid")Long projectId){
+        projectService.deleteProject(member, projectId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -74,7 +77,7 @@ public class ProjectController {
     }
 
     // 프로젝트 팀원 검색
-    @GetMapping("/members")
+    @PostMapping("/members")
     public ResponseEntity<ProjectMemberResponse> findByMemberEmail(@RequestBody @Valid FindByMemberEmailRequest request){
         ProjectMemberResponse body = projectService.findByMemberEmail(request);
         return ResponseEntity.ok().body(body);
@@ -82,17 +85,19 @@ public class ProjectController {
 
     // 프로젝트 팀원 추가
     @PostMapping("/{projectid}/members/{memberid}")
-    public ResponseEntity<Void> addProjectMember(@PathVariable("projectid")Long projectId,
+    public ResponseEntity<Void> addProjectMember(@LoginMember Member member,
+                                                 @PathVariable("projectid")Long projectId,
                                                  @PathVariable("memberid")Long memberId){
-        projectService.addProjectMember(projectId, memberId);
+        projectService.addProjectMember(member, projectId, memberId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // 프로젝트 팀원 삭제
     @DeleteMapping("/{projectid}/members/{memberid}")
-    public ResponseEntity<Void> deleteProjectMember(@PathVariable("projectid")Long projectId,
+    public ResponseEntity<Void> deleteProjectMember(@LoginMember Member member,
+                                                    @PathVariable("projectid")Long projectId,
                                                     @PathVariable("memberid")Long memberId){
-        projectService.deleteProjectMember(projectId, memberId);
+        projectService.deleteProjectMember(member, projectId, memberId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

@@ -142,7 +142,7 @@ class ProjectControllerTest extends ControllerTest {
         // given
         willDoNothing()
                 .given(projectService)
-                .updateProject(any(), any());
+                .updateProject(any(), any(), any());
 
         // when
         mockMvc.perform(RestDocumentationRequestBuilders.put("/api/projects/{projectid}", ID)
@@ -170,7 +170,7 @@ class ProjectControllerTest extends ControllerTest {
                 ));
 
         // then
-        then(projectService).should(times(1)).updateProject(any(), any());
+        then(projectService).should(times(1)).updateProject(any(), any(), any());
 
     }
 
@@ -180,7 +180,7 @@ class ProjectControllerTest extends ControllerTest {
         // given
         willDoNothing()
                 .given(projectService)
-                .updateProjectImg(any(), any());
+                .updateProjectImg(any(), any(), any());
 
         // when
         mockMvc.perform(RestDocumentationRequestBuilders.multipart("/api/projects/{projectid}/images", ID)
@@ -205,7 +205,7 @@ class ProjectControllerTest extends ControllerTest {
                 ));
 
         // then
-        then(projectService).should(times(1)).updateProjectImg(any(), any());
+        then(projectService).should(times(1)).updateProjectImg(any(), any(), any());
     }
 
     @Test
@@ -214,7 +214,7 @@ class ProjectControllerTest extends ControllerTest {
         // given
         willDoNothing()
                 .given(projectService)
-                .deleteProject(any());
+                .deleteProject(any(), any());
 
         // when
         mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/projects/{projectid}", ID)
@@ -230,7 +230,7 @@ class ProjectControllerTest extends ControllerTest {
                         )));
 
         // then
-        then(projectService).should(times(1)).deleteProject(any());
+        then(projectService).should(times(1)).deleteProject(any(), any());
 
     }
 
@@ -276,7 +276,7 @@ class ProjectControllerTest extends ControllerTest {
                 .willReturn(TEST_PROJECT_MEMBER_RESPONSE);
 
         // when
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/projects/members", ID)
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/projects/members", ID)
                         .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(TEST_FIND_MEMBER_EMAIL_REQUEST)))
@@ -308,7 +308,7 @@ class ProjectControllerTest extends ControllerTest {
         // given
         willDoNothing()
                 .given(projectService)
-                .addProjectMember(any(), any());
+                .addProjectMember(any(), any(), any());
 
         // when
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/projects/{projectid}/members/{memberid}", ID, ID)
@@ -327,7 +327,7 @@ class ProjectControllerTest extends ControllerTest {
 
 
         // then
-        then(projectService).should(times(1)).addProjectMember(any(), any());
+        then(projectService).should(times(1)).addProjectMember(any(), any(), any());
     }
 
     @Test
@@ -336,7 +336,7 @@ class ProjectControllerTest extends ControllerTest {
         // given
         willDoNothing()
                 .given(projectService)
-                .deleteProjectMember(any(), any());
+                .deleteProjectMember(any(), any(), any());
 
         // when
         mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/projects/{projectid}/members/{memberid}", ID, ID)
@@ -353,6 +353,6 @@ class ProjectControllerTest extends ControllerTest {
                         )));
 
         // then
-        then(projectService).should(times(1)).deleteProjectMember(any(), any());
+        then(projectService).should(times(1)).deleteProjectMember(any(), any(), any());
     }
 }

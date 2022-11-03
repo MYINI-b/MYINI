@@ -1,6 +1,5 @@
 package com.ssafy.myini.project.response;
 
-import com.querydsl.core.annotations.QueryProjection;
 import com.ssafy.myini.project.domain.Project;
 import lombok.AllArgsConstructor;
 import lombok.Data;

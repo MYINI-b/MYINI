@@ -6,6 +6,7 @@ import com.ssafy.myini.apidocs.domain.type.DtoType;
 import com.ssafy.myini.project.domain.Project;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StopWatch;
 
 
 import java.util.List;
@@ -22,7 +23,7 @@ import static com.ssafy.myini.apidocs.domain.QQueryString.queryString;
 public class ApiDocsQueryRepository {
     private final JPAQueryFactory queryFactory;
 
-    public ApiController findByApiControllerId(ApiController findApiController){
+    public ApiController findByApiControllerId(ApiController findApiController) {
         return queryFactory
                 .selectFrom(apiController).distinct()
                 .leftJoin(apiController.apis, api).fetchJoin()
@@ -30,7 +31,7 @@ public class ApiDocsQueryRepository {
                 .fetchOne();
     }
 
-    public Api findByApiId(Api findApi){
+    public Api findByApiId(Api findApi) {
         return queryFactory
                 .selectFrom(api).distinct()
                 .leftJoin(api.pathVariables, pathVariable)
@@ -40,7 +41,7 @@ public class ApiDocsQueryRepository {
                 .fetchOne();
     }
 
-    public Dto findByDtoId(Dto findDto){
+    public Dto findByDtoId(Dto findDto) {
         return queryFactory
                 .selectFrom(dto).distinct()
                 .leftJoin(dto.dtoItems, dtoItem).fetchJoin()
@@ -48,19 +49,21 @@ public class ApiDocsQueryRepository {
                 .fetchOne();
     }
 
-    public List<Dto> findByProjectId(Project findProject){
+    public List<Dto> findByProjectId(Project findProject) {
         // 커스텀도 주기
         return queryFactory
                 .selectFrom(dto)
-                .join(dto.api, api)
-                .join(api.apiController, apiController)
-                .where(apiController.project.eq(findProject),
-                        dto.dtoType.eq(DtoType.RESPONSE),
-                        dto.dtoType.eq(DtoType.CUSTOM))
+                .leftJoin(dto.api, api)
+                .leftJoin(api.apiController, apiController)
+                .where((apiController.project.eq(findProject)
+                        .and(dto.dtoType.eq(DtoType.RESPONSE)))
+                        .or(dto.project.eq(findProject)
+                                .and(dto.dtoType.eq(DtoType.DTO)))
+                )
                 .fetch();
     }
 
-    public List<ApiController> findAll(Project findProject){
+    public List<ApiController> findAll(Project findProject) {
         return queryFactory
                 .selectFrom(apiController).distinct()
                 .leftJoin(apiController.apis, api).fetchJoin()

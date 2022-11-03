@@ -1,13 +1,29 @@
-import { Dispatch, SetStateAction, useRef, useEffect } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useRef,
+  useEffect,
+  useCallback,
+} from 'react';
 import './style.scss';
 import { MOUSEPOS } from 'types/ApiSpec';
+import { ROW } from 'types/Requirement';
 
 interface Props {
   setIsRowModalOpen: Dispatch<SetStateAction<boolean>>;
   clickMousePos: MOUSEPOS;
+  rows: ROW[];
+  setRows: Dispatch<React.SetStateAction<ROW[]>>;
+  idx: number;
 }
 
-export default function RowModal({ setIsRowModalOpen, clickMousePos }: Props) {
+export default function RowModal({
+  setIsRowModalOpen,
+  clickMousePos,
+  rows,
+  setRows,
+  idx,
+}: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
 
   useEffect(() => {
@@ -18,6 +34,37 @@ export default function RowModal({ setIsRowModalOpen, clickMousePos }: Props) {
   const closeModal = () => {
     setIsRowModalOpen(false);
   };
+
+  const addRow = useCallback(() => {
+    const copyRows = [...rows];
+    copyRows.push({
+      id: 1,
+      category: '',
+      requirement: '',
+      description: '',
+      division: '',
+      manager: '',
+      importance: 3,
+      point: 0,
+    });
+    setRows(copyRows);
+    setIsRowModalOpen(false);
+  }, [rows, idx]);
+
+  const deleteRow = useCallback(() => {
+    const copyRows = [...rows];
+    copyRows.splice(idx, 1);
+    setRows(copyRows);
+    setIsRowModalOpen(false);
+  }, [rows, idx]);
+
+  const duplicateRow = useCallback(() => {
+    const copyRows = [...rows];
+    const copyRow = { ...copyRows[idx] };
+    copyRows.splice(idx, 0, copyRow);
+    setRows(copyRows);
+    setIsRowModalOpen(false);
+  }, [rows, idx]);
 
   return (
     <div
@@ -33,8 +80,15 @@ export default function RowModal({ setIsRowModalOpen, clickMousePos }: Props) {
         role="article"
         onKeyDown={() => {}}
       >
-        <p className="rowmodal-menu">행 삭제</p>
-        <p className="rowmodal-menu">되돌리기</p>
+        <p className="rowmodal-menu" onClick={deleteRow}>
+          행 삭제
+        </p>
+        <p className="rowmodal-menu" onClick={addRow}>
+          행 추가
+        </p>
+        <p className="rowmodal-menu" onClick={duplicateRow}>
+          복제하기
+        </p>
       </div>
     </div>
   );

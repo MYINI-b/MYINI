@@ -2,6 +2,7 @@ package com.ssafy.myini.initializer.service;
 
 import com.ssafy.myini.InitializerException;
 import com.ssafy.myini.apidocs.query.ApiDocsQueryRepository;
+import com.ssafy.myini.apidocs.response.DtoResponse;
 import com.ssafy.myini.apidocs.response.ProjectInfoListResponse;
 import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.erd.domain.entity.ErdTable;
@@ -9,10 +10,7 @@ import com.ssafy.myini.erd.domain.entity.TableColumn;
 import com.ssafy.myini.erd.domain.repository.ErdTableRepository;
 import com.ssafy.myini.erd.domain.repository.TableColumnRepository;
 import com.ssafy.myini.erd.response.ErdTableListResponse;
-import com.ssafy.myini.fileio.ControllerWrite;
-import com.ssafy.myini.fileio.EntityWrite;
-import com.ssafy.myini.fileio.InitProjectDownload;
-import com.ssafy.myini.fileio.RepositoryWrite;
+import com.ssafy.myini.fileio.*;
 import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
@@ -21,8 +19,10 @@ import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,34 +48,30 @@ public class InitializerServiceImpl implements InitializerService {
     private final ApiDocsQueryRepository apiDocsQueryRepository;
 
     @Override
-    @Transactional
     public InitializerPossibleResponse initializerIsPossible(Long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
 
-        //요구사항명세서 체크
-
-        //ERD체크
-        InitializerPossibleResponse initializerPossibleResponse = null;
-        //테이블유무
-        List<ErdTable> erdTables = erdTableRepository.findAllByProject(project);
-        if (erdTables.size() == 0) {
-            initializerPossibleResponse = new InitializerPossibleResponse(false, "테이블이 없습니다.");
-            return initializerPossibleResponse;
-        } else {
-            //테이블 컬럼유무
-            for (ErdTable erdTable : erdTables) {
-                List<TableColumn> tableColumns = tableColumnRepository.findAllByErdTable(erdTable);
-                if (tableColumns.size() == 0) {
-                    initializerPossibleResponse = new InitializerPossibleResponse(false, "컬럼이 없습니다.");
-                    return initializerPossibleResponse;
-                }
-            }
-        }
+//        //ERD체크
+//        InitializerPossibleResponse initializerPossibleResponse = null;
+//        //테이블유무
+//        List<ErdTable> erdTables = erdTableRepository.findAllByProject(project);
+//        if (erdTables.size() == 0) {
+//            initializerPossibleResponse = new InitializerPossibleResponse(false, "테이블이 없습니다.");
+//            return initializerPossibleResponse;
+//        } else {
+//            //테이블 컬럼유무
+//            for (ErdTable erdTable : erdTables) {
+//                List<TableColumn> tableColumns = tableColumnRepository.findAllByErdTable(erdTable);
+//                if (tableColumns.size() == 0) {
+//                    initializerPossibleResponse = new InitializerPossibleResponse(false, "컬럼이 없습니다.");
+//                    return initializerPossibleResponse;
+//                }
+//            }
+//        }
 
         //API명세서 체크
 
-        initializerPossibleResponse = new InitializerPossibleResponse(true, "빌드가능");
-        return initializerPossibleResponse;
+        return new InitializerPossibleResponse(true, "빌드가능");
     }
 
     @Override
@@ -84,6 +80,54 @@ public class InitializerServiceImpl implements InitializerService {
         //프로젝트 init
         InitProjectDownload.initProject(initializerRequest);
 
+//        Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+//        List<ProjectInfoListResponse> projectInfoListResponses = apiDocsQueryRepository.findAll(project).stream()
+//                .map(ProjectInfoListResponse::from)
+//                .collect(Collectors.toList());
+//        //ERD json 받아오기
+//        try {
+//            JSONParser jsonParser = new JSONParser();
+//            File file = new File("erd");
+//            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/"+projectId+".vuerd.json"),file);
+//
+//
+//            Reader reader = new FileReader(file);
+//            JSONObject erd = (JSONObject) jsonParser.parse(reader);
+//            JSONObject table = (JSONObject) erd.get("table");
+//            JSONArray tables = (JSONArray) table.get("tables");
+//            JSONObject relationship = (JSONObject) erd.get("relationship");
+//
+//            //entity 작성
+//            EntityWrite.setTableAndColumn(erd);
+//            tables.forEach(t -> EntityWrite.entityWrite( (JSONObject) t, relationship, initializerRequest ));
+//
+//            //repository 작성
+//            tables.forEach(t -> RepositoryWrite.repositoryWrite( (JSONObject) t, initializerRequest ));
+//
+//            // controller 생성
+//            projectInfoListResponses.forEach(projectInfoListResponse -> ControllerWrite.controllerWrite(projectInfoListResponse, initializerRequest));
+//
+//            // service 생성
+//            projectInfoListResponses.forEach(projectInfoListResponse -> ServiceWrite.serviceWrite(projectInfoListResponse, initializerRequest));
+//
+//            // serviceImpl 생성
+//            projectInfoListResponses.forEach(projectInfoListResponse -> ServiceImplWrite.serviceImplWrite(projectInfoListResponse, initializerRequest));
+//
+//            // dto 생성
+//            projectInfoListResponses.forEach(projectInfoListResponse -> DtoWrite.dtoWrite(projectInfoListResponse, initializerRequest));
+//
+//
+//        } catch (Exception e) {
+//            throw new InitializerException(InitializerException.INITIALIZER_FAIL);
+//        }
+
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public List<PreviewResponse> initializerPreview(Long projectId, InitializerRequest initializerRequest) {
+        List<PreviewResponse> previewResponses = new ArrayList<>();
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
         List<ProjectInfoListResponse> projectInfoListResponses = apiDocsQueryRepository.findAll(project).stream()
                 .map(ProjectInfoListResponse::from)
@@ -92,58 +136,69 @@ public class InitializerServiceImpl implements InitializerService {
         try {
             JSONParser jsonParser = new JSONParser();
             File file = new File("erd");
-            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/1.vuerd.json"),file);
+            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/"+projectId+".vuerd.json"),file);
+
 
             Reader reader = new FileReader(file);
             JSONObject erd = (JSONObject) jsonParser.parse(reader);
+            JSONObject table = (JSONObject) erd.get("table");
+            JSONArray tables = (JSONArray) table.get("tables");
+            JSONObject relationship = (JSONObject) erd.get("relationship");
 
             //entity 작성
-            EntityWrite.entityWrite(erd, initializerRequest);
+            EntityWrite.setTableAndColumn(erd);
+            for (int i = 0; i < tables.size(); i++) {
+                previewResponses.add(new PreviewResponse("entity",
+                                (String) ((JSONObject) tables.get(i)).get("name")+".java",
+                        EntityWrite.entityPreview((JSONObject) tables.get(i), relationship, initializerRequest)));
+            }
 
             //repository 작성
-            RepositoryWrite.repositoryWrite(erd, initializerRequest);
+            for (int i = 0; i < tables.size(); i++) {
+                previewResponses.add(new PreviewResponse("repository",
+                        (String) ((JSONObject) tables.get(i)).get("name")+"Repository.java",
+                        RepositoryWrite.repositoryPreview((JSONObject) tables.get(i), initializerRequest)));
+            }
 
-            // apicontroller 별로 생성
-            projectInfoListResponses.forEach(projectInfoListResponse -> ControllerWrite.controllerWrite(projectInfoListResponse, initializerRequest));
+            // controller
+            projectInfoListResponses.forEach(projectInfoListResponse -> {
+                previewResponses.add(
+                        new PreviewResponse("controller",
+                                projectInfoListResponse.getApiControllerName() + "Controller.java",
+                                ControllerWrite.controllerPreview(projectInfoListResponse, initializerRequest)));
+            });
 
+            // service
+            projectInfoListResponses.forEach(projectInfoListResponse -> {
+                previewResponses.add(
+                        new PreviewResponse("service",
+                                projectInfoListResponse.getApiControllerName() + "Service.java",
+                                ServiceWrite.servicePreview(projectInfoListResponse, initializerRequest)));
+            });
 
+            // serviceImpl
+            projectInfoListResponses.forEach(projectInfoListResponse -> {
+                previewResponses.add(
+                        new PreviewResponse("serviceImpl",
+                                projectInfoListResponse.getApiControllerName() + "ServiceImpl.java",
+                                ServiceWrite.servicePreview(projectInfoListResponse, initializerRequest)));
+            });
 
-        }catch (Exception e){
-            throw new InitializerException(InitializerException.INITIALIZER_FAIL);
-        }
+            // dto
+            projectInfoListResponses.forEach(projectInfoListResponse -> {
+                projectInfoListResponse.getApiInfoResponses().forEach(
+                        apiInfoResponse -> {
+                            apiInfoResponse.getDtoResponses().forEach(
+                                    dtoResponse -> {
+                                        previewResponses.add(
+                                                new PreviewResponse("dto",
+                                                        dtoResponse.getDtoName() + ".java",
+                                                        DtoWrite.dtoPreview(dtoResponse, initializerRequest)));
+                                    });
+                        });
+            });
 
-//        //Repository 작성
-//        for (ErdTableListResponse erdTableListResponse : erdTableListResponses) {
-//            RepositoryWrite.repositoryWrite(erdTableListResponse, initializerRequest);
-//        }
-
-
-
-
-        return null;
-    }
-
-    @Override
-    public List<PreviewResponse> initializerPreview(Long projectId, InitializerRequest initializerRequest) {
-        List<PreviewResponse> previewResponses = new ArrayList<>();
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
-
-        //ERD json 받아오기
-        try {
-            JSONParser jsonParser = new JSONParser();
-            File file = new File("erd");
-            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/1.vuerd.json"),file);
-
-            Reader reader = new FileReader(file);
-            JSONObject erd = (JSONObject) jsonParser.parse(reader);
-
-            //entity 작성
-            previewResponses = EntityWrite.entityPreview(erd, initializerRequest, previewResponses);
-
-            //repository 작성
-            previewResponses = RepositoryWrite.repositoryPreview(erd, initializerRequest,previewResponses);
-
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
 

@@ -20,6 +20,7 @@
 
   .closebtn-container {
     @include FLEX-ALIGN-RIGHT;
+    flex-shrink: 0;
     font-size: rem(30);
     svg {
       cursor: pointer;
@@ -27,6 +28,7 @@
   }
 
   .api-add-content-container {
+    overflow: hidden;
     @include STRETCH;
     @include FLEX-ALIGN-CENTER;
   }
