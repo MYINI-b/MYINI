@@ -77,7 +77,7 @@ public class ProjectController {
     }
 
     // 프로젝트 팀원 검색
-    @GetMapping("/members")
+    @PostMapping("/members")
     public ResponseEntity<ProjectMemberResponse> findByMemberEmail(@RequestBody @Valid FindByMemberEmailRequest request){
         ProjectMemberResponse body = projectService.findByMemberEmail(request);
         return ResponseEntity.ok().body(body);
