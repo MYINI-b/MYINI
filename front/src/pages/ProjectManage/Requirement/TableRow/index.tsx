@@ -29,6 +29,7 @@ export default function TableRow({ row, rows, setRows, idx }: Props) {
   const requireContainer =
     useRef() as React.MutableRefObject<HTMLTextAreaElement>;
   const descContainer = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
+  const pointContainer = useRef() as React.MutableRefObject<HTMLInputElement>;
 
   const [isRowModalOpen, setIsRowModalOpen] = useState(false);
   const [isManagerOpen, setIsManagerOpen] = useState(false);
@@ -38,8 +39,10 @@ export default function TableRow({ row, rows, setRows, idx }: Props) {
   const [isRequireEdit, setIsRequireEdit] = useState(false);
   const [isDescEdit, setIsDescEdit] = useState(false);
   const [isDivisionOpen, setIsDivisionOpen] = useState(false);
+  const [isPointEdit, setIsPointEdit] = useState(false);
   const [requirement, onRequirementChange] = useInput('');
   const [desc, onDescChange] = useInput('');
+  const [point, onPointChange] = useInput(0);
   const [categories, setCategories] = useState<string[]>([]);
   const [managers, setManagers] = useState<string[]>([]);
   const [clickElementPos, setClickElementPos] = useState<ELEMENTPOS>({
@@ -112,6 +115,13 @@ export default function TableRow({ row, rows, setRows, idx }: Props) {
     setIsRequireEdit(false);
   }, [rows, idx, requirement]);
 
+  const focusOutPoint = useCallback(() => {
+    const copyRows = [...rows];
+    copyRows[idx].point = point;
+    setRows(copyRows);
+    setIsPointEdit(false);
+  }, [rows, idx, point]);
+
   useEffect(() => {
     if (requireContainer.current)
       requireContainer.current.addEventListener(
@@ -145,6 +155,20 @@ export default function TableRow({ row, rows, setRows, idx }: Props) {
         descContainer.current.removeEventListener('focusout', focusOutDesc);
     };
   }, [isDescEdit]);
+
+  useEffect(() => {
+    if (pointContainer.current)
+      pointContainer.current.addEventListener('focusout', focusOutPoint);
+
+    const copyRows = [...rows];
+    copyRows[idx].point = point;
+
+    setRows(copyRows);
+    return () => {
+      if (pointContainer.current)
+        pointContainer.current.removeEventListener('focusout', focusOutPoint);
+    };
+  }, [isPointEdit]);
 
   return (
     <div className="table-row" onContextMenu={onRightClick}>
@@ -217,7 +241,22 @@ export default function TableRow({ row, rows, setRows, idx }: Props) {
         )}
         &nbsp;&nbsp;{IMPORTANCE_TEXT[row.importance]}
       </span>
-      <span className="table-col content one">{row.point}</span>
+      <span
+        className="table-col content one"
+        onDoubleClick={() => setIsPointEdit(true)}
+      >
+        {isPointEdit ? (
+          <input
+            type="number"
+            value={point}
+            onChange={onPointChange}
+            className="point-input"
+            ref={pointContainer}
+          />
+        ) : (
+          row.point
+        )}
+      </span>
 
       {isRowModalOpen && (
         <RowModal

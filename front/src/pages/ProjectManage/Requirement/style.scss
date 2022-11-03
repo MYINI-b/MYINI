@@ -150,6 +150,17 @@
           top: 3px;
         }
       }
+
+      .point-input{
+        width:100%;
+        border:1px solid $lightx2-gray;
+        text-align: center;
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+      }
     }
 
     .table-more-button {
