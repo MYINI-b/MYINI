@@ -3,12 +3,41 @@
 .title-img {
   display:flex;
   width: 100%;
-  .profile-image {
+
+  .profile-img-wrapper{
     width: rem(250);
     height: rem(230);
     border-radius: rem(30);
     flex-shrink: 0;
+    position:relative;
+
+    &:hover{
+      .profile-img-changer{
+        opacity:1;
+      }
+    }
+
+    .profile-img-changer{
+      position:absolute;
+      top:0;
+      left:0;
+      @include STRETCH;
+      background-color: rgba(131,131,131,0.2);
+      color:$black;
+      opacity:0;
+      transition: 0.3s ease;
+      @include FLEX-CENTER;
+      font-size: rem(40);
+      border-radius: inherit;
+      cursor:pointer;
+    }
+
+    .project-profile-img {
+      @include STRETCH;
+      border-radius: inherit;
+    }
   }
+
 
   .project-info-container{  
     width:100%;

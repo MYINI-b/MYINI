@@ -6,9 +6,9 @@ import './style.scss';
 import { ELEMENTPOS, ROW } from 'types/Requirement';
 
 interface Props {
-  categories: string[];
-  setCategories: Dispatch<React.SetStateAction<string[]>>;
-  closeCategoryList: () => void;
+  managers: string[];
+  setManagers: Dispatch<React.SetStateAction<string[]>>;
+  closeManagerModal: () => void;
   clickElementPos: ELEMENTPOS;
   rows: ROW[];
   setRows: Dispatch<React.SetStateAction<ROW[]>>;
@@ -16,53 +16,53 @@ interface Props {
 }
 
 export default function CategoryListModal({
-  categories,
-  setCategories,
-  closeCategoryList,
+  managers,
+  setManagers,
+  closeManagerModal,
   clickElementPos,
   rows,
   setRows,
   idx,
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
-  const [categoryInput, setCategoryInput] = useState('');
+  const [managerInput, setManagerInput] = useState('');
 
-  const deleteCategory = useCallback(
+  const deleteManager = useCallback(
     (e: any, idx: number) => {
       e.stopPropagation();
-      const copyCategories = [...categories];
+      const copyManagers = [...managers];
       const copyRows = [...rows];
       copyRows.forEach((e) => {
-        if (e.category === copyCategories[idx]) e.category = '';
+        if (e.manager === copyManagers[idx]) e.manager = '';
       });
-      copyCategories.splice(idx, 1);
-      setCategories(copyCategories);
+      copyManagers.splice(idx, 1);
+      setManagers(copyManagers);
       setRows(copyRows);
     },
-    [categories, setCategories, rows],
+    [managers, setManagers, rows],
   );
 
   const addNewCategory = (e: any) => {
     if (e.key === 'Enter') {
-      setCategories([...categories, categoryInput]);
-      setCategoryInput('');
+      setManagers([...managers, managerInput]);
+      setManagerInput('');
       e.target.value = '';
     }
   };
 
-  const onChangeCategoryInput = useCallback(
+  const onChangemanagerInput = useCallback(
     (e: any) => {
-      setCategoryInput(e.target.value);
+      setManagerInput(e.target.value);
     },
-    [setCategoryInput],
+    [setManagerInput],
   );
 
-  const selectCategory = useCallback(
-    (cat: string) => {
+  const selectManager = useCallback(
+    (manager: string) => {
       const copyRows = [...rows];
-      copyRows[idx].category = cat;
+      copyRows[idx].manager = manager;
       setRows(copyRows);
-      closeCategoryList();
+      closeManagerModal();
     },
     [rows, idx],
   );
@@ -74,7 +74,7 @@ export default function CategoryListModal({
   }, [clickElementPos]);
 
   return (
-    <div className="category-list-empty" onClick={closeCategoryList}>
+    <div className="category-list-empty" onClick={closeManagerModal}>
       <div
         className="category-list-container"
         onClick={(e) => e.stopPropagation()}
@@ -84,25 +84,25 @@ export default function CategoryListModal({
           <input
             type="text"
             className="category-search-input"
-            placeholder="카테고리 등록"
-            onChange={onChangeCategoryInput}
+            placeholder="새 담당자 등록"
+            onChange={onChangemanagerInput}
             onKeyDown={addNewCategory}
             onClick={(e) => e.stopPropagation()}
           />
-          {categories.map((e, i) => {
+          {managers.map((e, i) => {
             return (
               <span
                 className={`category-row ${
-                  rows[idx].category === e && 'select'
+                  rows[idx].manager === e && 'select'
                 }`}
                 key={i}
-                onClick={() => selectCategory(e)}
+                onClick={() => selectManager(e)}
               >
                 {e}
                 <FontAwesomeIcon
                   icon={faClose}
                   className="category-delete-button"
-                  onClick={(e: any) => deleteCategory(e, i)}
+                  onClick={(e) => deleteManager(e, i)}
                 />
               </span>
             );
