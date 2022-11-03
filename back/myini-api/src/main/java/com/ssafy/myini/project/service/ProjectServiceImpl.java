@@ -72,10 +72,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional
     public void updateProjectImg(Long projectId, MultipartFile projectImg) {
         Project findProject = projectRepository.findById(projectId)
                 .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
 
+        
         if (findProject.getProjectImg() != null) {
             s3Uploader.deleteFile(s3Uploader.PROJECT_IMAGE_URL + findProject.getProjectImg());
         }
