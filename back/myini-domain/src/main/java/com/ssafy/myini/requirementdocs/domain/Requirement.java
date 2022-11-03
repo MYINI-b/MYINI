@@ -71,5 +71,4 @@ public class Requirement {
         this.requirementStoryPoint = requirementStoryPoint;
     }
 
-
 }

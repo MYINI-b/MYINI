@@ -1,6 +1,5 @@
 package com.ssafy.myini.apidocs.response;
 
-import com.querydsl.core.annotations.QueryProjection;
 import com.ssafy.myini.apidocs.domain.Api;
 import lombok.AllArgsConstructor;
 import lombok.Data;

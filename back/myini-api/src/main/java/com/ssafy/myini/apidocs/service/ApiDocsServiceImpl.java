@@ -8,6 +8,7 @@ import com.ssafy.myini.apidocs.response.*;
 import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -188,11 +189,22 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // Dto 생성
     @Transactional
     @Override
+    public void createCustomDto(Long projectId, CreateDtoRequest request) {
+        Project findProject = projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+
+        Dto dto = Dto.createDto(request.getDtoName(), request.getDtoType(), null, findProject, request.getDtoIsList());
+        dtoRepository.save(dto);
+    }
+
+    // Response Request 생성
+    @Transactional
+    @Override
     public void createDto(Long apiId, CreateDtoRequest request) {
         Api findApi = apiRepository.findById(apiId)
                 .orElseThrow(() -> new NotFoundException(API_NOT_FOUND));
 
-        Dto dto = Dto.createDto(request.getDtoName(), request.getDtoType(), findApi, request.getDtoIsList());
+        Dto dto = Dto.createDto(request.getDtoName(), request.getDtoType(), findApi, null, request.getDtoIsList());
         dtoRepository.save(dto);
     }
 

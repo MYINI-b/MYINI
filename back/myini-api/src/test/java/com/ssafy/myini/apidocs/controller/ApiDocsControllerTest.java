@@ -518,6 +518,38 @@ class ApiDocsControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("Dto를 생성한다.")
+    void createCustomDto() throws Exception {
+        // given
+        willDoNothing()
+                .given(apiDocsService)
+                .createCustomDto(any(), any());
+
+        // when
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/apidocs/{projectid}/customdtos", ID)
+                        .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(TEST_CREATE_DTO_REQUEST)))
+                .andExpect(status().isCreated())
+                .andDo(document("api/apidocs/{projectid}/customdtos",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
+                        ),
+                        pathParameters(
+                                parameterWithName("projectid").description("Project ID")
+                        ),
+                        requestFields(
+                                fieldWithPath("dtoName").type(JsonFieldType.STRING).description("Dto Key"),
+                                fieldWithPath("dtoType").type(JsonFieldType.STRING).description("Dto Type"),
+                                fieldWithPath("dtoIsList").type(JsonFieldType.STRING).description("Dto 리스트 여부")
+                        )
+                ));
+
+        // then
+        then(apiDocsService).should(times(1)).createCustomDto(any(), any());
+    }
+
+    @Test
+    @DisplayName("Response, Request를 생성한다.")
     void createDto() throws Exception {
         // given
         willDoNothing()
@@ -691,7 +723,7 @@ class ApiDocsControllerTest extends ControllerTest {
         mockMvc.perform(RestDocumentationRequestBuilders.put("/api/apidocs/dtoitems/{dtoitemid}", ID)
                         .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(TEST_UPDATE_DTO_REQUEST)))
+                        .content(objectMapper.writeValueAsString(TEST_UPDATE_DTO_ITEM_REQUEST)))
                 .andExpect(status().isOk())
                 .andDo(document("api/apidocs/dtoitems/{dtoitemid}/update",
                         requestHeaders(
@@ -701,8 +733,9 @@ class ApiDocsControllerTest extends ControllerTest {
                                 parameterWithName("dtoitemid").description("Dto Item ID")
                         ),
                         requestFields(
-                                fieldWithPath("dtoName").type(JsonFieldType.STRING).description("Dto Key"),
-                                fieldWithPath("dtoType").type(JsonFieldType.STRING).description("Dto Type"),
+                                fieldWithPath("dtoItemName").type(JsonFieldType.STRING).description("Dtoitem 이름"),
+                                fieldWithPath("dtoClassType").type(JsonFieldType.NUMBER).description("Dtoitem Type"),
+                                fieldWithPath("dtoPrimitiveType").type(JsonFieldType.NUMBER).description("Dtoitem Key"),
                                 fieldWithPath("dtoIsList").type(JsonFieldType.STRING).description("Dto 리스트 여부")
                         )
                 ));

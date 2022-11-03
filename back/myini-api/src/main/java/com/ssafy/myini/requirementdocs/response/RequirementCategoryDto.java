@@ -1,6 +1,5 @@
 package com.ssafy.myini.requirementdocs.response;
 
-import com.ssafy.myini.requirementdocs.domain.Requirement;
 import com.ssafy.myini.requirementdocs.domain.RequirementCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
