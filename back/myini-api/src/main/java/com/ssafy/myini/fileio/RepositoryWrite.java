@@ -21,6 +21,7 @@ public class RepositoryWrite {
         JSONObject table = (JSONObject) erd.get("table");
         JSONArray tables = (JSONArray) table.get("tables");
 
+        //테이블 수만큼 for문
         for (int i=0 ; i<tables.size() ; i++){
             repositoryImportContents = new StringBuilder();
             String pkType = "";
@@ -29,7 +30,6 @@ public class RepositoryWrite {
             JSONObject tableItem = (JSONObject) tables.get(i);
 
             String tableName = (String) tableItem.get("name");
-            String tableId = (String) tableItem.get("id");
 
             //PK 타입 획득하기
             JSONArray columns = (JSONArray) tableItem.get("columns");
@@ -66,6 +66,7 @@ public class RepositoryWrite {
         JSONObject table = (JSONObject) erd.get("table");
         JSONArray tables = (JSONArray) table.get("tables");
 
+        //테이블 수만큼 for문
         for (int i=0 ; i<tables.size() ; i++){
             repositoryImportContents = new StringBuilder();
             String pkType = "";
@@ -74,7 +75,6 @@ public class RepositoryWrite {
             JSONObject tableItem = (JSONObject) tables.get(i);
 
             String tableName = (String) tableItem.get("name");
-            String tableId = (String) tableItem.get("id");
 
             //PK 타입 획득하기
             JSONArray columns = (JSONArray) tableItem.get("columns");
@@ -90,9 +90,11 @@ public class RepositoryWrite {
 
             pkType = dataTypeChange(pkType);
 
+            //기본 임포트 설정
             repositoryImportContents.append("import " + initializerRequest.getSpring_package_name() + ".entity."+tableName+";\n"+
                     "import org.springframework.data.jpa.repository.JpaRepository;\n");
 
+            
             contents.append("package " + initializerRequest.getSpring_package_name() + ".repository;\n" +
                     "\n"+
                     repositoryImportContents+
@@ -136,12 +138,25 @@ public class RepositoryWrite {
     }
 
     private static String dataTypeChange(String columnDataType) {
-        if(columnDataType.equals("BIGINT")){
+        if(columnDataType.equals("BIGINT(Long)")){
             return "Long";
-        }else if(columnDataType.equals("VARCHAR")){
+        }else if(columnDataType.equals("INT(Integer)")){
+            return "Integer";
+        }else if(columnDataType.equals("CHAR(Character)")){
+            return "Character";
+        }else if(columnDataType.equals("DOUBLE(Double)")){
+            return "Double";
+        }else if(columnDataType.equals("FLOAT(Float)")){
+            return "Float";
+        }else if(columnDataType.equals("SMALLINT(Short)")){
+            return "Short";
+        }else if(columnDataType.equals("TINYINT(Byte)")){
+            return "Byte";
+        }else if(columnDataType.equals("BOOLEAN(Boolean)")){
+            return "Boolean";
+        }else if(columnDataType.equals("VARCHAR(String)")){
             return "String";
         }
-
         return "String";
     }
 }

@@ -74,11 +74,12 @@ public class EntityWrite {
         JSONObject relationship = (JSONObject) erd.get("relationship");
         JSONArray relationships = (JSONArray) relationship.get("relationships");
 
-        //테이블
+        //entity 작성 시작
         for (int i=0 ; i<tables.size() ; i++){
             entityImportContents = new StringBuilder();
             entityAnnotationContents = new StringBuilder();
 
+            //필수 import 선언
             entityImportContents.append("import lombok.*;\nimport javax.persistence.*;\n");
             entityAnnotationContents.append("@Entity\n@NoArgsConstructor(access = AccessLevel.PROTECTED)\n@AllArgsConstructor\n@Getter\n");
             StringBuilder contents = new StringBuilder();
@@ -88,9 +89,12 @@ public class EntityWrite {
             String tableId = (String) tableItem.get("id");
 
             JSONArray columns = (JSONArray) tableItem.get("columns");
+            //컬럼 작성
             StringBuilder columnContents = columnWrite(columns);
+            //연관관계 작성
             StringBuilder relationContents = relationWrite(tableId, relationships, initializerRequest);
 
+            //패키지, 클래스메인함수 등 작성
             contents.append("package " + initializerRequest.getSpring_package_name() + ".entity;\n")
                     .append("\n")
                     .append(entityImportContents)
@@ -117,11 +121,12 @@ public class EntityWrite {
         JSONObject relationship = (JSONObject) erd.get("relationship");
         JSONArray relationships = (JSONArray) relationship.get("relationships");
 
-        //테이블
+        //entity 작성 시작
         for (int i=0 ; i<tables.size() ; i++){
             entityImportContents = new StringBuilder();
             entityAnnotationContents = new StringBuilder();
 
+            //필수 import 선언
             entityImportContents.append("import lombok.*;\nimport javax.persistence.*;\n");
             entityAnnotationContents.append("@Entity\n@NoArgsConstructor(access = AccessLevel.PROTECTED)\n@AllArgsConstructor\n@Getter\n");
             StringBuilder contents = new StringBuilder();
@@ -131,9 +136,12 @@ public class EntityWrite {
             String tableId = (String) tableItem.get("id");
 
             JSONArray columns = (JSONArray) tableItem.get("columns");
+            //컬럼 작성
             StringBuilder columnContents = columnWrite(columns);
+            //연관관계 작성
             StringBuilder relationContents = relationWrite(tableId, relationships, initializerRequest);
 
+            //패키지, 클래스메인함수 등 작성
             contents.append("package " + initializerRequest.getSpring_package_name() + ".entity;\n")
                     .append("\n")
                     .append(entityImportContents)
@@ -183,9 +191,11 @@ public class EntityWrite {
     public static StringBuilder columnWrite(JSONArray columns){
         StringBuilder columnContents = new StringBuilder();
 
+        //한 entity에 있는 컬럼 수만큼 돌기
         for (int i=0 ; i<columns.size() ; i++){
             JSONObject column = (JSONObject) columns.get(i);
 
+            //컬럼 정보들
             String columnName = (String) column.get("name");
             String columnId = (String) column.get("id");
             String columnDataType = (String) column.get("dataType");
@@ -198,7 +208,7 @@ public class EntityWrite {
             Boolean unique = (Boolean) option.get("unique");
             Boolean notNull = (Boolean) option.get("notNull");
 
-
+            //연관관계로 작성해야 하는 컬럼이 아닌 컬럼들 작성
             if(!relationEndColumnList.contains(columnId)) {
                 Boolean isPk = false;
                 String flag = "";
@@ -220,12 +230,15 @@ public class EntityWrite {
                 if (!columnDefault.equals("")) {
                     flag += "d";
                 }
+
+                //default 일때 어노테이션과 임포트 추가
                 if(flag.contains("d") && !entityAnnotationContents.toString().contains("@DynamicInsert\n@DynamicUpdate\n")) {
                     entityAnnotationContents.append("@DynamicInsert\n@DynamicUpdate\n");
                     entityImportContents.append("import org.hibernate.annotations.DynamicInsert;\n" +
                             "import org.hibernate.annotations.DynamicUpdate;\n");
                 }
 
+                //pk 가아닌 컬럼의 제약조건 설정
                 if(!isPk) {
                     if (flag.contains("u") && flag.contains("n") && flag.contains("d"))
                         columnContents.append("@Column(unique = true, nullable = false, columnDefinition=\""+columnDataType.split("\\(")[0]+" default "+(columnDataType.contains("VARCHAR") || columnDataType.contains("CHAR")?"'"+columnDefault+"'":columnDefault)+"\")\n");
@@ -252,17 +265,21 @@ public class EntityWrite {
     }
 
     public static StringBuilder relationWrite(String tableId, JSONArray relationships, InitializerRequest initializerRequest){
-
         StringBuilder relationContents = new StringBuilder();
         StringBuilder ManyToOneContents = new StringBuilder();
         StringBuilder OneToManyContents = new StringBuilder();
+
+        //연관관계가 겹치면 리스트 뒤에 붙을 인덱스
         int OneToManyIndex = 1;
+
+        //연관관계 수만큼 for문
         for (int i=0 ; i<relationships.size() ; i++){
             JSONObject relationship = (JSONObject) relationships.get(i);
             JSONObject start = (JSONObject) relationship.get("start");
             String startTableId = (String) start.get("tableId");
             String startTableName = "";
 
+            //Json에 테이블 아이디만 있고 이름이 없기 때문에 미리 모아둔 테이블리스트에서 맞는 ID에 따른 이름설정
             for (Table table : tableList) {
                 if(table.tableId.equals(startTableId)) startTableName = table.tableName;
             }
@@ -270,17 +287,20 @@ public class EntityWrite {
             String endTableId = (String) end.get("tableId");
             String endTableName = "";
 
+            //Json에 테이블 아이디만 있고 이름이 없기 때문에 미리 모아둔 테이블리스트에서 맞는 ID에 따른 이름설정
             for (Table table : tableList) {
                 if(table.tableId.equals(endTableId)) endTableName = table.tableName;
             }
 
-
             JSONArray columnIds = (JSONArray) end.get("columnIds");
             String endColumnName = "";
+
+            //Json에 컬럼 아이디만 있고 이름이 없기 때문에 미리 모아둔 컬럼리스트에서 맞는 ID에 따른 이름설정
             for (Column column : columnList) {
                 if(column.columnId.equals(columnIds.get(0))) endColumnName = column.columnName;
             }
 
+            //ManyToOne 작성
             if(tableId.equals(endTableId)){
                 ManyToOneContents.append("@ManyToOne(fetch = FetchType.LAZY)\n"+
                         "@JoinColumn(name = \""+endColumnName+"\")\n"+
@@ -289,8 +309,10 @@ public class EntityWrite {
                 entityImportContents.append("import "+ initializerRequest.getSpring_package_name() + ".entity." + startTableName+";\n");
             }
 
+            //OneToMany 작성
             if(tableId.equals(startTableId)){
                 entityImportContents.append("import java.util.*;\n");
+                //같은 리스트가 여러개일때 (ex. 같은 pk 두개를 fk 로써 받고있을 때)
                 if(!OneToManyContents.toString().contains(endTableName.substring(0,1).toLowerCase()+endTableName.substring(1)+"List")){
                     OneToManyContents.append("@OneToMany(mappedBy = \""+JdbcUtils.convertUnderscoreNameToPropertyName(endColumnName.substring(0,endColumnName.length()-3))+"\", fetch = FetchType.LAZY, cascade = CascadeType.ALL)\n"+
                             "private List<"+endTableName+"> "+endTableName.substring(0,1).toLowerCase()+endTableName.substring(1)+"List = new ArrayList<>();\n\n");
