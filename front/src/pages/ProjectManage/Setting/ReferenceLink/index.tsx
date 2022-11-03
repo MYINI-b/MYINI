@@ -37,15 +37,19 @@ export default function ReferenceLink({
 
   useEffect(() => {
     setGitLink(store.pjt.gitLink);
+  }, [store.pjt.gitLink]);
+
+  useEffect(() => {
     setJiraLink(store.pjt.jiraLink);
+  }, [store.pjt.jiraLink]);
+
+  useEffect(() => {
     setNotionLink(store.pjt.notionLink);
+  }, [store.pjt.notionLink]);
+
+  useEffect(() => {
     setFigmaLink(store.pjt.figmaLink);
-  }, [
-    store.pjt.gitLink,
-    store.pjt.jiraLink,
-    store.pjt.notionLink,
-    store.pjt.figmaLink,
-  ]);
+  }, [store.pjt.figmaLink]);
 
   return (
     <div className="project-link">

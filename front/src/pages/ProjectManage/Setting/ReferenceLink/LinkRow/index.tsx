@@ -27,13 +27,9 @@ export default function LinkRow({ idx, link, isEdit, store }: Props) {
       {isEdit ? (
         <input
           type="text"
-          value={link}
+          value={link || ''}
           className="link-row-input"
           onChange={onLinkChange}
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-          }}
         />
       ) : link === '' ? (
         <li className="link-row-a"> {link}</li>
