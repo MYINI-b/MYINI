@@ -14,14 +14,14 @@ public class FileUtil {
     public static void fileWrite(InitializerRequest initializerRequest, String contents, String folderPath, String fileName) {
         try {
             //폴더 찾아가기
-            String path = initializerRequest.getSpring_base_path() + "\\" + initializerRequest.getSpring_name() + "\\src\\main\\java\\";
+            String path = initializerRequest.getSpring_base_path() + "/" + initializerRequest.getSpring_name() + "/src/main/java/";
 
             String[] packagePath = initializerRequest.getSpring_package_name().split("[.]");
             for (String s : packagePath) {
-                path = path + s + "\\";
+                path = path + s + "/";
             }
 
-            path += folderPath + "\\";
+            path += folderPath + "/";
 
             // 폴더 만들기
             File folder = new File(path);
