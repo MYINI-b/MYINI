@@ -272,6 +272,9 @@ export default function TableRow({
         <RowModal
           setIsRowModalOpen={setIsRowModalOpen}
           clickMousePos={clickMousePos}
+          rows={rows}
+          setRows={setRows}
+          idx={idx}
         />
       )}
 
