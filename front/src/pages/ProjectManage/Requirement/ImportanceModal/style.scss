@@ -1,6 +1,6 @@
 @import 'variables.scss';
 
-.category-list-container {
+.division-list-container {
   @include BORDER-PAPER;
   position: fixed;
   align-items: center;
@@ -13,25 +13,12 @@
   border-top-right-radius: 0;
   box-shadow: $shadow;
 
-  .category-list-overflow {
+  .division-list-overflow {
     @include STRETCH;
     @include FLEX-COLUMN;
   }
 
-  .category-search-input {
-    width: 100%;
-    height: rem(30);
-    padding: rem(6);
-    color: $black;
-    font-family: $eng-content;
-    border: 1px solid $light-gray;
-    border-radius: 30px;
-
-    &::placeholder {
-      color: $light-gray;
-    }
-  }
-  .category-row {
+  .division-row {
     position: relative;
     width: 100%;
     height: rem(28);
@@ -48,7 +35,7 @@
     &:hover {
       color: $black;
       font-weight: bold;
-      .category-delete-button {
+      .division-delete-button {
         opacity: 1;
       }
     }
@@ -57,19 +44,9 @@
       color: $black;
       font-weight: bold;
     }
-
-    .category-delete-button {
-      position: absolute;
-      top: 5px;
-      right: 0;
-      color: $delete;
-      font-size: rem(16);
-      opacity: 0;
-      transition: 0.3s ease;
-    }
   }
 }
-.category-list-empty {
+.division-list-empty {
   position: fixed;
   top: 0;
   left: 0;
