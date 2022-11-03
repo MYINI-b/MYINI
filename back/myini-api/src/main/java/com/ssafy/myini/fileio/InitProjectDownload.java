@@ -52,9 +52,9 @@ public class InitProjectDownload {
 
 
 
-            File file = new File(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name()+".zip");
-            ZipFile zipFile = new ZipFile(file);
-            zipFile.extractAll(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name());
+//            File file = new File(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name()+".zip");
+//            ZipFile zipFile = new ZipFile(file);
+//            zipFile.extractAll(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name());
         }catch (Exception e){
             System.out.println("e = " + e);
         }

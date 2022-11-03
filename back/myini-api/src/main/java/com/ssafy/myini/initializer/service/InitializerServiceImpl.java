@@ -80,46 +80,46 @@ public class InitializerServiceImpl implements InitializerService {
         //프로젝트 init
         InitProjectDownload.initProject(initializerRequest);
 
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
-        List<ProjectInfoListResponse> projectInfoListResponses = apiDocsQueryRepository.findAll(project).stream()
-                .map(ProjectInfoListResponse::from)
-                .collect(Collectors.toList());
-        //ERD json 받아오기
-        try {
-            JSONParser jsonParser = new JSONParser();
-            File file = new File("erd");
-            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/"+projectId+".vuerd.json"),file);
-
-
-            Reader reader = new FileReader(file);
-            JSONObject erd = (JSONObject) jsonParser.parse(reader);
-            JSONObject table = (JSONObject) erd.get("table");
-            JSONArray tables = (JSONArray) table.get("tables");
-            JSONObject relationship = (JSONObject) erd.get("relationship");
-
-            //entity 작성
-            EntityWrite.setTableAndColumn(erd);
-            tables.forEach(t -> EntityWrite.entityWrite( (JSONObject) t, relationship, initializerRequest ));
-
-            //repository 작성
-            tables.forEach(t -> RepositoryWrite.repositoryWrite( (JSONObject) t, initializerRequest ));
-
-            // controller 생성
-            projectInfoListResponses.forEach(projectInfoListResponse -> ControllerWrite.controllerWrite(projectInfoListResponse, initializerRequest));
-
-            // service 생성
-            projectInfoListResponses.forEach(projectInfoListResponse -> ServiceWrite.serviceWrite(projectInfoListResponse, initializerRequest));
-
-            // serviceImpl 생성
-            projectInfoListResponses.forEach(projectInfoListResponse -> ServiceImplWrite.serviceImplWrite(projectInfoListResponse, initializerRequest));
-
-            // dto 생성
-            projectInfoListResponses.forEach(projectInfoListResponse -> DtoWrite.dtoWrite(projectInfoListResponse, initializerRequest));
-
-
-        } catch (Exception e) {
-            throw new InitializerException(InitializerException.INITIALIZER_FAIL);
-        }
+//        Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+//        List<ProjectInfoListResponse> projectInfoListResponses = apiDocsQueryRepository.findAll(project).stream()
+//                .map(ProjectInfoListResponse::from)
+//                .collect(Collectors.toList());
+//        //ERD json 받아오기
+//        try {
+//            JSONParser jsonParser = new JSONParser();
+//            File file = new File("erd");
+//            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/"+projectId+".vuerd.json"),file);
+//
+//
+//            Reader reader = new FileReader(file);
+//            JSONObject erd = (JSONObject) jsonParser.parse(reader);
+//            JSONObject table = (JSONObject) erd.get("table");
+//            JSONArray tables = (JSONArray) table.get("tables");
+//            JSONObject relationship = (JSONObject) erd.get("relationship");
+//
+//            //entity 작성
+//            EntityWrite.setTableAndColumn(erd);
+//            tables.forEach(t -> EntityWrite.entityWrite( (JSONObject) t, relationship, initializerRequest ));
+//
+//            //repository 작성
+//            tables.forEach(t -> RepositoryWrite.repositoryWrite( (JSONObject) t, initializerRequest ));
+//
+//            // controller 생성
+//            projectInfoListResponses.forEach(projectInfoListResponse -> ControllerWrite.controllerWrite(projectInfoListResponse, initializerRequest));
+//
+//            // service 생성
+//            projectInfoListResponses.forEach(projectInfoListResponse -> ServiceWrite.serviceWrite(projectInfoListResponse, initializerRequest));
+//
+//            // serviceImpl 생성
+//            projectInfoListResponses.forEach(projectInfoListResponse -> ServiceImplWrite.serviceImplWrite(projectInfoListResponse, initializerRequest));
+//
+//            // dto 생성
+//            projectInfoListResponses.forEach(projectInfoListResponse -> DtoWrite.dtoWrite(projectInfoListResponse, initializerRequest));
+//
+//
+//        } catch (Exception e) {
+//            throw new InitializerException(InitializerException.INITIALIZER_FAIL);
+//        }
 
         return null;
     }
