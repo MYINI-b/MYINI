@@ -5,7 +5,6 @@ import com.ssafy.myini.apidocs.response.DtoResponse;
 import com.ssafy.myini.apidocs.response.ProjectInfoListResponse;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,10 +13,12 @@ public class DtoWrite {
     static StringBuilder dtoImportContents;
     private static int depth = 0;
     private static Set<String> importDtos;
+    private static boolean containList;
 
     public static String dtoPreview(DtoResponse dtoResponse, InitializerRequest initializerRequest) {
         dtoImportContents = new StringBuilder();
         importDtos = new HashSet<>();
+        containList = false;
 
         // 필수 import 선언
         dtoImportContents.append("import lombok.AllArgsConstructor;\n")
@@ -27,6 +28,11 @@ public class DtoWrite {
         depth++;
         String body = methodWrite(dtoResponse.getDtoItemResponses());
         depth--;
+
+        // list import 추가하기
+        if (containList) {
+            dtoImportContents.append("import java.util.List;\n\n");
+        }
 
         for (String importDto : importDtos) {
             dtoImportContents.append("import ").append(initializerRequest.getSpring_package_name()).append(".dto.").append(importDto).append(";\n");
@@ -73,21 +79,28 @@ public class DtoWrite {
 
         for (DtoItemResponse dtoItemResponse : dtoItemResponses) {
             methodContents.append("private ");
+
+            String type = "";
+
             if (dtoItemResponse.getDtoClassTypeName() != null) {
                 // Dto 클래스 타입을 갖는 경우
                 importDtos.add(dtoItemResponse.getDtoItemName());
-                methodContents.append(dtoItemResponse.getDtoClassTypeName());
+                type = dtoItemResponse.getDtoClassTypeName();
             } else if (dtoItemResponse.getDtoPrimitiveTypeName() != null) {
                 // 기본 타입을 갖는 경우
                 if (dtoItemResponse.getDtoPrimitiveTypeId() == 10) {
                     // LocalDateTime인 경우
                     dtoImportContents.append("import java.time.LocalDateTime;\n");
                 }
-                methodContents.append(dtoItemResponse.getDtoPrimitiveTypeName());
+                type = dtoItemResponse.getDtoPrimitiveTypeName();
             } else {
                 // 둘 다 null이면 error
             }
-            methodContents.append(" ").append(dtoItemResponse.getDtoItemName()).append(";\n");
+            if (dtoItemResponse.getDtoIsList().equals("Y")) {
+                containList = true;
+                type = "List<" + type + ">";
+            }
+            methodContents.append(type).append(" ").append(dtoItemResponse.getDtoItemName()).append(";\n");
         }
 
         return methodContents.toString();
