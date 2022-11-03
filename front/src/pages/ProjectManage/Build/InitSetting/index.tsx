@@ -63,38 +63,7 @@ export default function InitSetting() {
           </form>
           <div className="dependency">Dependencies</div>
         </span>
-        <span className="tab-item" title="React">
-          <div className="item-row">
-            <div className="button-item">
-              <div className="item-element">Languages</div>
-              <Buttons>
-                <span title="JS" />
-                <span title="TS" />
-              </Buttons>
-            </div>
-            <div className="button-item">
-              <div className="item-element">Eslint/Prettier</div>
-              <Buttons>
-                <span title="on" />
-                <span title="off" />
-              </Buttons>
-            </div>
-            <div className="button-item">
-              <div className="item-element">Router</div>
-              <Buttons>
-                <span title="on" />
-                <span title="off" />
-              </Buttons>
-            </div>
-            <div className="button-item">
-              <div className="item-element">Redux</div>
-              <Buttons>
-                <span title="on" />
-                <span title="off" />
-              </Buttons>
-            </div>
-          </div>
-        </span>
+        <span className="tab-item" title="React" />
       </Tabs>
     </div>
   );

@@ -1,11 +1,11 @@
 @import 'variables.scss';
-@import '../mixin.scss';
+@import '../style.scss';
 
 .confirm-code {
   @include FLEX-COLUMN;
   @include BORDER-PAPER;
   height: 80%;
-  width: 40%;
+  width: 48%;
   margin-left: rem(25);
   @include respond-to('small') {
     height: 70%;

@@ -5,7 +5,6 @@ import ButtonTitle from './buttonList';
 type Props = {
   children: ReactElement[];
 };
-
 const Button: React.FC<Props> = ({ children }) => {
   const [selectedButton, setSelectedButton] = useState(0);
 
