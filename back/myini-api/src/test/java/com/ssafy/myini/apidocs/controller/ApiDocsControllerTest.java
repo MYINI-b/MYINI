@@ -330,12 +330,15 @@ class ApiDocsControllerTest extends ControllerTest {
                                 fieldWithPath("dtoResponses.[].dtoId").type(JsonFieldType.NUMBER).description("Dto ID"),
                                 fieldWithPath("dtoResponses.[].dtoName").type(JsonFieldType.STRING).description("Dto 이름"),
                                 fieldWithPath("dtoResponses.[].dtoType").type(JsonFieldType.STRING).description("Dto Type"),
+                                fieldWithPath("dtoResponses.[].dtoIsList").type(JsonFieldType.STRING).description("Dto 리스트 여부"),
                                 fieldWithPath("dtoResponses.[].dtoItemResponses").type(JsonFieldType.ARRAY).description("DtoItem 조회결과 배열"),
                                 fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoItemId").type(JsonFieldType.NUMBER).description("DtoItem ID"),
                                 fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoItemName").type(JsonFieldType.STRING).description("DtoItem 이름"),
-                                fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoClassType").type(JsonFieldType.NUMBER).description("DtoItem DtoClassType"),
-                                fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoPrimitiveType").type(JsonFieldType.NUMBER).description("DtoItem DtoPrimitiveType"),
-                                fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoIsList").type(JsonFieldType.STRING).description("리스트여부")
+                                fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoClassTypeId").type(JsonFieldType.NUMBER).description("DtoItem DtoClassTypeId"),
+                                fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoPrimitiveTypeId").type(JsonFieldType.NUMBER).description("DtoItem DtoPrimitiveTypeId"),
+                                fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoIsList").type(JsonFieldType.STRING).description("리스트여부"),
+                                fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoClassTypeName").type(JsonFieldType.STRING).description("DtoItem DtoClassTypeName"),
+                                fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoPrimitiveTypeName").type(JsonFieldType.STRING).description("DtoItem DtoPrimitiveTypeName")
 
                         )));
 
@@ -540,7 +543,8 @@ class ApiDocsControllerTest extends ControllerTest {
                         ),
                         requestFields(
                                 fieldWithPath("dtoName").type(JsonFieldType.STRING).description("Dto Key"),
-                                fieldWithPath("dtoType").type(JsonFieldType.STRING).description("Dto Type")
+                                fieldWithPath("dtoType").type(JsonFieldType.STRING).description("Dto Type"),
+                                fieldWithPath("dtoIsList").type(JsonFieldType.STRING).description("Dto 리스트 여부")
                         )
                 ));
 
@@ -571,7 +575,8 @@ class ApiDocsControllerTest extends ControllerTest {
                         ),
                         requestFields(
                                 fieldWithPath("dtoName").type(JsonFieldType.STRING).description("Dto Key"),
-                                fieldWithPath("dtoType").type(JsonFieldType.STRING).description("Dto Type")
+                                fieldWithPath("dtoType").type(JsonFieldType.STRING).description("Dto Type"),
+                                fieldWithPath("dtoIsList").type(JsonFieldType.STRING).description("Dto 리스트 여부")
                         )
                 ));
 
@@ -629,12 +634,15 @@ class ApiDocsControllerTest extends ControllerTest {
                                 fieldWithPath("dtoId").type(JsonFieldType.NUMBER).description("Dto ID"),
                                 fieldWithPath("dtoName").type(JsonFieldType.STRING).description("Dto 이름"),
                                 fieldWithPath("dtoType").type(JsonFieldType.STRING).description("Dto Type"),
+                                fieldWithPath("dtoIsList").type(JsonFieldType.STRING).description("Dto 리스트 여부"),
                                 fieldWithPath("dtoItemResponses").type(JsonFieldType.ARRAY).description("DtoItem 조회결과 배열"),
                                 fieldWithPath("dtoItemResponses.[].dtoItemId").type(JsonFieldType.NUMBER).description("DtoItem ID"),
                                 fieldWithPath("dtoItemResponses.[].dtoItemName").type(JsonFieldType.STRING).description("DtoItem 이름"),
-                                fieldWithPath("dtoItemResponses.[].dtoClassType").type(JsonFieldType.NUMBER).description("DtoItem DtoClassType"),
-                                fieldWithPath("dtoItemResponses.[].dtoPrimitiveType").type(JsonFieldType.NUMBER).description("DtoItem DtoPrimitiveType"),
-                                fieldWithPath("dtoItemResponses.[].dtoIsList").type(JsonFieldType.STRING).description("리스트여부")
+                                fieldWithPath("dtoItemResponses.[].dtoClassTypeId").type(JsonFieldType.NUMBER).description("DtoItem DtoClassTypeId"),
+                                fieldWithPath("dtoItemResponses.[].dtoPrimitiveTypeId").type(JsonFieldType.NUMBER).description("DtoItem DtoPrimitiveTypeId"),
+                                fieldWithPath("dtoItemResponses.[].dtoIsList").type(JsonFieldType.STRING).description("리스트여부"),
+                                fieldWithPath("dtoItemResponses.[].dtoClassTypeName").type(JsonFieldType.STRING).description("DtoItem DtoClassTypeName"),
+                                fieldWithPath("dtoItemResponses.[].dtoPrimitiveTypeName").type(JsonFieldType.STRING).description("DtoItem DtoPrimitiveTypeName")
 
                         )));
 
@@ -698,7 +706,8 @@ class ApiDocsControllerTest extends ControllerTest {
                         ),
                         requestFields(
                                 fieldWithPath("dtoName").type(JsonFieldType.STRING).description("Dto Key"),
-                                fieldWithPath("dtoType").type(JsonFieldType.STRING).description("Dto Type")
+                                fieldWithPath("dtoType").type(JsonFieldType.STRING).description("Dto Type"),
+                                fieldWithPath("dtoIsList").type(JsonFieldType.STRING).description("Dto 리스트 여부")
                         )
                 ));
 

@@ -38,9 +38,9 @@ public class ApiDocsFixture {
     public static final UpdateQueryStringRequest TEST_UPDATE_QUERYSTRING_REQUEST
             = new UpdateQueryStringRequest(KEY, TYPE);
     public static final CreateDtoRequest TEST_CREATE_DTO_REQUEST
-            = new CreateDtoRequest(NAME, TYPE);
+            = new CreateDtoRequest(NAME, TYPE, YN_FIELD);
     public static final UpdateDtoRequest TEST_UPDATE_DTO_REQUEST
-            = new UpdateDtoRequest(NAME, TYPE);
+            = new UpdateDtoRequest(NAME, TYPE, YN_FIELD);
     public static final CreateDtoItemRequest TEST_CREATE_DTO_ITEM_REQUEST
             = new CreateDtoItemRequest(NAME, ID, ID, YN_FIELD);
     public static final UpdateDtoItemRequest TEST_UPDATE_DTO_ITEM_REQUEST
@@ -57,9 +57,9 @@ public class ApiDocsFixture {
     public static final QueryStringResponse TEST_QUERYSTRING_RESPONSE
             = new QueryStringResponse(ID, KEY, TYPE);
     public static final DtoItemResponse TEST_DTO_ITEM_RESPONSE
-            = new DtoItemResponse(ID, NAME, ID, ID, YN_FIELD);
+            = new DtoItemResponse(ID, NAME, ID, ID, YN_FIELD, NAME, NAME);
     public static final DtoResponse TEST_DTO_RESPONSE
-            = new DtoResponse(ID, NAME, TYPE, Arrays.asList(TEST_DTO_ITEM_RESPONSE));
+            = new DtoResponse(ID, NAME, TYPE, Arrays.asList(TEST_DTO_ITEM_RESPONSE), YN_FIELD);
     public static final ApiInfoResponse TEST_API_INFO_RESPONSE
             = new ApiInfoResponse(TEST_API_RESPONSE, Arrays.asList(TEST_PATHVARIABLE_RESPONSE), Arrays.asList(TEST_QUERYSTRING_RESPONSE), Arrays.asList(TEST_DTO_RESPONSE));
     public static final PrimitiveTypeResponse TEST_PRIMITIVE_TYPE_RESPONSE
