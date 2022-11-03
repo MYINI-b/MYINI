@@ -55,6 +55,7 @@ public class ProjectController {
     // 프로젝트 이미지 변경
     @PatchMapping("/{projectid}/images")
     public ResponseEntity<Void> updateProjectImg(@PathVariable("projectid")Long projectId, MultipartFile projectImg){
+        System.out.println("projectImg = " + projectImg);
         projectService.updateProjectImg(projectId, projectImg);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
