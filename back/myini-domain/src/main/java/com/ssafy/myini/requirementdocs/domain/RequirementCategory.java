@@ -40,9 +40,4 @@ public class RequirementCategory {
         requirementCategory.project = project;
         return requirementCategory;
     }
-
-    public void updateRequirementCategory(String categoryName, String categoryColor){
-        this.categoryName = categoryName;
-        this.categoryColor = categoryColor;
-    }
 }

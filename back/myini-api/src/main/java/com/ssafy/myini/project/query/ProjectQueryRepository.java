@@ -5,10 +5,7 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.myini.member.domain.Member;
 import com.ssafy.myini.member.domain.MemberProject;
-import com.ssafy.myini.member.domain.QMember;
-import com.ssafy.myini.member.domain.QMemberProject;
 import com.ssafy.myini.project.domain.Project;
-import com.ssafy.myini.project.domain.QProject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,5 @@
 package com.ssafy.myini.initializer.controller;
 
-import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
 import com.ssafy.myini.initializer.response.PreviewResponse;
@@ -20,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InitializerController {
     private final InitializerService initializerService;
-//    private final S3Uploader s3Uploader;
 
     @GetMapping("/{projectid}/ispossible")
     public ResponseEntity<InitializerPossibleResponse> initializerIsPossible(@PathVariable("projectid") Long projectId){

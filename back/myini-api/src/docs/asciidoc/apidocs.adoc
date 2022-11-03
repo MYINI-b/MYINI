@@ -204,6 +204,19 @@ include::{snippets}/api/apidocs/querystrings/{querystringid}/delete/http-respons
 
 ==== Dto 생성 API
 ===== 요청
+include::{snippets}/api/apidocs/{projectid}/customdtos/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/{projectid}/customdtos/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/{projectid}/customdtos/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/apidocs/{projectid}/customdtos/request-fields.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/{projectid}/customdtos/http-response.adoc[]
+
+==== Request, Response 생성 API
+===== 요청
 include::{snippets}/api/apidocs/{apiid}/dtos/http-request.adoc[]
 ====== Header
 include::{snippets}/api/apidocs/{apiid}/dtos/request-headers.adoc[]

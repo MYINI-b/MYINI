@@ -2,7 +2,6 @@ package com.ssafy.myini.erd.service;
 
 import com.ssafy.myini.erd.domain.entity.*;
 import com.ssafy.myini.erd.domain.repository.*;
-import com.ssafy.myini.erd.query.ERDQueryRepository;
 import com.ssafy.myini.erd.request.TableColumnUpdateRequest;
 import com.ssafy.myini.erd.request.ErdTableCreateRequest;
 import com.ssafy.myini.erd.request.TableRelationCreateRequest;
@@ -14,16 +13,9 @@ import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.FileUtils;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.Reader;
-import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +23,7 @@ import static com.ssafy.myini.NotFoundException.*;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class ERDServiceImpl implements ERDService{
     private final ErdTableRepository erdTableRepository;
     private final ProjectRepository projectRepository;
@@ -40,47 +32,38 @@ public class ERDServiceImpl implements ERDService{
     private final RelationItemRepository relationItemRepository;
     private final ConditionItemRepository conditionItemRepository;
     private final ColumnConditionRepository columnConditionRepository;
-    private final ERDQueryRepository erdQueryRepository;
 
 
     @Override
     @Transactional
     public void createErdTable(Long projectId, ErdTableCreateRequest erdTableCreateRequest) {
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+        Project findProject = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
 
-        ErdTable erdTable = ErdTable.createErdTable(erdTableCreateRequest.getErdTableName(), erdTableCreateRequest.getErdTableX(), erdTableCreateRequest.getErdTableY(), erdTableCreateRequest.getErdTableColor(), project);
+        ErdTable erdTable = ErdTable.createErdTable(erdTableCreateRequest.getErdTableName(), erdTableCreateRequest.getErdTableX(), erdTableCreateRequest.getErdTableY(), erdTableCreateRequest.getErdTableColor(), findProject);
         erdTableRepository.save(erdTable);
-        System.out.println("erdTable = " + erdTable);
     }
 
     @Override
     public List<ErdTableListResponse> findAllErdTable(Long projectId){
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
-        List<ErdTable> erdTable = erdTableRepository.findAllByProject(project);
-//        List<ErdTable> erdTable = erdQueryRepository.findAllErdTable(project);
-        List<ErdTableListResponse> erdTableListResponse = erdTable.stream().map(ErdTableListResponse::from).collect(Collectors.toList());
-
-        return erdTableListResponse;
+        Project findProject = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+        List<ErdTable> findErdTable = erdTableRepository.findAllByProject(findProject);
+        return findErdTable.stream().map(ErdTableListResponse::from).collect(Collectors.toList());
     }
 
     @Override
     @Transactional
     public void updateErdTable(Long erdTableId, ErdTableUpdateRequest erdTableUpdateRequest) {
-        ErdTable erdTable = erdTableRepository.findById(erdTableId).orElseThrow(() -> new NotFoundException(TABLE_NOT_FOUND));
+        ErdTable findErdTable = erdTableRepository.findById(erdTableId).orElseThrow(() -> new NotFoundException(TABLE_NOT_FOUND));
 
-
-            erdTable.updateErdTable(erdTableUpdateRequest.getErdTableName(), erdTableUpdateRequest.getErdTableX(), erdTableUpdateRequest.getErdTableY(), erdTableUpdateRequest.getErdTableColor());
-
+        findErdTable.updateErdTable(erdTableUpdateRequest.getErdTableName(), erdTableUpdateRequest.getErdTableX(), erdTableUpdateRequest.getErdTableY(), erdTableUpdateRequest.getErdTableColor());
     }
 
     @Override
     @Transactional
     public void deleteErdTable(Long erdTableId) {
-        ErdTable erdTable = erdTableRepository.findById(erdTableId).orElseThrow(() -> new NotFoundException(TABLE_NOT_FOUND));
+        ErdTable findErdTable = erdTableRepository.findById(erdTableId).orElseThrow(() -> new NotFoundException(TABLE_NOT_FOUND));
 
-            erdTableRepository.delete(erdTable);
-
-
+        erdTableRepository.delete(findErdTable);
     }
 
     @Override
@@ -88,47 +71,40 @@ public class ERDServiceImpl implements ERDService{
     public void createTableRelation(TableRelationCreateRequest tableRelationCreateRequest) {
         ErdTable toErdTable = erdTableRepository.findById(tableRelationCreateRequest.getToErdTableId()).orElseThrow(() -> new NotFoundException(TABLE_NOT_FOUND));
         ErdTable fromErdTable = erdTableRepository.findById(tableRelationCreateRequest.getFromErdTableId()).orElseThrow(() -> new NotFoundException(TABLE_NOT_FOUND));
-        RelationItem relationItem = relationItemRepository.findById(tableRelationCreateRequest.getRelationItemId()).orElseThrow(() -> new NotFoundException(RELATION_NOT_FOUND));
+        RelationItem findRelationItem = relationItemRepository.findById(tableRelationCreateRequest.getRelationItemId()).orElseThrow(() -> new NotFoundException(RELATION_NOT_FOUND));
 
-           TableRelation tableRelation = TableRelation.createTableRelation(toErdTable, fromErdTable, relationItem);
-            tableRelationRepository.save(tableRelation);
-
-
-
+        TableRelation tableRelation = TableRelation.createTableRelation(toErdTable, fromErdTable, findRelationItem);
+        tableRelationRepository.save(tableRelation);
     }
 
     @Override
     @Transactional
     public void deleteTableRelation(Long tableRelationId) {
-        TableRelation tableRelation = tableRelationRepository.findById(tableRelationId).orElseThrow(() -> new NotFoundException(RELATION_NOT_FOUND));
-          tableRelationRepository.delete(tableRelation);
-
+        TableRelation findTableRelation = tableRelationRepository.findById(tableRelationId).orElseThrow(() -> new NotFoundException(RELATION_NOT_FOUND));
+          tableRelationRepository.delete(findTableRelation);
     }
 
     @Override
     public List<RelationItemListResponse> findAllRelationItem() {
-        List<RelationItem> relationItems = relationItemRepository.findAll();
-        List<RelationItemListResponse> relationItemListRespons = relationItems.stream().map(RelationItemListResponse::from).collect(Collectors.toList());
+        List<RelationItem> findRelationItems = relationItemRepository.findAll();
 
-        return relationItemListRespons;
+        return findRelationItems.stream().map(RelationItemListResponse::from).collect(Collectors.toList());
     }
 
     @Override
     public List<ConditionItemListResponse> findAllConditionItem() {
-        List<ConditionItem> constraints = conditionItemRepository.findAll();
-        List<ConditionItemListResponse> conditionItemListRespons = constraints.stream().map(ConditionItemListResponse::from).collect(Collectors.toList());
+        List<ConditionItem> findConstraints = conditionItemRepository.findAll();
 
-        return conditionItemListRespons;
+        return findConstraints.stream().map(ConditionItemListResponse::from).collect(Collectors.toList());
     }
 
     @Override
     @Transactional
     public void createTableColumn(Long erdTableId) {
-        ErdTable erdTable = erdTableRepository.findById(erdTableId).orElseThrow(() -> new NotFoundException(TABLE_NOT_FOUND));
-          TableColumn tableColumn = TableColumn.createTableColumn(erdTable);
-            tableColumnRepository.save(tableColumn);
+        ErdTable findErdTable = erdTableRepository.findById(erdTableId).orElseThrow(() -> new NotFoundException(TABLE_NOT_FOUND));
 
-
+        TableColumn tableColumn = TableColumn.createTableColumn(findErdTable);
+        tableColumnRepository.save(tableColumn);
     }
 
     @Override
@@ -151,29 +127,7 @@ public class ERDServiceImpl implements ERDService{
     @Override
     @Transactional
     public void deleteTableColumn( Long tableColumnId) {
-        TableColumn tableColumn = tableColumnRepository.findById(tableColumnId).orElseThrow(() -> new NotFoundException(TABLE_COLUMN_NOT_FOUND));
-          tableColumnRepository.delete(tableColumn);
-
-
+        TableColumn findTableColumn = tableColumnRepository.findById(tableColumnId).orElseThrow(() -> new NotFoundException(TABLE_COLUMN_NOT_FOUND));
+          tableColumnRepository.delete(findTableColumn);
     }
-
-//    @Override
-//    public void erdParsing(Long projectId) {
-//        try {
-//             JSONParser jsonParser = new JSONParser();
-//            File file = new File("erd");
-//            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/1.vuerd.json"),file);
-//
-//            Reader reader = new FileReader(file);
-//            JSONObject erd = (JSONObject) jsonParser.parse(reader);
-//
-//            ERDParsing.tableParsing(erd);
-//
-//        }catch (Exception e){
-//
-//        }
-//
-//    }
-
-
 }
