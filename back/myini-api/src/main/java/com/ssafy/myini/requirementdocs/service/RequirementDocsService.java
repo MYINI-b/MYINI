@@ -8,17 +8,17 @@ import java.util.List;
 
 public interface RequirementDocsService {
     List<RequirementListResponse> findAllRequirement(Long projectId);
-    Void createRequirement(Long projectId);
-    Void updateRequirementCategory(Long requirementId, RequirementCategoryUpdateRequest requirementCategoryUpdateRequest);
-    Void updateRequirementName(Long requirementId, RequirementNameUpdateRequest requirementNameUpdateRequest);
-    Void updateRequirementContent(Long requirementId, RequirementContentUpdateRequest requirementContentUpdateRequest);
-    Void updateRequirementPart(Long requirementId, RequirementPartUpdateRequest requirementPartUpdateRequest);
-    Void updateRequirementMember(Long requirementId, RequirementMemberUpdateRequest requirementMemberUpdateRequest);
-    Void updateRequirementPriority(Long requirementId, RequirementPriorityUpdateRequest requirementPriorityUpdateRequest);
-    Void updateRequirementStoryPoint(Long requirementId, RequirementStoryPointUpdateRequest requirementStoryPointUpdateRequest);
-    Void deleteRequirement(Long requirementId);
+    void createRequirement(Long projectId);
+    void updateRequirementCategory(Long requirementId, RequirementCategoryUpdateRequest requirementCategoryUpdateRequest);
+    void updateRequirementName(Long requirementId, RequirementNameUpdateRequest requirementNameUpdateRequest);
+    void updateRequirementContent(Long requirementId, RequirementContentUpdateRequest requirementContentUpdateRequest);
+    void updateRequirementPart(Long requirementId, RequirementPartUpdateRequest requirementPartUpdateRequest);
+    void updateRequirementMember(Long requirementId, RequirementMemberUpdateRequest requirementMemberUpdateRequest);
+    void updateRequirementPriority(Long requirementId, RequirementPriorityUpdateRequest requirementPriorityUpdateRequest);
+    void updateRequirementStoryPoint(Long requirementId, RequirementStoryPointUpdateRequest requirementStoryPointUpdateRequest);
+    void deleteRequirement(Long requirementId);
     List<RequirementCategoryListResponse> findAllRequirementsCategory(Long projectId);
-    Void createRequirementCategory(Long projectId, RequirementCategoryCreateRequest requirementCategoryCreateRequest);
-    Void deleteRequirementCategory(Long requirementCategoryId);
+    void createRequirementCategory(Long projectId, RequirementCategoryCreateRequest requirementCategoryCreateRequest);
+    void deleteRequirementCategory(Long requirementCategoryId);
 
 }

@@ -1,6 +1,7 @@
 package com.ssafy.myini.project.domain;
 
 import com.ssafy.myini.apidocs.domain.ApiController;
+import com.ssafy.myini.apidocs.domain.Dto;
 import com.ssafy.myini.erd.domain.entity.ErdTable;
 import com.ssafy.myini.member.domain.MemberProject;
 import com.ssafy.myini.requirementdocs.domain.Requirement;
@@ -58,6 +59,9 @@ public class Project {
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ErdTable> tables  = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Dto> dtos  = new ArrayList<>();
 
     public static Project createProject() {
         Project project = new Project();
