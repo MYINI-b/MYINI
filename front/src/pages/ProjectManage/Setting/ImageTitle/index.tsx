@@ -52,8 +52,7 @@ export default function ProjectImage({
           },
         };
 
-        const resp = await axios.patch('/projects/1/images', formData, headers);
-        console.log(resp);
+        const resp = await axios.patch('/projects/3/images', formData, headers);
         if (reader.result && typeof reader.result === 'string')
           setImg(reader.result);
         // 유저 이미지 변경 api 전송
