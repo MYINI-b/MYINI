@@ -33,3 +33,16 @@ export const LINK_LIST = [
     name: 'figma',
   },
 ];
+
+export const DIVISION_LIST = ['FE', 'BE', '공통'];
+
+export const IMPORTANCE_LIST = [1, 2, 3, 4, 5];
+
+export const IMPORTANCE_TEXT = [
+  '',
+  '매우 높음',
+  '높음',
+  '중간',
+  '낮음',
+  '매우 낮음',
+];

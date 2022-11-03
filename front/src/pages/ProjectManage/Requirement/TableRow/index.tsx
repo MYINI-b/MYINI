@@ -7,10 +7,16 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { ROW, ELEMENTPOS } from 'types/Requirement';
 import { MOUSEPOS } from 'types/ApiSpec';
+import { IMPORTANCE_TEXT } from 'constants/index';
 
 import useInput from 'hooks/useInput';
+import Highest from 'assets/highest.png';
+import Lowest from 'assets/lowest.png';
 import CategoryListModal from '../CategoryListModal';
 import RowModal from '../RowModal';
+import DivisionModal from '../DivisionModal';
+import ManagerModal from '../ManagerModal';
+import ImportanceModal from '../ImportanceModal';
 
 interface Props {
   row: ROW;
@@ -25,13 +31,17 @@ export default function TableRow({ row, rows, setRows, idx }: Props) {
   const descContainer = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
 
   const [isRowModalOpen, setIsRowModalOpen] = useState(false);
+  const [isManagerOpen, setIsManagerOpen] = useState(false);
+  const [isImportanceOpen, setIsImportanceOpen] = useState(false);
   const [clickMousePos, setClickMousePos] = useState<MOUSEPOS>({ x: 0, y: 0 });
   const [isCategoryListOpen, setIsCategoryListOpen] = useState(false);
   const [isRequireEdit, setIsRequireEdit] = useState(false);
   const [isDescEdit, setIsDescEdit] = useState(false);
+  const [isDivisionOpen, setIsDivisionOpen] = useState(false);
   const [requirement, onRequirementChange] = useInput('');
   const [desc, onDescChange] = useInput('');
-  const [categories, setCategories] = useState(['회원', '프로젝트', 'ERD']);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [managers, setManagers] = useState<string[]>([]);
   const [clickElementPos, setClickElementPos] = useState<ELEMENTPOS>({
     x: 0,
     y: 0,
@@ -48,8 +58,39 @@ export default function TableRow({ row, rows, setRows, idx }: Props) {
     setIsCategoryListOpen(false);
   }, []);
 
+  const closeManagerModal = useCallback(() => {
+    setIsManagerOpen(false);
+  }, []);
+
   const openCategoryList = useCallback((e: any) => {
     setIsCategoryListOpen(true);
+    setClickElementPos({
+      y: e.target.getBoundingClientRect().top + 40,
+      x: e.target.getBoundingClientRect().left,
+      width: e.target.offsetWidth,
+    });
+  }, []);
+
+  const openManagerList = useCallback((e: any) => {
+    setIsManagerOpen(true);
+    setClickElementPos({
+      y: e.target.getBoundingClientRect().top + 40,
+      x: e.target.getBoundingClientRect().left,
+      width: e.target.offsetWidth,
+    });
+  }, []);
+
+  const openDivisionList = useCallback((e: any) => {
+    setIsDivisionOpen(true);
+    setClickElementPos({
+      y: e.target.getBoundingClientRect().top + 40,
+      x: e.target.getBoundingClientRect().left,
+      width: e.target.offsetWidth,
+    });
+  }, []);
+
+  const openImportanceList = useCallback((e: any) => {
+    setIsImportanceOpen(true);
     setClickElementPos({
       y: e.target.getBoundingClientRect().top + 40,
       x: e.target.getBoundingClientRect().left,
@@ -143,13 +184,20 @@ export default function TableRow({ row, rows, setRows, idx }: Props) {
           {row.description}
         </span>
       )}
-      <span className="table-col content one">
-        <div className={`desc-block ${row.division}`}>{row.division}</div>
+      <span className="table-col content one" onClick={openDivisionList}>
+        <div
+          className={`desc-block ${row.division}`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {row.division}
+        </div>
       </span>
-      <span className="table-col content one">{row.manager}</span>
-      <span className="table-col content one">
+      <span className="table-col content one" onClick={openManagerList}>
+        {row.manager}
+      </span>
+      <span className="table-col content one" onClick={openImportanceList}>
         {row.importance === 1 ? (
-          <div className="double-chevron">
+          <div className="double-chevron" onClick={(e) => e.stopPropagation()}>
             <FontAwesomeIcon icon={faChevronUp} />
             <FontAwesomeIcon icon={faChevronUp} />
           </div>
@@ -160,13 +208,14 @@ export default function TableRow({ row, rows, setRows, idx }: Props) {
         ) : row.importance === 4 ? (
           <FontAwesomeIcon icon={faChevronDown} />
         ) : row.importance === 5 ? (
-          <div className="double-chevron">
+          <div className="double-chevron" onClick={(e) => e.stopPropagation()}>
             <FontAwesomeIcon icon={faChevronDown} />
             <FontAwesomeIcon icon={faChevronDown} />
           </div>
         ) : (
           ''
         )}
+        &nbsp;&nbsp;{IMPORTANCE_TEXT[row.importance]}
       </span>
       <span className="table-col content one">{row.point}</span>
 
@@ -182,6 +231,38 @@ export default function TableRow({ row, rows, setRows, idx }: Props) {
           categories={categories}
           setCategories={setCategories}
           closeCategoryList={closeCategoryList}
+          clickElementPos={clickElementPos}
+          rows={rows}
+          setRows={setRows}
+          idx={idx}
+        />
+      )}
+
+      {isDivisionOpen && (
+        <DivisionModal
+          setIsDivisionOpen={setIsDivisionOpen}
+          clickElementPos={clickElementPos}
+          rows={rows}
+          setRows={setRows}
+          idx={idx}
+        />
+      )}
+
+      {isManagerOpen && (
+        <ManagerModal
+          managers={managers}
+          setManagers={setManagers}
+          closeManagerModal={closeManagerModal}
+          clickElementPos={clickElementPos}
+          rows={rows}
+          setRows={setRows}
+          idx={idx}
+        />
+      )}
+
+      {isImportanceOpen && (
+        <ImportanceModal
+          setIsImportanceOpen={setIsImportanceOpen}
           clickElementPos={clickElementPos}
           rows={rows}
           setRows={setRows}

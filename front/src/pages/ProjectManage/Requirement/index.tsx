@@ -19,7 +19,7 @@ export default function Requirement() {
       description: '',
       division: '',
       manager: '',
-      importance: 0,
+      importance: 3,
       point: 0,
     });
     setRows(copyRows);

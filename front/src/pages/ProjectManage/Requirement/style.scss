@@ -53,7 +53,7 @@
 
     .table-title-article {
       width: 100%;
-      padding-right: 8px;
+      // padding-right: 8px;
       @include FLEX-BETWEEN;
     }
 
@@ -75,6 +75,7 @@
 
     .table-col {
       padding: rem(10) rem(24);
+      width: 100%;
       word-break: break-all;
       border-radius: 20px;
       @include FLEX-CENTER;
@@ -83,14 +84,15 @@
         height: rem(40);
         font-size: rem(20);
         font-family: $eng-title;
-        white-space: nowrap;
+        // white-space: nowrap;
         background-color: $third;
       }
 
       &.content {
-        margin: 0 rem(6);
-        padding: rem(6) rem(18);
-        font-size: rem(16);
+
+        margin: 0 rem(12);
+        padding: rem(10) rem(12);
+        font-size: rem(14);
         font-family: $eng-content;
       }
 
@@ -122,6 +124,7 @@
         padding: rem(4) rem(6);
         background-color: $light-gray;
         border-radius: 4px;
+        @include FLEX-ALIGN-CENTER;
 
         &.FE {
           background-color: $FE;
