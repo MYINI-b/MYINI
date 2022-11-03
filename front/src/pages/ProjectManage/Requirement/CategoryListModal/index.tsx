@@ -1,28 +1,31 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
-import { useCallback, Dispatch, useRef, useEffect } from 'react';
+import { useCallback, Dispatch, useRef, useEffect, useState } from 'react';
 
 import './style.scss';
-import { ELEMENTPOS } from 'types/Requirement';
+import { ELEMENTPOS, ROW } from 'types/Requirement';
 
 interface Props {
   categories: string[];
   setCategories: Dispatch<React.SetStateAction<string[]>>;
-  categoryInput: string;
-  setCategoryInput: Dispatch<React.SetStateAction<string>>;
   closeCategoryList: () => void;
   clickElementPos: ELEMENTPOS;
+  rows: ROW[];
+  setRows: Dispatch<React.SetStateAction<ROW[]>>;
+  idx: number;
 }
 
 export default function CategoryListModal({
   categories,
   setCategories,
-  categoryInput,
-  setCategoryInput,
   closeCategoryList,
   clickElementPos,
+  rows,
+  setRows,
+  idx,
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
+  const [categoryInput, setCategoryInput] = useState('');
 
   const deleteCategory = useCallback(
     (idx: number) => {
@@ -46,6 +49,16 @@ export default function CategoryListModal({
       setCategoryInput(e.target.value);
     },
     [setCategoryInput],
+  );
+
+  const selectCategory = useCallback(
+    (cat: string) => {
+      const copyRows = [...rows];
+      copyRows[idx].category = cat;
+      setRows(copyRows);
+      closeCategoryList();
+    },
+    [rows, idx],
   );
 
   useEffect(() => {
@@ -73,9 +86,11 @@ export default function CategoryListModal({
           {categories.map((e, i) => {
             return (
               <span
-                className="category-row"
+                className={`category-row ${
+                  rows[idx].category === e && 'select'
+                }`}
                 key={i}
-                onClick={(e) => e.stopPropagation()}
+                onClick={() => selectCategory(e)}
               >
                 {e}
                 <FontAwesomeIcon

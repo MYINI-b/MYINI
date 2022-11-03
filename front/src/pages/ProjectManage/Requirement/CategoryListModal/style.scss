@@ -40,14 +40,22 @@
     color: $gray;
     font-size: rem(14);
     font-family: $eng-content;
-
     white-space: nowrap;
     text-overflow: ellipsis;
+    cursor: pointer;
+    transition: 0.3s ease;
     @include FLEX-CENTER;
     &:hover {
+      color: $black;
+      font-weight: bold;
       .category-delete-button {
         opacity: 1;
       }
+    }
+
+    &.select {
+      color: $black;
+      font-weight: bold;
     }
 
     .category-delete-button {

@@ -75,6 +75,7 @@
 
     .table-col {
       padding: rem(10) rem(24);
+      word-break: break-all;
       border-radius: 20px;
       @include FLEX-CENTER;
 
@@ -87,6 +88,7 @@
       }
 
       &.content {
+        padding: rem(6) rem(18);
         font-size: rem(16);
         font-family: $eng-content;
       }
@@ -103,6 +105,16 @@
 
       &.category-container {
         position: relative;
+      }
+
+      &.textarea {
+        border: 1px solid $lightx2-gray;
+        border-radius: rem(6);
+
+        &::-webkit-scrollbar {
+          width: 0;
+          height: 0;
+        }
       }
 
       .desc-block {
