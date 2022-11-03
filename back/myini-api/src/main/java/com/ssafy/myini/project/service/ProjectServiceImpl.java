@@ -1,5 +1,6 @@
 package com.ssafy.myini.project.service;
 
+import com.ssafy.myini.DuplicateException;
 import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.member.domain.Member;
@@ -23,8 +24,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.ssafy.myini.NotFoundException.MEMBER_NOT_FOUND;
-import static com.ssafy.myini.NotFoundException.PROJECT_NOT_FOUND;
+import static com.ssafy.myini.DuplicateException.MEMBER_PROJECT_DUPLICATE;
+import static com.ssafy.myini.NotFoundException.*;
 
 @Service
 @RequiredArgsConstructor
@@ -64,18 +65,24 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional
     @Override
-    public void updateProject(Long projectId, UpdateProjectRequest request) {
+    public void updateProject(Member member, Long projectId, UpdateProjectRequest request) {
         Project findProject = projectRepository.findById(projectId)
                 .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+        if(!memberProjectRepository.existsByMemberAndProject(member, findProject)){
+            throw new NotFoundException(MEMBER_PROJECT_NOT_FOUND);
+        }
 
         findProject.updateProject(request.getProjectName(), request.getProjectDescription(), request.getProjectStartedDate(), request.getProjectFinishedDate(), request.getProjectGithubUrl(), request.getProjectJiraUrl(), request.getProjectNotionUrl(), request.getProjectFigmaUrl());
     }
 
-    @Override
     @Transactional
-    public void updateProjectImg(Long projectId, MultipartFile projectImg) {
+    @Override
+    public void updateProjectImg(Member member, Long projectId, MultipartFile projectImg) {
         Project findProject = projectRepository.findById(projectId)
                 .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+        if(!memberProjectRepository.existsByMemberAndProject(member, findProject)){
+            throw new NotFoundException(MEMBER_PROJECT_NOT_FOUND);
+        }
 
         
         if (findProject.getProjectImg() != null) {
@@ -89,9 +96,12 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional
     @Override
-    public void deleteProject(Long projectId) {
+    public void deleteProject(Member member, Long projectId) {
         Project findProject = projectRepository.findById(projectId)
                 .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+        if(!memberProjectRepository.existsByMemberAndProject(member, findProject)){
+            throw new NotFoundException(MEMBER_PROJECT_NOT_FOUND);
+        }
 
         projectRepository.delete(findProject);
     }
@@ -114,12 +124,18 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional
     @Override
-    public void addProjectMember(Long projectId, Long memberId) {
+    public void addProjectMember(Member member, Long projectId, Long memberId) {
         Project findProject = projectRepository.findById(projectId)
                 .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+        if(!memberProjectRepository.existsByMemberAndProject(member, findProject)){
+            throw new NotFoundException(MEMBER_PROJECT_NOT_FOUND);
+        }
 
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
+        if(memberProjectRepository.existsByMemberAndProject(findMember, findProject)){
+            throw new DuplicateException(MEMBER_PROJECT_DUPLICATE);
+        }
 
         MemberProject memberProject = MemberProject.createMemberProject(findMember, findProject);
         memberProjectRepository.save(memberProject);
@@ -127,12 +143,18 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional
     @Override
-    public void deleteProjectMember(Long projectId, Long memberId) {
+    public void deleteProjectMember(Member member, Long projectId, Long memberId) {
         Project findProject = projectRepository.findById(projectId)
                 .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+        if(!memberProjectRepository.existsByMemberAndProject(member, findProject)){
+            throw new NotFoundException(MEMBER_PROJECT_NOT_FOUND);
+        }
 
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
+        if(!memberProjectRepository.existsByMemberAndProject(findMember, findProject)){
+            throw new NotFoundException(MEMBER_PROJECT_NOT_FOUND);
+        }
 
         MemberProject memberProject = memberProjectRepository.findByMemberAndProject(findMember, findProject);
         memberProjectRepository.delete(memberProject);
