@@ -3,43 +3,56 @@ import 'react-calendar/dist/Calendar.css';
 import { useState, useCallback, useEffect } from 'react';
 import moment from 'moment';
 import './style.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 
-export function ProjectPeriod(props: any) {
+interface Props {
+  startDay: string;
+  setStartDay: React.Dispatch<React.SetStateAction<string>>;
+  endDay: string;
+  setEndDay: React.Dispatch<React.SetStateAction<string>>;
+  store: any;
+}
+
+export default function ProjectPeriod({
+  startDay,
+  setStartDay,
+  endDay,
+  setEndDay,
+  store,
+}: Props) {
   const [isStartCalOpen, setIsStartCalOpen] = useState(false);
   const [isEndCalOpen, setIsEndCalOpen] = useState(false);
-  const [startDay, setStartDay] = useState(new Date());
-  const [endDay, setEndDay] = useState(new Date());
-  const [startDayText, setStartDayText] = useState('');
-  const [endDayText, setEndDayText] = useState('');
-  const { period } = props;
 
   const onDayChange = useCallback(
     (val: any, isStart: boolean) => {
       const momentVal = moment(val);
-      const momentStart = moment(startDay);
-      const momentEnd = moment(endDay);
-
       if (isStart) {
-        setStartDay(val);
-        if (momentEnd.isBefore(momentVal)) setEndDay(val);
+        const momentEnd = moment(store.pjt.endDay);
+        if (momentEnd.isBefore(momentVal))
+          store.pjt.endDay = momentVal.format('YYYY/MM/DD');
+
+        store.pjt.startDay = momentVal.format('YYYY/MM/DD');
         setIsStartCalOpen(false);
       } else {
-        setEndDay(val);
-        if (momentVal.isBefore(momentStart)) setStartDay(val);
+        const momentStart = moment(store.pjt.startDay);
+        if (momentVal.isBefore(momentStart))
+          store.pjt.startDay = momentVal.format('YYYY/MM/DD');
+
+        store.pjt.endDay = momentVal.format('YYYY/MM/DD');
         setIsEndCalOpen(false);
       }
     },
-    [setStartDay, setEndDay, startDay, endDay],
+    [store],
   );
 
   useEffect(() => {
-    const newStartDay = moment(startDay).format('YYYY/MM/DD');
-    const newEndDay = moment(endDay).format('YYYY/MM/DD');
-    setStartDayText(newStartDay);
-    setEndDayText(newEndDay);
-  }, [startDay, endDay]);
+    const startDayMoment = moment(store.pjt.startDay);
+    const endDayMoment = moment(store.pjt.endDay);
+
+    const newStartDay = startDayMoment.format('YYYY/MM/DD');
+    const newEndDay = endDayMoment.format('YYYY/MM/DD');
+    setStartDay(newStartDay);
+    setEndDay(newEndDay);
+  }, [store.pjt.startDay, store.pjt.endDay]);
 
   return (
     <div className="project-period">
@@ -54,14 +67,14 @@ export function ProjectPeriod(props: any) {
             setIsEndCalOpen(false);
           }}
         >
-          {startDayText}
+          {startDay}
           {isStartCalOpen && (
             <div
               className="date-absolute-div"
               onClick={(e) => e.stopPropagation()}
             >
               <Calendar
-                value={startDay}
+                value={new Date(startDay)}
                 onChange={(val: any) => onDayChange(val, true)}
               />
             </div>
@@ -75,14 +88,14 @@ export function ProjectPeriod(props: any) {
             setIsStartCalOpen(false);
           }}
         >
-          {endDayText}
+          {endDay}
           {isEndCalOpen && (
             <div
               className="date-absolute-div"
               onClick={(e) => e.stopPropagation()}
             >
               <Calendar
-                value={endDay}
+                value={new Date(endDay)}
                 onChange={(val: any) => onDayChange(val, false)}
               />
             </div>

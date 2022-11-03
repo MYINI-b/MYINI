@@ -1,18 +1,31 @@
 import { faPen, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, Dispatch, useEffect } from 'react';
 import './style.scss';
 
 interface Props {
   desc: string;
-  onDescChange: (e: any) => void;
+  setDesc: Dispatch<React.SetStateAction<string>>;
+  store: any;
 }
-export default function DetailInfo({ desc, onDescChange }: Props) {
+export default function DetailInfo({ desc, setDesc, store }: Props) {
   const [isEdit, setIsEdit] = useState(false);
 
   const onSubmitClick = useCallback(() => {
     setIsEdit(false);
   }, []);
+
+  const onDescChange = useCallback(
+    (e: any) => {
+      store.pjt.desc = e.target.value;
+    },
+    [store],
+  );
+
+  useEffect(() => {
+    if (store.pjt.desc !== undefined) setDesc(store.pjt.desc);
+  }, [store.pjt.desc]);
+
   return (
     <div className="detail-info">
       <div className="project-detail-title-wrapper normal">

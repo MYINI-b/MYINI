@@ -1,24 +1,25 @@
 import { faPen, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState, useCallback, Dispatch, useRef } from 'react';
+import { useState, useCallback, Dispatch, useRef, useEffect } from 'react';
 import axios from 'axios';
 import './style.scss';
 import DefaultProfile from 'assets/default-profile.png';
-import { profile } from 'console';
 
 interface Props {
   img: string;
   setImg: Dispatch<React.SetStateAction<string>>;
   title: string;
-  onTitleChange: (e: any) => void;
+  setTitle: Dispatch<React.SetStateAction<string>>;
+  store: any;
 }
 
 export default function ProjectImage({
   img,
   setImg,
   title,
-  onTitleChange,
+  setTitle,
+  store,
 }: Props) {
   const fileInput = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [isEdit, setIsEdit] = useState(false);
@@ -26,6 +27,13 @@ export default function ProjectImage({
   const onSubmitClick = useCallback(() => {
     setIsEdit(false);
   }, []);
+
+  const onTitleChange = useCallback(
+    (e: any) => {
+      store.pjt.title = e.target.value;
+    },
+    [store],
+  );
 
   const onImgChange = useCallback((e: any) => {
     const profileImg = e.target.files[0];
@@ -60,6 +68,10 @@ export default function ProjectImage({
     };
     reader.readAsDataURL(e.target.files[0]);
   }, []);
+
+  useEffect(() => {
+    if (store.pjt.title !== undefined) setTitle(store.pjt.title);
+  }, [store.pjt.title]);
 
   return (
     <div className="title-img">

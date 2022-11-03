@@ -1,20 +1,30 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useMemo, useState } from 'react';
+import { useSyncedStore } from '@syncedstore/react';
+import moment from 'moment';
 import useInput from 'hooks/useInput';
+import { globalStore } from 'store/yjsStore';
 import ImageTitle from './ImageTitle';
 import ProjectDesc from './ProjectDesc/index';
-import { ProjectPeriod } from './Period/index';
+import Period from './Period/index';
 import { ProjectLink } from './Link/index';
 import { ProjectMember } from './Member/index';
 import MockData from './mock.json';
 import './style.scss';
 
 export default function SettingPage() {
+  const store = useSyncedStore(globalStore);
   const data = useMemo(() => MockData[0], []);
-  const [img, setImg] = useState('');
   const [isEdit, setIsEdit] = useState(false);
-  const [title, onTitleChange] = useInput('');
-  const [desc, onDescChange] = useInput('');
+
+  const [title, setTitle] = useState('');
+  const [img, setImg] = useState('');
+  const [desc, setDesc] = useState('');
+  const [startDay, setStartDay] = useState(
+    moment(new Date()).format('YYYY/MM/DD'),
+  );
+  const [endDay, setEndDay] = useState(moment(new Date()).format('YYYY/MM/DD'));
+
   const Props = {
     id: data.id,
     // img: data.img,
@@ -35,12 +45,19 @@ export default function SettingPage() {
           img={img}
           setImg={setImg}
           title={title}
-          onTitleChange={onTitleChange}
+          setTitle={setTitle}
+          store={store}
         />
         <div className="bottom-side">
           <div className="left-side">
-            <ProjectDesc desc={desc} onDescChange={onDescChange} />
-            <ProjectPeriod {...Props} className="project-period" />
+            <ProjectDesc desc={desc} setDesc={setDesc} store={store} />
+            <Period
+              store={store}
+              startDay={startDay}
+              setStartDay={setStartDay}
+              endDay={endDay}
+              setEndDay={setEndDay}
+            />
             <ProjectLink {...Props} className="project-link" />
           </div>
           <div className="right-side">
