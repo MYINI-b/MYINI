@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ApiResponse {
     private Long apiId;
-    private int apiItemId;
     private String apiName;
     private String apiUrl;
     private String apiMethod;
@@ -21,7 +20,6 @@ public class ApiResponse {
     public static ApiResponse from(Api api) {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.apiId = api.getApiId();
-        apiResponse.apiItemId = api.getApiItemId();
         apiResponse.apiName = api.getApiName();
         apiResponse.apiUrl = api.getApiUrl();
         apiResponse.apiMethod = String.valueOf(api.getApiMethod());

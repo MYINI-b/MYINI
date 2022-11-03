@@ -75,6 +75,7 @@ public class ProjectServiceImpl implements ProjectService {
         findProject.updateProject(request.getProjectName(), request.getProjectDescription(), request.getProjectStartedDate(), request.getProjectFinishedDate(), request.getProjectGithubUrl(), request.getProjectJiraUrl(), request.getProjectNotionUrl(), request.getProjectFigmaUrl());
     }
 
+    @Transactional
     @Override
     public void updateProjectImg(Member member, Long projectId, MultipartFile projectImg) {
         Project findProject = projectRepository.findById(projectId)
@@ -83,6 +84,7 @@ public class ProjectServiceImpl implements ProjectService {
             throw new NotFoundException(MEMBER_PROJECT_NOT_FOUND);
         }
 
+        
         if (findProject.getProjectImg() != null) {
             s3Uploader.deleteFile(s3Uploader.PROJECT_IMAGE_URL + findProject.getProjectImg());
         }
