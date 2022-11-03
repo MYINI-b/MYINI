@@ -5,25 +5,35 @@ import com.ssafy.myini.apidocs.response.DtoResponse;
 import com.ssafy.myini.apidocs.response.ProjectInfoListResponse;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class DtoWrite {
     static StringBuilder dtoImportContents;
     private static int depth = 0;
+    private static Set<String> importDtos;
 
     public static String dtoPreview(DtoResponse dtoResponse, InitializerRequest initializerRequest) {
         dtoImportContents = new StringBuilder();
+        importDtos = new HashSet<>();
 
         // 필수 import 선언
         dtoImportContents.append("import lombok.AllArgsConstructor;\n")
                 .append("import lombok.Data;\n")
-                .append("import lombok.NoArgsConstructor;\n")
-                .append("import java.util.*;\n\n")
+                .append("import lombok.NoArgsConstructor;\n");
 
-                .append("import ").append(initializerRequest.getSpring_package_name()).append(".request.*\n")
-                .append("import ").append(initializerRequest.getSpring_package_name()).append(".response.*\n")
-                .append("import ").append(initializerRequest.getSpring_package_name()).append(".dto.*\n");
+        depth++;
+        String body = methodWrite(dtoResponse.getDtoItemResponses());
+        depth--;
+
+        for (String importDto : importDtos) {
+            dtoImportContents.append("import ").append(initializerRequest.getSpring_package_name()).append(".dto.").append(importDto).append(";\n");
+        }
 
         StringBuilder contents = new StringBuilder();
-        contents.append("package " + initializerRequest.getSpring_package_name() + ".request;\n")
+        contents.append("package " + initializerRequest.getSpring_package_name() + "." + dtoResponse.getDtoType().toLowerCase() + ";\n")
                 .append("\n")
                 .append(dtoImportContents)
                 .append("\n")
@@ -31,13 +41,8 @@ public class DtoWrite {
                 .append("@NoArgsConstructor\n")
                 .append("@AllArgsConstructor\n")
                 .append("public class ").append(dtoResponse.getDtoName()).append(" {\n");
-        depth++;
 
-        for (DtoItemResponse dtoItemResponse : dtoResponse.getDtoItemResponses()) {
-            FileUtil.appendTab(contents, depth);
-            contents.append("private ").append(dtoItemResponse.getDtoItemName()).append(";\n");
-        }
-        depth--;
+        contents.append(body);
         FileUtil.appendTab(contents, depth);
         contents.append("}\n");
 
@@ -56,10 +61,35 @@ public class DtoWrite {
                                 } else if (type.equals("RESPONSE")) {
                                     path = "response";
                                 }
-                                FileUtil.fileWrite(projectInfoListResponse, initializerRequest, dtoPreview(dtoResponse, initializerRequest), path, dtoResponse.getDtoName());
+                                FileUtil.fileWrite(initializerRequest, dtoPreview(dtoResponse, initializerRequest), path, FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName().trim()));
                             }
                     );
                 }
         );
+    }
+
+    public static String methodWrite(List<DtoItemResponse> dtoItemResponses) {
+        StringBuilder methodContents = new StringBuilder();
+
+        for (DtoItemResponse dtoItemResponse : dtoItemResponses) {
+            methodContents.append("private ");
+            if (dtoItemResponse.getDtoClassTypeName() != null) {
+                // Dto 클래스 타입을 갖는 경우
+                importDtos.add(dtoItemResponse.getDtoItemName());
+                methodContents.append(dtoItemResponse.getDtoClassTypeName());
+            } else if (dtoItemResponse.getDtoPrimitiveTypeName() != null) {
+                // 기본 타입을 갖는 경우
+                if (dtoItemResponse.getDtoPrimitiveTypeId() == 10) {
+                    // LocalDateTime인 경우
+                    dtoImportContents.append("import java.time.LocalDateTime;\n");
+                }
+                methodContents.append(dtoItemResponse.getDtoPrimitiveTypeName());
+            } else {
+                // 둘 다 null이면 error
+            }
+            methodContents.append(" ").append(dtoItemResponse.getDtoItemName()).append(";\n");
+        }
+
+        return methodContents.toString();
     }
 }
