@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateApiRequest {
-    private int apiItemId;
     private String apiName;
     private String apiUrl;
     private String apiMethod;

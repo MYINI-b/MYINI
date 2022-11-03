@@ -125,7 +125,6 @@ class ApiDocsControllerTest extends ControllerTest {
                                 fieldWithPath("apiControllerDescription").type(JsonFieldType.STRING).description("Api Controller 설명"),
                                 fieldWithPath("apiResponses").type(JsonFieldType.ARRAY).description("API 조회 결과 배열"),
                                 fieldWithPath("apiResponses.[].apiId").type(JsonFieldType.NUMBER).description("Api ID"),
-                                fieldWithPath("apiResponses.[].apiItemId").type(JsonFieldType.NUMBER).description("Api Item ID"),
                                 fieldWithPath("apiResponses.[].apiName").type(JsonFieldType.STRING).description("Api 이름"),
                                 fieldWithPath("apiResponses.[].apiUrl").type(JsonFieldType.STRING).description("Api URL"),
                                 fieldWithPath("apiResponses.[].apiMethod").type(JsonFieldType.STRING).description("Api Method"),
@@ -216,7 +215,6 @@ class ApiDocsControllerTest extends ControllerTest {
                                 parameterWithName("apicontrollerid").description("Api Controller ID")
                         ),
                         requestFields(
-                                fieldWithPath("apiItemId").type(JsonFieldType.NUMBER).description("Api Item ID"),
                                 fieldWithPath("apiName").type(JsonFieldType.STRING).description("Api 이름"),
                                 fieldWithPath("apiUrl").type(JsonFieldType.STRING).description("Api URL"),
                                 fieldWithPath("apiMethod").type(JsonFieldType.STRING).description("Api Method"),
@@ -251,7 +249,6 @@ class ApiDocsControllerTest extends ControllerTest {
                                 parameterWithName("apiid").description("Api ID")
                         ),
                         requestFields(
-                                fieldWithPath("apiItemId").type(JsonFieldType.NUMBER).description("Api Item ID"),
                                 fieldWithPath("apiName").type(JsonFieldType.STRING).description("Api 이름"),
                                 fieldWithPath("apiUrl").type(JsonFieldType.STRING).description("Api URL"),
                                 fieldWithPath("apiMethod").type(JsonFieldType.STRING).description("Api Method"),
@@ -312,7 +309,6 @@ class ApiDocsControllerTest extends ControllerTest {
                         responseFields(
                                 fieldWithPath("apiResponse").type(JsonFieldType.OBJECT).description("Api 조회결과 객체"),
                                 fieldWithPath("apiResponse.apiId").type(JsonFieldType.NUMBER).description("Api ID"),
-                                fieldWithPath("apiResponse.apiItemId").type(JsonFieldType.NUMBER).description("Api Item ID"),
                                 fieldWithPath("apiResponse.apiName").type(JsonFieldType.STRING).description("Api 이름"),
                                 fieldWithPath("apiResponse.apiUrl").type(JsonFieldType.STRING).description("Api URL"),
                                 fieldWithPath("apiResponse.apiMethod").type(JsonFieldType.STRING).description("Api Method"),

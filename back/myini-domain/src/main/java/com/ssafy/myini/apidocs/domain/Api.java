@@ -22,9 +22,6 @@ public class Api extends BaseEntity {
     @Column(name = "api_id")
     private Long apiId;
 
-    @Column(unique = true, nullable = false)
-    private int apiItemId;
-
     private String apiName;
 
     private String apiUrl;
@@ -51,9 +48,8 @@ public class Api extends BaseEntity {
     @OneToMany(mappedBy = "api", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Dto> dtos = new ArrayList<>();
 
-    public static Api createApi(int apiItemId, String apiName, String apiUrl, String apiMethod, String apiCode, String apiMethodName, ApiController apiController){
+    public static Api createApi(String apiName, String apiUrl, String apiMethod, String apiCode, String apiMethodName, ApiController apiController){
         Api api = new Api();
-        api.apiItemId = apiItemId;
         api.apiName = apiName;
         api.apiUrl = apiUrl;
         api.apiMethod = ApiMethod.valueOf(apiMethod);
@@ -63,9 +59,9 @@ public class Api extends BaseEntity {
         return api;
     }
 
-    public void updateApi(int apiItemId, String apiName, String apiUrl, String apiMethod, String apiCode, String apiMethodName){
-        this.apiItemId = apiItemId;
-        this.apiName = apiUrl;
+    public void updateApi(String apiName, String apiUrl, String apiMethod, String apiCode, String apiMethodName){
+        this.apiName = apiName;
+        this.apiUrl = apiUrl;
         this.apiMethod = ApiMethod.valueOf(apiMethod);
         this.apiCode = ApiCode.valueOf(apiCode);
         this.apiMethodName = apiMethodName;

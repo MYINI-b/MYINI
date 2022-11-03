@@ -90,7 +90,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
         ApiController findApiController = apiControllerRepository.findById(apiControllerId)
                 .orElseThrow(() -> new NotFoundException(APICONTROLLER_NOT_FOUND));
 
-        Api api = Api.createApi(request.getApiItemId(), request.getApiName(), request.getApiUrl(), request.getApiMethod(), request.getApiCode(), request.getApiMethodName(), findApiController);
+        Api api = Api.createApi(request.getApiName(), request.getApiUrl(), request.getApiMethod(), request.getApiCode(), request.getApiMethodName(), findApiController);
         apiRepository.save(api);
     }
 
@@ -101,7 +101,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
         Api findApi = apiRepository.findById(apiId)
                 .orElseThrow(() -> new NotFoundException(API_NOT_FOUND));
 
-        findApi.updateApi(request.getApiItemId(), request.getApiName(),request.getApiUrl(), request.getApiMethod(), request.getApiCode(), request.getApiMethodName());
+        findApi.updateApi(request.getApiName(),request.getApiUrl(), request.getApiMethod(), request.getApiCode(), request.getApiMethodName());
     }
 
     // API 삭제
