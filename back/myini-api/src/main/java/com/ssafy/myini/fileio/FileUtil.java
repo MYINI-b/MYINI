@@ -11,7 +11,7 @@ import java.io.FileWriter;
 
 public class FileUtil {
 
-    public static void fileWrite(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest, String contents, String folderPath, String fileName) {
+    public static void fileWrite(InitializerRequest initializerRequest, String contents, String folderPath, String fileName) {
         try {
             //폴더 찾아가기
             String path = initializerRequest.getSpring_base_path() + "\\" + initializerRequest.getSpring_name() + "\\src\\main\\java\\";
@@ -88,4 +88,6 @@ public class FileUtil {
         }
         return "void";
     }
+
+
 }

@@ -38,7 +38,7 @@ public class ServiceWrite {
     }
 
     public static void serviceWrite(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
-        FileUtil.fileWrite(projectInfoListResponse, initializerRequest, servicePreview(projectInfoListResponse, initializerRequest), "service", projectInfoListResponse.getApiControllerName() + "Service");
+        FileUtil.fileWrite(initializerRequest, servicePreview(projectInfoListResponse, initializerRequest), "service", projectInfoListResponse.getApiControllerName() + "Service");
     }
 
     // 메서드별 생성

@@ -1,15 +1,10 @@
 package com.ssafy.myini.fileio;
 
+import com.ssafy.myini.InitializerException;
 import com.ssafy.myini.initializer.request.InitializerRequest;
-import com.ssafy.myini.initializer.response.PreviewResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.jdbc.support.JdbcUtils;
-import org.springframework.security.core.parameters.P;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +14,7 @@ public class EntityWrite {
     static List<Table> tableList = new ArrayList<>();
     static List<Column> columnList = new ArrayList<>();
     static List<RelationEndColumn> relationEndColumnList = new ArrayList<>();
+    private static int depth = 0;
 
     //모든 테이블의 ID와 이름 클래스
     static class Table {
@@ -65,17 +61,10 @@ public class EntityWrite {
             return columnId;
         }
     }
-    public static List<PreviewResponse> entityPreview(JSONObject erd, InitializerRequest initializerRequest, List<PreviewResponse> previewResponses) throws Exception{
-        //테이블, 컬럼, 연관관계 ID와 NAME 저장하기
-        setTableAndColumn(erd);
-
-        JSONObject table = (JSONObject) erd.get("table");
-        JSONArray tables = (JSONArray) table.get("tables");
-        JSONObject relationship = (JSONObject) erd.get("relationship");
+    public static String entityPreview(JSONObject tableItem,JSONObject relationship, InitializerRequest initializerRequest) throws Exception{
         JSONArray relationships = (JSONArray) relationship.get("relationships");
 
         //entity 작성 시작
-        for (int i=0 ; i<tables.size() ; i++){
             entityImportContents = new StringBuilder();
             entityAnnotationContents = new StringBuilder();
 
@@ -83,16 +72,18 @@ public class EntityWrite {
             entityImportContents.append("import lombok.*;\nimport javax.persistence.*;\n");
             entityAnnotationContents.append("@Entity\n@NoArgsConstructor(access = AccessLevel.PROTECTED)\n@AllArgsConstructor\n@Getter\n");
             StringBuilder contents = new StringBuilder();
-            JSONObject tableItem = (JSONObject) tables.get(i);
 
             String tableName = (String) tableItem.get("name");
             String tableId = (String) tableItem.get("id");
 
             JSONArray columns = (JSONArray) tableItem.get("columns");
+
+            depth++;
             //컬럼 작성
             StringBuilder columnContents = columnWrite(columns);
-            //연관관계 작성
+//            //연관관계 작성
             StringBuilder relationContents = relationWrite(tableId, relationships, initializerRequest);
+            depth--;
 
             //패키지, 클래스메인함수 등 작성
             contents.append("package " + initializerRequest.getSpring_package_name() + ".entity;\n")
@@ -102,87 +93,19 @@ public class EntityWrite {
                     .append(entityAnnotationContents)
                     .append("public class "+tableName+" {\n\n")
                     .append(columnContents)
-                    .append(relationContents)
-                    .append("}");
+                    .append(relationContents);
 
-            PreviewResponse previewResponse = new PreviewResponse("entity", tableName+".java" , contents.toString());
-            previewResponses.add(previewResponse);
-        }
+            FileUtil.appendTab(contents,depth);
+            contents.append("}");
 
-        return previewResponses;
+        return contents.toString();
     }
 
-    public static void entityWrite(JSONObject erd, InitializerRequest initializerRequest) throws Exception{
-        //테이블, 컬럼, 연관관계 ID와 NAME 저장하기
-        setTableAndColumn(erd);
-
-        JSONObject table = (JSONObject) erd.get("table");
-        JSONArray tables = (JSONArray) table.get("tables");
-        JSONObject relationship = (JSONObject) erd.get("relationship");
-        JSONArray relationships = (JSONArray) relationship.get("relationships");
-
-        //entity 작성 시작
-        for (int i=0 ; i<tables.size() ; i++){
-            entityImportContents = new StringBuilder();
-            entityAnnotationContents = new StringBuilder();
-
-            //필수 import 선언
-            entityImportContents.append("import lombok.*;\nimport javax.persistence.*;\n");
-            entityAnnotationContents.append("@Entity\n@NoArgsConstructor(access = AccessLevel.PROTECTED)\n@AllArgsConstructor\n@Getter\n");
-            StringBuilder contents = new StringBuilder();
-            JSONObject tableItem = (JSONObject) tables.get(i);
-
-            String tableName = (String) tableItem.get("name");
-            String tableId = (String) tableItem.get("id");
-
-            JSONArray columns = (JSONArray) tableItem.get("columns");
-            //컬럼 작성
-            StringBuilder columnContents = columnWrite(columns);
-            //연관관계 작성
-            StringBuilder relationContents = relationWrite(tableId, relationships, initializerRequest);
-
-            //패키지, 클래스메인함수 등 작성
-            contents.append("package " + initializerRequest.getSpring_package_name() + ".entity;\n")
-                    .append("\n")
-                    .append(entityImportContents)
-                    .append("\n")
-                    .append(entityAnnotationContents)
-                    .append("public class "+tableName+" {\n\n")
-                    .append(columnContents)
-                    .append(relationContents)
-                    .append("}");
-
+    public static void entityWrite(JSONObject tableItem,JSONObject relationship,InitializerRequest initializerRequest) {
         try {
-            //폴더 찾아가기
-            String entityPath = initializerRequest.getSpring_base_path()+"\\"+initializerRequest.getSpring_name()+"\\src\\main\\java\\";
-
-            String[] packagePath = initializerRequest.getSpring_package_name().split("[.]");
-            for (String s : packagePath) {
-                entityPath = entityPath + s + "\\";
-            }
-            entityPath += "entity\\";
-
-            //폴더 만들기
-            File folder = new File(entityPath);
-            if (!folder.exists()) {
-                folder.mkdir();
-            }
-
-            //파일 만들기
-            File file = new File(entityPath+tableName+".java");
-            if (!file.exists()) {
-                folder.createNewFile();
-            }
-
-            //파일 쓰기
-            FileWriter fw = new FileWriter(file);
-            BufferedWriter writer = new BufferedWriter(fw);
-            writer.write(contents.toString());
-            writer.close();
-
+        FileUtil.fileWrite(initializerRequest, entityPreview(tableItem, relationship,initializerRequest), "entity", (String) tableItem.get("name"));
         }catch (Exception e){
-            System.out.println("e = " + e);
-        }
+            throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
     }
 
@@ -215,8 +138,14 @@ public class EntityWrite {
                 //pk일때
                 if (primaryKey) {
                     isPk = true;
-                    columnContents.append("@Id\n@GeneratedValue(strategy = GenerationType.IDENTITY)\n" +
-                            "@Column(name=\"" + columnName + "\")\n");
+                    FileUtil.appendTab(columnContents,depth);
+                    columnContents.append("@Id\n");
+                    FileUtil.appendTab(columnContents,depth);
+                    columnContents.append("@GeneratedValue(strategy = GenerationType.IDENTITY)\n");
+                    FileUtil.appendTab(columnContents,depth);
+                    columnContents.append("@Column(name=\"" + columnName + "\")\n");
+//                    columnContents.append("@Id\n@GeneratedValue(strategy = GenerationType.IDENTITY)\n" +
+//                            "@Column(name=\"" + columnName + "\")\n");
                 }
                 //unique 일때
                 if (unique) {
@@ -239,7 +168,8 @@ public class EntityWrite {
                 }
 
                 //pk 가아닌 컬럼의 제약조건 설정
-                if(!isPk) {
+                if(!isPk && (flag.contains("u") || flag.contains("n") || flag.contains("d"))) {
+                    FileUtil.appendTab(columnContents,depth);
                     if (flag.contains("u") && flag.contains("n") && flag.contains("d"))
                         columnContents.append("@Column(unique = true, nullable = false, columnDefinition=\""+columnDataType.split("\\(")[0]+" default "+(columnDataType.contains("VARCHAR") || columnDataType.contains("CHAR")?"'"+columnDefault+"'":columnDefault)+"\")\n");
                     else if (flag.contains("u") && flag.contains("n") && !flag.contains("d"))
@@ -254,10 +184,17 @@ public class EntityWrite {
                         columnContents.append("@Column(nullable = false)\n");
                     else if (!flag.contains("u") && !flag.contains("n") && flag.contains("d"))
                         columnContents.append("@Column(columnDefinition=\""+columnDataType.split("\\(")[0]+" default "+(columnDataType.contains("VARCHAR") || columnDataType.contains("CHAR")?"'"+columnDefault+"'":columnDefault)+"\")\n");
+
+                    //자료형 + 변수명 추가
+                    FileUtil.appendTab(columnContents,depth);
+                    columnContents.append("private " + columnJavaDataType + " " + JdbcUtils.convertUnderscoreNameToPropertyName(columnName) + ";\n\n");
+                }else{
+                    //자료형 + 변수명 추가
+                    FileUtil.appendTab(columnContents,depth);
+                    columnContents.append("private " + columnJavaDataType + " " + JdbcUtils.convertUnderscoreNameToPropertyName(columnName) + ";\n\n");
                 }
 
-                //자료형 + 변수명 추가
-                columnContents.append("private " + columnJavaDataType + " " + JdbcUtils.convertUnderscoreNameToPropertyName(columnName) + ";\n\n");
+
 
             }
         }
@@ -302,9 +239,16 @@ public class EntityWrite {
 
             //ManyToOne 작성
             if(tableId.equals(endTableId)){
-                ManyToOneContents.append("@ManyToOne(fetch = FetchType.LAZY)\n"+
-                        "@JoinColumn(name = \""+endColumnName+"\")\n"+
-                        "private "+startTableName+" "+JdbcUtils.convertUnderscoreNameToPropertyName(endColumnName.substring(0,endColumnName.length()-3))+";\n\n");
+                FileUtil.appendTab(ManyToOneContents,depth);
+                ManyToOneContents.append("@ManyToOne(fetch = FetchType.LAZY)\n");
+                FileUtil.appendTab(ManyToOneContents,depth);
+                ManyToOneContents.append("@JoinColumn(name = \""+endColumnName+"\")\n");
+                FileUtil.appendTab(ManyToOneContents,depth);
+                ManyToOneContents.append("private "+startTableName+" "+JdbcUtils.convertUnderscoreNameToPropertyName(endColumnName.substring(0,endColumnName.length()-3))+";\n\n");
+
+//                ManyToOneContents.append("@ManyToOne(fetch = FetchType.LAZY)\n"+
+//                        "@JoinColumn(name = \""+endColumnName+"\")\n"+
+//                        "private "+startTableName+" "+JdbcUtils.convertUnderscoreNameToPropertyName(endColumnName.substring(0,endColumnName.length()-3))+";\n\n");
 
                 entityImportContents.append("import "+ initializerRequest.getSpring_package_name() + ".entity." + startTableName+";\n");
             }
@@ -314,11 +258,15 @@ public class EntityWrite {
                 entityImportContents.append("import java.util.*;\n");
                 //같은 리스트가 여러개일때 (ex. 같은 pk 두개를 fk 로써 받고있을 때)
                 if(!OneToManyContents.toString().contains(endTableName.substring(0,1).toLowerCase()+endTableName.substring(1)+"List")){
-                    OneToManyContents.append("@OneToMany(mappedBy = \""+JdbcUtils.convertUnderscoreNameToPropertyName(endColumnName.substring(0,endColumnName.length()-3))+"\", fetch = FetchType.LAZY, cascade = CascadeType.ALL)\n"+
-                            "private List<"+endTableName+"> "+endTableName.substring(0,1).toLowerCase()+endTableName.substring(1)+"List = new ArrayList<>();\n\n");
+                    FileUtil.appendTab(OneToManyContents,depth);
+                    OneToManyContents.append("@OneToMany(mappedBy = \""+JdbcUtils.convertUnderscoreNameToPropertyName(endColumnName.substring(0,endColumnName.length()-3))+"\", fetch = FetchType.LAZY, cascade = CascadeType.ALL)\n");
+                    FileUtil.appendTab(OneToManyContents,depth);
+                    OneToManyContents.append("private List<"+endTableName+"> "+endTableName.substring(0,1).toLowerCase()+endTableName.substring(1)+"List = new ArrayList<>();\n\n");
                 }else{
-                    OneToManyContents.append("@OneToMany(mappedBy = \""+JdbcUtils.convertUnderscoreNameToPropertyName(endColumnName.substring(0,endColumnName.length()-3))+"\", fetch = FetchType.LAZY, cascade = CascadeType.ALL)\n"+
-                            "private List<"+endTableName+"> "+endTableName.substring(0,1).toLowerCase()+endTableName.substring(1)+"List"+(OneToManyIndex++)+" = new ArrayList<>();\n\n");
+                    FileUtil.appendTab(OneToManyContents,depth);
+                    OneToManyContents.append("@OneToMany(mappedBy = \""+JdbcUtils.convertUnderscoreNameToPropertyName(endColumnName.substring(0,endColumnName.length()-3))+"\", fetch = FetchType.LAZY, cascade = CascadeType.ALL)\n");
+                    FileUtil.appendTab(OneToManyContents,depth);
+                    OneToManyContents.append("private List<"+endTableName+"> "+endTableName.substring(0,1).toLowerCase()+endTableName.substring(1)+"List"+(OneToManyIndex++)+" = new ArrayList<>();\n\n");
                 }
             }
         }
@@ -353,7 +301,7 @@ public class EntityWrite {
         return "String";
     }
 
-    private static void setTableAndColumn(JSONObject erd) {
+    public static void setTableAndColumn(JSONObject erd) {
         JSONObject table = (JSONObject) erd.get("table");
         JSONArray tables = (JSONArray) table.get("tables");
 
@@ -393,27 +341,6 @@ public class EntityWrite {
 
         }
 
-    }
-
-    public static String CamelToSnake(String str){
-        String result = "";
-
-        char c = str.charAt(0);
-        result = result + Character.toLowerCase(c);
-
-        for (int i = 1; i < str.length(); i++) {
-
-            char ch = str.charAt(i);
-            if (Character.isUpperCase(ch)) {
-                result = result + '_';
-                result = result
-                        + Character.toLowerCase(ch);
-            }
-            else {
-                result = result + ch;
-            }
-        }
-        return result;
     }
 
 }

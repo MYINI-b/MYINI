@@ -42,7 +42,7 @@ public class ServiceImplWrite {
     }
 
     public static void serviceImplWrite(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
-        FileUtil.fileWrite(projectInfoListResponse, initializerRequest, serviceImplPreview(projectInfoListResponse, initializerRequest), "service", projectInfoListResponse.getApiControllerName() + "ServiceImpl");
+        FileUtil.fileWrite(initializerRequest, serviceImplPreview(projectInfoListResponse, initializerRequest), "service", projectInfoListResponse.getApiControllerName() + "ServiceImpl");
     }
 
     // 메서드별 생성

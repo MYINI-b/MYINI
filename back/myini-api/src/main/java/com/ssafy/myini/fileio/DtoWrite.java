@@ -56,7 +56,7 @@ public class DtoWrite {
                                 } else if (type.equals("RESPONSE")) {
                                     path = "response";
                                 }
-                                FileUtil.fileWrite(projectInfoListResponse, initializerRequest, dtoPreview(dtoResponse, initializerRequest), path, dtoResponse.getDtoName());
+                                FileUtil.fileWrite(initializerRequest, dtoPreview(dtoResponse, initializerRequest), path, dtoResponse.getDtoName());
                             }
                     );
                 }

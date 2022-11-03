@@ -19,6 +19,7 @@ import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.security.core.parameters.P;
@@ -92,12 +93,16 @@ public class InitializerServiceImpl implements InitializerService {
 
             Reader reader = new FileReader(file);
             JSONObject erd = (JSONObject) jsonParser.parse(reader);
+            JSONObject table = (JSONObject) erd.get("table");
+            JSONArray tables = (JSONArray) table.get("tables");
+            JSONObject relationship = (JSONObject) erd.get("relationship");
 
             //entity 작성
-            EntityWrite.entityWrite(erd, initializerRequest);
+            EntityWrite.setTableAndColumn(erd);
+            tables.forEach(t -> EntityWrite.entityWrite( (JSONObject) t, relationship, initializerRequest ));
 
             //repository 작성
-            RepositoryWrite.repositoryWrite(erd, initializerRequest);
+            tables.forEach(t -> RepositoryWrite.repositoryWrite( (JSONObject) t, initializerRequest ));
 
             // controller 생성
             projectInfoListResponses.forEach(projectInfoListResponse -> ControllerWrite.controllerWrite(projectInfoListResponse, initializerRequest));
@@ -136,12 +141,24 @@ public class InitializerServiceImpl implements InitializerService {
 
             Reader reader = new FileReader(file);
             JSONObject erd = (JSONObject) jsonParser.parse(reader);
+            JSONObject table = (JSONObject) erd.get("table");
+            JSONArray tables = (JSONArray) table.get("tables");
+            JSONObject relationship = (JSONObject) erd.get("relationship");
 
             //entity 작성
-            EntityWrite.entityPreview(erd, initializerRequest, previewResponses);
+            EntityWrite.setTableAndColumn(erd);
+            for (int i = 0; i < tables.size(); i++) {
+                previewResponses.add(new PreviewResponse("entity",
+                                (String) ((JSONObject) tables.get(i)).get("name")+".java",
+                        EntityWrite.entityPreview((JSONObject) tables.get(i), relationship, initializerRequest)));
+            }
 
             //repository 작성
-            RepositoryWrite.repositoryPreview(erd, initializerRequest, previewResponses);
+            for (int i = 0; i < tables.size(); i++) {
+                previewResponses.add(new PreviewResponse("repository",
+                        (String) ((JSONObject) tables.get(i)).get("name")+"Repository.java",
+                        RepositoryWrite.repositoryPreview((JSONObject) tables.get(i), initializerRequest)));
+            }
 
             // controller
             projectInfoListResponses.forEach(projectInfoListResponse -> {

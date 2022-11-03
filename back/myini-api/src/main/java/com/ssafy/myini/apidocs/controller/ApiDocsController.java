@@ -58,6 +58,7 @@ public class ApiDocsController {
     @PostMapping("/{apicontrollerid}/apis")
     public ResponseEntity<Void> createApi(@PathVariable("apicontrollerid")Long apiControllerId,
                                           @RequestBody @Valid CreateApiRequest request){
+        System.out.println("fghfghfghfghfdghfghdfghfdgh");
         apiDocsService.createApi(apiControllerId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -134,6 +135,7 @@ public class ApiDocsController {
     @PostMapping("/{apiid}/dtos")
     public ResponseEntity<Void> createDto(@PathVariable("apiid")Long apiId,
                                                   @RequestBody @Valid CreateDtoRequest request) {
+        System.out.println("request = " + request.getDtoName());
         apiDocsService.createDto(apiId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -56,7 +56,7 @@ public class ControllerWrite {
     }
 
     public static void controllerWrite(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
-        FileUtil.fileWrite(projectInfoListResponse, initializerRequest, controllerPreview(projectInfoListResponse, initializerRequest), "controller", projectInfoListResponse.getApiControllerName() + "Controller");
+        FileUtil.fileWrite(initializerRequest, controllerPreview(projectInfoListResponse, initializerRequest), "controller", projectInfoListResponse.getApiControllerName() + "Controller");
     }
 
     // apimethod별로 만듦
