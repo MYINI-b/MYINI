@@ -10,8 +10,6 @@ import { MOUSEPOS } from 'types/ApiSpec';
 import { IMPORTANCE_TEXT } from 'constants/index';
 
 import useInput from 'hooks/useInput';
-import Highest from 'assets/highest.png';
-import Lowest from 'assets/lowest.png';
 import CategoryListModal from '../CategoryListModal';
 import RowModal from '../RowModal';
 import DivisionModal from '../DivisionModal';
@@ -23,9 +21,22 @@ interface Props {
   rows: ROW[];
   setRows: Dispatch<React.SetStateAction<ROW[]>>;
   idx: number;
+  categories: string[];
+  setCategories: Dispatch<React.SetStateAction<string[]>>;
+  managers: string[];
+  setManagers: Dispatch<React.SetStateAction<string[]>>;
 }
 
-export default function TableRow({ row, rows, setRows, idx }: Props) {
+export default function TableRow({
+  row,
+  rows,
+  setRows,
+  idx,
+  categories,
+  setCategories,
+  managers,
+  setManagers,
+}: Props) {
   const requireContainer =
     useRef() as React.MutableRefObject<HTMLTextAreaElement>;
   const descContainer = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
@@ -43,8 +54,7 @@ export default function TableRow({ row, rows, setRows, idx }: Props) {
   const [requirement, onRequirementChange] = useInput('');
   const [desc, onDescChange] = useInput('');
   const [point, onPointChange] = useInput(0);
-  const [categories, setCategories] = useState<string[]>([]);
-  const [managers, setManagers] = useState<string[]>([]);
+
   const [clickElementPos, setClickElementPos] = useState<ELEMENTPOS>({
     x: 0,
     y: 0,

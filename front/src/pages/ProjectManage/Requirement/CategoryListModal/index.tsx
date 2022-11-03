@@ -28,12 +28,18 @@ export default function CategoryListModal({
   const [categoryInput, setCategoryInput] = useState('');
 
   const deleteCategory = useCallback(
-    (idx: number) => {
+    (e: any, idx: number) => {
+      e.stopPropagation();
       const copyCategories = [...categories];
+      const copyRows = [...rows];
+      copyRows.forEach((e) => {
+        if (e.category === copyCategories[idx]) e.category = '';
+      });
       copyCategories.splice(idx, 1);
       setCategories(copyCategories);
+      setRows(copyRows);
     },
-    [categories, setCategories],
+    [categories, setCategories, rows],
   );
 
   const addNewCategory = (e: any) => {
@@ -96,7 +102,7 @@ export default function CategoryListModal({
                 <FontAwesomeIcon
                   icon={faClose}
                   className="category-delete-button"
-                  onClick={() => deleteCategory(i)}
+                  onClick={(e: any) => deleteCategory(e, i)}
                 />
               </span>
             );

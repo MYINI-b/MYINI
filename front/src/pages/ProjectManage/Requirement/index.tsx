@@ -9,6 +9,8 @@ import TableRow from './TableRow';
 
 export default function Requirement() {
   const [rows, setRows] = useState<ROW[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [managers, setManagers] = useState<string[]>([]);
 
   const addTableRow = useCallback(() => {
     const copyRows = [...rows];
@@ -53,7 +55,17 @@ export default function Requirement() {
         <article className="table-content-article">
           {rows.map((e, i: number) => {
             return (
-              <TableRow row={e} key={i} rows={rows} setRows={setRows} idx={i} />
+              <TableRow
+                row={e}
+                key={i}
+                rows={rows}
+                setRows={setRows}
+                idx={i}
+                categories={categories}
+                setCategories={setCategories}
+                managers={managers}
+                setManagers={setManagers}
+              />
             );
           })}
           <button
