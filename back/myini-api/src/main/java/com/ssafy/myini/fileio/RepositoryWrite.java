@@ -16,6 +16,7 @@ import java.util.List;
 
 public class RepositoryWrite {
         static StringBuilder repositoryImportContents;
+        private static int depth = 0;
 
     public static String repositoryPreview(JSONObject tableItem, InitializerRequest initializerRequest){
             repositoryImportContents = new StringBuilder();
@@ -46,8 +47,15 @@ public class RepositoryWrite {
                     "\n"+
                     repositoryImportContents+
                     "\n"+
-                    "public interface "+ tableName + "Repository extends JpaRepository<"+tableName+", "+pkType+">{}"
-            ) ;
+                    "public interface "+ tableName + "Repository extends JpaRepository<"+tableName+", "+pkType+">{\n"
+            );
+            depth++;
+            FileUtil.appendTab(contents,depth);
+            depth--;
+            contents.append("// TODO : ");
+            contents.append(tableName+"Repository")
+                    .append(" 코드를 작성하세요.\n")
+                    .append("}");
 
             return contents.toString();
     }

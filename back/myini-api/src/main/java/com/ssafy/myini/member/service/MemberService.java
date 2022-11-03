@@ -8,10 +8,7 @@ import java.util.*;
 
 public interface MemberService {
     String generateToken(Long userId);
-
     MemberInfoResponse findMember(Member member);
-
     List<CrewResponse> findCrewById(Member member);
-
     void updateMemberProfileImg(Member member, MultipartFile img);
 }

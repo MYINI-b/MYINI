@@ -3,26 +3,49 @@ package com.ssafy.myini.fileio;
 import com.ssafy.myini.apidocs.response.*;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ServiceImplWrite {
     static StringBuilder serviceImplImportContents;
     private static int depth = 0;
 
+    private static boolean containList;
+
+    private static Set<String> responseImportContents;
+    private static Set<String> requestImportContents;
+
     public static String serviceImplPreview(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
         serviceImplImportContents = new StringBuilder();
+        responseImportContents = new HashSet<>();
+        requestImportContents = new HashSet<>();
+        containList = false;
 
         // 필수 import 선언
         serviceImplImportContents
                 .append("import lombok.RequiredArgsConstructor;\n")
                 .append("import org.springframework.stereotype.Service;\n")
-                .append("import org.springframework.transaction.annotation.Transactional;\n\n")
-                .append("import ").append(initializerRequest.getSpring_package_name()).append(".request.*\n")
-                .append("import ").append(initializerRequest.getSpring_package_name()).append(".response.*\n")
-                .append("import ").append(initializerRequest.getSpring_package_name()).append(".dto.*\n")
-                .append("import java.util.*;\n\n");
+                .append("import org.springframework.transaction.annotation.Transactional;\n\n");
 
         StringBuilder contents = new StringBuilder();
+        depth++;
+        String body = methodWrite(projectInfoListResponse.getApiInfoResponses()).replaceAll(",", ", ");
+        depth--;
+
+        // list import 추가하기
+        if (containList) {
+            serviceImplImportContents.append("import java.util.List;\n\n");
+        }
+        // request, response import 추가하기
+        for (String requestImport : requestImportContents) {
+            serviceImplImportContents.append("import ").append(initializerRequest.getSpring_package_name()).append(".request.").append(requestImport).append(";\n");
+        }
+        for (String responseImport : responseImportContents) {
+            serviceImplImportContents.append("import ").append(initializerRequest.getSpring_package_name()).append(".response.").append(responseImport).append(";\n");
+        }
+        serviceImplImportContents.append("\n");
+
         contents.append("package " + initializerRequest.getSpring_package_name() + ".service;\n")
                 .append("\n")
                 .append(serviceImplImportContents)
@@ -32,9 +55,7 @@ public class ServiceImplWrite {
                 .append("public class ").append(projectInfoListResponse.getApiControllerName()).append("ServiceImpl ")
                 .append("implements ").append(projectInfoListResponse.getApiControllerName()).append("Service {\n");
 
-        depth++;
-        contents.append(methodWrite(projectInfoListResponse.getApiInfoResponses()).replaceAll(",", ", "));
-        depth--;
+        contents.append(body);
         FileUtil.appendTab(contents, depth);
         contents.append("}");
 
@@ -56,9 +77,13 @@ public class ServiceImplWrite {
             methodContents.append("@Override\n");
             FileUtil.appendTab(methodContents, depth);
             // 메서드 response type
-            String response = FileUtil.responseWrite(apiInfoResponse);
-            methodContents.append(response).append(" "). // return type
+            String response = FileUtil.responseWrite(apiInfoResponse, responseImportContents);
+            methodContents.append("public ").append(response).append(" "). // return type
                     append(apiInfoResponse.getApiResponse().getApiMethodName()); // 메서드 이름
+
+            if (response.contains("List")) {
+                containList = true;
+            }
 
             // 매개변수
             methodContents.append("(");
@@ -77,6 +102,7 @@ public class ServiceImplWrite {
                 if (dtoResponse.getDtoType().equals("REQUEST")) {
                     methodContents.append(FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName()))
                             .append(" request");
+                    requestImportContents.add(FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName()));
                     break;
                 }
             }

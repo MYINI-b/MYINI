@@ -7,12 +7,11 @@ import com.ssafy.myini.requirementdocs.domain.QRequirementCategory;
 import com.ssafy.myini.requirementdocs.domain.Requirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-
-//import static com.ssafy.myini.requirementdocs.domain.QRequirement.requirement;
-//import static com.ssafy.myini.requirementdocs.domain.QRequirementCategory.requirementCategory;
-//import static com.ssafy.myini.member.domain.QMember.member;
-
 import java.util.List;
+
+import static com.ssafy.myini.member.domain.QMember.member;
+import static com.ssafy.myini.requirementdocs.domain.QRequirement.requirement;
+import static com.ssafy.myini.requirementdocs.domain.QRequirementCategory.requirementCategory;
 
 @Repository
 @RequiredArgsConstructor
@@ -20,16 +19,11 @@ public class RequirementDocsQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     public List<Requirement> findAllRequirement(Long projectId) {
-        QRequirement requirement = new QRequirement("requirement");
-        QRequirementCategory requirementCategory = new QRequirementCategory("requirementCategory");
-        QMember member = new QMember("member");
-
-        List<Requirement> requirements = queryFactory
+        return queryFactory
                 .selectFrom(requirement)
                 .leftJoin(requirement.requirementCategory, requirementCategory).fetchJoin()
                 .leftJoin(requirement.member, member).fetchJoin()
                 .where(requirement.project.projectId.eq(projectId))
                 .fetch();
-        return requirements;
     }
 }

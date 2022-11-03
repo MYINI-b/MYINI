@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TableRelationDto {
-//    private Long fromErdTableId;
-//    private String fromErdTableName;
     private Long toTableId;
     private String toTableName;
     private Long relationItemId;
@@ -18,8 +16,6 @@ public class TableRelationDto {
 
     public static TableRelationDto from(TableRelation tableRelation){
         TableRelationDto tableRelationDto = new TableRelationDto();
-//        tableRelationDto.fromErdTableId = tableRelation.getFromErdTable().getErdTableId();
-//        tableRelationDto.fromErdTableName = tableRelation.getFromErdTable().getErdTableName();
         tableRelationDto.toTableId = tableRelation.getToErdTable().getErdTableId();
         tableRelationDto.toTableName = tableRelation.getToErdTable().getErdTableName();
         tableRelationDto.relationItemId = tableRelation.getRelationItem().getRelationItemId();

@@ -53,7 +53,7 @@
 
     .table-title-article {
       width: 100%;
-      padding-right: 8px;
+      // padding-right: 8px;
       @include FLEX-BETWEEN;
     }
 
@@ -75,6 +75,8 @@
 
     .table-col {
       padding: rem(10) rem(24);
+      width: 100%;
+      word-break: break-all;
       border-radius: 20px;
       @include FLEX-CENTER;
 
@@ -82,12 +84,15 @@
         height: rem(40);
         font-size: rem(20);
         font-family: $eng-title;
-        white-space: nowrap;
+        // white-space: nowrap;
         background-color: $third;
       }
 
       &.content {
-        font-size: rem(16);
+
+        margin: 0 rem(12);
+        padding: rem(10) rem(12);
+        font-size: rem(14);
         font-family: $eng-content;
       }
 
@@ -105,10 +110,21 @@
         position: relative;
       }
 
+      &.textarea {
+        border: 1px solid $lightx2-gray;
+        border-radius: rem(6);
+
+        &::-webkit-scrollbar {
+          width: 0;
+          height: 0;
+        }
+      }
+
       .desc-block {
         padding: rem(4) rem(6);
         background-color: $light-gray;
         border-radius: 4px;
+        @include FLEX-ALIGN-CENTER;
 
         &.FE {
           background-color: $FE;
@@ -132,6 +148,17 @@
 
         svg + svg {
           top: 3px;
+        }
+      }
+
+      .point-input{
+        width:100%;
+        border:1px solid $lightx2-gray;
+        text-align: center;
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
         }
       }
     }

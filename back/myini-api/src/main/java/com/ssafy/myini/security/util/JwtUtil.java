@@ -28,18 +28,6 @@ public class JwtUtil {
                 .compact();
     }
 
-    public Long getUserId(String token) {
-        String userId = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
-                .getBody().getSubject();
-        return Long.valueOf(userId);
-    }
-
-    public String getRole(String token){
-        Claims body = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
-                .getBody();
-        return body.get("ROLE", String.class);
-    }
-
     public String getSubject(String jwtToken) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken).getBody().getSubject();
     }

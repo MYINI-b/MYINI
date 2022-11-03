@@ -132,6 +132,14 @@ public class ApiDocsController {
     }
 
     // Dto 생성
+    @PostMapping("/{projectid}/customdtos")
+    public ResponseEntity<Void> createCustomDto(@PathVariable("projectid")Long projectId,
+                                               @RequestBody @Valid CreateDtoRequest request){
+        apiDocsService.createCustomDto(projectId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    // Response Request 생성
     @PostMapping("/{apiid}/dtos")
     public ResponseEntity<Void> createDto(@PathVariable("apiid")Long apiId,
                                                   @RequestBody @Valid CreateDtoRequest request) {

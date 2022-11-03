@@ -1,34 +1,58 @@
 package com.ssafy.myini.fileio;
 
 import com.ssafy.myini.apidocs.response.*;
-import com.ssafy.myini.common.type.YN;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.StringTokenizer;
+import java.util.Set;
 
 
 public class ControllerWrite {
     static StringBuilder controllerImportContents;
-    private static int depth = 0;
+    private static int depth;
     private static String service;
+    private static boolean containList;
+
+    private static Set<String> responseImportContents;
+    private static Set<String> requestImportContents;
 
     public static String controllerPreview(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
         controllerImportContents = new StringBuilder();
+        responseImportContents = new HashSet<>();
+        requestImportContents = new HashSet<>();
+        containList = false;
+        depth = 0;
 
         // 필수 import 선언
         controllerImportContents.append("import lombok.RequiredArgsConstructor;\n")
                 .append("import org.springframework.http.HttpStatus;\n")
                 .append("import org.springframework.http.ResponseEntity;\n")
                 .append("import org.springframework.web.bind.annotation.*;\n")
-                .append("import java.util.*;\n\n")
-                .append("import ").append(initializerRequest.getSpring_package_name()).append(".request.*\n")
-                .append("import ").append(initializerRequest.getSpring_package_name()).append(".response.*\n")
-                .append("import ").append(initializerRequest.getSpring_package_name()).append(".dto.*\n")
-                .append("import ").append(initializerRequest.getSpring_package_name()).append(".service.*\n");
+                .append("import ").append(initializerRequest.getSpring_package_name()).append(".service.*;\n\n");
 
+
+        service = FileUtil.firstIndexToLowerCase(projectInfoListResponse.getApiControllerName());
         StringBuilder contents = new StringBuilder();
+        depth++;
+        String body = methodWrite(projectInfoListResponse.getApiInfoResponses()).toString().replaceAll(",", ", ");
+        depth--;
+
+        // list import 추가하기
+        if (containList) {
+            controllerImportContents.append("import java.util.List;\n\n");
+        }
+        // request, response import 추가하기
+        for (String requestImport : requestImportContents) {
+            controllerImportContents.append("import ").append(initializerRequest.getSpring_package_name()).append(".request.").append(requestImport).append(";\n");
+        }
+        for (String responseImport : responseImportContents) {
+            controllerImportContents.append("import ").append(initializerRequest.getSpring_package_name()).append(".response.").append(responseImport).append(";\n");
+        }
+        controllerImportContents.append("\n");
+
+
         // class 생성 및 service 선언
         contents.append("package " + initializerRequest.getSpring_package_name() + ".controller;\n")
                 .append("\n")
@@ -40,14 +64,13 @@ public class ControllerWrite {
                 .append("public class " + projectInfoListResponse.getApiControllerName() + "Controller {\n");
         // 서비스 불러오기
         depth++;
-        FileUtil.appendTab(contents, depth);
-        service = FileUtil.firstIndexToLowerCase(projectInfoListResponse.getApiControllerName());
+
         contents.append("private final ")
                 .append(projectInfoListResponse.getApiControllerName()).append("Service ")
                 .append(service).append("Service;\n");
 
         FileUtil.appendTab(contents, depth);
-        contents.append("\n").append(methodWrite(projectInfoListResponse.getApiInfoResponses()).toString().replaceAll(",", ", "));
+        contents.append(body);
         depth--;
         contents.append("}");
 
@@ -67,6 +90,7 @@ public class ControllerWrite {
             // Api Method 추출
             String apiMethod = FileUtil.getMethodType(apiInfoResponse.getApiResponse().getApiMethod());
 
+            methodContents.append("\n");
             FileUtil.appendTab(methodContents, depth);
             methodContents.append("@").append(apiMethod).append("Mapping");
             if (apiInfoResponse.getApiResponse().getApiUrl() != null && !apiInfoResponse.getApiResponse().getApiUrl().isEmpty()) {
@@ -83,9 +107,13 @@ public class ControllerWrite {
             methodContents.append("public ResponseEntity<");
 
             // 메서드 response type
-            String response = FileUtil.responseWrite(apiInfoResponse);
+            String response = FileUtil.responseWrite(apiInfoResponse, responseImportContents);
             if (response.equals("void")) {
                 response = FileUtil.firstIndexToUpperCase(response);
+            } else {
+                if (response.contains("List")) {
+                    containList = true;
+                }
             }
 
             // 메서드명
@@ -112,9 +140,10 @@ public class ControllerWrite {
             // 3. requestBody
             for (DtoResponse dtoResponse : apiInfoResponse.getDtoResponses()) {
                 if (dtoResponse.getDtoType().equals("REQUEST")) {
-                    methodContents.append("@RequestBody @Valid ").append(FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName()))
+                    methodContents.append("@RequestBody ").append(FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName()))
                             .append(" request");
                     variableNames.add("request");
+                    requestImportContents.add(FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName()));
                     break;
                 }
             }
