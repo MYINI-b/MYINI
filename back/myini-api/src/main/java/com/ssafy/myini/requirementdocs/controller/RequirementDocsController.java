@@ -116,4 +116,11 @@ public class RequirementDocsController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @PostMapping("/jira")
+    public ResponseEntity<Void> jira(){
+        requirementDocsService.jira();
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
 }
