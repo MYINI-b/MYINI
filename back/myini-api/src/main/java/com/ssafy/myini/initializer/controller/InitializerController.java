@@ -38,7 +38,6 @@ public class InitializerController {
     @PostMapping("/{projectid}/previews")
     public ResponseEntity<List<PreviewResponse>> initializerPreview(@PathVariable("projectid") Long projectId,
                                                  @RequestBody InitializerRequest initializerRequest){
-        System.out.println("!!!");
         List<PreviewResponse> body = initializerService.initializerPreview(projectId, initializerRequest);
 
         return ResponseEntity.ok().body(body);

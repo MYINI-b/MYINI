@@ -67,7 +67,9 @@ public class DtoWrite {
                                 } else if (type.equals("RESPONSE")) {
                                     path = "response";
                                 }
+
                                 FileUtil.fileWrite(initializerRequest, dtoPreview(dtoResponse, initializerRequest), path, FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName().trim()));
+
                             }
                     );
                 }
