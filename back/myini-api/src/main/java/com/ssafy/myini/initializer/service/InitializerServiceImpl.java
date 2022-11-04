@@ -26,6 +26,7 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -79,7 +80,7 @@ public class InitializerServiceImpl implements InitializerService {
 
     @Override
     @Transactional
-    public Void initializerStart(Long projectId, InitializerRequest initializerRequest) {
+    public ZipFile initializerStart(Long projectId, InitializerRequest initializerRequest) {
 
         //프로젝트 init
         InitProjectDownload.initProject(initializerRequest);
@@ -123,11 +124,11 @@ public class InitializerServiceImpl implements InitializerService {
 
             ZipFile zipFile = new ZipFile(initializerRequest.getSpring_base_path() + initializerRequest.getSpring_name() + ".zip");
             zipFile.addFolder(new File(initializerRequest.getSpring_base_path() + initializerRequest.getSpring_name()));
+
+            return zipFile;
         } catch (Exception e) {
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
-
-        return null;
     }
 
     @Override
