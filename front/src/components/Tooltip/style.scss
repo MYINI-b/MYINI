@@ -1,0 +1,92 @@
+@import 'variables.scss';
+
+.tooltip-div {
+  position: relative;
+
+  .tooltip-empty {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background-color: rgba(131, 131, 131, 0.5);
+    @include STRETCH;
+  }
+
+  &:hover {
+    .tooltip-icon {
+      opacity: 1;
+    }
+  }
+
+  .tooltip-icon-abs {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    z-index: 11;
+    transform: translate(0, -50%);
+    @include FLEX-CENTER;
+
+    .tooltip-icon-rel {
+      position: relative;
+    }
+  }
+
+  .tooltip-text {
+    position: absolute;
+    top: rem(-56);
+    left: rem(-16);
+    max-width: 500px;
+    font-weight: bold;
+    font-size: rem(14);
+    background-color: $white;
+    border-radius: rem(6);
+    opacity: 0;
+    transition: 0.3s ease;
+
+    &.open {
+      opacity: 1;
+    }
+
+    .tooltip-balloon {
+      position: relative;
+      width: 100%;
+      padding: rem(12);
+      overflow: auto;
+      white-space: nowrap;
+      background: $white;
+      border-radius: rem(6);
+
+      &::-webkit-scrollbar {
+        width: 6px;
+        height: 4px;
+      }
+    }
+    &::after {
+      position: absolute;
+      bottom: 0;
+      left: 16px;
+      width: 0;
+      height: 0;
+      margin-bottom: -10px;
+      margin-left: -5px;
+      border: 10px solid transparent;
+      border-top-color: $white;
+      border-bottom: 0;
+      border-left: 0;
+      content: '';
+    }
+  }
+
+  .tooltip-icon {
+    position: absolute;
+    top: rem(-8);
+    right: 0;
+    cursor: pointer;
+    opacity: 0;
+    transition: 0.2s ease;
+
+    &.open {
+      opacity: 1;
+    }
+  }
+}

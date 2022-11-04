@@ -1,65 +1,93 @@
 package com.ssafy.myini.fileio;
 
-import com.ssafy.myini.ERD.response.ConditionItemDto;
-import com.ssafy.myini.ERD.response.ErdTableListResponse;
-import com.ssafy.myini.ERD.response.TableColumnDto;
+import com.ssafy.myini.InitializerException;
+import com.ssafy.myini.erd.response.ConditionItemDto;
+import com.ssafy.myini.erd.response.ErdTableListResponse;
+import com.ssafy.myini.erd.response.TableColumnDto;
 import com.ssafy.myini.initializer.request.InitializerRequest;
+import com.ssafy.myini.initializer.response.PreviewResponse;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.List;
 
 public class RepositoryWrite {
-    public static void repositoryWrite(ErdTableListResponse erdTableListResponse, InitializerRequest initializerRequest){
-        String pkType = "";
-        la : for (TableColumnDto tableColumnDto : erdTableListResponse.getTableColumnDtos()) {
-            for (ConditionItemDto conditionItemDto : tableColumnDto.getConditionItemDtos()) {
-                if(conditionItemDto.getConditionItemName().equals("pk")) {
-                    pkType = tableColumnDto.getTableColumnType();
-                    break la;
+        static StringBuilder repositoryImportContents;
+        private static int depth = 0;
+
+    public static String repositoryPreview(JSONObject tableItem, InitializerRequest initializerRequest){
+            repositoryImportContents = new StringBuilder();
+            String pkType = "";
+
+            StringBuilder contents = new StringBuilder();
+
+            String tableName = (String) tableItem.get("name");
+
+            //PK 타입 획득하기
+            JSONArray columns = (JSONArray) tableItem.get("columns");
+            for (int j=0 ; j<columns.size() ; j++){
+                JSONObject column = (JSONObject) columns.get(j);
+
+                JSONObject option = (JSONObject) column.get("option");
+                if( (Boolean) option.get("primaryKey")){
+                    pkType = (String) column.get("dataType");
+                    break;
                 }
             }
+
+            pkType = dataTypeChange(pkType);
+
+            repositoryImportContents.append("import " + initializerRequest.getSpring_package_name() + ".entity."+tableName+";\n"+
+                    "import org.springframework.data.jpa.repository.JpaRepository;\n");
+
+            contents.append("package " + initializerRequest.getSpring_package_name() + ".repository;\n" +
+                    "\n"+
+                    repositoryImportContents+
+                    "\n"+
+                    "public interface "+ tableName + "Repository extends JpaRepository<"+tableName+", "+pkType+">{\n"
+            );
+            depth++;
+            FileUtil.appendTab(contents,depth);
+            depth--;
+            contents.append("// TODO : ");
+            contents.append(tableName+"Repository")
+                    .append(" 코드를 작성하세요.\n")
+                    .append("}");
+
+            return contents.toString();
+    }
+
+    public static void repositoryWrite(JSONObject tableItem, InitializerRequest initializerRequest){
+     try {
+        FileUtil.fileWrite(initializerRequest, repositoryPreview(tableItem,initializerRequest), "repository", (String) tableItem.get("name")+"Repository");
+    }catch (Exception e){
+        throw new InitializerException(InitializerException.INITIALIZER_FAIL);
+    }
+    }
+
+    private static String dataTypeChange(String columnDataType) {
+        if(columnDataType.equals("BIGINT(Long)")){
+            return "Long";
+        }else if(columnDataType.equals("INT(Integer)")){
+            return "Integer";
+        }else if(columnDataType.equals("CHAR(Character)")){
+            return "Character";
+        }else if(columnDataType.equals("DOUBLE(Double)")){
+            return "Double";
+        }else if(columnDataType.equals("FLOAT(Float)")){
+            return "Float";
+        }else if(columnDataType.equals("SMALLINT(Short)")){
+            return "Short";
+        }else if(columnDataType.equals("TINYINT(Byte)")){
+            return "Byte";
+        }else if(columnDataType.equals("BOOLEAN(Boolean)")){
+            return "Boolean";
+        }else if(columnDataType.equals("VARCHAR(String)")){
+            return "String";
         }
-
-        String contents = "" +
-                "package " + initializerRequest.getSpring_package_name() + ".repository;\n" +
-                "\n"+
-                "import " + initializerRequest.getSpring_package_name() + ".entity."+erdTableListResponse.getErdTableName()+";\n"+
-                "import org.springframework.data.jpa.repository.JpaRepository;\n"+
-                "\n"+
-                "public interface "+ erdTableListResponse.getErdTableName() + "Repository extends JpaRepository<"+erdTableListResponse.getErdTableName()+", "+pkType+">{}"
-                ;
-
-        try {
-            //폴더 찾아가기
-            String repositoryPath = initializerRequest.getSpring_base_path()+"\\"+initializerRequest.getSpring_name()+"\\src\\main\\java\\";
-
-            String[] packagePath = initializerRequest.getSpring_package_name().split("[.]");
-            for (String s : packagePath) {
-                repositoryPath = repositoryPath + s + "\\";
-            }
-            repositoryPath += "repository\\";
-
-            //폴더 만들기
-            File folder = new File(repositoryPath);
-            if (!folder.exists()) {
-                folder.mkdir();
-            }
-
-            //파일 만들기
-            File file = new File(repositoryPath+erdTableListResponse.getErdTableName()+"Repository.java");
-            if (!file.exists()) {
-                folder.createNewFile();
-            }
-
-            //파일 쓰기
-            FileWriter fw = new FileWriter(file);
-            BufferedWriter writer = new BufferedWriter(fw);
-            writer.write(contents);
-            writer.close();
-
-        }catch (Exception e){
-            System.out.println("e = " + e);
-        }
+        return "String";
     }
 }

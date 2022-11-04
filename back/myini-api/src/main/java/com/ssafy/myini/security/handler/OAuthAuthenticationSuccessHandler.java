@@ -16,7 +16,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Component
 public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private final String AUTHENTICATION_REDIRECT_URI = "https://k7b203.p.ssafy.io/social/redirect";
+    private final String AUTHENTICATION_REDIRECT_URI = "http://localhost:3000/social/redirect";
     private final MemberService memberService;
 
     @Override

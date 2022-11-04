@@ -4,6 +4,9 @@ public class NotFoundException extends RuntimeException {
     public static final String MEMBER_NOT_FOUND = "존재하지 않는 회원입니다.";
     public static final String AUTH_NOT_FOUND = "존재하지 않는 토큰입니다.";
     public static final String PROJECT_NOT_FOUND = "존재하지 않는 프로젝트입니다.";
+    public static final String MEMBER_PROJECT_NOT_FOUND = "프로젝트에서 존재하지 않는 팀원입니다.";
+    public static final String REQUIREMENT_NOT_FOUND = "존재하지 않는 요구사항입니다.";
+    public static final String REQUIREMENT_CATEGORY_NOT_FOUND = "존재하지 않는 요구사항 카테고리입니다.";
     public static final String APICONTROLLER_NOT_FOUND = "존재하지 않는 API컨트롤러입니다.";
     public static final String API_NOT_FOUND = "존재하지 않는 API입니다.";
     public static final String PATHVARIABLE_NOT_FOUND = "존재하지 않는 PATHVARIABLE입니다.";

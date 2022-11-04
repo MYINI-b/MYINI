@@ -1,0 +1,6 @@
+@import 'variables.scss';
+
+.projectmanage-highest-container {
+  @include STRETCH;
+  @include FLEX-COLUMN;
+}

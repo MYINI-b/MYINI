@@ -21,5 +21,5 @@ public class InitializerRequest {
     private String spring_name;
     private String spring_description;
     private String spring_package_name;
-    private List<String> spring_dependency_name;
+    private String spring_dependency_name;
 }

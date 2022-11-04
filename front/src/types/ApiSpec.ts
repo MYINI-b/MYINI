@@ -1,9 +1,15 @@
 export interface API {
   id: number;
-  name: string;
+  apiName: string;
+  desc: string;
+  methodName: string;
   url: string;
   method: string;
   code: number;
+  reqVarName: string;
+  resVarName: string;
+  pathVarList: QUERY[];
+  queryList: QUERY[];
 }
 export interface CONTROLLER {
   name: string;
@@ -11,12 +17,9 @@ export interface CONTROLLER {
   baseurl: string;
 }
 
-export interface PATHVARIABLES {
-  key: '';
-}
 export interface QUERY {
-  key: '';
-  type: '';
+  key: string;
+  type: string;
 }
 
 export interface MOUSEPOS {

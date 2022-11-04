@@ -1,0 +1,56 @@
+@import 'variables.scss';
+
+.division-list-container {
+  @include BORDER-PAPER;
+  position: fixed;
+  align-items: center;
+  width: 100%;
+  max-height: rem(250);
+  padding: rem(12) rem(12);
+  overflow-y: auto;
+  border-top: initial;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  box-shadow: $shadow;
+
+  .division-list-overflow {
+    @include STRETCH;
+    @include FLEX-COLUMN;
+  }
+
+  .division-row {
+    position: relative;
+    width: 100%;
+    height: rem(28);
+    padding: rem(6) 0;
+    overflow: hidden;
+    color: $gray;
+    font-size: rem(14);
+    font-family: $eng-content;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    transition: 0.3s ease;
+    @include FLEX-CENTER;
+    &:hover {
+      color: $black;
+      font-weight: bold;
+      .division-delete-button {
+        opacity: 1;
+      }
+    }
+
+    &.select {
+      color: $black;
+      font-weight: bold;
+    }
+  }
+}
+.division-list-empty {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  background-color: transparent;
+  @include STRETCH;
+}

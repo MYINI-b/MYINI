@@ -16,17 +16,19 @@ public class DtoResponse {
     private String dtoName;
     private String dtoType;
     List<DtoItemResponse> dtoItemResponses;
+    private String dtoIsList;
 
-    public static DtoResponse from(Dto dto){
+    public static DtoResponse from(Dto dto) {
         DtoResponse dtoResponse = new DtoResponse();
         dtoResponse.dtoId = dto.getDtoId();
         dtoResponse.dtoName = String.valueOf(dto.getDtoName());
         dtoResponse.dtoType = String.valueOf(dto.getDtoType());
-        if(dto.getDtoItems() != null){
-            dtoResponse.dtoItemResponses = dto.getDtoItems().stream()
-                    .map(DtoItemResponse :: from)
+        if (dto.getDtoItemChildren() != null) {
+            dtoResponse.dtoItemResponses = dto.getDtoItemChildren().stream()
+                    .map(DtoItemResponse::from)
                     .collect(Collectors.toList());
         }
+        dtoResponse.dtoIsList = String.valueOf(dto.getDtoIsList());
         return dtoResponse;
     }
 }

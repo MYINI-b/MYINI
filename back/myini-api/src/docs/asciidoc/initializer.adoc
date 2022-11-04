@@ -1,0 +1,42 @@
+:basedir: {docdir}
+:snippets: {basedir}/build/generated-snippets
+
+= RESTFUL Notes API Guide
+:doctype: initializer
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectnums:
+:sectlinks:
+:sectanchors:
+
+[[API]]
+=== 이니셜라이저
+==== 이니셜라이저 가능 확인 API
+===== 요청
+include::{snippets}/api/initializers/{projectid}/ispossible/http-request.adoc[]
+====== Header
+include::{snippets}/api/initializers/{projectid}/ispossible/request-headers.adoc[]
+====== Path
+include::{snippets}/api/initializers/{projectid}/ispossible/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/initializers/{projectid}/ispossible/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/initializers/{projectid}/ispossible/http-response.adoc[]
+====== Body
+include::{snippets}/api/initializers/{projectid}/ispossible/response-fields.adoc[]
+
+==== 이니셜라이저 시작 API
+===== 요청
+include::{snippets}/api/initializers/{projectid}/http-request.adoc[]
+====== Header
+include::{snippets}/api/initializers/{projectid}/request-headers.adoc[]
+====== Path
+include::{snippets}/api/initializers/{projectid}/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/initializers/{projectid}/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/initializers/{projectid}/http-response.adoc[]
