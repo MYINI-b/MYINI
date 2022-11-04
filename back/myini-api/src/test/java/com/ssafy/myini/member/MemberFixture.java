@@ -11,9 +11,10 @@ public class MemberFixture {
     public static final String EMAIL = "test@test.com";
     public static final String NICKNAME = "김싸피";
     public static final String PROFILE_IMG = "프로필이미지url";
+    public static final Integer COUNT = 1;
 
     public static final MemberInfoResponse TEST_MEMBER_INFO_RESPONSE
-            = new MemberInfoResponse(ID, NICKNAME, EMAIL, PROFILE_IMG);
+            = new MemberInfoResponse(ID, NICKNAME, EMAIL, PROFILE_IMG, COUNT);
 
     public static final CrewResponse TEST_CREW_RESPONSE
             = new CrewResponse(2L, "이싸피", "profile");
