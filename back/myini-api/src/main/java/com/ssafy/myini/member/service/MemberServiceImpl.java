@@ -25,6 +25,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final MemberQueryRepository memberQueryRepository;
     private final S3Uploader s3Uploader;
+    private final MemberProjectRepository memberProjectRepository;
 
     @Value("${token.access_token.expiration_time}")
     private String accessTokenExpirationTime;
@@ -43,7 +44,10 @@ public class MemberServiceImpl implements MemberService {
     public MemberInfoResponse findMember(Member member) {
         memberRepository.findById(member.getMemberId())
                 .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
-        return MemberInfoResponse.from(member);
+
+        Integer projectCount = memberProjectRepository.findMemberProjectByMember(member).size();
+
+        return MemberInfoResponse.from(member,projectCount);
     }
 
     @Override
