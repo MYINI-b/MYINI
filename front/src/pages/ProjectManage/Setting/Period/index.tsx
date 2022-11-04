@@ -18,16 +18,16 @@ export default function ProjectPeriod({ store }: Props) {
       if (isStart) {
         const momentEnd = moment(store.pjt.endDay);
         if (momentEnd.isBefore(momentVal))
-          store.pjt.endDay = momentVal.format('YYYY/MM/DD');
+          store.pjt.endDay = momentVal.format('YYYY-MM-DD');
 
-        store.pjt.startDay = momentVal.format('YYYY/MM/DD');
+        store.pjt.startDay = momentVal.format('YYYY-MM-DD');
         setIsStartCalOpen(false);
       } else {
         const momentStart = moment(store.pjt.startDay);
         if (momentVal.isBefore(momentStart))
-          store.pjt.startDay = momentVal.format('YYYY/MM/DD');
+          store.pjt.startDay = momentVal.format('YYYY-MM-DD');
 
-        store.pjt.endDay = momentVal.format('YYYY/MM/DD');
+        store.pjt.endDay = momentVal.format('YYYY-MM-DD');
         setIsEndCalOpen(false);
       }
     },
@@ -47,7 +47,7 @@ export default function ProjectPeriod({ store }: Props) {
             setIsEndCalOpen(false);
           }}
         >
-          {store.pjt.startDay || moment(new Date()).format('YYYY/MM/DD')}
+          {store.pjt.startDay || moment(new Date()).format('YYYY-MM-DD')}
           {isStartCalOpen && (
             <div
               className="date-absolute-div"
@@ -70,7 +70,7 @@ export default function ProjectPeriod({ store }: Props) {
             setIsStartCalOpen(false);
           }}
         >
-          {store.pjt.endDay || moment(new Date()).format('YYYY/MM/DD')}
+          {store.pjt.endDay || moment(new Date()).format('YYYY-MM-DD')}
           {isEndCalOpen && (
             <div
               className="date-absolute-div"

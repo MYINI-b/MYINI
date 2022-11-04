@@ -12,7 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/main" element={<MainPage />} />
-        <Route path="/projectmanage" element={<ProjectManage />} />
+        <Route path="/project/:pid" element={<ProjectManage />} />
       </Routes>
     </BrowserRouter>
   );

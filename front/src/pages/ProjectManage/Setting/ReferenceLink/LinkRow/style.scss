@@ -14,7 +14,6 @@
 
   .link-row-input {
     width: 100%;
-    height: rem(38);
     padding: rem(10);
     color: $black;
     font-size: rem(14);
@@ -23,10 +22,11 @@
   }
 
   .link-row-a {
+    display: flex;
     width: 100%;
-    height: rem(38);
     padding: rem(11);
     color: $black;
     font-size: rem(14);
+    word-break: break-all;
   }
 }

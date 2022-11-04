@@ -1,5 +1,7 @@
 import { Dispatch, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSyncedStore } from '@syncedstore/react';
+import { globalStore } from 'store/yjsStore';
 
 import './style.scss';
 
