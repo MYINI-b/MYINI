@@ -1,5 +1,5 @@
-import { ReactComponent as Login } from '../../assets/google_btn.svg';
-import logo from '../../assets/logo.png';
+import Login from 'assets/login_btn.png';
+import logo from 'assets/logo.png';
 import './style.scss';
 
 export default function LoginPage() {
@@ -18,9 +18,8 @@ export default function LoginPage() {
           <span className="INI">INI</span>
         </div>
         <a href="https://k7b203.p.ssafy.io/oauth2/authorization/google">
-          로그인하기
+          <img src={Login} alt="" className="login-btn" />
         </a>
-        <Login className="login-btn" />
       </div>
     </div>
   );
