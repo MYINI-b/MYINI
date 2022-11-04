@@ -29,6 +29,7 @@ export default function CategoryListModal({
         if (e.manager === store.pjt.managers[idx]) e.manager = '';
       });
       store.pjt.managers.splice(idx, 1);
+      closeManagerModal();
     },
     [store],
   );
@@ -38,6 +39,8 @@ export default function CategoryListModal({
       if (e.key === 'Enter') {
         if (store.pjt.managers === undefined) store.pjt.managers = [];
         store.pjt.managers.push(managerInput);
+        store.pjt.rows[idx].manager = managerInput;
+        closeManagerModal();
         setManagerInput('');
       }
     },

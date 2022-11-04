@@ -55,7 +55,7 @@ export default function ProjectMember({
   return (
     <>
       <div className="project-detail-title-wrapper normal">
-        <div className="project-detail-info-title">팀원관리&nbsp;</div>
+        <div className="project-detail-info-title">팀원 관리&nbsp;</div>
         {isEdit ? (
           <FontAwesomeIcon
             icon={faCheck}

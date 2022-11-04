@@ -9,7 +9,6 @@ import { ROW, ELEMENTPOS } from 'types/Requirement';
 import { MOUSEPOS } from 'types/ApiSpec';
 import { IMPORTANCE_TEXT } from 'constants/index';
 
-import useInput from 'hooks/useInput';
 import CategoryListModal from '../CategoryListModal';
 import RowModal from '../RowModal';
 import DivisionModal from '../DivisionModal';
@@ -37,15 +36,36 @@ export default function TableRow({ row, idx, store }: Props) {
   const [isDescEdit, setIsDescEdit] = useState(false);
   const [isDivisionOpen, setIsDivisionOpen] = useState(false);
   const [isPointEdit, setIsPointEdit] = useState(false);
-  const [requirement, onRequirementChange] = useInput('');
-  const [desc, onDescChange] = useInput('');
-  const [point, onPointChange] = useInput(0);
+  const [requirement, setRequirement] = useState('');
+  const [desc, setDesc] = useState('');
+  const [point, setPoint] = useState(0);
 
   const [clickElementPos, setClickElementPos] = useState<ELEMENTPOS>({
     x: 0,
     y: 0,
     width: 0,
   });
+
+  const onRequirementChange = useCallback(
+    (e: any) => {
+      store.pjt.rows[idx].requirement = e.target.value;
+    },
+    [idx, store],
+  );
+
+  const onDescChange = useCallback(
+    (e: any) => {
+      store.pjt.rows[idx].description = e.target.value;
+    },
+    [idx, store],
+  );
+
+  const onPointChange = useCallback(
+    (e: any) => {
+      store.pjt.rows[idx].point = e.target.value;
+    },
+    [idx, store],
+  );
 
   const onRightClick = (e: any) => {
     e.preventDefault();
@@ -112,19 +132,19 @@ export default function TableRow({ row, idx, store }: Props) {
   }, []);
 
   const focusOutDesc = useCallback(() => {
-    store.pjt.rows[idx].description = desc;
+    // store.pjt.rows[idx].description = desc;
     setIsDescEdit(false);
-  }, [store, desc]);
+  }, [store]);
 
   const focusOutRequirement = useCallback(() => {
-    store.pjt.rows[idx].requirement = requirement;
+    // store.pjt.rows[idx].requirement = requirement;
     setIsRequireEdit(false);
-  }, [store, requirement]);
+  }, [store]);
 
   const focusOutPoint = useCallback(() => {
-    store.pjt.rows[idx].point = point;
+    // store.pjt.rows[idx].point = point;
     setIsPointEdit(false);
-  }, [store, point]);
+  }, [store]);
 
   useEffect(() => {
     if (requireContainer.current)
@@ -133,8 +153,8 @@ export default function TableRow({ row, idx, store }: Props) {
         focusOutRequirement,
       );
 
-    if (store.pjt.rows !== undefined)
-      store.pjt.rows[idx].requirement = requirement;
+    // if (store.pjt.rows !== undefined)
+    // store.pjt.rows[idx].requirement = requirement;
 
     return () => {
       if (requireContainer.current)
@@ -149,7 +169,7 @@ export default function TableRow({ row, idx, store }: Props) {
     if (pointContainer.current)
       pointContainer.current.addEventListener('focusout', focusOutPoint);
 
-    if (store.pjt.rows !== undefined) store.pjt.rows[idx].point = point;
+    // if (store.pjt.rows !== undefined) store.pjt.rows[idx].point = point;
 
     return () => {
       if (pointContainer.current)
@@ -161,7 +181,7 @@ export default function TableRow({ row, idx, store }: Props) {
     if (descContainer.current)
       descContainer.current.addEventListener('focusout', focusOutDesc);
 
-    if (store.pjt.rows !== undefined) store.pjt.rows[idx].description = desc;
+    // if (store.pjt.rows !== undefined) store.pjt.rows[idx].description = desc;
 
     return () => {
       if (descContainer.current)
@@ -182,7 +202,7 @@ export default function TableRow({ row, idx, store }: Props) {
       </span>
       {isRequireEdit ? (
         <textarea
-          value={requirement}
+          value={row.requirement}
           ref={requireContainer}
           onChange={onRequirementChange}
           className="table-col content one-half textarea"
@@ -198,7 +218,7 @@ export default function TableRow({ row, idx, store }: Props) {
       )}
       {isDescEdit ? (
         <textarea
-          value={desc}
+          value={row.description}
           ref={descContainer}
           onChange={onDescChange}
           className="table-col content two textarea"
@@ -255,7 +275,7 @@ export default function TableRow({ row, idx, store }: Props) {
         {isPointEdit ? (
           <input
             type="number"
-            value={point}
+            value={row.point}
             onChange={onPointChange}
             className="point-input"
             ref={pointContainer}

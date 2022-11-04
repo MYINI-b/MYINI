@@ -54,7 +54,7 @@ export default function ReferenceLink({
   return (
     <div className="project-link">
       <div className="project-detail-info-title">
-        링크관리&nbsp;
+        링크 관리&nbsp;
         {isEdit ? (
           <FontAwesomeIcon
             icon={faCheck}

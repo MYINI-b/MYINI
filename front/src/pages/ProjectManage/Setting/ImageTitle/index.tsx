@@ -118,7 +118,7 @@ export default function ProjectImage({
           )}
         </div>
         <div className="project-detail-container">
-          <div className="project-detail-info-title">프로젝트명</div>
+          <div className="project-detail-info-title">프로젝트 명</div>
           <input
             type="text"
             value={title}
