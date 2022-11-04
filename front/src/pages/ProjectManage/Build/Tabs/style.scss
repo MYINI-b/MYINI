@@ -1,0 +1,43 @@
+@import 'variables.scss';
+@import '../style.scss';
+
+.tab-container {
+  @include FLEX-COLUMN;
+  .tab-child {
+    @include FLEX-COLUMN;
+  }
+  
+  .ul {
+    
+  }
+  .tab-title {
+    .li {
+      display: flex;
+      justify-content: center;
+      list-style-type: none;
+      float: left;
+      width: 50%;
+      padding-top: rem(33);
+      .title-name {
+        font-family: $eng-content;
+        font-size: rem(24);
+        border-radius: 10% 10% 0% 0%;
+        @include respond-to('medium') {
+          font-size: rem(20);
+        }
+        @include respond-to('small') {
+          font-size: rem(16);
+        }
+      }
+    }
+    button {
+      background-color: $white;
+      height: rem(44);
+      width: rem(292);
+    }
+    .active>button {
+      width: 100%;
+      background: $secondary;
+    }
+  }
+}

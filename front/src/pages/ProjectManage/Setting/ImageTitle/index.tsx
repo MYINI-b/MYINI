@@ -1,31 +1,29 @@
 import { faPen, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState, useCallback, Dispatch, useRef } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import axios from 'axios';
 import './style.scss';
 import DefaultProfile from 'assets/default-profile.png';
-import { profile } from 'console';
 
 interface Props {
-  img: string;
-  setImg: Dispatch<React.SetStateAction<string>>;
-  title: string;
-  onTitleChange: (e: any) => void;
+  store: any;
 }
 
-export default function ProjectImage({
-  img,
-  setImg,
-  title,
-  onTitleChange,
-}: Props) {
+export default function ProjectImage({ store }: Props) {
   const fileInput = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [isEdit, setIsEdit] = useState(false);
 
   const onSubmitClick = useCallback(() => {
     setIsEdit(false);
   }, []);
+
+  const onTitleChange = useCallback(
+    (e: any) => {
+      store.pjt.title = e.target.value;
+    },
+    [store],
+  );
 
   const onImgChange = useCallback((e: any) => {
     const profileImg = e.target.files[0];
@@ -52,9 +50,9 @@ export default function ProjectImage({
           },
         };
 
-        const resp = await axios.patch('/projects/3/images', formData, headers);
+        await axios.patch('/projects/3/images', formData, headers);
         if (reader.result && typeof reader.result === 'string')
-          setImg(reader.result);
+          store.pjt.img = reader.result;
         // 유저 이미지 변경 api 전송
       }
     };
@@ -72,7 +70,7 @@ export default function ProjectImage({
         </div>
         <img
           className="project-profile-img"
-          src={img === '' ? DefaultProfile : img}
+          src={store.pjt.img ? store.pjt.img : DefaultProfile}
           alt="profile"
         />
         <input
@@ -102,10 +100,10 @@ export default function ProjectImage({
           )}
         </div>
         <div className="project-detail-container">
-          <div className="project-detail-info-title">프로젝트명</div>
+          <div className="project-detail-info-title">프로젝트 명</div>
           <input
             type="text"
-            value={title}
+            value={store.pjt.title || ''}
             className={`project-detail-title ${isEdit && 'edit'}`}
             onChange={onTitleChange}
             readOnly={!isEdit}

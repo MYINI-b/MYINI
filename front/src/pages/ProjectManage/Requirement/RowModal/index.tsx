@@ -7,22 +7,19 @@ import {
 } from 'react';
 import './style.scss';
 import { MOUSEPOS } from 'types/ApiSpec';
-import { ROW } from 'types/Requirement';
 
 interface Props {
   setIsRowModalOpen: Dispatch<SetStateAction<boolean>>;
   clickMousePos: MOUSEPOS;
-  rows: ROW[];
-  setRows: Dispatch<React.SetStateAction<ROW[]>>;
   idx: number;
+  store: any;
 }
 
 export default function RowModal({
   setIsRowModalOpen,
   clickMousePos,
-  rows,
-  setRows,
   idx,
+  store,
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
 
@@ -36,9 +33,7 @@ export default function RowModal({
   };
 
   const addRow = useCallback(() => {
-    const copyRows = [...rows];
-    copyRows.push({
-      id: 1,
+    store.pjt.rows.push({
       category: '',
       requirement: '',
       description: '',
@@ -47,24 +42,19 @@ export default function RowModal({
       importance: 3,
       point: 0,
     });
-    setRows(copyRows);
     setIsRowModalOpen(false);
-  }, [rows, idx]);
+  }, [store]);
 
   const deleteRow = useCallback(() => {
-    const copyRows = [...rows];
-    copyRows.splice(idx, 1);
-    setRows(copyRows);
+    store.pjt.rows.splice(idx, 1);
     setIsRowModalOpen(false);
-  }, [rows, idx]);
+  }, [store, idx]);
 
   const duplicateRow = useCallback(() => {
-    const copyRows = [...rows];
-    const copyRow = { ...copyRows[idx] };
-    copyRows.splice(idx, 0, copyRow);
-    setRows(copyRows);
+    const copyRow = { ...store.pjt.rows[idx] };
+    store.pjt.rows.splice(idx, 0, copyRow);
     setIsRowModalOpen(false);
-  }, [rows, idx]);
+  }, [store, idx]);
 
   return (
     <div

@@ -5,7 +5,6 @@ export interface ELEMENTPOS {
 }
 
 export interface ROW {
-  id: number;
   category: string;
   requirement: string;
   description: string;

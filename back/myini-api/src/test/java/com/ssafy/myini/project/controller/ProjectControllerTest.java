@@ -276,7 +276,7 @@ class ProjectControllerTest extends ControllerTest {
                 .willReturn(TEST_PROJECT_MEMBER_RESPONSE);
 
         // when
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/projects/members", ID)
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/projects/members", ID)
                         .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(TEST_FIND_MEMBER_EMAIL_REQUEST)))

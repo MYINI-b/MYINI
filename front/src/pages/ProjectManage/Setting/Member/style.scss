@@ -51,4 +51,8 @@
   &:hover {
     color: $delete;
   }
+
+  &.hidden {
+    display: none;
+  }
 }

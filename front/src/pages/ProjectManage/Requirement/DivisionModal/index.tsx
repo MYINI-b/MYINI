@@ -7,28 +7,24 @@ import { ELEMENTPOS, ROW } from 'types/Requirement';
 interface Props {
   setIsDivisionOpen: Dispatch<React.SetStateAction<boolean>>;
   clickElementPos: ELEMENTPOS;
-  rows: ROW[];
-  setRows: Dispatch<React.SetStateAction<ROW[]>>;
   idx: number;
+  store: any;
 }
 
 export default function DivisionModal({
   setIsDivisionOpen,
   clickElementPos,
-  rows,
-  setRows,
   idx,
+  store,
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
 
   const selectdivision = useCallback(
     (division: string) => {
-      const copyRows = [...rows];
-      copyRows[idx].division = division;
-      setRows(copyRows);
+      store.pjt.rows[idx].division = division;
       setIsDivisionOpen(false);
     },
-    [rows, idx],
+    [store, idx],
   );
 
   useEffect(() => {
@@ -52,7 +48,7 @@ export default function DivisionModal({
             return (
               <span
                 className={`division-row ${
-                  rows[idx].division === e && 'select'
+                  store.pjt.rows[idx].division === e && 'select'
                 }`}
                 key={i}
                 onClick={() => selectdivision(e)}

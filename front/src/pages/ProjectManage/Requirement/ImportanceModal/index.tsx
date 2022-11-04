@@ -7,28 +7,24 @@ import { ELEMENTPOS, ROW } from 'types/Requirement';
 interface Props {
   setIsImportanceOpen: Dispatch<React.SetStateAction<boolean>>;
   clickElementPos: ELEMENTPOS;
-  rows: ROW[];
-  setRows: Dispatch<React.SetStateAction<ROW[]>>;
   idx: number;
+  store: any;
 }
 
 export default function ImportanceModal({
   setIsImportanceOpen,
   clickElementPos,
-  rows,
-  setRows,
   idx,
+  store,
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
 
   const selectImportance = useCallback(
     (importance: number) => {
-      const copyRows = [...rows];
-      copyRows[idx].importance = importance;
-      setRows(copyRows);
+      store.pjt.rows[idx].importance = importance;
       setIsImportanceOpen(false);
     },
-    [rows, idx],
+    [store, idx],
   );
 
   useEffect(() => {
@@ -52,7 +48,7 @@ export default function ImportanceModal({
             return (
               <span
                 className={`division-row ${
-                  rows[idx].importance === e && 'select'
+                  store.pjt.rows[idx].importance === e && 'select'
                 }`}
                 key={i}
                 onClick={() => selectImportance(e)}
