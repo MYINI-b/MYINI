@@ -15,8 +15,10 @@
   @include FLEX-ALIGN-CENTER;
   position: relative;
   margin-bottom: rem(17);
+  transition: 0.2s ease;
 
   &:hover {
+    background-color: $light-gray;
     .profile-delete-button {
       opacity: 1;
     }
@@ -24,6 +26,7 @@
 }
 .profile-name {
   padding-left: rem(10);
+  word-break: break-all;
 }
 .member-scroll {
   margin-top: rem(6);
@@ -32,6 +35,7 @@
 
 .member-search-input {
   width: 95%;
+  margin-bottom: rem(10);
   padding: rem(6);
   font-size: rem(14);
   border: 1px solid $lightx2-gray;
@@ -42,6 +46,7 @@
   position: absolute;
   top: 50%;
   right: 10px;
+  color: $delete;
   font-size: rem(14);
   transform: translate(0, -50%);
   cursor: pointer;
