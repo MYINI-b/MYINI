@@ -3,6 +3,8 @@ package com.ssafy.myini.project.controller;
 import com.ssafy.myini.config.LoginMember;
 import com.ssafy.myini.member.domain.Member;
 import com.ssafy.myini.project.request.FindByMemberEmailRequest;
+import com.ssafy.myini.jira.request.UpdateJiraAccountRequest;
+import com.ssafy.myini.jira.request.UpdateJiraProjectRequest;
 import com.ssafy.myini.project.request.UpdateProjectRequest;
 import com.ssafy.myini.project.response.ProjectInfoResponse;
 import com.ssafy.myini.project.response.ProjectListResponse;
