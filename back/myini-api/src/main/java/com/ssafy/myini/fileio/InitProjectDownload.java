@@ -24,6 +24,7 @@ public class InitProjectDownload {
                 "name="+initializerRequest.getSpring_name()+"&" +
                 "description="+initializerRequest.getSpring_description()+"&" +
                 "packageName="+initializerRequest.getSpring_package_name();
+        System.out.println("initializerRequest = " + initializerRequest.getSpring_name());
         if (initializerRequest.getSpring_dependency_name().size() != 0){
             address += "&dependencies=";
             for (int i=0;i<initializerRequest.getSpring_dependency_name().size();i++){
@@ -46,6 +47,7 @@ public class InitProjectDownload {
             byte[] buffer = res.getBody();
 //            System.out.println(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name()+".zip");
             // 로컬 서버에 저장
+            System.out.println("initializerRequest = " + initializerRequest.getSpring_base_path());
             File folder = new File(initializerRequest.getSpring_base_path());
             if (!folder.exists()) {
                 folder.mkdirs();
@@ -57,6 +59,7 @@ public class InitProjectDownload {
 
 
             File file = new File(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name()+".zip");
+            System.out.println("file.getName() = " + file.getName());
             ZipFile zipFile = new ZipFile(file);
             zipFile.extractAll(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name());
         }catch (Exception e){
