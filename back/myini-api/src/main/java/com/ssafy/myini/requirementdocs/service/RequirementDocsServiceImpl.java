@@ -1,5 +1,6 @@
 package com.ssafy.myini.requirementdocs.service;
 
+import com.ssafy.myini.JiraException;
 import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.jira.JiraApi;
 import com.ssafy.myini.member.domain.Member;
@@ -131,10 +132,5 @@ public class RequirementDocsServiceImpl implements RequirementDocsService{
     public void deleteRequirementCategory(Long requirementCategoryId) {
         RequirementCategory findRequirementCategory = requirementCategoryRepository.findById(requirementCategoryId).orElseThrow(() -> new NotFoundException(NotFoundException.REQUIREMENT_CATEGORY_NOT_FOUND));
         requirementCategoryRepository.delete(findRequirementCategory);
-    }
-
-    @Override
-    public void jira() {
-        JiraApi.getIssue();
     }
 }

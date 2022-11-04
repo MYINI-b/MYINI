@@ -20,6 +20,6 @@ public interface RequirementDocsService {
     List<RequirementCategoryListResponse> findAllRequirementsCategory(Long projectId);
     void createRequirementCategory(Long projectId, RequirementCategoryCreateRequest requirementCategoryCreateRequest);
     void deleteRequirementCategory(Long requirementCategoryId);
-    void jira();
+
 
 }
