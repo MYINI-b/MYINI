@@ -18,6 +18,7 @@ import com.ssafy.myini.initializer.response.PreviewResponse;
 import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import net.lingala.zip4j.ZipFile;
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -31,6 +32,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -89,7 +92,7 @@ public class InitializerServiceImpl implements InitializerService {
         try {
             JSONParser jsonParser = new JSONParser();
             File file = new File("erd");
-            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/"+projectId+".vuerd.json"),file);
+            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/" + projectId + ".vuerd.json"), file);
 
 
             Reader reader = new FileReader(file);
@@ -100,10 +103,10 @@ public class InitializerServiceImpl implements InitializerService {
 
             //entity 작성
             EntityWrite.setTableAndColumn(erd);
-            tables.forEach(t -> EntityWrite.entityWrite( (JSONObject) t, relationship, initializerRequest ));
+            tables.forEach(t -> EntityWrite.entityWrite((JSONObject) t, relationship, initializerRequest));
 
             //repository 작성
-            tables.forEach(t -> RepositoryWrite.repositoryWrite( (JSONObject) t, initializerRequest ));
+            tables.forEach(t -> RepositoryWrite.repositoryWrite((JSONObject) t, initializerRequest));
 
             // controller 생성
             projectInfoListResponses.forEach(projectInfoListResponse -> ControllerWrite.controllerWrite(projectInfoListResponse, initializerRequest));
@@ -118,6 +121,8 @@ public class InitializerServiceImpl implements InitializerService {
             projectInfoListResponses.forEach(projectInfoListResponse -> DtoWrite.dtoWrite(projectInfoListResponse, initializerRequest));
 
 
+            ZipFile zipFile = new ZipFile(initializerRequest.getSpring_base_path() + initializerRequest.getSpring_name() + ".zip");
+            zipFile.addFolder(new File(initializerRequest.getSpring_base_path() + initializerRequest.getSpring_name()));
         } catch (Exception e) {
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
@@ -137,7 +142,7 @@ public class InitializerServiceImpl implements InitializerService {
         try {
             JSONParser jsonParser = new JSONParser();
             File file = new File("erd");
-            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/"+projectId+".vuerd.json"),file);
+            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/" + projectId + ".vuerd.json"), file);
 
 
             Reader reader = new FileReader(file);
@@ -150,14 +155,14 @@ public class InitializerServiceImpl implements InitializerService {
             EntityWrite.setTableAndColumn(erd);
             for (int i = 0; i < tables.size(); i++) {
                 previewResponses.add(new PreviewResponse("entity",
-                                (String) ((JSONObject) tables.get(i)).get("name")+".java",
+                        (String) ((JSONObject) tables.get(i)).get("name") + ".java",
                         EntityWrite.entityPreview((JSONObject) tables.get(i), relationship, initializerRequest)));
             }
 
             //repository 작성
             for (int i = 0; i < tables.size(); i++) {
                 previewResponses.add(new PreviewResponse("repository",
-                        (String) ((JSONObject) tables.get(i)).get("name")+"Repository.java",
+                        (String) ((JSONObject) tables.get(i)).get("name") + "Repository.java",
                         RepositoryWrite.repositoryPreview((JSONObject) tables.get(i), initializerRequest)));
             }
 
