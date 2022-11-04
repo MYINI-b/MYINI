@@ -38,14 +38,19 @@ export default function CategoryListModal({
       copyCategories.splice(idx, 1);
       setCategories(copyCategories);
       setRows(copyRows);
+      closeCategoryList();
     },
     [categories, setCategories, rows],
   );
 
   const addNewCategory = (e: any) => {
     if (e.key === 'Enter') {
+      const copyRows = [...rows];
+      copyRows[idx].category = categoryInput;
       setCategories([...categories, categoryInput]);
       setCategoryInput('');
+      setRows(copyRows);
+      closeCategoryList();
       e.target.value = '';
     }
   };

@@ -81,7 +81,8 @@
       @include FLEX-CENTER;
 
       &.title {
-        height: rem(40);
+        // height: rem(40);
+        word-break: break-all;
         font-size: rem(20);
         font-family: $eng-title;
         // white-space: nowrap;
@@ -124,6 +125,7 @@
         padding: rem(4) rem(6);
         background-color: $light-gray;
         border-radius: 4px;
+        cursor:pointer;
         @include FLEX-ALIGN-CENTER;
 
         &.FE {

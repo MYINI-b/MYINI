@@ -75,12 +75,19 @@ export default function TableRow({
     setIsManagerOpen(false);
   }, []);
 
-  const openCategoryList = useCallback((e: any) => {
+  const openCategoryList = useCallback((e: any, isBlock: boolean) => {
+    e.stopPropagation();
     setIsCategoryListOpen(true);
     setClickElementPos({
-      y: e.target.getBoundingClientRect().top + 40,
-      x: e.target.getBoundingClientRect().left,
-      width: e.target.offsetWidth,
+      y: isBlock
+        ? e.target.parentElement.getBoundingClientRect().top + 40
+        : e.target.getBoundingClientRect().top + 40,
+      x: isBlock
+        ? e.target.parentElement.getBoundingClientRect().left
+        : e.target.getBoundingClientRect().left,
+      width: isBlock
+        ? e.target.parentElement.offsetWidth
+        : e.target.offsetWidth,
     });
   }, []);
 
@@ -93,12 +100,19 @@ export default function TableRow({
     });
   }, []);
 
-  const openDivisionList = useCallback((e: any) => {
+  const openDivisionList = useCallback((e: any, isBlock: boolean) => {
+    e.stopPropagation();
     setIsDivisionOpen(true);
     setClickElementPos({
-      y: e.target.getBoundingClientRect().top + 40,
-      x: e.target.getBoundingClientRect().left,
-      width: e.target.offsetWidth,
+      y: isBlock
+        ? e.target.parentElement.getBoundingClientRect().top + 40
+        : e.target.getBoundingClientRect().top + 40,
+      x: isBlock
+        ? e.target.parentElement.getBoundingClientRect().left
+        : e.target.getBoundingClientRect().left,
+      width: isBlock
+        ? e.target.parentElement.offsetWidth
+        : e.target.offsetWidth,
     });
   }, []);
 
@@ -183,8 +197,11 @@ export default function TableRow({
   return (
     <div className="table-row" onContextMenu={onRightClick}>
       <span className="table-col content one">{row.id}</span>
-      <span className="table-col content one-half" onClick={openCategoryList}>
-        <div className="desc-block" onClick={(e) => e.stopPropagation()}>
+      <span
+        className="table-col content one-half"
+        onClick={(e) => openCategoryList(e, false)}
+      >
+        <div className="desc-block" onClick={(e) => openCategoryList(e, true)}>
           {row.category}
         </div>
       </span>
@@ -194,6 +211,7 @@ export default function TableRow({
           ref={requireContainer}
           onChange={onRequirementChange}
           className="table-col content one-half textarea"
+          autoFocus
         />
       ) : (
         <span
@@ -209,6 +227,7 @@ export default function TableRow({
           ref={descContainer}
           onChange={onDescChange}
           className="table-col content two textarea"
+          autoFocus
         />
       ) : (
         <span
@@ -218,10 +237,13 @@ export default function TableRow({
           {row.description}
         </span>
       )}
-      <span className="table-col content one" onClick={openDivisionList}>
+      <span
+        className="table-col content one"
+        onClick={(e) => openDivisionList(e, false)}
+      >
         <div
           className={`desc-block ${row.division}`}
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => openDivisionList(e, true)}
         >
           {row.division}
         </div>
