@@ -11,6 +11,8 @@ import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import com.ssafy.myini.project.query.ProjectQueryRepository;
 import com.ssafy.myini.project.request.FindByMemberEmailRequest;
+import com.ssafy.myini.jira.request.UpdateJiraAccountRequest;
+import com.ssafy.myini.jira.request.UpdateJiraProjectRequest;
 import com.ssafy.myini.project.request.UpdateProjectRequest;
 import com.ssafy.myini.project.response.ProjectInfoResponse;
 import com.ssafy.myini.project.response.ProjectListResponse;
@@ -21,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.ssafy.myini.DuplicateException.MEMBER_PROJECT_DUPLICATE;
