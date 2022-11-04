@@ -1,17 +1,17 @@
 import './style.scss';
-import { useState, useCallback } from 'react';
-import { LINK_LIST } from 'constants/index';
+import React, { useState, useCallback } from 'react';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faCheck } from '@fortawesome/free-solid-svg-icons';
 import LinkRow from './LinkRow';
 
-export function ProjectLink(props: any) {
+interface Props {
+  store: any;
+}
+
+export default function ReferenceLink({ store }: Props) {
   // const { gitlink, notionlink, jiralink, figmalink } = props;
   const [isEdit, setIsEdit] = useState(false);
-  const [gitLink, setGitLink] = useState('asdsad');
-  const [jiraLink, setJiraLink] = useState('');
-  const [notionLink, setNotionLink] = useState('');
-  const [figmaLink, setFigmaLink] = useState('');
 
   const onSubmitClick = useCallback(() => {
     setIsEdit(false);
@@ -20,7 +20,7 @@ export function ProjectLink(props: any) {
   return (
     <div className="project-link">
       <div className="project-detail-info-title">
-        링크관리&nbsp;
+        링크 관리&nbsp;
         {isEdit ? (
           <FontAwesomeIcon
             icon={faCheck}
@@ -37,27 +37,27 @@ export function ProjectLink(props: any) {
       </div>
       <ul className="link-list-ul">
         <LinkRow
-          img={LINK_LIST[0].img}
-          link={gitLink}
-          setLink={setGitLink}
+          idx={0}
+          link={store.pjt.gitLink || ''}
+          store={store}
           isEdit={isEdit}
         />
         <LinkRow
-          img={LINK_LIST[1].img}
-          link={jiraLink}
-          setLink={setJiraLink}
+          idx={1}
+          link={store.pjt.jiraLink || ''}
+          isEdit={isEdit}
+          store={store}
+        />
+        <LinkRow
+          idx={2}
+          link={store.pjt.notionLink || ''}
+          store={store}
           isEdit={isEdit}
         />
         <LinkRow
-          img={LINK_LIST[2].img}
-          link={notionLink}
-          setLink={setNotionLink}
-          isEdit={isEdit}
-        />
-        <LinkRow
-          img={LINK_LIST[3].img}
-          link={figmaLink}
-          setLink={setFigmaLink}
+          idx={3}
+          link={store.pjt.figmaLink || ''}
+          store={store}
           isEdit={isEdit}
         />
       </ul>

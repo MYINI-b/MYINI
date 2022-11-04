@@ -8,44 +8,44 @@ import {
 import './style.scss';
 import useInput from 'hooks/useInput';
 
-export function ProjectMember(props: any) {
-  const { member } = props;
-  const [memberList, setMemberList] = useState(member);
+interface Props {
+  store: any;
+}
+
+export default function ProjectMember({ store }: Props) {
   const [isEdit, setIsEdit] = useState(false);
   const [userMail, onUserMailChange, setUserMail] = useInput('');
 
   const onSubmitClick = useCallback(() => {
     setIsEdit(false);
+    setUserMail('');
   }, []);
 
   const addMember = useCallback(
     (e: any) => {
       e.preventDefault();
-      const copyMembers = [...memberList];
-      copyMembers.push({
+      if (store.pjt.members === undefined) store.pjt.members = [];
+      store.pjt.members.push({
         id: 1,
-        name: '한윤석',
+        name: userMail,
         img: 'https://cdn.pixabay.com/photo/2019/08/02/19/25/vectorart-4380377__340.jpg',
       });
-      setMemberList(copyMembers);
       setUserMail('');
     },
-    [memberList],
+    [store, userMail],
   );
 
   const deleteMember = useCallback(
     (idx: number) => {
-      const deletedMembers = [...memberList].filter(
-        (e: any, i: number) => i !== idx,
-      );
-      setMemberList(deletedMembers);
+      store.pjt.members.splice(idx, 1);
     },
-    [memberList],
+    [store],
   );
+
   return (
     <>
       <div className="project-detail-title-wrapper normal">
-        <div className="project-detail-info-title">팀원관리&nbsp;</div>
+        <div className="project-detail-info-title">팀원 관리&nbsp;</div>
         {isEdit ? (
           <FontAwesomeIcon
             icon={faCheck}
@@ -71,17 +71,18 @@ export function ProjectMember(props: any) {
             value={userMail}
           />
         )}
-        {memberList.map((mem: any, i: number) => (
-          <div key={i} className="team-member">
-            <img className="profile-image" src={mem.img} alt="profile" />
-            <div className="profile-name">{mem.name}</div>
-            <FontAwesomeIcon
-              icon={faUserSlash}
-              className="profile-delete-button"
-              onClick={() => deleteMember(i)}
-            />
-          </div>
-        ))}
+        {store.pjt.members &&
+          store.pjt.members.map((mem: any, i: number) => (
+            <div key={i} className="team-member">
+              <img className="profile-image" src={mem.img} alt="profile" />
+              <div className="profile-name">{mem.name}</div>
+              <FontAwesomeIcon
+                icon={faUserSlash}
+                className={`profile-delete-button ${!isEdit && 'hidden'}`}
+                onClick={() => deleteMember(i)}
+              />
+            </div>
+          ))}
       </form>
     </>
   );
