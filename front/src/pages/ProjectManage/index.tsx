@@ -4,6 +4,7 @@ import ApiSpec from './ApiSpec';
 import ERDPage from './ERDPage';
 import Setting from './Setting';
 import Requirement from './Requirement';
+import Build from './Build';
 
 export default function ProjectManage() {
   const [step, setStep] = useState(1);
@@ -17,8 +18,10 @@ export default function ProjectManage() {
         <Requirement />
       ) : step === 3 ? (
         <ERDPage />
-      ) : (
+      ) : step === 4 ? (
         <ApiSpec />
+      ) : (
+        <Build />
       )}
     </div>
   );
