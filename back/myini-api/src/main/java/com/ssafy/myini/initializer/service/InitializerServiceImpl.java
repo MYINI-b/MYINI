@@ -23,6 +23,8 @@ import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 import java.net.URL;
+import java.nio.file.FileStore;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -79,7 +82,7 @@ public class InitializerServiceImpl implements InitializerService {
 
     @Override
     @Transactional
-    public Void initializerStart(Long projectId, InitializerRequest initializerRequest) {
+    public UrlResource initializerStart(Long projectId, InitializerRequest initializerRequest) {
 
         //프로젝트 init
         InitProjectDownload.initProject(initializerRequest);
@@ -123,11 +126,12 @@ public class InitializerServiceImpl implements InitializerService {
 
             ZipFile zipFile = new ZipFile(initializerRequest.getSpring_base_path() + initializerRequest.getSpring_name() + ".zip");
             zipFile.addFolder(new File(initializerRequest.getSpring_base_path() + initializerRequest.getSpring_name()));
+
+            UrlResource urlResource = new UrlResource("file",zipFile.getFile().getPath());
+            return urlResource;
         } catch (Exception e) {
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
-
-        return null;
     }
 
     @Override

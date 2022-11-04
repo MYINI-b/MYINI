@@ -5,13 +5,18 @@ import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
 import com.ssafy.myini.initializer.response.PreviewResponse;
 import com.ssafy.myini.initializer.service.InitializerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriUtils;
 
 import java.io.ByteArrayOutputStream;
+import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RequestMapping("/api/initializers")
@@ -28,11 +33,16 @@ public class InitializerController {
     }
 
     @PostMapping("/{projectid}")
-    public ResponseEntity<Void> initializerStart(@PathVariable("projectid") Long projectId,
-                                                 @RequestBody InitializerRequest initializerRequest){
-        initializerService.initializerStart(projectId, initializerRequest);
+    public ResponseEntity<Resource> initializerStart(@PathVariable("projectid") Long projectId,
+                                                 @RequestBody InitializerRequest initializerRequest) throws MalformedURLException {
 
-        return ResponseEntity.status(HttpStatus.OK).build();
+        UrlResource urlResource = initializerService.initializerStart(projectId, initializerRequest);
+        String encodedUploadFileName = UriUtils.encode("test", StandardCharsets.UTF_8);
+        String contentDisposition = "attachment; filename=\"" + encodedUploadFileName + "\"";
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,contentDisposition)
+                .body(urlResource);
     }
 
     @PostMapping("/{projectid}/previews")
