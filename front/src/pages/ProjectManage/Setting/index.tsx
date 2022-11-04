@@ -1,50 +1,29 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useMemo, useState } from 'react';
-import useInput from 'hooks/useInput';
+import React from 'react';
+import { useSyncedStore } from '@syncedstore/react';
+import { globalStore } from 'store/yjsStore';
 import ImageTitle from './ImageTitle';
 import ProjectDesc from './ProjectDesc/index';
-import { ProjectPeriod } from './Period/index';
-import { ProjectLink } from './Link/index';
-import { ProjectMember } from './Member/index';
-import MockData from './mock.json';
+import Period from './Period/index';
+import ReferenceLink from './ReferenceLink';
+import ProjectMember from './Member/index';
 import './style.scss';
 
 export default function SettingPage() {
-  const data = useMemo(() => MockData[0], []);
-  const [img, setImg] = useState('');
-  const [isEdit, setIsEdit] = useState(false);
-  const [title, onTitleChange] = useInput('');
-  const [desc, onDescChange] = useInput('');
-  const Props = {
-    id: data.id,
-    // img: data.img,
-    // title: data.title,
-    period: data.period,
-    jiralink: data.jiralink,
-    notionlink: data.notionlink,
-    gitlink: data.gitlink,
-    figmalink: data.figmalink,
-    detailinfo: data.detailinfo,
-    member: data.member,
-  };
+  const store = useSyncedStore(globalStore);
 
   return (
     <div className="setting-page">
       <div className="setting-components">
-        <ImageTitle
-          img={img}
-          setImg={setImg}
-          title={title}
-          onTitleChange={onTitleChange}
-        />
+        <ImageTitle store={store} />
         <div className="bottom-side">
           <div className="left-side">
-            <ProjectDesc desc={desc} onDescChange={onDescChange} />
-            <ProjectPeriod {...Props} className="project-period" />
-            <ProjectLink {...Props} className="project-link" />
+            <ProjectDesc store={store} />
+            <Period store={store} />
+            <ReferenceLink store={store} />
           </div>
           <div className="right-side">
-            <ProjectMember {...Props} className="project-member" />
+            <ProjectMember store={store} />
           </div>
         </div>
       </div>

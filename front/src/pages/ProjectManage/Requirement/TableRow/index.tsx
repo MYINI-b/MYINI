@@ -9,7 +9,6 @@ import { ROW, ELEMENTPOS } from 'types/Requirement';
 import { MOUSEPOS } from 'types/ApiSpec';
 import { IMPORTANCE_TEXT } from 'constants/index';
 
-import useInput from 'hooks/useInput';
 import CategoryListModal from '../CategoryListModal';
 import RowModal from '../RowModal';
 import DivisionModal from '../DivisionModal';
@@ -18,25 +17,11 @@ import ImportanceModal from '../ImportanceModal';
 
 interface Props {
   row: ROW;
-  rows: ROW[];
-  setRows: Dispatch<React.SetStateAction<ROW[]>>;
   idx: number;
-  categories: string[];
-  setCategories: Dispatch<React.SetStateAction<string[]>>;
-  managers: string[];
-  setManagers: Dispatch<React.SetStateAction<string[]>>;
+  store: any;
 }
 
-export default function TableRow({
-  row,
-  rows,
-  setRows,
-  idx,
-  categories,
-  setCategories,
-  managers,
-  setManagers,
-}: Props) {
+export default function TableRow({ row, idx, store }: Props) {
   const requireContainer =
     useRef() as React.MutableRefObject<HTMLTextAreaElement>;
   const descContainer = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
@@ -51,15 +36,33 @@ export default function TableRow({
   const [isDescEdit, setIsDescEdit] = useState(false);
   const [isDivisionOpen, setIsDivisionOpen] = useState(false);
   const [isPointEdit, setIsPointEdit] = useState(false);
-  const [requirement, onRequirementChange] = useInput('');
-  const [desc, onDescChange] = useInput('');
-  const [point, onPointChange] = useInput(0);
 
   const [clickElementPos, setClickElementPos] = useState<ELEMENTPOS>({
     x: 0,
     y: 0,
     width: 0,
   });
+
+  const onRequirementChange = useCallback(
+    (e: any) => {
+      store.pjt.rows[idx].requirement = e.target.value;
+    },
+    [idx, store],
+  );
+
+  const onDescChange = useCallback(
+    (e: any) => {
+      store.pjt.rows[idx].description = e.target.value;
+    },
+    [idx, store],
+  );
+
+  const onPointChange = useCallback(
+    (e: any) => {
+      store.pjt.rows[idx].point = e.target.value;
+    },
+    [idx, store],
+  );
 
   const onRightClick = (e: any) => {
     e.preventDefault();
@@ -75,12 +78,19 @@ export default function TableRow({
     setIsManagerOpen(false);
   }, []);
 
-  const openCategoryList = useCallback((e: any) => {
+  const openCategoryList = useCallback((e: any, isBlock: boolean) => {
+    e.stopPropagation();
     setIsCategoryListOpen(true);
     setClickElementPos({
-      y: e.target.getBoundingClientRect().top + 40,
-      x: e.target.getBoundingClientRect().left,
-      width: e.target.offsetWidth,
+      y: isBlock
+        ? e.target.parentElement.getBoundingClientRect().top + 40
+        : e.target.getBoundingClientRect().top + 40,
+      x: isBlock
+        ? e.target.parentElement.getBoundingClientRect().left
+        : e.target.getBoundingClientRect().left,
+      width: isBlock
+        ? e.target.parentElement.offsetWidth
+        : e.target.offsetWidth,
     });
   }, []);
 
@@ -93,12 +103,19 @@ export default function TableRow({
     });
   }, []);
 
-  const openDivisionList = useCallback((e: any) => {
+  const openDivisionList = useCallback((e: any, isBlock: boolean) => {
+    e.stopPropagation();
     setIsDivisionOpen(true);
     setClickElementPos({
-      y: e.target.getBoundingClientRect().top + 40,
-      x: e.target.getBoundingClientRect().left,
-      width: e.target.offsetWidth,
+      y: isBlock
+        ? e.target.parentElement.getBoundingClientRect().top + 40
+        : e.target.getBoundingClientRect().top + 40,
+      x: isBlock
+        ? e.target.parentElement.getBoundingClientRect().left
+        : e.target.getBoundingClientRect().left,
+      width: isBlock
+        ? e.target.parentElement.offsetWidth
+        : e.target.offsetWidth,
     });
   }, []);
 
@@ -112,25 +129,19 @@ export default function TableRow({
   }, []);
 
   const focusOutDesc = useCallback(() => {
-    const copyRows = [...rows];
-    copyRows[idx].description = desc;
-    setRows(copyRows);
+    // store.pjt.rows[idx].description = desc;
     setIsDescEdit(false);
-  }, [rows, idx, desc]);
+  }, [store]);
 
   const focusOutRequirement = useCallback(() => {
-    const copyRows = [...rows];
-    copyRows[idx].requirement = requirement;
-    setRows(copyRows);
+    // store.pjt.rows[idx].requirement = requirement;
     setIsRequireEdit(false);
-  }, [rows, idx, requirement]);
+  }, [store]);
 
   const focusOutPoint = useCallback(() => {
-    const copyRows = [...rows];
-    copyRows[idx].point = point;
-    setRows(copyRows);
+    // store.pjt.rows[idx].point = point;
     setIsPointEdit(false);
-  }, [rows, idx, point]);
+  }, [store]);
 
   useEffect(() => {
     if (requireContainer.current)
@@ -139,10 +150,9 @@ export default function TableRow({
         focusOutRequirement,
       );
 
-    const copyRows = [...rows];
-    copyRows[idx].requirement = requirement;
+    // if (store.pjt.rows !== undefined)
+    // store.pjt.rows[idx].requirement = requirement;
 
-    setRows(copyRows);
     return () => {
       if (requireContainer.current)
         requireContainer.current.removeEventListener(
@@ -153,47 +163,47 @@ export default function TableRow({
   }, [isRequireEdit]);
 
   useEffect(() => {
-    if (descContainer.current)
-      descContainer.current.addEventListener('focusout', focusOutDesc);
-
-    const copyRows = [...rows];
-    copyRows[idx].description = desc;
-
-    setRows(copyRows);
-    return () => {
-      if (descContainer.current)
-        descContainer.current.removeEventListener('focusout', focusOutDesc);
-    };
-  }, [isDescEdit]);
-
-  useEffect(() => {
     if (pointContainer.current)
       pointContainer.current.addEventListener('focusout', focusOutPoint);
 
-    const copyRows = [...rows];
-    copyRows[idx].point = point;
+    // if (store.pjt.rows !== undefined) store.pjt.rows[idx].point = point;
 
-    setRows(copyRows);
     return () => {
       if (pointContainer.current)
         pointContainer.current.removeEventListener('focusout', focusOutPoint);
     };
   }, [isPointEdit]);
 
+  useEffect(() => {
+    if (descContainer.current)
+      descContainer.current.addEventListener('focusout', focusOutDesc);
+
+    // if (store.pjt.rows !== undefined) store.pjt.rows[idx].description = desc;
+
+    return () => {
+      if (descContainer.current)
+        descContainer.current.removeEventListener('focusout', focusOutDesc);
+    };
+  }, [isDescEdit]);
+
   return (
     <div className="table-row" onContextMenu={onRightClick}>
-      <span className="table-col content one">{row.id}</span>
-      <span className="table-col content one-half" onClick={openCategoryList}>
-        <div className="desc-block" onClick={(e) => e.stopPropagation()}>
+      <span className="table-col content one">{idx + 1}</span>
+      <span
+        className="table-col content one-half"
+        onClick={(e) => openCategoryList(e, false)}
+      >
+        <div className="desc-block" onClick={(e) => openCategoryList(e, true)}>
           {row.category}
         </div>
       </span>
       {isRequireEdit ? (
         <textarea
-          value={requirement}
+          value={row.requirement}
           ref={requireContainer}
           onChange={onRequirementChange}
           className="table-col content one-half textarea"
+          autoFocus
         />
       ) : (
         <span
@@ -205,10 +215,11 @@ export default function TableRow({
       )}
       {isDescEdit ? (
         <textarea
-          value={desc}
+          value={row.description}
           ref={descContainer}
           onChange={onDescChange}
           className="table-col content two textarea"
+          autoFocus
         />
       ) : (
         <span
@@ -218,10 +229,13 @@ export default function TableRow({
           {row.description}
         </span>
       )}
-      <span className="table-col content one" onClick={openDivisionList}>
+      <span
+        className="table-col content one"
+        onClick={(e) => openDivisionList(e, false)}
+      >
         <div
           className={`desc-block ${row.division}`}
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => openDivisionList(e, true)}
         >
           {row.division}
         </div>
@@ -258,10 +272,11 @@ export default function TableRow({
         {isPointEdit ? (
           <input
             type="number"
-            value={point}
+            value={row.point}
             onChange={onPointChange}
             className="point-input"
             ref={pointContainer}
+            autoFocus
           />
         ) : (
           row.point
@@ -272,21 +287,17 @@ export default function TableRow({
         <RowModal
           setIsRowModalOpen={setIsRowModalOpen}
           clickMousePos={clickMousePos}
-          rows={rows}
-          setRows={setRows}
           idx={idx}
+          store={store}
         />
       )}
 
       {isCategoryListOpen && (
         <CategoryListModal
-          categories={categories}
-          setCategories={setCategories}
           closeCategoryList={closeCategoryList}
           clickElementPos={clickElementPos}
-          rows={rows}
-          setRows={setRows}
           idx={idx}
+          store={store}
         />
       )}
 
@@ -294,21 +305,17 @@ export default function TableRow({
         <DivisionModal
           setIsDivisionOpen={setIsDivisionOpen}
           clickElementPos={clickElementPos}
-          rows={rows}
-          setRows={setRows}
           idx={idx}
+          store={store}
         />
       )}
 
       {isManagerOpen && (
         <ManagerModal
-          managers={managers}
-          setManagers={setManagers}
           closeManagerModal={closeManagerModal}
           clickElementPos={clickElementPos}
-          rows={rows}
-          setRows={setRows}
           idx={idx}
+          store={store}
         />
       )}
 
@@ -316,9 +323,8 @@ export default function TableRow({
         <ImportanceModal
           setIsImportanceOpen={setIsImportanceOpen}
           clickElementPos={clickElementPos}
-          rows={rows}
-          setRows={setRows}
           idx={idx}
+          store={store}
         />
       )}
     </div>
