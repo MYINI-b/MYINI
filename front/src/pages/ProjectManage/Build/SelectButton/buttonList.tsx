@@ -20,7 +20,6 @@ const ButtonTitle: React.FC<Props> = ({
   const onClick = useCallback(() => {
     setSelectedButton(index);
   }, [setSelectedButton, index]);
-
   return (
     <div className="button-list">
       <li

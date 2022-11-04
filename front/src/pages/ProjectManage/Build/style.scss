@@ -25,12 +25,12 @@ $breakpoints: (
   height: 130vh;
   padding: rem(88) rem(30) rem(30) rem(30);
   @include FLEX-COLUMN;
-  .apispec-title {
+  .build-title {
     margin-top: rem(40);
     font-weight: bold;
     font-size: rem(36);
   }
-  .apispec-project-title {
+  .build-project-title {
       margin-right: rem(20);
       color: $primary;
       font-size: rem(20);
@@ -43,5 +43,73 @@ $breakpoints: (
     padding-top: rem(30);
     display: flex;
     justify-content: center;
+    .init-container {
+      @include FLEX-COLUMN;
+      @include BORDER-PAPER;
+      height: 80%;
+      width: 48%;
+      @include respond-to('small') {
+        height: 70%;
+      }
+      .tab-item {
+        padding-top: rem(24);
+        .item-row {
+          display: flex;
+          flex-direction: column;
+          justify-content:first baseline;
+        }
+        .button-item {
+          display: flex;
+          flex-direction: row;
+          font-family: $eng-content;
+          font-size: rem(20);
+          width: 100%;
+          @include respond-to('large') {
+            font-size: rem(16);
+          }
+          @include respond-to('medium') {
+            font-size: rem(12);
+          }
+          @include respond-to('small') {
+            font-size: rem(10);
+          }
+          .item-element {
+            padding-bottom: rem(35);
+            width: 40%;
+          }
+        }
+        .text-box {
+          @include FLEX-CENTER;
+          width: 100%;
+          margin-bottom: rem(35);
+        }
+      }
+    }
+    
+    .title-item {
+      font-family: $eng-title;
+      font-size: rem(25);
+      display: flex;
+      justify-content: center;
+    }
+    
+    .confirm-code {
+      @include FLEX-COLUMN;
+      @include BORDER-PAPER;
+      height: 80%;
+      width: 48%;
+      margin-left: rem(25);
+      @include respond-to('small') {
+        height: 70%;
+      }
+    }
+    
+    .confirm-title {
+      font-family: $eng-title;
+      font-size: rem(25);
+      display: flex;
+      justify-content: center;
+      padding-bottom: rem(33);
+    }
   }
 } 

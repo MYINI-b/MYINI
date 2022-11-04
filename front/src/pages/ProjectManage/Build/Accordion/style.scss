@@ -10,7 +10,7 @@
     border-radius: rem(10);
     .title-item {
       font-family: $eng-content;
-      font-size: rem(24);
+      font-size: rem(20);
       @include respond-to('medium') {
         font-size: rem(20);
       }
