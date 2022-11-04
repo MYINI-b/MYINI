@@ -1,14 +1,12 @@
 import { faPen, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState, useCallback, Dispatch, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import './style.scss';
 
 interface Props {
-  desc: string;
-  setDesc: Dispatch<React.SetStateAction<string>>;
   store: any;
 }
-export default function DetailInfo({ desc, setDesc, store }: Props) {
+export default function DetailInfo({ store }: Props) {
   const [isEdit, setIsEdit] = useState(false);
 
   const onSubmitClick = useCallback(() => {
@@ -21,10 +19,6 @@ export default function DetailInfo({ desc, setDesc, store }: Props) {
     },
     [store],
   );
-
-  useEffect(() => {
-    if (store.pjt.desc !== undefined) setDesc(store.pjt.desc);
-  }, [store.pjt.desc]);
 
   return (
     <div className="detail-info">
@@ -47,7 +41,7 @@ export default function DetailInfo({ desc, setDesc, store }: Props) {
 
       <textarea
         className={`project-info-desc ${isEdit && 'edit'}`}
-        value={desc}
+        value={store.pjt.desc || ''}
         onChange={onDescChange}
         disabled={!isEdit}
       />

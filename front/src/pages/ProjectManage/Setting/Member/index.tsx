@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faGear,
@@ -7,19 +7,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import './style.scss';
 import useInput from 'hooks/useInput';
-import { USER } from 'types/Setting';
 
 interface Props {
-  memberList: USER[];
-  setMemberList: React.Dispatch<React.SetStateAction<USER[]>>;
   store: any;
 }
 
-export default function ProjectMember({
-  memberList,
-  setMemberList,
-  store,
-}: Props) {
+export default function ProjectMember({ store }: Props) {
   const [isEdit, setIsEdit] = useState(false);
   const [userMail, onUserMailChange, setUserMail] = useInput('');
 
@@ -31,6 +24,7 @@ export default function ProjectMember({
   const addMember = useCallback(
     (e: any) => {
       e.preventDefault();
+      if (store.pjt.members === undefined) store.pjt.members = [];
       store.pjt.members.push({
         id: 1,
         name: userMail,
@@ -47,10 +41,6 @@ export default function ProjectMember({
     },
     [store],
   );
-
-  useEffect(() => {
-    if (store.pjt.members !== undefined) setMemberList(store.pjt.members);
-  }, [store.pjt.members]);
 
   return (
     <>
@@ -81,8 +71,8 @@ export default function ProjectMember({
             value={userMail}
           />
         )}
-        {!!memberList.length &&
-          memberList.map((mem: any, i: number) => (
+        {store.pjt.members &&
+          store.pjt.members.map((mem: any, i: number) => (
             <div key={i} className="team-member">
               <img className="profile-image" src={mem.img} alt="profile" />
               <div className="profile-name">{mem.name}</div>

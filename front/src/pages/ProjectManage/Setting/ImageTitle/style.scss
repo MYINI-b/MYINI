@@ -57,7 +57,7 @@
     font-family: $eng-title; 
     border:none;
     width:100%;
-    border-bottom: 1px solid $secondary;
+    border-bottom: 4px solid $secondary;
     // @include ELLIPSIS-LINE(1);
     background-color: transparent;
     &.edit{

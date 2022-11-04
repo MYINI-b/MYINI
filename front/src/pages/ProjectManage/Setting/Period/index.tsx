@@ -5,20 +5,10 @@ import moment from 'moment';
 import './style.scss';
 
 interface Props {
-  startDay: string;
-  setStartDay: React.Dispatch<React.SetStateAction<string>>;
-  endDay: string;
-  setEndDay: React.Dispatch<React.SetStateAction<string>>;
   store: any;
 }
 
-export default function ProjectPeriod({
-  startDay,
-  setStartDay,
-  endDay,
-  setEndDay,
-  store,
-}: Props) {
+export default function ProjectPeriod({ store }: Props) {
   const [isStartCalOpen, setIsStartCalOpen] = useState(false);
   const [isEndCalOpen, setIsEndCalOpen] = useState(false);
 
@@ -44,16 +34,6 @@ export default function ProjectPeriod({
     [store],
   );
 
-  useEffect(() => {
-    const startDayMoment = moment(store.pjt.startDay);
-    const endDayMoment = moment(store.pjt.endDay);
-
-    const newStartDay = startDayMoment.format('YYYY/MM/DD');
-    const newEndDay = endDayMoment.format('YYYY/MM/DD');
-    setStartDay(newStartDay);
-    setEndDay(newEndDay);
-  }, [store.pjt.startDay, store.pjt.endDay]);
-
   return (
     <div className="project-period">
       <div className="project-detail-title-wrapper">
@@ -67,14 +47,16 @@ export default function ProjectPeriod({
             setIsEndCalOpen(false);
           }}
         >
-          {startDay}
+          {store.pjt.startDay || moment(new Date()).format('YYYY/MM/DD')}
           {isStartCalOpen && (
             <div
               className="date-absolute-div"
               onClick={(e) => e.stopPropagation()}
             >
               <Calendar
-                value={new Date(startDay)}
+                value={
+                  store.pjt.startDay ? new Date(store.pjt.startDay) : new Date()
+                }
                 onChange={(val: any) => onDayChange(val, true)}
               />
             </div>
@@ -88,14 +70,16 @@ export default function ProjectPeriod({
             setIsStartCalOpen(false);
           }}
         >
-          {endDay}
+          {store.pjt.endDay || moment(new Date()).format('YYYY/MM/DD')}
           {isEndCalOpen && (
             <div
               className="date-absolute-div"
               onClick={(e) => e.stopPropagation()}
             >
               <Calendar
-                value={new Date(endDay)}
+                value={
+                  store.pjt.endDay ? new Date(store.pjt.endDay) : new Date()
+                }
                 onChange={(val: any) => onDayChange(val, false)}
               />
             </div>

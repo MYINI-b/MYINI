@@ -36,9 +36,6 @@ export default function TableRow({ row, idx, store }: Props) {
   const [isDescEdit, setIsDescEdit] = useState(false);
   const [isDivisionOpen, setIsDivisionOpen] = useState(false);
   const [isPointEdit, setIsPointEdit] = useState(false);
-  const [requirement, setRequirement] = useState('');
-  const [desc, setDesc] = useState('');
-  const [point, setPoint] = useState(0);
 
   const [clickElementPos, setClickElementPos] = useState<ELEMENTPOS>({
     x: 0,
