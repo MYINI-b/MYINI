@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriUtils;
 
+import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
@@ -32,9 +33,9 @@ public class InitializerController {
         return ResponseEntity.ok().body(body);
     }
 
-    @PostMapping("/{projectid}")
+    @GetMapping("/{projectid}")
     public ResponseEntity<Resource> initializerStart(@PathVariable("projectid") Long projectId,
-                                                 @RequestBody InitializerRequest initializerRequest) throws MalformedURLException {
+                                                 @Valid InitializerRequest initializerRequest) throws MalformedURLException {
 
         UrlResource urlResource = initializerService.initializerStart(projectId, initializerRequest);
         String encodedUploadFileName = UriUtils.encode("test", StandardCharsets.UTF_8);
