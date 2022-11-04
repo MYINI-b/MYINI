@@ -1,0 +1,57 @@
+@import 'variables.scss';
+
+.setting-page {
+  @include FLEX-COLUMN;
+  @include STRETCH;
+  min-height: 100vh;
+  padding: rem(80) 15% 10% 15%;
+  font-family: $eng-content;
+
+  .project-detail-info-title {
+    color: $primary;
+    font-weight: bold;
+    font-size: rem(24);
+    font-family: $eng-content;
+  }
+  .setting-components {
+    @include STRETCH;
+    @include FLEX-COLUMN;
+  }
+
+  .bottom-side {
+    display: flex;
+    width: 100%;
+    margin-top: rem(36);
+
+    .left-side {
+      flex: 0.7;
+      width: 100%;
+      @include FLEX-COLUMN;
+    }
+    .right-side {
+      flex: 0.3;
+      width: 100%;
+      max-height: rem(440);
+      margin-left: rem(30);
+      @include FLEX-COLUMN;
+    }
+  }
+
+  .project-edit-button {
+    color: $primary;
+    font-size: rem(18);
+    cursor: pointer;
+  }
+  .project-edit-button + .project-edit-button {
+    margin-left: rem(10);
+  }
+}
+
+.project-detail-title-wrapper {
+  @include FLEX-BETWEEN;
+  width: 100%;
+
+  &.normal {
+    justify-content: initial;
+  }
+}

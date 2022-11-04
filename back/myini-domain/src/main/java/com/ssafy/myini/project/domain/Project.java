@@ -1,11 +1,15 @@
 package com.ssafy.myini.project.domain;
 
 import com.ssafy.myini.apidocs.domain.ApiController;
-import com.ssafy.myini.ERD.domain.entity.ErdTable;
+import com.ssafy.myini.apidocs.domain.Dto;
+import com.ssafy.myini.erd.domain.entity.ErdTable;
 import com.ssafy.myini.member.domain.MemberProject;
-import com.ssafy.myini.requirement.domain.Requirement;
-import com.ssafy.myini.requirement.domain.RequirementCategory;
-import lombok.*;
+import com.ssafy.myini.requirementdocs.domain.Requirement;
+import com.ssafy.myini.requirementdocs.domain.RequirementCategory;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -41,6 +45,16 @@ public class Project {
 
     private String projectFigmaUrl;
 
+    private String jiraId;
+
+    private String jiraApiKey;
+
+    private String jiraProjectId;
+
+    private String jiraProjectKey;
+
+    private String jiraProjectName;
+
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<MemberProject> memberProjects = new ArrayList<>();
 
@@ -56,9 +70,42 @@ public class Project {
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ErdTable> tables  = new ArrayList<>();
 
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Dto> dtos  = new ArrayList<>();
+
     public static Project createProject() {
         Project project = new Project();
         project.projectName = "Untitled";
         return project;
+    }
+
+    public void updateProject(String projectName, String projectDescription, LocalDate projectStartedDate, LocalDate projectFinishedDate,
+                              String projectGithubUrl, String projectJiraUrl, String projectNotionUrl, String projectFigmaUrl){
+        this.projectName = projectName;
+        this.projectDescription = projectDescription;
+        this.projectStartedDate = projectStartedDate;
+        this.projectFinishedDate = projectFinishedDate;
+        this.projectGithubUrl = projectGithubUrl;
+        this.projectJiraUrl = projectJiraUrl;
+        this.projectNotionUrl = projectNotionUrl;
+        this.projectFigmaUrl = projectFigmaUrl;
+    }
+
+    public void updateJiraAccount(String jiraId, String jiraApiKey){
+        this.jiraId = jiraId;
+        this.jiraApiKey = jiraApiKey;
+        this.jiraProjectId = null;
+        this.jiraProjectKey = null;
+        this.jiraProjectName = null;
+    }
+
+    public void updateJiraProject(String jiraProjectId, String jiraProjectKey, String jiraProjectName){
+        this.jiraProjectId = jiraProjectId;
+        this.jiraProjectKey = jiraProjectKey;
+        this.jiraProjectName = jiraProjectName;
+    }
+
+    public void updateProjectImg(String projectImg){
+        this.projectImg = projectImg;
     }
 }

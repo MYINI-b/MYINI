@@ -1,0 +1,132 @@
+:basedir: {docdir}
+:snippets: {basedir}/build/generated-snippets
+
+= RESTFUL Notes API Guide
+:doctype: project
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectnums:
+:sectlinks:
+:sectanchors:
+
+[[API]]
+=== Project
+==== 프로젝트 등록
+===== 요청
+include::{snippets}/api/projects/http-request.adoc[]
+====== Header
+include::{snippets}/api/projects/request-headers.adoc[]
+
+===== 응답
+include::{snippets}/api/projects/http-response.adoc[]
+
+==== 회원의 프로젝트 전체 리스트 조회
+===== 요청
+include::{snippets}/api/projects/list/http-request.adoc[]
+====== Header
+include::{snippets}/api/projects/list/request-headers.adoc[]
+
+===== 응답
+include::{snippets}/api/projects/list/http-response.adoc[]
+===== Body
+include::{snippets}/api/projects/list/response-fields.adoc[]
+
+
+==== 프로젝트 상세 조회
+===== 요청
+include::{snippets}/api/projects/{projectid}/http-request.adoc[]
+====== Header
+include::{snippets}/api/projects/{projectid}/request-headers.adoc[]
+====== Path
+include::{snippets}/api/projects/{projectid}/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/projects/{projectid}/http-response.adoc[]
+===== Body
+include::{snippets}/api/projects/{projectid}/response-fields.adoc[]
+
+
+==== 프로젝트 수정
+===== 요청
+include::{snippets}/api/projects/{projectid}/update/http-request.adoc[]
+====== Header
+include::{snippets}/api/projects/{projectid}/update/request-headers.adoc[]
+====== Path
+include::{snippets}/api/projects/{projectid}/update/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/projects/{projectid}/update/http-response.adoc[]
+
+==== 프로젝트 이미지 수정
+===== 요청
+include::{snippets}/api/projects/{projectid}/images/http-request.adoc[]
+====== Header
+include::{snippets}/api/projects/{projectid}/images/request-headers.adoc[]
+====== Path
+include::{snippets}/api/projects/{projectid}/images/path-parameters.adoc[]
+====== MultiPart
+include::{snippets}/api/projects/{projectid}/images/request-parts.adoc[]
+
+===== 응답
+include::{snippets}/api/projects/{projectid}/images/http-response.adoc[]
+
+==== 프로젝트 삭제
+===== 요청
+include::{snippets}/api/projects/{projectid}/delete/http-request.adoc[]
+====== Header
+include::{snippets}/api/projects/{projectid}/delete/request-headers.adoc[]
+====== Path
+include::{snippets}/api/projects/{projectid}/delete/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/projects/{projectid}/delete/http-response.adoc[]
+
+==== 프로젝트 팀원리스트 조회
+===== 요청
+include::{snippets}/api/projects/members/{projectid}/http-request.adoc[]
+====== Header
+include::{snippets}/api/projects/members/{projectid}/request-headers.adoc[]
+====== Path
+include::{snippets}/api/projects/members/{projectid}/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/projects/members/{projectid}/http-response.adoc[]
+===== Body
+include::{snippets}/api/projects/members/{projectid}/response-fields.adoc[]
+
+==== 팀원 검색
+===== 요청
+include::{snippets}/api/projects/members/http-request.adoc[]
+====== Header
+include::{snippets}/api/projects/members/request-headers.adoc[]
+====== Body
+include::{snippets}/api/projects/members/request-fields.adoc[]
+
+===== 응답
+include::{snippets}/api/projects/members/http-response.adoc[]
+===== Body
+include::{snippets}/api/projects/members/response-fields.adoc[]
+
+==== 프로젝트 팀원 추가
+===== 요청
+include::{snippets}/api/projects/{projectid}/members/{memberid}/http-request.adoc[]
+====== Header
+include::{snippets}/api/projects/{projectid}/members/{memberid}/request-headers.adoc[]
+====== Path
+include::{snippets}/api/projects/{projectid}/members/{memberid}/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/projects/{projectid}/members/{memberid}/http-response.adoc[]
+
+==== 프로젝트 팀원 삭제
+===== 요청
+include::{snippets}/api/projects/{projectid}/members/{memberid}/delete/http-request.adoc[]
+====== Header
+include::{snippets}/api/projects/{projectid}/members/{memberid}/delete/request-headers.adoc[]
+====== Path
+include::{snippets}/api/projects/{projectid}/members/{memberid}/delete/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/projects/{projectid}/members/{memberid}/delete/http-response.adoc[]

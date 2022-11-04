@@ -4,6 +4,7 @@
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 12;
   background-color: rgba(131, 131, 131, 0.2);
   @include STRETCH;
 

@@ -58,6 +58,7 @@ public class ApiDocsController {
     @PostMapping("/{apicontrollerid}/apis")
     public ResponseEntity<Void> createApi(@PathVariable("apicontrollerid")Long apiControllerId,
                                           @RequestBody @Valid CreateApiRequest request){
+        System.out.println("fghfghfghfghfdghfghdfghfdgh");
         apiDocsService.createApi(apiControllerId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -131,9 +132,18 @@ public class ApiDocsController {
     }
 
     // Dto 생성
+    @PostMapping("/{projectid}/customdtos")
+    public ResponseEntity<Void> createCustomDto(@PathVariable("projectid")Long projectId,
+                                               @RequestBody @Valid CreateDtoRequest request){
+        apiDocsService.createCustomDto(projectId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    // Response Request 생성
     @PostMapping("/{apiid}/dtos")
     public ResponseEntity<Void> createDto(@PathVariable("apiid")Long apiId,
                                                   @RequestBody @Valid CreateDtoRequest request) {
+        System.out.println("request = " + request.getDtoName());
         apiDocsService.createDto(apiId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -188,6 +198,12 @@ public class ApiDocsController {
     @GetMapping("/{projectid}/types")
     public ResponseEntity<TypeListResponse> findTypeList(@PathVariable("projectid")Long projectId){
         TypeListResponse body = apiDocsService.findTypeList(projectId);
+        return ResponseEntity.ok().body(body);
+    }
+
+    @GetMapping("/{projectid}/lists")
+    public ResponseEntity<List<ProjectInfoListResponse>> findAll(@PathVariable("projectid")Long projectId){
+        List<ProjectInfoListResponse> body = apiDocsService.findAll(projectId);
         return ResponseEntity.ok().body(body);
     }
 }

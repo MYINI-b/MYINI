@@ -34,7 +34,10 @@ module.exports = {
     "jsx-a11y/click-events-have-key-events":0,
     "jsx-a11y/label-has-associated-control":0,
     "react-hooks/exhaustive-deps":0,
+    'no-new':0,
     "no-nested-ternary":0,
+    'jsx-a11y/no-autofocus':0,
+    '@typescript-eslint/no-explicit-any':0,
     'react/jsx-filename-extension': [
       2,
       { extensions: ['.js', '.jsx', '.ts', '.tsx'] },

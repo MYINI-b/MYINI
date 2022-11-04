@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ExceptionResponse.from("권한이 없습니다."));
     }
 
-    @ExceptionHandler({NotMatchException.class, NotFoundException.class, DuplicateException.class, InvalidException.class, OAuthProviderNotExistException.class})
+    @ExceptionHandler({NotMatchException.class, NotFoundException.class, DuplicateException.class, OAuthProviderNotExistException.class})
     public ResponseEntity<ExceptionResponse> handleBadRequestExceptions(Exception e) {
         return ResponseEntity.badRequest().body(ExceptionResponse.from(e.getMessage()));
     }
