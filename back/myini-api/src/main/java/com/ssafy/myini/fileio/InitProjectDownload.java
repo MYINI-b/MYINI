@@ -62,12 +62,13 @@ public class InitProjectDownload {
             System.out.println("file.getName() = " + file.getName());
             ZipFile zipFile = new ZipFile(file);
             zipFile.extractAll(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name());
+            fileDelete(initializerRequest);
         }catch (Exception e){
             System.out.println("e = " + e);
         }
     }
 
-    private static void fileDelete(InitializerRequest initializerRequest) throws Exception {
+    public static void fileDelete(InitializerRequest initializerRequest) throws Exception {
         String path = initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name();
 
         File deleteZip = new File(path+".zip");
