@@ -60,9 +60,9 @@ export default function ProjectImage({
           },
         };
 
-        const resp = await axios.patch('/projects/3/images', formData, headers);
+        await axios.patch('/projects/3/images', formData, headers);
         if (reader.result && typeof reader.result === 'string')
-          setImg(reader.result);
+          store.pjt.img = reader.result;
         // 유저 이미지 변경 api 전송
       }
     };
@@ -72,6 +72,10 @@ export default function ProjectImage({
   useEffect(() => {
     if (store.pjt.title !== undefined) setTitle(store.pjt.title);
   }, [store.pjt.title]);
+
+  useEffect(() => {
+    if (store.pjt.img !== undefined) setImg(store.pjt.img);
+  }, [store.pjt.img]);
 
   return (
     <div className="title-img">

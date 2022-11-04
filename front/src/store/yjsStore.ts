@@ -3,6 +3,7 @@ import { WebrtcProvider } from 'y-webrtc';
 import { USER } from 'types/Setting';
 
 export type ProjectInfo = {
+  img: string;
   title: string;
   desc: string;
   startDay: string;
