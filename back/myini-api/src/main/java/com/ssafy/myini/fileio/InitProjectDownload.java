@@ -46,15 +46,19 @@ public class InitProjectDownload {
             byte[] buffer = res.getBody();
 //            System.out.println(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name()+".zip");
             // 로컬 서버에 저장
+            File folder = new File(initializerRequest.getSpring_base_path());
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
             Path target = Paths.get(initializerRequest.getSpring_base_path(), initializerRequest.getSpring_name() + ".zip");    // 파일 저장 경로
 
             FileCopyUtils.copy(buffer, target.toFile());
 
 
 
-//            File file = new File(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name()+".zip");
-//            ZipFile zipFile = new ZipFile(file);
-//            zipFile.extractAll(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name());
+            File file = new File(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name()+".zip");
+            ZipFile zipFile = new ZipFile(file);
+            zipFile.extractAll(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name());
         }catch (Exception e){
             System.out.println("e = " + e);
         }
