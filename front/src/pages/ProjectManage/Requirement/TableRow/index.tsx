@@ -25,6 +25,7 @@ interface Props {
   setCategories: Dispatch<React.SetStateAction<string[]>>;
   managers: string[];
   setManagers: Dispatch<React.SetStateAction<string[]>>;
+  store: any;
 }
 
 export default function TableRow({
@@ -36,6 +37,7 @@ export default function TableRow({
   setCategories,
   managers,
   setManagers,
+  store,
 }: Props) {
   const requireContainer =
     useRef() as React.MutableRefObject<HTMLTextAreaElement>;
@@ -126,25 +128,19 @@ export default function TableRow({
   }, []);
 
   const focusOutDesc = useCallback(() => {
-    const copyRows = [...rows];
-    copyRows[idx].description = desc;
-    setRows(copyRows);
+    store.pjt.rows[idx].description = desc;
     setIsDescEdit(false);
-  }, [rows, idx, desc]);
+  }, [store, desc]);
 
   const focusOutRequirement = useCallback(() => {
-    const copyRows = [...rows];
-    copyRows[idx].requirement = requirement;
-    setRows(copyRows);
+    store.pjt.rows[idx].requirement = requirement;
     setIsRequireEdit(false);
-  }, [rows, idx, requirement]);
+  }, [store, requirement]);
 
   const focusOutPoint = useCallback(() => {
-    const copyRows = [...rows];
-    copyRows[idx].point = point;
-    setRows(copyRows);
+    store.pjt.rows[idx].point = point;
     setIsPointEdit(false);
-  }, [rows, idx, point]);
+  }, [store, point]);
 
   useEffect(() => {
     if (requireContainer.current)
@@ -152,11 +148,6 @@ export default function TableRow({
         'focusout',
         focusOutRequirement,
       );
-
-    const copyRows = [...rows];
-    copyRows[idx].requirement = requirement;
-
-    setRows(copyRows);
     return () => {
       if (requireContainer.current)
         requireContainer.current.removeEventListener(
@@ -167,13 +158,18 @@ export default function TableRow({
   }, [isRequireEdit]);
 
   useEffect(() => {
+    if (pointContainer.current)
+      pointContainer.current.addEventListener('focusout', focusOutPoint);
+
+    return () => {
+      if (pointContainer.current)
+        pointContainer.current.removeEventListener('focusout', focusOutPoint);
+    };
+  }, [isPointEdit]);
+
+  useEffect(() => {
     if (descContainer.current)
       descContainer.current.addEventListener('focusout', focusOutDesc);
-
-    const copyRows = [...rows];
-    copyRows[idx].description = desc;
-
-    setRows(copyRows);
     return () => {
       if (descContainer.current)
         descContainer.current.removeEventListener('focusout', focusOutDesc);
@@ -181,22 +177,12 @@ export default function TableRow({
   }, [isDescEdit]);
 
   useEffect(() => {
-    if (pointContainer.current)
-      pointContainer.current.addEventListener('focusout', focusOutPoint);
-
-    const copyRows = [...rows];
-    copyRows[idx].point = point;
-
-    setRows(copyRows);
-    return () => {
-      if (pointContainer.current)
-        pointContainer.current.removeEventListener('focusout', focusOutPoint);
-    };
-  }, [isPointEdit]);
+    if (store.pjt.rows !== undefined) setRows(store.pjt.rows);
+  }, [store.pjt.rows]);
 
   return (
     <div className="table-row" onContextMenu={onRightClick}>
-      <span className="table-col content one">{row.id}</span>
+      <span className="table-col content one">{idx + 1}</span>
       <span
         className="table-col content one-half"
         onClick={(e) => openCategoryList(e, false)}
@@ -294,9 +280,8 @@ export default function TableRow({
         <RowModal
           setIsRowModalOpen={setIsRowModalOpen}
           clickMousePos={clickMousePos}
-          rows={rows}
-          setRows={setRows}
           idx={idx}
+          store={store}
         />
       )}
 
