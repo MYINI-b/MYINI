@@ -1,21 +1,18 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useSyncedStore } from '@syncedstore/react';
 import moment from 'moment';
-import useInput from 'hooks/useInput';
 import { globalStore } from 'store/yjsStore';
+import { USER } from 'types/Setting';
 import ImageTitle from './ImageTitle';
 import ProjectDesc from './ProjectDesc/index';
 import Period from './Period/index';
 import ReferenceLink from './ReferenceLink';
-import { ProjectMember } from './Member/index';
-import MockData from './mock.json';
+import ProjectMember from './Member/index';
 import './style.scss';
 
 export default function SettingPage() {
   const store = useSyncedStore(globalStore);
-  const data = useMemo(() => MockData[0], []);
-  const [isEdit, setIsEdit] = useState(false);
 
   const [title, setTitle] = useState('');
   const [img, setImg] = useState('');
@@ -28,19 +25,7 @@ export default function SettingPage() {
   const [jiraLink, setJiraLink] = useState('');
   const [notionLink, setNotionLink] = useState('');
   const [figmaLink, setFigmaLink] = useState('');
-
-  const Props = {
-    id: data.id,
-    // img: data.img,
-    // title: data.title,
-    period: data.period,
-    jiralink: data.jiralink,
-    notionlink: data.notionlink,
-    gitlink: data.gitlink,
-    figmalink: data.figmalink,
-    detailinfo: data.detailinfo,
-    member: data.member,
-  };
+  const [memberList, setMemberList] = useState<USER[]>([]);
 
   return (
     <div className="setting-page">
@@ -75,7 +60,11 @@ export default function SettingPage() {
             />
           </div>
           <div className="right-side">
-            <ProjectMember {...Props} className="project-member" />
+            <ProjectMember
+              memberList={memberList}
+              setMemberList={setMemberList}
+              store={store}
+            />
           </div>
         </div>
       </div>

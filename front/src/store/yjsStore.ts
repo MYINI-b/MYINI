@@ -1,5 +1,6 @@
 import { getYjsValue, syncedStore } from '@syncedstore/core';
 import { WebrtcProvider } from 'y-webrtc';
+import { USER } from 'types/Setting';
 
 export type ProjectInfo = {
   title: string;
@@ -10,13 +11,7 @@ export type ProjectInfo = {
   jiraLink: string;
   notionLink: string;
   figmaLink: string;
-  members: User[];
-};
-
-export type User = {
-  id: number;
-  img: string;
-  name: string;
+  members: USER[];
 };
 
 export const globalStore = syncedStore({

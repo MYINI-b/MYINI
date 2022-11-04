@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faGear,
@@ -7,41 +7,51 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import './style.scss';
 import useInput from 'hooks/useInput';
+import { USER } from 'types/Setting';
 
-export function ProjectMember(props: any) {
-  const { member } = props;
-  const [memberList, setMemberList] = useState(member);
+interface Props {
+  memberList: USER[];
+  setMemberList: React.Dispatch<React.SetStateAction<USER[]>>;
+  store: any;
+}
+
+export default function ProjectMember({
+  memberList,
+  setMemberList,
+  store,
+}: Props) {
   const [isEdit, setIsEdit] = useState(false);
   const [userMail, onUserMailChange, setUserMail] = useInput('');
 
   const onSubmitClick = useCallback(() => {
     setIsEdit(false);
+    setUserMail('');
   }, []);
 
   const addMember = useCallback(
     (e: any) => {
       e.preventDefault();
-      const copyMembers = [...memberList];
-      copyMembers.push({
+      store.pjt.members.push({
         id: 1,
-        name: '한윤석',
+        name: userMail,
         img: 'https://cdn.pixabay.com/photo/2019/08/02/19/25/vectorart-4380377__340.jpg',
       });
-      setMemberList(copyMembers);
       setUserMail('');
     },
-    [memberList],
+    [store, userMail],
   );
 
   const deleteMember = useCallback(
     (idx: number) => {
-      const deletedMembers = [...memberList].filter(
-        (e: any, i: number) => i !== idx,
-      );
-      setMemberList(deletedMembers);
+      store.pjt.members.splice(idx, 1);
     },
-    [memberList],
+    [store],
   );
+
+  useEffect(() => {
+    if (store.pjt.members !== undefined) setMemberList(store.pjt.members);
+  }, [store.pjt.members]);
+
   return (
     <>
       <div className="project-detail-title-wrapper normal">
@@ -71,17 +81,18 @@ export function ProjectMember(props: any) {
             value={userMail}
           />
         )}
-        {memberList.map((mem: any, i: number) => (
-          <div key={i} className="team-member">
-            <img className="profile-image" src={mem.img} alt="profile" />
-            <div className="profile-name">{mem.name}</div>
-            <FontAwesomeIcon
-              icon={faUserSlash}
-              className="profile-delete-button"
-              onClick={() => deleteMember(i)}
-            />
-          </div>
-        ))}
+        {!!memberList.length &&
+          memberList.map((mem: any, i: number) => (
+            <div key={i} className="team-member">
+              <img className="profile-image" src={mem.img} alt="profile" />
+              <div className="profile-name">{mem.name}</div>
+              <FontAwesomeIcon
+                icon={faUserSlash}
+                className={`profile-delete-button ${!isEdit && 'hidden'}`}
+                onClick={() => deleteMember(i)}
+              />
+            </div>
+          ))}
       </form>
     </>
   );
