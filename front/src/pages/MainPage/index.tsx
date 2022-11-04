@@ -6,6 +6,7 @@ import ProjectCard from 'components/ProjectCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootState } from 'modules';
+import { getApi } from 'api';
 import { authAxios, getMemberAxios } from '../../api/common';
 import { Profile } from '../../modules/member';
 import CardLogo from '../../assets/card-logo.png';
@@ -62,7 +63,8 @@ export default function MainPage() {
     };
     fetchData();
     const getMembers = async () => {
-      await getMemberAxios('/members/crew');
+      const getMemberData: any = await getApi(`/members/crew`);
+      console.log(getMemberData);
     };
     getMembers();
     console.log(getMembers, 'asdasd');

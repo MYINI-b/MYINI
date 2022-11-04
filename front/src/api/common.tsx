@@ -28,6 +28,7 @@ export const getMemberAxios = async (url: string) => {
       },
     })
     .then((res) => {
+      console.log(res, '여기까지 들어옴');
       return res;
     });
 };
