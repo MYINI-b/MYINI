@@ -157,6 +157,9 @@
         width:100%;
         border:1px solid $lightx2-gray;
         text-align: center;
+        font-size: rem(14);
+        font-weight: $eng-content;
+        
         &::-webkit-outer-spin-button,
         &::-webkit-inner-spin-button {
           -webkit-appearance: none;

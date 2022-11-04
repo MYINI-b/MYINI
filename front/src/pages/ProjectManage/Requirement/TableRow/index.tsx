@@ -18,27 +18,11 @@ import ImportanceModal from '../ImportanceModal';
 
 interface Props {
   row: ROW;
-  rows: ROW[];
-  setRows: Dispatch<React.SetStateAction<ROW[]>>;
   idx: number;
-  categories: string[];
-  setCategories: Dispatch<React.SetStateAction<string[]>>;
-  managers: string[];
-  setManagers: Dispatch<React.SetStateAction<string[]>>;
   store: any;
 }
 
-export default function TableRow({
-  row,
-  rows,
-  setRows,
-  idx,
-  categories,
-  setCategories,
-  managers,
-  setManagers,
-  store,
-}: Props) {
+export default function TableRow({ row, idx, store }: Props) {
   const requireContainer =
     useRef() as React.MutableRefObject<HTMLTextAreaElement>;
   const descContainer = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
@@ -148,6 +132,10 @@ export default function TableRow({
         'focusout',
         focusOutRequirement,
       );
+
+    if (store.pjt.rows !== undefined)
+      store.pjt.rows[idx].requirement = requirement;
+
     return () => {
       if (requireContainer.current)
         requireContainer.current.removeEventListener(
@@ -161,6 +149,8 @@ export default function TableRow({
     if (pointContainer.current)
       pointContainer.current.addEventListener('focusout', focusOutPoint);
 
+    if (store.pjt.rows !== undefined) store.pjt.rows[idx].point = point;
+
     return () => {
       if (pointContainer.current)
         pointContainer.current.removeEventListener('focusout', focusOutPoint);
@@ -170,15 +160,14 @@ export default function TableRow({
   useEffect(() => {
     if (descContainer.current)
       descContainer.current.addEventListener('focusout', focusOutDesc);
+
+    if (store.pjt.rows !== undefined) store.pjt.rows[idx].description = desc;
+
     return () => {
       if (descContainer.current)
         descContainer.current.removeEventListener('focusout', focusOutDesc);
     };
   }, [isDescEdit]);
-
-  useEffect(() => {
-    if (store.pjt.rows !== undefined) setRows(store.pjt.rows);
-  }, [store.pjt.rows]);
 
   return (
     <div className="table-row" onContextMenu={onRightClick}>
@@ -270,6 +259,7 @@ export default function TableRow({
             onChange={onPointChange}
             className="point-input"
             ref={pointContainer}
+            autoFocus
           />
         ) : (
           row.point
@@ -287,13 +277,10 @@ export default function TableRow({
 
       {isCategoryListOpen && (
         <CategoryListModal
-          categories={categories}
-          setCategories={setCategories}
           closeCategoryList={closeCategoryList}
           clickElementPos={clickElementPos}
-          rows={rows}
-          setRows={setRows}
           idx={idx}
+          store={store}
         />
       )}
 
@@ -301,21 +288,17 @@ export default function TableRow({
         <DivisionModal
           setIsDivisionOpen={setIsDivisionOpen}
           clickElementPos={clickElementPos}
-          rows={rows}
-          setRows={setRows}
           idx={idx}
+          store={store}
         />
       )}
 
       {isManagerOpen && (
         <ManagerModal
-          managers={managers}
-          setManagers={setManagers}
           closeManagerModal={closeManagerModal}
           clickElementPos={clickElementPos}
-          rows={rows}
-          setRows={setRows}
           idx={idx}
+          store={store}
         />
       )}
 
@@ -323,9 +306,8 @@ export default function TableRow({
         <ImportanceModal
           setIsImportanceOpen={setIsImportanceOpen}
           clickElementPos={clickElementPos}
-          rows={rows}
-          setRows={setRows}
           idx={idx}
+          store={store}
         />
       )}
     </div>

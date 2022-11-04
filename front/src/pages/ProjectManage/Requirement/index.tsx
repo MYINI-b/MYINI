@@ -1,27 +1,13 @@
 import './style.scss';
-import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { useSyncedStore } from '@syncedstore/react';
 
 import { globalStore } from 'store/yjsStore';
-import { ROW } from 'types/Requirement';
 import RowList from './RowList';
 
 export default function Requirement() {
   const store = useSyncedStore(globalStore);
-
-  const [rows, setRows] = useState<ROW[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
-  const [managers, setManagers] = useState<string[]>([]);
-
-  // useEffect(() => {
-  //   if (store.pjt.categories !== undefined) setCategories(store.pjt.categories);
-  // }, [store.pjt.categories]);
-
-  // useEffect(() => {
-  //   if (store.pjt.managers !== undefined) setManagers(store.pjt.managers);
-  // }, [store.pjt.managers]);
 
   return (
     <div className="requirement-container">
@@ -48,15 +34,7 @@ export default function Requirement() {
           <h5 className="table-col title one">포인트</h5>
         </article>
 
-        <RowList
-          rows={rows}
-          setRows={setRows}
-          categories={categories}
-          setCategories={setCategories}
-          managers={managers}
-          setManagers={setManagers}
-          store={store}
-        />
+        <RowList store={store} />
       </section>
     </div>
   );

@@ -6,23 +6,17 @@ import './style.scss';
 import { ELEMENTPOS, ROW } from 'types/Requirement';
 
 interface Props {
-  categories: string[];
-  setCategories: Dispatch<React.SetStateAction<string[]>>;
   closeCategoryList: () => void;
   clickElementPos: ELEMENTPOS;
-  rows: ROW[];
-  setRows: Dispatch<React.SetStateAction<ROW[]>>;
   idx: number;
+  store: any;
 }
 
 export default function CategoryListModal({
-  categories,
-  setCategories,
   closeCategoryList,
   clickElementPos,
-  rows,
-  setRows,
   idx,
+  store,
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
   const [categoryInput, setCategoryInput] = useState('');
@@ -30,28 +24,22 @@ export default function CategoryListModal({
   const deleteCategory = useCallback(
     (e: any, idx: number) => {
       e.stopPropagation();
-      const copyCategories = [...categories];
-      const copyRows = [...rows];
-      copyRows.forEach((e) => {
-        if (e.category === copyCategories[idx]) e.category = '';
+      store.pjt.rows.forEach((e: ROW) => {
+        if (e.category === store.pjt.categories[idx]) e.category = '';
       });
-      copyCategories.splice(idx, 1);
-      setCategories(copyCategories);
-      setRows(copyRows);
+      store.pjt.categories.splice(idx, 1);
       closeCategoryList();
     },
-    [categories, setCategories, rows],
+    [store],
   );
 
   const addNewCategory = (e: any) => {
     if (e.key === 'Enter') {
-      const copyRows = [...rows];
-      copyRows[idx].category = categoryInput;
-      setCategories([...categories, categoryInput]);
+      store.pjt.rows[idx].category = categoryInput;
+      if (store.pjt.categories === undefined) store.pjt.categories = [];
+      store.pjt.categories.push(categoryInput);
       setCategoryInput('');
-      setRows(copyRows);
       closeCategoryList();
-      e.target.value = '';
     }
   };
 
@@ -64,12 +52,10 @@ export default function CategoryListModal({
 
   const selectCategory = useCallback(
     (cat: string) => {
-      const copyRows = [...rows];
-      copyRows[idx].category = cat;
-      setRows(copyRows);
+      store.pjt.rows[idx].category = cat;
       closeCategoryList();
     },
-    [rows, idx],
+    [store, idx],
   );
 
   useEffect(() => {
@@ -94,24 +80,25 @@ export default function CategoryListModal({
             onKeyDown={addNewCategory}
             onClick={(e) => e.stopPropagation()}
           />
-          {categories.map((e, i) => {
-            return (
-              <span
-                className={`category-row ${
-                  rows[idx].category === e && 'select'
-                }`}
-                key={i}
-                onClick={() => selectCategory(e)}
-              >
-                {e}
-                <FontAwesomeIcon
-                  icon={faClose}
-                  className="category-delete-button"
-                  onClick={(e: any) => deleteCategory(e, i)}
-                />
-              </span>
-            );
-          })}
+          {store.pjt.categories &&
+            store.pjt.categories.map((e: string, i: number) => {
+              return (
+                <span
+                  className={`category-row ${
+                    store.pjt.rows[idx].category === e && 'select'
+                  }`}
+                  key={i}
+                  onClick={() => selectCategory(e)}
+                >
+                  {e}
+                  <FontAwesomeIcon
+                    icon={faClose}
+                    className="category-delete-button"
+                    onClick={(e: any) => deleteCategory(e, i)}
+                  />
+                </span>
+              );
+            })}
         </div>
       </div>
     </div>

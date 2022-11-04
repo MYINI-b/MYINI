@@ -14,8 +14,10 @@ export type ProjectInfo = {
   jiraLink: string;
   notionLink: string;
   figmaLink: string;
-  rows: ROW[];
   members: USER[];
+
+  // requirement
+  rows: ROW[];
   categories: string[];
   managers: string[];
 };
