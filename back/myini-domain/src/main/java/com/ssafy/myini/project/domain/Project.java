@@ -45,6 +45,16 @@ public class Project {
 
     private String projectFigmaUrl;
 
+    private String jiraId;
+
+    private String jiraApiKey;
+
+    private String jiraProjectId;
+
+    private String jiraProjectKey;
+
+    private String jiraProjectName;
+
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<MemberProject> memberProjects = new ArrayList<>();
 
@@ -79,6 +89,20 @@ public class Project {
         this.projectJiraUrl = projectJiraUrl;
         this.projectNotionUrl = projectNotionUrl;
         this.projectFigmaUrl = projectFigmaUrl;
+    }
+
+    public void updateJiraAccount(String jiraId, String jiraApiKey){
+        this.jiraId = jiraId;
+        this.jiraApiKey = jiraApiKey;
+        this.jiraProjectId = null;
+        this.jiraProjectKey = null;
+        this.jiraProjectName = null;
+    }
+
+    public void updateJiraProject(String jiraProjectId, String jiraProjectKey, String jiraProjectName){
+        this.jiraProjectId = jiraProjectId;
+        this.jiraProjectKey = jiraProjectKey;
+        this.jiraProjectName = jiraProjectName;
     }
 
     public void updateProjectImg(String projectImg){
