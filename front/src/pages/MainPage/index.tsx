@@ -27,6 +27,9 @@ export default function MainPage() {
     memberProfileImg: '',
     projectCount: 0,
   });
+
+  const [myMember, setMyMember] = useState<any>([]);
+
   const dispatch = useDispatch();
 
   const getMyInfo = useSelector((state: RootState) => state.member);
@@ -58,8 +61,12 @@ export default function MainPage() {
         });
     };
     fetchData();
-    const url = `${process.env.REACT_APP_API_URL}`;
-    getMemberAxios(url);
+    const getMembers = async () => {
+      await getMemberAxios('/members/crew');
+    };
+    getMembers();
+    console.log(getMembers, 'asdasd');
+    // setMyMember(getMemberAxios(url));
   }, []);
 
   return (
