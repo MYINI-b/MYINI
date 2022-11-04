@@ -2,18 +2,65 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import MainHeader from 'components/MainHeader';
-import { authAxios } from '../../api/common';
+import ProjectCard from 'components/ProjectCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { RootState } from 'modules';
+import { authAxios, getMemberAxios } from '../../api/common';
+import { Profile } from '../../modules/member';
 import CardLogo from '../../assets/card-logo.png';
 import './style.scss';
 
 export default function MainPage() {
   const [step, setStep] = useState(0);
 
-  useEffect(() => {
-    authAxios.get('/members/').then((res) => {
-      console.log(res, 'res');
-    });
+  const [myInfo, setMyInfo] = useState<{
+    memberEmail: string;
+    memberId: number;
+    memberNickname: string;
+    memberProfileImg: string;
+    projectCount: number;
+  }>({
+    memberEmail: '',
+    memberId: -1,
+    memberNickname: '',
+    memberProfileImg: '',
+    projectCount: 0,
   });
+  const dispatch = useDispatch();
+
+  const getMyInfo = useSelector((state: RootState) => state.member);
+  useEffect(() => {
+    const fetchData = async () => {
+      await authAxios
+        .get('members')
+        .then((res) => {
+          const data = {
+            memberEmail: res.data.memberEmail,
+            memberId: res.data.memberId,
+            memberNickname: res.data.memberNickname,
+            memberProfileImg: res.data.memberProfileImg,
+            projectCount: res.data.projectCount,
+          };
+          setMyInfo(data);
+          dispatch(
+            Profile(
+              data.memberEmail,
+              data.memberId,
+              data.memberNickname,
+              data.memberProfileImg,
+              data.projectCount,
+            ),
+          );
+        })
+        .catch((err) => {
+          console.log(err, '에러요');
+        });
+    };
+    fetchData();
+    const url = `${process.env.REACT_APP_API_URL}`;
+    getMemberAxios(url);
+  }, []);
 
   return (
     <div className="mainpage-highest-container">
@@ -24,12 +71,12 @@ export default function MainPage() {
         <div className="wave -three" />
       </div>
       <div className="main-page">
-        <span className="user-name">한윤석</span>
+        <span className="user-name">{myInfo.memberNickname}</span>
         <span className="user-ini">`s INI</span>
         <div className="project-info">
           <div className="project-div">
             <h2 className="project-info-title">내 프로젝트 수</h2>
-            <h2>5 개</h2>
+            <h2>{getMyInfo.projectCount} 개</h2>
           </div>
           <div className="project-div1">
             <h2 className="project-info-title">함께 했던 팀원</h2>
@@ -40,29 +87,16 @@ export default function MainPage() {
         </div>
         <section className="card-container">
           <div className="card-scroll">
-            <div className="project-start">
-              <img src={CardLogo} alt="" className="card-logo" />
-              <span>새 프로젝트</span>
-            </div>
-            <div className="card">
-              <div className="card-header">
-                <div className="card-header-title">프로젝트명</div>
-              </div>
-              <div className="card-body">
-                <div className="card-body-header">
-                  <h1>프로젝트명</h1>
+            <div className="project-start-container">
+              <Link to="/projectmanage" className="main-link-style">
+                <div className="project-start">
+                  <img src={CardLogo} alt="" className="card-logo" />
+                  <span>새 프로젝트</span>
                 </div>
-                <div className="card-body-context">
-                  이 프로젝트는 1953년 영국에서부터 전해져와 이 글을 읽을 시
-                  3명에게 복사해서 보내지 않을 경우 수상하지 못합니다.
-                  <div className="members">
-                    <div className="member" />
-                    <div className="member" />
-                    <div className="member" />
-                  </div>
-                </div>
-              </div>
+              </Link>
             </div>
+
+            <ProjectCard />
           </div>
         </section>
       </div>

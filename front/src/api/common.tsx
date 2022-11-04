@@ -1,13 +1,9 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { SET_TOKEN } from 'reducers/Auth';
-
-const SERVER_ADDRESS = 'https://k7b203.p.ssafy.io/api';
 
 const accessToken = localStorage.getItem('accessToken');
-console.log(accessToken, 'token?');
 
 export const authAxios: AxiosInstance = axios.create({
-  baseURL: `${SERVER_ADDRESS}`,
+  baseURL: `${process.env.REACT_APP_API_URL}`,
   headers: {
     Authorization: `Bearer ${localStorage.getItem('accessToken')}` || '',
     'Access-Control-Allow-Origin': '*',
@@ -18,5 +14,17 @@ export const authAxios: AxiosInstance = axios.create({
 authAxios.defaults.withCredentials = true;
 
 export const defaultAxios: AxiosInstance = axios.create({
-  baseURL: `${SERVER_ADDRESS}`,
+  baseURL: `${process.env.REACT_APP_API_URL}`,
 });
+
+export const getMemberAxios = async (url: string) => {
+  axios
+    .get(`${url}/members/crew`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((res) => {
+      console.log(res, '멤버받아오냐?');
+    });
+};
