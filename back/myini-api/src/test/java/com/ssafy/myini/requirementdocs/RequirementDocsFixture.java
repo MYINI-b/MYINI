@@ -2,6 +2,7 @@ package com.ssafy.myini.requirementdocs;
 
 import com.ssafy.myini.requirementdocs.domain.type.RequirementPart;
 import com.ssafy.myini.requirementdocs.request.*;
+import com.ssafy.myini.requirementdocs.response.RequirementCategoryCreateResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementCategoryDto;
 import com.ssafy.myini.requirementdocs.response.RequirementCategoryListResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementListResponse;
@@ -47,5 +48,7 @@ public class RequirementDocsFixture {
 
     public static final RequirementListResponse TEST_REQUIREMENT_LIST_RESPONSE
             = new RequirementListResponse(ID,TEST_REQUIREMENT_CATEGORY_DTO,NAME,CONTENT,RequirementPart.BE,NAME,EMAIL,NUM,DOUNUM);
+    public static final RequirementCategoryCreateResponse TEST_REQUIREMENT_CATEGORU_RESPONSE
+            = new RequirementCategoryCreateResponse(ID);
 
 }

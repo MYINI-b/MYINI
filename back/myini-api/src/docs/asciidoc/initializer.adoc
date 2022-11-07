@@ -27,3 +27,44 @@ include::{snippets}/api/initializers/{projectid}/ispossible/request-body.adoc[]
 include::{snippets}/api/initializers/{projectid}/ispossible/http-response.adoc[]
 ====== Body
 include::{snippets}/api/initializers/{projectid}/ispossible/response-fields.adoc[]
+
+//==== 이니셜라이저 시작
+//===== 요청
+//include::{snippets}/api/initializers/{projectid}/http-request.adoc[]
+//====== Header
+//include::{snippets}/api/initializers/{projectid}/request-headers.adoc[]
+//====== Path
+//include::{snippets}/api/initializers/{projectid}/path-parameters.adoc[]
+//====== Body
+//include::{snippets}/api/initializers/{projectid}/request-body.adoc[]
+//
+//===== 응답
+//include::{snippets}/api/initializers/{projectid}/http-response.adoc[]
+//====== Body
+//include::{snippets}/api/initializers/{projectid}/response-body.adoc[]
+
+==== 이니셜라이저 미리보기
+===== 요청
+include::{snippets}/api/initializers/{projectid}/previews/http-request.adoc[]
+====== Header
+include::{snippets}/api/initializers/{projectid}/previews/request-headers.adoc[]
+====== Path
+include::{snippets}/api/initializers/{projectid}/previews/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/initializers/{projectid}/previews/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/initializers/{projectid}/previews/http-response.adoc[]
+====== Body
+include::{snippets}/api/initializers/{projectid}/previews/response-body.adoc[]
+
+==== myini 다운로드
+===== 요청
+include::{snippets}/api/initializers/downloads/http-request.adoc[]
+====== Body
+include::{snippets}/api/initializers/downloads/request-body.adoc[]
+
+===== 응답
+include::{snippets}/api/initializers/downloads/http-response.adoc[]
+====== Body
+include::{snippets}/api/initializers/downloads/response-body.adoc[]

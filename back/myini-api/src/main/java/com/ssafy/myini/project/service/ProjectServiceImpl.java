@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.ssafy.myini.DuplicateException.MEMBER_PROJECT_DUPLICATE;
 import static com.ssafy.myini.NotFoundException.*;
@@ -119,10 +120,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectMemberResponse findByMemberEmail(FindByMemberEmailRequest request) {
-        Member findMember = memberRepository.findByMemberEmail(request.getMemberEmail())
-                .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
-        return ProjectMemberResponse.from(findMember);
+    public List<ProjectMemberResponse> findByMemberEmail(FindByMemberEmailRequest request) {
+        List<Member> findMember = memberRepository.findByMemberEmailContains(request.getMemberEmail());
+
+        return findMember.stream().map(member -> ProjectMemberResponse.from(member)).collect(Collectors.toList());
     }
 
     @Transactional
@@ -130,18 +131,18 @@ public class ProjectServiceImpl implements ProjectService {
     public void addProjectMember(Member member, Long projectId, Long memberId) {
         Project findProject = projectRepository.findById(projectId)
                 .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
-        if(!memberProjectRepository.existsByMemberAndProject(member, findProject)){
+        if(memberProjectRepository.existsByMemberAndProject(member, findProject)){
             throw new NotFoundException(MEMBER_PROJECT_NOT_FOUND);
-        }
+        }else{
+             Member findMember = memberRepository.findById(memberId)
+                    .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
+            if(memberProjectRepository.existsByMemberAndProject(findMember, findProject)){
+                throw new DuplicateException(MEMBER_PROJECT_DUPLICATE);
+            }
 
-        Member findMember = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
-        if(memberProjectRepository.existsByMemberAndProject(findMember, findProject)){
-            throw new DuplicateException(MEMBER_PROJECT_DUPLICATE);
+            MemberProject memberProject = MemberProject.createMemberProject(findMember, findProject);
+            memberProjectRepository.save(memberProject);
         }
-
-        MemberProject memberProject = MemberProject.createMemberProject(findMember, findProject);
-        memberProjectRepository.save(memberProject);
     }
 
     @Transactional

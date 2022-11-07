@@ -21,7 +21,7 @@ public interface ProjectService {
     void updateProjectImg(Member member, Long projectId, MultipartFile projectImg);
     void deleteProject(Member member, Long projectId);
     List<ProjectMemberResponse> findProjectMemberList(Long projectId);
-    ProjectMemberResponse findByMemberEmail(FindByMemberEmailRequest request);
+    List<ProjectMemberResponse> findByMemberEmail(FindByMemberEmailRequest request);
     void addProjectMember(Member member, Long projectId, Long memberId);
     void deleteProjectMember(Member member, Long projectId, Long memberId);
 }

@@ -67,7 +67,6 @@ public class Member extends BaseEntity {
     public void updateMemberProfileImg(String profileImg){
         this.memberProfileImg = profileImg;
     }
-
     public void updateMemberJiraEmail(String memberJiraEmail){
         this.memberJiraEmail = memberJiraEmail;
     }
