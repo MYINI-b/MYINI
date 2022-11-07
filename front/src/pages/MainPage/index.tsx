@@ -1,20 +1,31 @@
 /* eslint-disable no-console */
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect, useCallback } from 'react';
 import MainHeader from 'components/MainHeader';
 import ProjectCard from 'components/ProjectCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootState } from 'modules';
-import { getApi } from 'api';
-import { authAxios, getMemberAxios } from '../../api/common';
+
+// types
+import { MEMBER } from 'types/main';
+
+// 3rd party
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen, faCheck, faOtter } from '@fortawesome/free-solid-svg-icons';
+
+// api
+import { getApi, patchApi } from 'api';
+import { authAxios } from '../../api/common';
+
 import { Profile } from '../../modules/member';
 import CardLogo from '../../assets/card-logo.png';
 import './style.scss';
 
 export default function MainPage() {
   const [step, setStep] = useState(0);
-
+  const [jiraEdit, setJiraEdit] = useState(false);
+  const [myMember, setMyMember] = useState<MEMBER[]>([]);
+  const [jiraMail, setJiraMail] = useState('');
   const [myInfo, setMyInfo] = useState<{
     memberEmail: string;
     memberId: number;
@@ -29,7 +40,19 @@ export default function MainPage() {
     projectCount: 0,
   });
 
-  const [myMember, setMyMember] = useState<any>([]);
+  const onJiraSubmit = useCallback(() => {
+    const fetchJiraMail = async () => {
+      const myJiraMail = jiraMail;
+      await patchApi(`/members/jiraemail`, myJiraMail);
+    };
+    fetchJiraMail();
+    setJiraEdit(false);
+  }, []);
+
+  const inputJiraMail = useCallback((e: any) => {
+    console.log(e.target.value, '???');
+    setJiraMail(e.target.value);
+  }, []);
 
   const dispatch = useDispatch();
 
@@ -64,11 +87,9 @@ export default function MainPage() {
     fetchData();
     const getMembers = async () => {
       const getMemberData: any = await getApi(`/members/crew`);
-      console.log(getMemberData);
+      setMyMember(getMemberData.data);
     };
     getMembers();
-    console.log(getMembers, 'asdasd');
-    // setMyMember(getMemberAxios(url));
   }, []);
 
   return (
@@ -89,8 +110,66 @@ export default function MainPage() {
           </div>
           <div className="project-div1">
             <h2 className="project-info-title">함께 했던 팀원</h2>
+            <div className="main-members-container">
+              {myMember === null ? (
+                <span>함께한 멤버가 아직 없습니다.</span>
+              ) : null}
+              {myMember.map((content, idx) => {
+                return (
+                  <div key={idx} className="main-member-container">
+                    {content.memberProfileImg === null ? (
+                      <div className="main-member">
+                        <div className="main-member-img">
+                          <FontAwesomeIcon
+                            icon={faOtter}
+                            className="member-default-img"
+                          />
+                        </div>
+                        <p className="main-member-name">
+                          {content.memberNickname}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="main-member">
+                        <img
+                          src={content.memberProfileImg}
+                          alt=""
+                          className="main-member-img"
+                        />
+                        <p>{content.memberNickname}</p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="project-jira-div">
+            <div className="jira-info-title-container">
+              <h2 className="project-jira-info-title">내 Jira 정보</h2>
+              {jiraEdit ? (
+                <FontAwesomeIcon
+                  icon={faCheck}
+                  className="jira-edit-button"
+                  onClick={onJiraSubmit}
+                />
+              ) : (
+                <FontAwesomeIcon
+                  icon={faPen}
+                  className="jira-edit-button"
+                  onClick={() => setJiraEdit(true)}
+                />
+              )}
+            </div>
             <div className="members">
-              <div className="member" />
+              <input
+                type="email"
+                onChange={inputJiraMail}
+                placeholder="jira 이메일을 입력해주세요."
+                readOnly={!jiraEdit}
+                disabled={!jiraEdit}
+                required
+              />
             </div>
           </div>
         </div>
