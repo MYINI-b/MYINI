@@ -1,10 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSyncedStore } from '@syncedstore/react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { getYjsValue, syncedStore } from '@syncedstore/core';
+import { WebrtcProvider } from 'y-webrtc';
 
-import { globalStore } from 'store/yjsStore';
-import { getApi } from 'api';
+import { globalStore, ProjectInfo } from 'store/yjsStore';
+import { getApi, putApi } from 'api';
 import DefaultProfile from 'assets/default-profile.png';
 import ImageTitle from './ImageTitle';
 import ProjectDesc from './ProjectDesc/index';
@@ -14,14 +16,27 @@ import ProjectMember from './Member/index';
 import './style.scss';
 
 export default function SettingPage() {
-  const store = useSyncedStore(globalStore);
+  const [store, setStore] = useState<any>(useSyncedStore(globalStore));
   const { pid } = useParams();
-  const navigate = useNavigate();
+
+  const editProjectInfo = useCallback(async () => {
+    const body = {
+      projectName: store.pjt.title,
+      projectDescription: store.pjt.desc,
+      projectStartedDate: store.pjt.startDay,
+      projectFinishedDate: store.pjt.endDay,
+      projectGithubUrl: store.pjt.gitLink,
+      projectJiraUrl: store.pjt.jiraLink,
+      projectNotionUrl: store.pjt.notionLink,
+      projectFigmaUrl: store.pjt.figmaLink,
+    };
+    const resp = await putApi(`/projects/${pid}`, body);
+    console.log(resp);
+  }, [store]);
 
   useEffect(() => {
     const getProjectDetail = async () => {
       const { data }: any = await getApi(`/projects/${pid}`);
-      console.log(data);
       if (data) {
         store.pjt.img = `https://myini.s3.ap-northeast-2.amazonaws.com/projectProfile/${data.projectImg}`;
         store.pjt.title = data.projectName;
@@ -50,24 +65,43 @@ export default function SettingPage() {
       }
     };
 
-    getProjectDetail();
+    const initNewProject = async () => {
+      console.log('hi');
+      const newStore = syncedStore({
+        pjt: {} as ProjectInfo,
+      });
+      new WebrtcProvider(`id${10}`, getYjsValue(newStore) as any);
+    };
+
+    if (pid === 'new') initNewProject();
+    else getProjectDetail();
   }, []);
 
   return (
     <div className="setting-page">
-      <div className="setting-components">
-        <ImageTitle store={store} />
-        <div className="bottom-side">
-          <div className="left-side">
-            <ProjectDesc store={store} />
-            <Period store={store} />
-            <ReferenceLink store={store} />
-          </div>
-          <div className="right-side">
-            <ProjectMember store={store} />
+      {pid && (
+        <div className="setting-components">
+          <ImageTitle
+            store={store}
+            pid={pid}
+            editProjectInfo={editProjectInfo}
+          />
+          <div className="bottom-side">
+            <div className="left-side">
+              <ProjectDesc store={store} editProjectInfo={editProjectInfo} />
+              <Period store={store} editProjectInfo={editProjectInfo} />
+              <ReferenceLink store={store} editProjectInfo={editProjectInfo} />
+            </div>
+            <div className="right-side">
+              <ProjectMember
+                store={store}
+                pid={pid}
+                editProjectInfo={editProjectInfo}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
