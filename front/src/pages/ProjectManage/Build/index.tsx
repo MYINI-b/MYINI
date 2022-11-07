@@ -1,10 +1,17 @@
 import './style.scss';
 
-import { useState } from 'react';
-import { getApi } from 'api';
-import Accordion from './Accordion';
+import { useState, useEffect } from 'react';
+import { postApi } from 'api';
 import Buttons from './SelectButton';
 import Modal from './Modal';
+import Accordion1 from './Accor';
+
+export type AccordionType = {
+  id: number;
+  title: string;
+  body: string;
+  idx: number;
+};
 
 export default function Build() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -12,19 +19,145 @@ export default function Build() {
     setModalOpen(!modalOpen);
   };
 
-  const [asd, setAsd] = useState<any>([]);
   const [text, setText] = useState('');
   const [isChecked, setChecked] = useState(false);
+  const [confirmData, setConfirmData] = useState([]);
+
+  useEffect(() => {
+    const getProjectDetail = async () => {
+      const ConfirmCode: any = await postApi(
+        `https://k7b203.p.ssafy.io/api/initializers/3/previews`,
+        {
+          spring_base_path: '/initializer/3/',
+          spring_type: 'gradle-project',
+          spring_language: 'java',
+          spring_platform_version: '2.2.0.RELEASE',
+          spring_packaging: 'jar',
+          spring_jvm_version: '1.8',
+          spring_group_id: 'com.example',
+          spring_artifact_id: 'demo',
+          spring_name: 'demo',
+          spring_description: 'Demo%20project%20for%20Spring%20Boot',
+          spring_package_name: 'com.example.demo',
+          spring_dependency_name: 'web,jpa,lombok,devtools',
+        },
+      );
+      console.log(ConfirmCode.data);
+      setConfirmData(ConfirmCode.data);
+    };
+    getProjectDetail();
+  }, []);
+
   const handleTextArea = (e: any) => {
     setText(e.target.value);
-    const asd = getApi('api/initializers/1/preview');
-    console.log(asd);
   };
   const handleSubmit = (e: any) => {
     e.preventDefault();
     alert(`${text}\nchecked? ${isChecked}`);
   };
-  // https://k7b203.p.ssafy.io/api/initializers/{projectid}/preview
+  const accordionItems = [
+    {
+      title: 'Controller',
+      content: (
+        <div className="confirm-total">
+          {' '}
+          {confirmData.map((items: any, index: number) => (
+            <div key={index}>
+              {items.fileCategory === 'controller' ? (
+                <>
+                  <div className="confirm-title">{items.fileName}</div>
+                  <div className="confirm-content">{items.contents}</div>
+                </>
+              ) : (
+                <div />
+              )}
+            </div>
+          ))}
+        </div>
+      ),
+    },
+    {
+      title: 'Entity',
+      content: (
+        <div className="confirm-total">
+          {' '}
+          {confirmData.map((items: any, index: number) => (
+            <div key={index}>
+              {items.fileCategory === 'entity' ? (
+                <>
+                  <div className="confirm-title">{items.fileName}</div>
+                  <div className="confirm-content">{items.contents}</div>
+                </>
+              ) : (
+                <div />
+              )}
+            </div>
+          ))}
+        </div>
+      ),
+    },
+    {
+      title: 'Repository',
+      content: (
+        <div className="confirm-total">
+          {' '}
+          {confirmData.map((items: any, index: number) => (
+            <div key={index}>
+              {items.fileCategory === 'repository' ? (
+                <>
+                  <div className="confirm-title">{items.fileName}</div>
+                  <div className="confirm-content">{items.contents}</div>
+                </>
+              ) : (
+                <div />
+              )}
+            </div>
+          ))}
+        </div>
+      ),
+    },
+    {
+      title: 'Service',
+      content: (
+        <div className="confirm-total">
+          {' '}
+          {confirmData.map((items: any, index: number) => (
+            <div key={index}>
+              {items.fileCategory.slice(0, 7) === 'service' ? (
+                <>
+                  <div className="confirm-title">{items.fileName}</div>
+                  <div className="confirm-content">{items.contents}</div>
+                </>
+              ) : (
+                <div />
+              )}
+            </div>
+          ))}
+        </div>
+      ),
+    },
+    {
+      title: 'Dto',
+      content: (
+        <div className="confirm-total">
+          {' '}
+          {confirmData.map((items: any, index: number) => (
+            <div key={index}>
+              {items.fileCategory === 'dto' ? (
+                <>
+                  <div className="confirm-title">{items.fileName}</div>
+                  <div className="confirm-content">{items.contents}</div>
+                </>
+              ) : (
+                <div />
+              )}
+            </div>
+          ))}
+        </div>
+      ),
+    },
+  ];
+
   return (
     <div className="build-container">
       <h1 className="build-title">API 명세서</h1>
@@ -141,8 +274,8 @@ export default function Build() {
           {modalOpen && <Modal modalClose={modalClose} />}
         </div>
         <div className="confirm-code">
-          <div className="confirm-title">CONFIRM CODE</div>
-          <Accordion />
+          <div className="confirmcode-title">CONFIRM CODE</div>
+          <Accordion1 items={accordionItems} />
         </div>
       </div>
     </div>

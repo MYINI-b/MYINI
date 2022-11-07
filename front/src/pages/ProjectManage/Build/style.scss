@@ -121,7 +121,7 @@ $breakpoints: (
       }
     }
     
-    .confirm-title {
+    .confirmcode-title {
       font-family: $eng-title;
       font-size: rem(25);
       display: flex;
@@ -130,3 +130,17 @@ $breakpoints: (
     }
   }
 } 
+
+.confirm-total {
+  height: rem(100);
+  overflow-y: scroll;
+  margin-bottom: rem(10);
+  .confirm-title {
+    font-size: rem(20);
+    font-family: $eng-content;
+  }
+  .confirm-content {
+    font-size: rem(15);
+    padding-top: rem(5);
+  }
+}

@@ -2,77 +2,47 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { AccordionType } from '..';
 
 import './style.scss';
 
-const data = {
-  accordion: [
-    {
-      id: 0,
-      title: 'Controller',
-      body: '무슨내용?',
-    },
-    {
-      id: 1,
-      title: 'Repository',
-      body: '내용2',
-    },
-    {
-      id: 2,
-      title: 'Entity',
-      body: '내용3',
-    },
-    {
-      id: 3,
-      title: 'etc..',
-      body: '내용4',
-    },
-  ],
+type AccodionProps = {
+  accordion: AccordionType; // 부모컴포넌트에서 import 해온 타입을 재사용 해 줍시다.
 };
 
-interface DataProps {
-  accordion: {
-    id: number;
-    title: string;
-    body: string;
-  }[];
-}
-
-const Accordion: React.FC = () => {
-  const { accordion } = data as DataProps;
+export default function Accordion({
+  accordion,
+}: AccodionProps): React.ReactElement {
+  const { id, title, body, idx } = accordion;
   const [titleNum, setTitleNum] = useState<number>(-1);
 
-  const showBody = (index: number): void => {
-    if (titleNum === index) {
+  const showBody = (idx: number): void => {
+    if (titleNum === idx) {
       setTitleNum(-1);
       return;
     }
-    setTitleNum(index);
+    console.log(titleNum, 1);
+    setTitleNum(idx);
   };
 
+  console.log(titleNum, 2);
+  console.log(idx);
   return (
-    <div>
-      {accordion.map((item, index) => (
-        <div
-          role="presentation"
-          key={item.id}
-          className="title-card"
-          onClick={() => showBody(index)}
-        >
-          <div className="title-heading">
-            <div className="title-item">{item.title}</div>
-            {titleNum === index ? (
-              <FontAwesomeIcon icon={faChevronUp} />
-            ) : (
-              <FontAwesomeIcon icon={faChevronDown} />
-            )}
-          </div>
-          <p className={`title-body ${titleNum === index && 'active'}`}>
-            {item.body}
-          </p>
-        </div>
-      ))}
+    <div
+      role="presentation"
+      key={id}
+      className="title-card"
+      onClick={() => showBody(idx)}
+    >
+      <div className="title-heading">
+        <div className="title-item">{title}</div>
+        {titleNum === idx ? (
+          <FontAwesomeIcon icon={faChevronUp} />
+        ) : (
+          <FontAwesomeIcon icon={faChevronDown} />
+        )}
+      </div>
+      <p className={`title-body ${titleNum === idx && 'active'}`}>{body}</p>
     </div>
   );
-};
-export default Accordion;
+}
