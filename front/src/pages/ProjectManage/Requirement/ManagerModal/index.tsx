@@ -1,18 +1,16 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClose } from '@fortawesome/free-solid-svg-icons';
-import { useCallback, Dispatch, useRef, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useCallback, Dispatch, useRef, useEffect } from 'react';
 
 import './style.scss';
 import { ELEMENTPOS, ROW } from 'types/Requirement';
 import { USER } from 'types/Setting';
-import { deleteApi } from 'api';
+import { putApi } from 'api';
 
 interface Props {
   closeManagerModal: () => void;
   clickElementPos: ELEMENTPOS;
   idx: number;
   store: any;
+  rowId: number;
 }
 
 export default function CategoryListModal({
@@ -20,51 +18,21 @@ export default function CategoryListModal({
   clickElementPos,
   idx,
   store,
+  rowId,
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
-  const [managerInput, setManagerInput] = useState('');
-  const { pid } = useParams();
 
-  const deleteManager = useCallback(
-    async (e: any, i: number, user: USER) => {
-      e.stopPropagation();
-
-      const { data }: any = await deleteApi(
-        `/projects/${pid}/members/${user.id}`,
+  const selectManager = useCallback(
+    async (manager: string) => {
+      const body = {
+        memberName: manager,
+      };
+      const { data }: any = await putApi(
+        `/requirementdocs/requirements/${rowId}/members`,
+        body,
       );
       console.log(data);
 
-      store.pjt.rows.forEach((row: ROW) => {
-        if (row.manager === user.name) row.manager = '';
-      });
-      store.pjt.members.splice(i, 1);
-      closeManagerModal();
-    },
-    [store],
-  );
-
-  const addNewManager = useCallback(
-    (e: any) => {
-      if (e.key === 'Enter') {
-        if (store.pjt.managers === undefined) store.pjt.managers = [];
-        store.pjt.managers.push(managerInput);
-        store.pjt.rows[idx].manager = managerInput;
-        closeManagerModal();
-        setManagerInput('');
-      }
-    },
-    [store, managerInput],
-  );
-
-  const onChangemanagerInput = useCallback(
-    (e: any) => {
-      setManagerInput(e.target.value);
-    },
-    [setManagerInput],
-  );
-
-  const selectManager = useCallback(
-    (manager: string) => {
       store.pjt.rows[idx].manager = manager;
       closeManagerModal();
     },
@@ -85,15 +53,6 @@ export default function CategoryListModal({
         ref={modalContainer}
       >
         <div className="category-list-overflow">
-          <input
-            type="text"
-            className="category-search-input"
-            placeholder="새 담당자 등록"
-            onChange={onChangemanagerInput}
-            onKeyDown={addNewManager}
-            onClick={(e) => e.stopPropagation()}
-            value={managerInput}
-          />
           {store.pjt.members &&
             store.pjt.members.map((user: USER, i: number) => {
               return (
@@ -105,11 +64,6 @@ export default function CategoryListModal({
                   onClick={() => selectManager(user.name)}
                 >
                   {user.name}
-                  <FontAwesomeIcon
-                    icon={faClose}
-                    className="category-delete-button"
-                    onClick={(e) => deleteManager(e, i, user)}
-                  />
                 </span>
               );
             })}

@@ -8,6 +8,7 @@ import {
 import { ROW, ELEMENTPOS } from 'types/Requirement';
 import { MOUSEPOS } from 'types/ApiSpec';
 import { IMPORTANCE_TEXT } from 'constants/index';
+import { putApi } from 'api';
 
 import CategoryListModal from '../CategoryListModal';
 import RowModal from '../RowModal';
@@ -128,17 +129,29 @@ export default function TableRow({ row, idx, store }: Props) {
     });
   }, []);
 
-  const focusOutDesc = useCallback(() => {
-    setIsDescEdit(false);
-  }, [store]);
-
-  const focusOutRequirement = useCallback(() => {
+  const focusOutRequirement = useCallback(async () => {
+    const body = {
+      requirementName: store.pjt.rows[idx].requirement,
+    };
+    await putApi(`/requirementdocs/requirements/${row.id}/names`, body);
     setIsRequireEdit(false);
-  }, [store]);
+  }, [store, row]);
 
-  const focusOutPoint = useCallback(() => {
+  const focusOutDesc = useCallback(async () => {
+    const body = {
+      requirementContent: store.pjt.rows[idx].description,
+    };
+    await putApi(`/requirementdocs/requirements/${row.id}/contents`, body);
+    setIsDescEdit(false);
+  }, [store, row]);
+
+  const focusOutPoint = useCallback(async () => {
+    const body = {
+      requirementStoryPoint: store.pjt.rows[idx].point,
+    };
+    await putApi(`/requirementdocs/requirements/${row.id}/storypoints`, body);
     setIsPointEdit(false);
-  }, [store]);
+  }, [store, row]);
 
   useEffect(() => {
     if (requireContainer.current)
@@ -260,7 +273,7 @@ export default function TableRow({ row, idx, store }: Props) {
         ) : (
           ''
         )}
-        &nbsp;&nbsp;{IMPORTANCE_TEXT[row.importance]}
+        {/* &nbsp;&nbsp;{IMPORTANCE_TEXT[row.importance]} */}
       </span>
       <span
         className="table-col content one"
@@ -305,6 +318,7 @@ export default function TableRow({ row, idx, store }: Props) {
           clickElementPos={clickElementPos}
           idx={idx}
           store={store}
+          rowId={row.id}
         />
       )}
 
@@ -314,6 +328,7 @@ export default function TableRow({ row, idx, store }: Props) {
           clickElementPos={clickElementPos}
           idx={idx}
           store={store}
+          rowId={row.id}
         />
       )}
 
@@ -323,6 +338,7 @@ export default function TableRow({ row, idx, store }: Props) {
           clickElementPos={clickElementPos}
           idx={idx}
           store={store}
+          rowId={row.id}
         />
       )}
     </div>

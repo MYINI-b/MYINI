@@ -27,12 +27,12 @@ export default function Requirement({ pid }: Props) {
               color: req.requirementCategoryDto.categoryColor,
               id: req.requirementCategoryId,
             },
-            requirement: req.requirementName,
-            description: req.requirementContent,
-            division: req.requirementPart,
-            manager: req.memberNickName,
-            importance: req.requirementPriority,
-            point: req.requirementStoryPoint,
+            requirement: req.requirementName ? req.requirementName : '',
+            description: req.requirementContent ? req.requirementContent : '',
+            division: req.requirementPart ? req.requirementPart : '',
+            manager: req.memberNickName ? req.memberNickName : '',
+            importance: req.requirementPriority ? req.requirementPriority : 1,
+            point: req.requirementStoryPoint ? req.requirementStoryPoint : 0,
           };
         });
         store.pjt.rows = requirementsArray;

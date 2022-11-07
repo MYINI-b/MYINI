@@ -52,6 +52,7 @@ export default function SettingPage({ pid }: Props) {
         store.pjt.figmaLink = data.projectFigmaUrl;
 
         const memberResp: any = await getApi(`/projects/members/${pid}`);
+        console.log(memberResp);
         const memberData = memberResp.data.map((member: any) => {
           return {
             id: member.memberId,
