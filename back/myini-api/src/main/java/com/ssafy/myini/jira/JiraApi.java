@@ -60,7 +60,7 @@ public class JiraApi {
 
     public static void createIssue(String jiraId, String jiraApiKey, List<Requirement> requirements, CreateJiraIssueRequest createJiraIssueRequest) throws Exception{
         //유저정보
-        HttpResponse<JsonNode> userResponse = Unirest.get("https://ssafy.atlassian.net/rest/api/2/user/assignable/multiProjectSearch?projectKeys="+createJiraIssueRequest.getProjectKey())
+        HttpResponse<JsonNode> userResponse = Unirest.get("https://ssafy.atlassian.net/rest/api/2/user/assignable/multiProjectSearch?projectKeys="+createJiraIssueRequest.getJiraProjectKey())
                 .basicAuth(jiraId, jiraApiKey)
                 .header("Accept", "application/json")
                 .asJson();
@@ -107,7 +107,7 @@ public class JiraApi {
         la:for (int i = 0; i < projects.length(); i++) {
             String projectKey = (String) ((JSONObject)projects.get(i)).get("key");
             JSONArray issueTypes = (JSONArray) (((JSONObject) projects.get(i)).get("issuetypes"));
-            if(projectKey.equals(createJiraIssueRequest.getProjectKey())) {
+            if(projectKey.equals(createJiraIssueRequest.getJiraProjectKey())) {
                 for (int j = 0; j < issueTypes.length(); j++) {
                     String issueName = (String) ((JSONObject) issueTypes.get(j)).get("name");
                     if (issueName.equals("스토리")) {
@@ -136,7 +136,7 @@ public class JiraApi {
                     //이슈프로젝트
                     ObjectNode project = fields.putObject("project");
                     {
-                        project.put("id", createJiraIssueRequest.getProjectKey());
+                        project.put("id", createJiraIssueRequest.getJiraProjectKey());
                     }
                     //이슈설명
                     fields.put("description", requirement.getRequirementContent());
