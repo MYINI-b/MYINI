@@ -1,6 +1,7 @@
 package com.ssafy.myini.requirementdocs.controller;
 
 import com.ssafy.myini.requirementdocs.request.*;
+import com.ssafy.myini.requirementdocs.response.JiraProjectListResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementCategoryListResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementListResponse;
 import com.ssafy.myini.requirementdocs.service.RequirementDocsService;

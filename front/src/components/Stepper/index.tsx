@@ -1,5 +1,7 @@
 import { Dispatch, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSyncedStore } from '@syncedstore/react';
+import { globalStore } from 'store/yjsStore';
 
 import './style.scss';
 
@@ -33,7 +35,7 @@ export default function Stepper({ step, setStep }: Props) {
               1
             </div>
             <p className="step-description" onClick={() => setStep(1)}>
-              프로젝트관리
+              프로젝트 관리
             </p>
           </div>
           <div className={`step-div-container ${step >= 2 && 'on'}`}>
@@ -41,7 +43,7 @@ export default function Stepper({ step, setStep }: Props) {
               2
             </div>
             <p className="step-description" onClick={() => setStep(2)}>
-              요구사항명세서
+              요구사항 명세서
             </p>
           </div>
           <div className={`step-div-container ${step >= 3 && 'on'}`}>
@@ -57,7 +59,7 @@ export default function Stepper({ step, setStep }: Props) {
               4
             </div>
             <p className="step-description" onClick={() => setStep(4)}>
-              API명세서
+              API 명세서
             </p>
           </div>
           <div className={`step-div-container ${step >= 5 && 'on'}`}>

@@ -1,4 +1,5 @@
 import { Dispatch, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './style.scss';
 import Stepper from 'components/Stepper';
 
@@ -19,7 +20,9 @@ export default function MainHeader({ needStepper, step, setStep }: Props) {
       <div className="dropdown">
         <div className="profile-img" />
         <div className="dropdown-content">
-          <p>홈</p>
+          <Link to="/main">
+            <p>홈</p>
+          </Link>
           <p>로그아웃</p>
         </div>
       </div>

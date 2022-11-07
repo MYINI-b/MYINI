@@ -1,6 +1,8 @@
 package com.ssafy.myini.requirementdocs.service;
 
+import com.ssafy.myini.JiraException;
 import com.ssafy.myini.NotFoundException;
+import com.ssafy.myini.jira.JiraApi;
 import com.ssafy.myini.member.domain.Member;
 import com.ssafy.myini.member.domain.MemberRepository;
 import com.ssafy.myini.project.domain.Project;
@@ -14,6 +16,7 @@ import com.ssafy.myini.requirementdocs.request.*;
 import com.ssafy.myini.requirementdocs.response.RequirementCategoryListResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementListResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

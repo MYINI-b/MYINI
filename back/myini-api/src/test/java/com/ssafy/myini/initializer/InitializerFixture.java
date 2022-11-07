@@ -11,10 +11,10 @@ public class InitializerFixture {
     public static final Boolean FLAG = Boolean.TRUE;
 
     public static final InitializerRequest TEST_INITIALIZER_REQUEST
-            = new InitializerRequest(CONTENT,CONTENT,CONTENT,CONTENT,CONTENT,CONTENT,CONTENT,CONTENT,CONTENT,CONTENT,CONTENT, Arrays.asList(CONTENT));
+            = new InitializerRequest(CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT);
 
     public static final InitializerPossibleResponse TEST_INITIALIZER_POSSIBLE_RESPONSE
-            = new InitializerPossibleResponse(FLAG,CONTENT);
+            = new InitializerPossibleResponse(FLAG, CONTENT);
 
 
 }

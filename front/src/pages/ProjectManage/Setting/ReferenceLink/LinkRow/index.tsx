@@ -1,21 +1,28 @@
 import { useCallback, useEffect, useState } from 'react';
+import { LINK_LIST } from 'constants/index';
 import './style.scss';
 
 interface Props {
-  img: string;
+  idx: number;
   link: string;
   isEdit: boolean;
-  setLink: React.Dispatch<React.SetStateAction<string>>;
+  store: any;
 }
 
-export default function LinkRow({ img, link, isEdit, setLink }: Props) {
-  const onLinkChange = useCallback((e: any) => {
-    setLink(e.target.value);
-  }, []);
+export default function LinkRow({ idx, link, isEdit, store }: Props) {
+  const onLinkChange = useCallback(
+    (e: any) => {
+      if (idx === 0) store.pjt.gitLink = e.target.value;
+      else if (idx === 1) store.pjt.jiraLink = e.target.value;
+      else if (idx === 2) store.pjt.notionLink = e.target.value;
+      else if (idx === 3) store.pjt.figmaLink = e.target.value;
+    },
+    [store, idx],
+  );
 
   return (
     <div className="link-row-container">
-      <img className="image-icon" src={img} alt="git" />
+      <img className="image-icon" src={LINK_LIST[idx].img} alt="git" />
 
       {isEdit ? (
         <input
@@ -23,10 +30,6 @@ export default function LinkRow({ img, link, isEdit, setLink }: Props) {
           value={link}
           className="link-row-input"
           onChange={onLinkChange}
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-          }}
         />
       ) : link === '' ? (
         <li className="link-row-a"> {link}</li>
