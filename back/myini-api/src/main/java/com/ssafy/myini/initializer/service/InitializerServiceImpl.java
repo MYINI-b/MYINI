@@ -28,6 +28,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -82,8 +83,7 @@ public class InitializerServiceImpl implements InitializerService {
 
     @Override
     @Transactional
-    public UrlResource initializerStart(Long projectId, InitializerRequest initializerRequest) {
-
+    public ZipFile initializerStart(Long projectId, InitializerRequest initializerRequest) {
         //프로젝트 init
         InitProjectDownload.initProject(initializerRequest);
 
@@ -123,14 +123,35 @@ public class InitializerServiceImpl implements InitializerService {
             // dto 생성
             projectInfoListResponses.forEach(projectInfoListResponse -> DtoWrite.dtoWrite(projectInfoListResponse, initializerRequest));
 
-
-            ZipFile zipFile = new ZipFile(initializerRequest.getSpring_base_path() + initializerRequest.getSpring_name() + ".zip");
+            ZipFile zipFile = new ZipFile("project.zip");
             zipFile.addFolder(new File(initializerRequest.getSpring_base_path() + initializerRequest.getSpring_name()));
 
-            UrlResource urlResource = new UrlResource("file",zipFile.getFile().getPath());
-            return urlResource;
+            deletefolder(initializerRequest);
+            return zipFile;
         } catch (Exception e) {
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
+        }
+    }
+
+    private static void deletefolder(InitializerRequest initializerRequest) throws Exception {
+        String path = initializerRequest.getSpring_base_path() + initializerRequest.getSpring_name();
+
+        File deleteZip = new File(path + ".zip");
+        if (deleteZip.exists()) {
+            deleteZip.delete();
+        }
+
+        File deleteFolder = new File(path);
+        if (deleteFolder.exists()) {
+            File[] deleteFolderList = deleteFolder.listFiles();
+
+            for (int j = 0; j < deleteFolderList.length; j++) {
+                deleteFolderList[j].delete();
+            }
+
+            if (deleteFolderList.length == 0 && deleteFolder.isDirectory()) {
+                deleteFolder.delete();
+            }
         }
     }
 

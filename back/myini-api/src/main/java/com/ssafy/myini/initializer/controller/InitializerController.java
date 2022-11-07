@@ -1,12 +1,14 @@
 package com.ssafy.myini.initializer.controller;
 
+import com.amazonaws.auth.policy.Resource;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
 import com.ssafy.myini.initializer.response.PreviewResponse;
 import com.ssafy.myini.initializer.service.InitializerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
+import lombok.Value;
+import net.lingala.zip4j.ZipFile;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,7 +20,11 @@ import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("/api/initializers")
 @RestController
@@ -27,35 +33,43 @@ public class InitializerController {
     private final InitializerService initializerService;
 
     @GetMapping("/{projectid}/ispossible")
-    public ResponseEntity<InitializerPossibleResponse> initializerIsPossible(@PathVariable("projectid") Long projectId){
+    public ResponseEntity<InitializerPossibleResponse> initializerIsPossible(@PathVariable("projectid") Long projectId) {
         InitializerPossibleResponse body = initializerService.initializerIsPossible(projectId);
 
         return ResponseEntity.ok().body(body);
     }
 
     @GetMapping("/{projectid}")
-    public ResponseEntity<Resource> initializerStart(@PathVariable("projectid") Long projectId,
-                                                 @Valid InitializerRequest initializerRequest) throws MalformedURLException {
+    public ResponseEntity<InputStreamResource> initializerStart(@PathVariable("projectid") Long projectId,
+                                                                @Valid InitializerRequest initializerRequest
+    ) throws IOException {
+        ZipFile body = initializerService.initializerStart(projectId, initializerRequest);
 
-        UrlResource urlResource = initializerService.initializerStart(projectId, initializerRequest);
-        String encodedUploadFileName = UriUtils.encode("test", StandardCharsets.UTF_8);
-        String contentDisposition = "attachment; filename=\"" + encodedUploadFileName + "\"";
+        InputStreamResource resource3 = new InputStreamResource(new FileInputStream(body.getFile()));
 
+        HttpHeaders header = new HttpHeaders();
+
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + body.getFile().getName());
+        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        header.add("Pragma", "no-cache");
+        header.add("Expires", "0");
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,contentDisposition)
-                .body(urlResource);
+                .headers(header)
+                .contentLength(body.getFile().length())
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(resource3);
     }
 
     @PostMapping("/{projectid}/previews")
     public ResponseEntity<List<PreviewResponse>> initializerPreview(@PathVariable("projectid") Long projectId,
-                                                 @RequestBody InitializerRequest initializerRequest){
+                                                                    @RequestBody InitializerRequest initializerRequest) {
         List<PreviewResponse> body = initializerService.initializerPreview(projectId, initializerRequest);
 
         return ResponseEntity.ok().body(body);
     }
 
     @GetMapping("/downloads")
-    public ResponseEntity<byte[]> myIniDownload(){
+    public ResponseEntity<byte[]> myIniDownload() {
         ByteArrayOutputStream byteArrayOutputStream = initializerService.myIniDownload();
 
         return ResponseEntity.ok()

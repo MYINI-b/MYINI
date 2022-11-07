@@ -1,31 +1,13 @@
 import './style.scss';
-import React, { useState, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
-import { ROW } from 'types/Requirement';
+import { useSyncedStore } from '@syncedstore/react';
 
-import TableRow from './TableRow';
+import { globalStore } from 'store/yjsStore';
+import RowList from './RowList';
 
 export default function Requirement() {
-  const [rows, setRows] = useState<ROW[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
-  const [managers, setManagers] = useState<string[]>([]);
-
-  const addTableRow = useCallback(() => {
-    const copyRows = [...rows];
-    copyRows.push({
-      id: 1,
-      category: '',
-      requirement: '',
-      description: '',
-      division: '',
-      manager: '',
-      importance: 3,
-      point: 0,
-    });
-    setRows(copyRows);
-  }, [rows]);
+  const store = useSyncedStore(globalStore);
 
   return (
     <div className="requirement-container">
@@ -52,30 +34,7 @@ export default function Requirement() {
           <h5 className="table-col title one">포인트</h5>
         </article>
 
-        <article className="table-content-article">
-          {rows.map((e, i: number) => {
-            return (
-              <TableRow
-                row={e}
-                key={i}
-                rows={rows}
-                setRows={setRows}
-                idx={i}
-                categories={categories}
-                setCategories={setCategories}
-                managers={managers}
-                setManagers={setManagers}
-              />
-            );
-          })}
-          <button
-            className="table-more-button"
-            type="button"
-            onClick={addTableRow}
-          >
-            <FontAwesomeIcon icon={faPlus} />
-          </button>
-        </article>
+        <RowList store={store} />
       </section>
     </div>
   );
