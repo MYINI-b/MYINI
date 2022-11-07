@@ -61,22 +61,23 @@ export default function ControllerAddModal({
     (e: any) => {
       e.preventDefault();
       const controllerObj = {
+        id: 0,
         name: controllerName,
         desc: controllerDesc,
         baseurl: controllerBaseURL,
       };
 
-      if (clickControllerIdx >= 0) {
-        const copyControllerArr = [...controllers];
-        copyControllerArr[clickControllerIdx] = controllerObj;
+      // if (clickControllerIdx >= 0) {
+      //   const copyControllerArr = [...controllers];
+      //   copyControllerArr[clickControllerIdx] = controllerObj;
 
-        setControllers(copyControllerArr);
-        setControllerIdx(clickControllerIdx);
-      } else {
-        setControllers([...controllers, controllerObj]);
-        setApis([...apis, []]);
-        setControllerIdx(0);
-      }
+      //   setControllers(copyControllerArr);
+      //   setControllerIdx(clickControllerIdx);
+      // } else {
+      //   setControllers([...controllers, controllerObj]);
+      //   setApis([...apis, []]);
+      //   setControllerIdx(0);
+      // }
       setIsControllerAddModalOpen(false);
     },
     [

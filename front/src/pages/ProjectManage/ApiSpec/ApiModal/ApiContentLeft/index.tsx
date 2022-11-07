@@ -58,61 +58,61 @@ export default function ApiContentLeft({
   });
   const [selectIdx, setSelectIdx] = useState(0);
 
-  const onKeyChange = useCallback(
-    (idx: number, e: any) => {
-      const copyList = isPathVar ? [...pathVarList] : [...queryList];
-      const copyObj = { ...copyList[idx] };
-      copyObj.key = e.target.value.trim();
-      copyList[idx] = copyObj;
+  // const onKeyChange = useCallback(
+  //   (idx: number, e: any) => {
+  //     const copyList = isPathVar ? [...pathVarList] : [...queryList];
+  //     const copyObj = { ...copyList[idx] };
+  //     copyObj.key = e.target.value.trim();
+  //     copyList[idx] = copyObj;
 
-      if (isPathVar) {
-        if (e.target.value !== '' && idx === pathVarList.length - 1) {
-          copyList.push({ key: '', type: 'PATH' });
-        }
+  //     if (isPathVar) {
+  //       if (e.target.value !== '' && idx === pathVarList.length - 1) {
+  //         copyList.push({ key: '', type: 'PATH' });
+  //       }
 
-        setPathVarList([...copyList]);
-      } else {
-        const copyList = [...queryList];
-        const copyObj = { ...queryList[idx] };
-        copyObj.key = e.target.value;
-        copyList[idx] = copyObj;
+  //       setPathVarList([...copyList]);
+  //     } else {
+  //       const copyList = [...queryList];
+  //       const copyObj = { ...queryList[idx] };
+  //       copyObj.key = e.target.value;
+  //       copyList[idx] = copyObj;
 
-        if (e.target.value !== '' && idx === queryList.length - 1) {
-          copyList.push({ key: '', type: 'STRING' });
-        }
+  //       if (e.target.value !== '' && idx === queryList.length - 1) {
+  //         copyList.push({ key: '', type: 'STRING' });
+  //       }
 
-        setQueryList([...copyList]);
-      }
-    },
-    [isPathVar, pathVarList, queryList],
-  );
+  //       setQueryList([...copyList]);
+  //     }
+  //   },
+  //   [isPathVar, pathVarList, queryList],
+  // );
 
-  const deleteKey = useCallback(
-    (idx: number) => {
-      const copyList = isPathVar ? [...pathVarList] : [...queryList];
+  // const deleteKey = useCallback(
+  //   (idx: number) => {
+  //     const copyList = isPathVar ? [...pathVarList] : [...queryList];
 
-      if (isPathVar) {
-        if (idx === 0 && pathVarList.length === 1) {
-          setPathVarList([{ key: '', type: 'PATH' }]);
-          return;
-        }
+  //     if (isPathVar) {
+  //       if (idx === 0 && pathVarList.length === 1) {
+  //         setPathVarList([{ key: '', type: 'PATH' }]);
+  //         return;
+  //       }
 
-        copyList.splice(idx, 1);
-        setPathVarList([...copyList]);
-      } else {
-        const copyList = [...queryList];
+  //       copyList.splice(idx, 1);
+  //       setPathVarList([...copyList]);
+  //     } else {
+  //       const copyList = [...queryList];
 
-        if (idx === 0 && queryList.length === 1) {
-          setQueryList([{ key: '', type: 'STRING' }]);
-          return;
-        }
+  //       if (idx === 0 && queryList.length === 1) {
+  //         setQueryList([{ key: '', type: 'STRING' }]);
+  //         return;
+  //       }
 
-        copyList.splice(idx, 1);
-        setQueryList([...copyList]);
-      }
-    },
-    [pathVarList, isPathVar, queryList],
-  );
+  //       copyList.splice(idx, 1);
+  //       setQueryList([...copyList]);
+  //     }
+  //   },
+  //   [pathVarList, isPathVar, queryList],
+  // );
 
   const onPathTypeClick = useCallback((e: any, idx: number) => {
     setIsPathTypeOpen(true);
@@ -242,7 +242,7 @@ export default function ApiContentLeft({
                       type="text"
                       className="api-query-input"
                       placeholder="KEY"
-                      onChange={(e) => onKeyChange(i, e)}
+                      // onChange={(e) => onKeyChange(i, e)}
                       value={pathvar.key}
                     />
                     <div className="api-query-div">
@@ -265,7 +265,7 @@ export default function ApiContentLeft({
                     <FontAwesomeIcon
                       icon={faClose}
                       className="api-query-delete"
-                      onClick={() => deleteKey(i)}
+                      // onClick={() => deleteKey(i)}
                     />
                   </div>
                 );
@@ -277,7 +277,7 @@ export default function ApiContentLeft({
                       type="text"
                       className="api-query-input"
                       placeholder="KEY"
-                      onChange={(e) => onKeyChange(i, e)}
+                      // onChange={(e) => onKeyChange(i, e)}
                       value={query.key}
                     />
                     <div className="api-query-div">
@@ -299,7 +299,7 @@ export default function ApiContentLeft({
                     <FontAwesomeIcon
                       icon={faClose}
                       className="api-query-delete"
-                      onClick={() => deleteKey(i)}
+                      // onClick={() => deleteKey(i)}
                     />
                   </div>
                 );

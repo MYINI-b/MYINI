@@ -2,6 +2,7 @@ import { getYjsValue, syncedStore } from '@syncedstore/core';
 import { WebrtcProvider } from 'y-webrtc';
 import { USER } from 'types/Setting';
 import { ROW, CATEGORY } from 'types/Requirement';
+import { CONTROLLER, API } from 'types/ApiSpec';
 import * as Y from 'yjs';
 
 const ydoc = new Y.Doc();
@@ -21,6 +22,9 @@ export type ProjectInfo = {
   // requirement
   rows: ROW[];
   categories: CATEGORY[];
+
+  // controllers
+  controllers: CONTROLLER[];
 };
 
 export const globalStore = syncedStore({

@@ -38,6 +38,7 @@
       font-weight: initial;
       font-size: rem(20);
       font-family: $eng-content;
+      word-break: break-all;
 
       &.title {
         font-weight: bold;

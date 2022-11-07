@@ -1,23 +1,29 @@
 export interface API {
+  responses: RESPONSE;
+  pathVarList: QUERY[];
+  queryList: QUERY[];
+  dtoResponse: DTO[];
+}
+
+export interface RESPONSE {
   id: number;
   apiName: string;
-  desc: string;
   methodName: string;
   url: string;
   method: string;
   code: number;
-  reqVarName: string;
-  resVarName: string;
-  pathVarList: QUERY[];
-  queryList: QUERY[];
 }
+
 export interface CONTROLLER {
+  id: number;
   name: string;
   desc: string;
   baseurl: string;
+  responses: RESPONSE[];
 }
 
 export interface QUERY {
+  id?: number;
   key: string;
   type: string;
 }
@@ -36,4 +42,21 @@ export interface ATTRIBUTE {
 
 export interface ATTRIBUTE_PLUS extends ATTRIBUTE {
   idx: number;
+}
+
+export interface DTO {
+  id: number;
+  name: string;
+  type: string;
+  responses: DTO_RESPONSE[];
+}
+
+export interface DTO_RESPONSE {
+  id: number;
+  name: string;
+  classTypeId: number;
+  primitiveTypeId: number;
+  classTypeName: string;
+  primitiveTypeName: string;
+  isList: boolean;
 }

@@ -48,17 +48,17 @@ export default function ApiModal({
   useEffect(() => {
     const isEditIdx = apiRowIdx >= 0;
     if (isEditIdx) {
-      const editRow = { ...apis[controllerIdx][apiRowIdx] };
-      setApiName(editRow.apiName);
-      setApiDesc(editRow.desc);
-      setMethodName(editRow.methodName);
-      setApiUrl(editRow.url);
-      setApiMethod(editRow.method);
-      setApiCode(editRow.code);
-      setReqVarName(editRow.reqVarName);
-      setResVarName(editRow.resVarName);
-      setPathVarList(editRow.pathVarList);
-      setQueryList(editRow.queryList);
+      // const editRow = { ...apis[controllerIdx][apiRowIdx] };
+      // setApiName(editRow.apiName);
+      // setApiDesc(editRow.desc);
+      // setMethodName(editRow.methodName);
+      // setApiUrl(editRow.url);
+      // setApiMethod(editRow.method);
+      // setApiCode(editRow.code);
+      // setReqVarName(editRow.reqVarName);
+      // setResVarName(editRow.resVarName);
+      // setPathVarList(editRow.pathVarList);
+      // setQueryList(editRow.queryList);
     }
     setIsEdit(isEditIdx);
   }, []);
@@ -81,11 +81,11 @@ export default function ApiModal({
       };
       const copyArr = [...[...apis]];
 
-      if (isEdit) {
-        copyArr[controllerIdx][apiRowIdx] = newApiObj;
-      } else {
-        copyArr[controllerIdx].push(newApiObj);
-      }
+      // if (isEdit) {
+      //   copyArr[controllerIdx][apiRowIdx] = newApiObj;
+      // } else {
+      //   copyArr[controllerIdx].push(newApiObj);
+      // }
 
       setApis(copyArr);
       setIsApiModalOpen(false);
