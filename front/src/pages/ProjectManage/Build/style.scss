@@ -78,10 +78,27 @@ $breakpoints: (
             width: 40%;
           }
         }
-        .text-box {
-          @include FLEX-CENTER;
-          width: 100%;
-          margin-bottom: rem(35);
+        .metadata {
+          padding-bottom: rem(20);
+          font-size: rem(20);
+        }
+        .project-metadata {
+          padding-left: rem(10);
+          display: flex;
+          height: rem(40);
+          .metadata-name {
+            width: rem(150);
+          }
+          .text-box {
+            @include FLEX-CENTER;
+            width: 150%;
+            height: rem(30);
+            margin-bottom: rem(35);
+          }
+        }
+        .dependency {
+          font-size: rem(20);
+          padding-top: rem(15);
         }
       }
     }
