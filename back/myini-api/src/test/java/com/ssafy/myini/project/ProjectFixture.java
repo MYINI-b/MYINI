@@ -16,11 +16,11 @@ import java.util.Arrays;
 public class ProjectFixture {
     public static final Long ID = 1L;
     public static final String NAME = "프로젝트 이름";
-    public static final String EMAIL = "프로젝트 이름";
+    public static final String EMAIL = "test@test.com";
     public static final String DESCRIPTION = "프로젝트 설명";
     public static final String IMG = "프로젝트 이미지";
     public static final LocalDate DATE = LocalDate.now();
-    public static final String PROJECT_URL = "프로젝트 URL";
+    public static final String PROJECT_URL = "https://www.ssafy.com/";
 
     public static final UpdateProjectRequest TEST_UPDATE_PROJECT_REQUEST
             = new UpdateProjectRequest(NAME, DESCRIPTION, DATE, DATE, PROJECT_URL, PROJECT_URL, PROJECT_URL, PROJECT_URL);

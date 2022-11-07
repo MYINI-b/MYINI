@@ -50,9 +50,9 @@ public class JiraController {
     //지라 이슈 등록
     @PostMapping("/{projectid}/createissue")
     public ResponseEntity<Void> jiraCreateIssue(@PathVariable("projectid")Long projectId,
-                                                @RequestBody CreateJiraIssueRequest createJiraIssueRequest){
+                                                @RequestBody @Valid CreateJiraIssueRequest createJiraIssueRequest){
         jiraService.jiraCreateIssue(projectId, createJiraIssueRequest);
 
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
