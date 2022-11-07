@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateJiraIssueRequest {
-    private String projectId;
-    private String projectKey;
-    private String projectName;
+    private String jiraProjectId;
+    private String jiraProjectKey;
+    private String jiraProjectName;
 }

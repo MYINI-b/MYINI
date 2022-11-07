@@ -1,5 +1,6 @@
 package com.ssafy.myini.requirementdocs.service;
 
+import com.ssafy.myini.ExistException;
 import com.ssafy.myini.JiraException;
 import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.jira.JiraApi;
@@ -22,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.ssafy.myini.ExistException.REQUIREMENT_CATEGORY_EXIST;
 
 @Service
 @RequiredArgsConstructor
@@ -131,6 +134,9 @@ public class RequirementDocsServiceImpl implements RequirementDocsService{
     @Transactional
     public void deleteRequirementCategory(Long requirementCategoryId) {
         RequirementCategory findRequirementCategory = requirementCategoryRepository.findById(requirementCategoryId).orElseThrow(() -> new NotFoundException(NotFoundException.REQUIREMENT_CATEGORY_NOT_FOUND));
+        if (requirementRepository.existsByRequirementCategory(findRequirementCategory)){
+            throw new ExistException(REQUIREMENT_CATEGORY_EXIST);
+        }
         requirementCategoryRepository.delete(findRequirementCategory);
     }
 }
