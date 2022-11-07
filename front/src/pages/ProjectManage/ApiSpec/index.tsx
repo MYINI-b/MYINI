@@ -138,12 +138,9 @@ export default function ApiSpec({ pid }: Props) {
       {isControllerAddModalOpen && (
         <ControllerAddModal
           setIsControllerAddModalOpen={setIsControllerAddModalOpen}
-          setControllers={setControllers}
-          controllers={controllers}
           clickControllerIdx={clickControllerIdx}
           setControllerIdx={setControllerIdx}
-          apis={apis}
-          setApis={setApis}
+          store={store}
         />
       )}
 

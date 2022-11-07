@@ -1,47 +1,41 @@
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dispatch, useCallback, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import useInput from 'hooks/useInput';
 import useNoSpaceInput from 'hooks/useNoSpaceInput';
 import Tooltip from 'components/Tooltip';
+import { deleteApi, postApi, putApi } from 'api';
 import './style.scss';
 import { CONTROLLER, API } from 'types/ApiSpec';
 
 interface Props {
-  controllers: Array<CONTROLLER>;
-  setControllers: Dispatch<React.SetStateAction<CONTROLLER[]>>;
   setIsControllerAddModalOpen: Dispatch<React.SetStateAction<boolean>>;
   clickControllerIdx: number;
   setControllerIdx: Dispatch<React.SetStateAction<number>>;
-  apis: API[][];
-  setApis: React.Dispatch<React.SetStateAction<API[][]>>;
+  store: any;
 }
 
 export default function ControllerAddModal({
-  controllers,
-  setControllers,
   setIsControllerAddModalOpen,
   clickControllerIdx,
   setControllerIdx,
-  apis,
-  setApis,
+  store,
 }: Props) {
+  const { pid } = useParams();
   const [controllerName, onControllerNameChange, setControllerName] =
     useNoSpaceInput('');
   const [controllerDesc, onControllerDescChange, setControllerDesc] =
     useInput('');
   const [controllerBaseURL, setControllerBaseURL] = useState('');
 
-  const [isEdit, setIsEdit] = useState(false);
-
   useEffect(() => {
     if (clickControllerIdx >= 0) {
-      const curController = { ...controllers[clickControllerIdx] };
+      const curController = { ...store.pjt.controllers[clickControllerIdx] };
       setControllerName(curController.name);
       setControllerDesc(curController.desc);
       setControllerBaseURL(curController.baseurl);
-      setIsEdit(true);
     }
   }, []);
 
@@ -58,49 +52,63 @@ export default function ControllerAddModal({
   );
 
   const addController = useCallback(
-    (e: any) => {
+    async (e: any) => {
       e.preventDefault();
-      const controllerObj = {
-        id: 0,
-        name: controllerName,
-        desc: controllerDesc,
-        baseurl: controllerBaseURL,
+
+      const body = {
+        apiControllerName: controllerName,
+        apiControllerBaseUrl: controllerBaseURL,
+        apiControllerDescription: `/${controllerDesc}`,
       };
 
-      // if (clickControllerIdx >= 0) {
-      //   const copyControllerArr = [...controllers];
-      //   copyControllerArr[clickControllerIdx] = controllerObj;
+      if (clickControllerIdx >= 0) {
+        const { data }: any = await putApi(`/apidocs/controllers/${pid}`, body);
+        console.log(data);
 
-      //   setControllers(copyControllerArr);
-      //   setControllerIdx(clickControllerIdx);
-      // } else {
-      //   setControllers([...controllers, controllerObj]);
-      //   setApis([...apis, []]);
-      //   setControllerIdx(0);
-      // }
+        store.pjt.controllers[clickControllerIdx].name = controllerName;
+        store.pjt.controllers[clickControllerIdx].desc = controllerDesc;
+        store.pjt.controllers[clickControllerIdx].baseurl = controllerBaseURL;
+
+        setControllerIdx(clickControllerIdx);
+      } else {
+        const { data }: any = await postApi(
+          `/apidocs/${pid}/controllers`,
+          body,
+        );
+        console.log(data);
+
+        store.pjt.controllers.push({
+          id: 0,
+          name: controllerName,
+          desc: controllerDesc,
+          baseurl: `/${controllerBaseURL}`,
+          responses: [],
+        });
+        setControllerIdx(0);
+      }
       setIsControllerAddModalOpen(false);
     },
     [
       controllerName,
       controllerDesc,
       controllerBaseURL,
-      controllers,
-      apis,
+      store,
       clickControllerIdx,
-      setControllers,
       setIsControllerAddModalOpen,
     ],
   );
 
-  const deleteController = useCallback(() => {
-    const copyControllerArr = [...controllers].filter(
-      (e, i) => i !== clickControllerIdx,
+  const deleteController = useCallback(async () => {
+    const controllerId = store.pjt.controllers[clickControllerIdx].id;
+    const { data }: any = await deleteApi(
+      `/apidocs/controllers/${controllerId}`,
     );
-    const copyApisArr = [...apis].filter((e, i) => i !== clickControllerIdx);
-    setControllers(copyControllerArr);
-    setApis(copyApisArr);
+
+    console.log(data);
+
+    store.pjt.controllers.splice(clickControllerIdx, 1);
     setIsControllerAddModalOpen(false);
-  }, [apis, controllers, clickControllerIdx]);
+  }, [store, clickControllerIdx]);
 
   return (
     <section className="modal-empty" onClick={closeModal}>
@@ -139,7 +147,7 @@ export default function ControllerAddModal({
           />
         </Tooltip>
         <div className="controller-btn-wrapper">
-          {isEdit ? (
+          {clickControllerIdx >= 0 ? (
             <>
               <button
                 className="controller-add-submit "

@@ -6,7 +6,7 @@ import { getYjsValue, syncedStore } from '@syncedstore/core';
 import { WebrtcProvider } from 'y-webrtc';
 
 import { globalStore, ProjectInfo } from 'store/yjsStore';
-import { getApi, putApi } from 'api';
+import { getApi, postApi, putApi } from 'api';
 import DefaultProfile from 'assets/default-profile.png';
 import ImageTitle from './ImageTitle';
 import ProjectDesc from './ProjectDesc/index';
@@ -38,25 +38,25 @@ export default function SettingPage({ pid }: Props) {
 
   useEffect(() => {
     const getProjectDetail = async () => {
-      const { data }: any = await getApi(`/projects/${pid}`);
-      console.log(data);
-      if (data) {
-        store.pjt.img = `https://myini.s3.ap-northeast-2.amazonaws.com/projectProfile/${data.projectImg}`;
-        store.pjt.title = data.projectName;
-        store.pjt.desc = data.projectDescription;
-        store.pjt.startDay = data.projectStartedDate;
-        store.pjt.endDay = data.projectFinishedDate;
-        store.pjt.gitLink = data.projectGithubUrl;
-        store.pjt.jiraLink = data.projectJiraUrl;
-        store.pjt.notionLink = data.projectNotionUrl;
-        store.pjt.figmaLink = data.projectFigmaUrl;
+      const projectResp: any = await getApi(`/projects/${pid}`);
+      console.log(projectResp.data);
+      if (projectResp.status === 200) {
+        store.pjt.img = `https://myini.s3.ap-northeast-2.amazonaws.com/projectProfile/${projectResp.data.projectImg}`;
+        store.pjt.title = projectResp.data.projectName;
+        store.pjt.desc = projectResp.data.projectDescription;
+        store.pjt.startDay = projectResp.data.projectStartedDate;
+        store.pjt.endDay = projectResp.data.projectFinishedDate;
+        store.pjt.gitLink = projectResp.data.projectGithubUrl;
+        store.pjt.jiraLink = projectResp.data.projectJiraUrl;
+        store.pjt.notionLink = projectResp.data.projectNotionUrl;
+        store.pjt.figmaLink = projectResp.data.projectFigmaUrl;
 
         const memberResp: any = await getApi(`/projects/members/${pid}`);
         console.log(memberResp);
         const memberData = memberResp.data.map((member: any) => {
           return {
             id: member.memberId,
-            name: member.memberName,
+            name: member.memberNickName,
             img: member.memberProfileImg
               ? `https://myini.s3.ap-northeast-2.amazonaws.com/userProfile/${member.memberProfileImg}`
               : DefaultProfile,
@@ -64,23 +64,21 @@ export default function SettingPage({ pid }: Props) {
           };
         });
         store.pjt.members = memberData;
-      } else {
-        alert('없는 프젝');
-      }
+      } else if (projectResp.response.status === 400) alert('없는 프젝');
+      else if (projectResp.response.status === 500) alert('api 에러');
     };
 
     const initNewProject = async () => {
-      console.log('hi');
+      const { data }: any = await postApi(`/projects`);
       const newStore = syncedStore({
         pjt: {} as ProjectInfo,
       });
-      new WebrtcProvider(`id${10}`, getYjsValue(newStore) as any);
+      new WebrtcProvider(`id${data.projectId}`, getYjsValue(newStore) as any);
+      setStore(newStore);
     };
 
     if (pid === 'new') initNewProject();
-    else {
-      getProjectDetail();
-    }
+    else getProjectDetail();
   }, []);
 
   return (

@@ -1,3 +1,4 @@
+// api 상세 type
 export interface API {
   responses: RESPONSE;
   pathVarList: QUERY[];

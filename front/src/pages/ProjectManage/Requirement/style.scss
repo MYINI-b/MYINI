@@ -74,7 +74,7 @@
     }
 
     .table-col {
-      padding: rem(10) rem(24);
+      padding: rem(10) rem(18);
       width: 100%;
       word-break: break-all;
       border-radius: 20px;
@@ -83,7 +83,7 @@
       &.title {
         // height: rem(40);
         word-break: break-all;
-        font-size: rem(20);
+        font-size: rem(16);
         font-family: $eng-title;
         // white-space: nowrap;
         background-color: $third;
@@ -91,8 +91,8 @@
 
       &.content {
 
-        margin: 0 rem(12);
-        padding: rem(10) rem(12);
+        // margin: 0 rem(12);
+        padding: rem(10) rem(18);
         font-size: rem(14);
         font-family: $eng-content;
       }
