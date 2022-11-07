@@ -27,16 +27,3 @@ include::{snippets}/api/initializers/{projectid}/ispossible/request-body.adoc[]
 include::{snippets}/api/initializers/{projectid}/ispossible/http-response.adoc[]
 ====== Body
 include::{snippets}/api/initializers/{projectid}/ispossible/response-fields.adoc[]
-
-==== 이니셜라이저 시작 API
-===== 요청
-include::{snippets}/api/initializers/{projectid}/http-request.adoc[]
-====== Header
-include::{snippets}/api/initializers/{projectid}/request-headers.adoc[]
-====== Path
-include::{snippets}/api/initializers/{projectid}/path-parameters.adoc[]
-====== Body
-include::{snippets}/api/initializers/{projectid}/request-body.adoc[]
-
-===== 응답
-include::{snippets}/api/initializers/{projectid}/http-response.adoc[]

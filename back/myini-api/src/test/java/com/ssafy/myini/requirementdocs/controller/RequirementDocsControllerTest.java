@@ -69,6 +69,7 @@ class RequirementDocsControllerTest extends ControllerTest {
                                 fieldWithPath("[].requirementContent").type(JsonFieldType.STRING).description("요구사항 내용"),
                                 fieldWithPath("[].requirementPart").type(JsonFieldType.STRING).description("요구사항 파트"),
                                 fieldWithPath("[].memberNickName").type(JsonFieldType.STRING).description("요구사항 멤버"),
+                                fieldWithPath("[].memberJiraEmail").type(JsonFieldType.STRING).description("요구사항 멤버 이메일"),
                                 fieldWithPath("[].requirementPriority").type(JsonFieldType.NUMBER).description("요구사항 우선순위"),
                                 fieldWithPath("[].requirementStoryPoint").type(JsonFieldType.NUMBER).description("요구사항 스토리포인트")
                                 )));

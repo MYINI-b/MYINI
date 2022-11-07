@@ -3,6 +3,7 @@ package com.ssafy.myini.project;
 import com.ssafy.myini.apidocs.request.CreateApiControllerRequest;
 import com.ssafy.myini.project.request.FindByMemberEmailRequest;
 import com.ssafy.myini.project.request.UpdateProjectRequest;
+import com.ssafy.myini.project.response.ProjectCreateResponse;
 import com.ssafy.myini.project.response.ProjectInfoResponse;
 import com.ssafy.myini.project.response.ProjectListResponse;
 import com.ssafy.myini.project.response.ProjectMemberResponse;
@@ -28,6 +29,8 @@ public class ProjectFixture {
     public static final FindByMemberEmailRequest TEST_FIND_MEMBER_EMAIL_REQUEST
             = new FindByMemberEmailRequest(EMAIL);
 
+    public static final ProjectCreateResponse TEST_PROJECT_CREATE_RESPONSE
+            = new ProjectCreateResponse(ID);
     public static final ProjectMemberResponse TEST_PROJECT_MEMBER_RESPONSE
             = new ProjectMemberResponse(ID, EMAIL, IMG, NAME);
     public static final ProjectInfoResponse TEST_PROJECT_INFO_RESPONSE

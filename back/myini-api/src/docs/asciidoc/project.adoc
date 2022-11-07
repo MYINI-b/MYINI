@@ -55,6 +55,8 @@ include::{snippets}/api/projects/{projectid}/update/http-request.adoc[]
 include::{snippets}/api/projects/{projectid}/update/request-headers.adoc[]
 ====== Path
 include::{snippets}/api/projects/{projectid}/update/path-parameters.adoc[]
+====== Body
+include::{snippets}/api/projects/{projectid}/update/request-body.adoc[]
 
 ===== 응답
 include::{snippets}/api/projects/{projectid}/update/http-response.adoc[]
