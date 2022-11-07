@@ -35,11 +35,11 @@ public class DtoWrite {
         }
 
         for (String importDto : importDtos) {
-            dtoImportContents.append("import ").append(initializerRequest.getSpring_package_name()).append(".dto.").append(importDto).append(";\n");
+            dtoImportContents.append("import ").append(initializerRequest.getSpringPackageName()).append(".dto.").append(importDto).append(";\n");
         }
 
         StringBuilder contents = new StringBuilder();
-        contents.append("package " + initializerRequest.getSpring_package_name() + "." + dtoResponse.getDtoType().toLowerCase() + ";\n")
+        contents.append("package " + initializerRequest.getSpringPackageName() + "." + dtoResponse.getDtoType().toLowerCase() + ";\n")
                 .append("\n")
                 .append(dtoImportContents)
                 .append("\n")

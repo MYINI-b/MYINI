@@ -32,14 +32,14 @@ public class ServiceWrite {
         }
         // request, response import 추가하기
         for (String requestImport : requestImportContents) {
-            serviceImportContents.append("import ").append(initializerRequest.getSpring_package_name()).append(".request.").append(requestImport).append(";\n");
+            serviceImportContents.append("import ").append(initializerRequest.getSpringPackageName()).append(".request.").append(requestImport).append(";\n");
         }
         for (String responseImport : responseImportContents) {
-            serviceImportContents.append("import ").append(initializerRequest.getSpring_package_name()).append(".response.").append(responseImport).append(";\n");
+            serviceImportContents.append("import ").append(initializerRequest.getSpringPackageName()).append(".response.").append(responseImport).append(";\n");
         }
         serviceImportContents.append("\n");
 
-        contents.append("package " + initializerRequest.getSpring_package_name() + ".service;\n")
+        contents.append("package " + initializerRequest.getSpringPackageName() + ".service;\n")
                 .append("\n")
                 .append(serviceImportContents)
                 .append("\n");

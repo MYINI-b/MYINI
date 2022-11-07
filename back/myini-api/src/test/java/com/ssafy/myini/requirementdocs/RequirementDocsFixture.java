@@ -48,4 +48,5 @@ public class RequirementDocsFixture {
     public static final RequirementListResponse TEST_REQUIREMENT_LIST_RESPONSE
             = new RequirementListResponse(ID,TEST_REQUIREMENT_CATEGORY_DTO,NAME,CONTENT,RequirementPart.BE,NAME,EMAIL,NUM,DOUNUM);
 
+
 }
