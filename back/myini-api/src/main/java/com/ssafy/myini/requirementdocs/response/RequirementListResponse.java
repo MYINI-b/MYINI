@@ -16,6 +16,9 @@ public class RequirementListResponse {
     private String requirementContent;
     private RequirementPart requirementPart;
     private String memberNickName;
+
+    private String memberJiraEmail;
+
     private Integer requirementPriority;
     private Double requirementStoryPoint;
 
@@ -27,6 +30,7 @@ public class RequirementListResponse {
         requirementListResponse.requirementContent = requirement.getRequirementContent();
         requirementListResponse.requirementPart = requirement.getRequirementPart();
         requirementListResponse.memberNickName = requirement.getMember().getMemberNickname();
+        requirementListResponse.memberJiraEmail = requirement.getMember().getMemberJiraEmail();
         requirementListResponse.requirementPriority = requirement.getRequirementPriority();
         requirementListResponse.requirementStoryPoint = requirement.getRequirementStoryPoint();
 

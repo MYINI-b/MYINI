@@ -36,6 +36,8 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String memberEmail;
 
+    private String memberJiraEmail;
+
     @Column(nullable = false)
     private String memberNickname;
 
@@ -64,5 +66,9 @@ public class Member extends BaseEntity {
 
     public void updateMemberProfileImg(String profileImg){
         this.memberProfileImg = profileImg;
+    }
+
+    public void updateMemberJiraEmail(String memberJiraEmail){
+        this.memberJiraEmail = memberJiraEmail;
     }
 }
