@@ -5,6 +5,7 @@ import com.ssafy.myini.project.request.FindByMemberEmailRequest;
 import com.ssafy.myini.jira.request.UpdateJiraAccountRequest;
 import com.ssafy.myini.jira.request.UpdateJiraProjectRequest;
 import com.ssafy.myini.project.request.UpdateProjectRequest;
+import com.ssafy.myini.project.response.ProjectCreateResponse;
 import com.ssafy.myini.project.response.ProjectInfoResponse;
 import com.ssafy.myini.project.response.ProjectListResponse;
 import com.ssafy.myini.project.response.ProjectMemberResponse;
@@ -13,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface ProjectService {
-    void createProject(Member member);
+    ProjectCreateResponse createProject(Member member);
     List<ProjectListResponse> findAll(Member member);
     ProjectInfoResponse findByProjectId(Long projectId);
     void updateProject(Member member, Long projectId, UpdateProjectRequest request);

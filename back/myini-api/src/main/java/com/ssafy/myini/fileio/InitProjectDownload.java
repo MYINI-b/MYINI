@@ -12,29 +12,31 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class InitProjectDownload {
-    public static void initProject(InitializerRequest initializerRequest){
+    public static void initProject(InitializerRequest initializerRequest) {
         String address = "https://start.spring.io/starter.zip?" +
-                "type="+initializerRequest.getSpring_type()+"&" +
-                "language="+initializerRequest.getSpring_language()+"&" +
-                "platformVersion="+initializerRequest.getSpring_platform_version()+"&" +
-                "packaging="+initializerRequest.getSpring_packaging()+"&" +
-                "jvmVersion="+initializerRequest.getSpring_jvm_version()+"&" +
-                "groupId="+initializerRequest.getSpring_group_id()+"&" +
-                "artifactId="+initializerRequest.getSpring_artifact_id()+"&" +
-                "name="+initializerRequest.getSpring_name()+"&" +
-                "description="+initializerRequest.getSpring_description()+"&" +
-                "packageName="+initializerRequest.getSpring_package_name();
-        System.out.println("initializerRequest = " + initializerRequest.getSpring_name());
-        if (initializerRequest.getSpring_dependency_name().size() != 0){
-            address += "&dependencies=";
-            for (int i=0;i<initializerRequest.getSpring_dependency_name().size();i++){
-                if (i != initializerRequest.getSpring_dependency_name().size()-1){
-                    address = address + initializerRequest.getSpring_dependency_name().get(i) + ",";
-                }else {
-                    address = address + initializerRequest.getSpring_dependency_name().get(i);
-                }
-            }
-        }
+                "type=" + initializerRequest.getSpringType() + "&" +
+                "language=" + initializerRequest.getSpringLanguage() + "&" +
+                "platformVersion=" + initializerRequest.getSpringPlatformVersion() + "&" +
+                "packaging=" + initializerRequest.getSpringPackaging() + "&" +
+                "jvmVersion=" + initializerRequest.getSpringJvmVersion() + "&" +
+                "groupId=" + initializerRequest.getSpringGroupId() + "&" +
+                "artifactId=" + initializerRequest.getSpringArtifactId() + "&" +
+                "name=" + initializerRequest.getSpringName() + "&" +
+                "description=" + initializerRequest.getSpringDescription().replaceAll(" ", "+") + "&" +
+                "packageName=" + initializerRequest.getSpringPackageName() + "&" +
+                "dependencies=" + initializerRequest.getSpringDependencyName();
+        System.out.println("address = " + address);
+//        System.out.println("initializerRequest = " + initializerRequest.getSpring_name());
+//        if (initializerRequest.getSpring_dependency_name().size() != 0){
+//            address += "&dependencies=";
+//            for (int i=0;i<initializerRequest.getSpring_dependency_name().size();i++){
+//                if (i != initializerRequest.getSpring_dependency_name().size()-1){
+//                    address = address + initializerRequest.getSpring_dependency_name().get(i) + ",";
+//                }else {
+//                    address = address + initializerRequest.getSpring_dependency_name().get(i);
+//                }
+//            }
+//        }
         try {
             //이미 만들어진게 있다면 삭제
             fileDelete(initializerRequest);
@@ -47,47 +49,43 @@ public class InitProjectDownload {
             byte[] buffer = res.getBody();
 //            System.out.println(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name()+".zip");
             // 로컬 서버에 저장
-            System.out.println("initializerRequest = " + initializerRequest.getSpring_base_path());
-            File folder = new File(initializerRequest.getSpring_base_path());
+            System.out.println("initializerRequest = " + initializerRequest.getSpringBasePath());
+            File folder = new File(initializerRequest.getSpringBasePath());
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-            Path target = Paths.get(initializerRequest.getSpring_base_path(), initializerRequest.getSpring_name() + ".zip");    // 파일 저장 경로
+            Path target = Paths.get(initializerRequest.getSpringBasePath(), initializerRequest.getSpringName() + ".zip");    // 파일 저장 경로
 
             FileCopyUtils.copy(buffer, target.toFile());
 
 
-
-            File file = new File(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name()+".zip");
-            System.out.println("file.getName() = " + file.getName());
+            File file = new File(initializerRequest.getSpringBasePath() + initializerRequest.getSpringName() + ".zip");
             ZipFile zipFile = new ZipFile(file);
-            zipFile.extractAll(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name());
-            fileDelete(initializerRequest);
-        }catch (Exception e){
+            zipFile.extractAll(initializerRequest.getSpringBasePath() + initializerRequest.getSpringName());
+        } catch (Exception e) {
             System.out.println("e = " + e);
         }
     }
 
-    public static void fileDelete(InitializerRequest initializerRequest) throws Exception {
-        String path = initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name();
+    private static void fileDelete(InitializerRequest initializerRequest) throws Exception {
+        String path = initializerRequest.getSpringBasePath() + initializerRequest.getSpringName();
 
-        File deleteZip = new File(path+".zip");
-        if( deleteZip.exists() ){
+        File deleteZip = new File(path + ".zip");
+        if (deleteZip.exists()) {
             deleteZip.delete();
         }
 
         File deleteFolder = new File(path);
-        if(deleteFolder.exists()){
+        if (deleteFolder.exists()) {
             File[] deleteFolderList = deleteFolder.listFiles();
 
             for (int j = 0; j < deleteFolderList.length; j++) {
                 deleteFolderList[j].delete();
             }
 
-            if(deleteFolderList.length == 0 && deleteFolder.isDirectory()){
+            if (deleteFolderList.length == 0 && deleteFolder.isDirectory()) {
                 deleteFolder.delete();
             }
         }
-
     }
 }

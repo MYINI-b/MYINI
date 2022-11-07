@@ -1,5 +1,6 @@
 package com.ssafy.myini.member;
 
+import com.ssafy.myini.member.request.UpdateMemberJiraEmailRequest;
 import com.ssafy.myini.member.response.CrewResponse;
 import com.ssafy.myini.member.response.MemberInfoResponse;
 import org.springframework.mock.web.MockMultipartFile;
@@ -25,4 +26,6 @@ public class MemberFixture {
     public static final MockMultipartFile TEST_FILE_REQUEST =
             new MockMultipartFile("img", "img.jpeg", "image/jpeg", "<<jpeg data>>".getBytes());
 
+    public static final UpdateMemberJiraEmailRequest TEST_UPDATE_MEMBER_JIRA_EMAIL_REQUEST
+            = new UpdateMemberJiraEmailRequest(EMAIL);
 }

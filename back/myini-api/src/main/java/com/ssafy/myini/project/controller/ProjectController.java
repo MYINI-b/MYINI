@@ -6,6 +6,7 @@ import com.ssafy.myini.project.request.FindByMemberEmailRequest;
 import com.ssafy.myini.jira.request.UpdateJiraAccountRequest;
 import com.ssafy.myini.jira.request.UpdateJiraProjectRequest;
 import com.ssafy.myini.project.request.UpdateProjectRequest;
+import com.ssafy.myini.project.response.ProjectCreateResponse;
 import com.ssafy.myini.project.response.ProjectInfoResponse;
 import com.ssafy.myini.project.response.ProjectListResponse;
 import com.ssafy.myini.project.response.ProjectMemberResponse;
@@ -27,9 +28,9 @@ public class ProjectController {
 
     // 프로젝트 등록
     @PostMapping
-    public ResponseEntity<Void> createProject(@LoginMember Member member){
-        projectService.createProject(member);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<ProjectCreateResponse> createProject(@LoginMember Member member){
+        ProjectCreateResponse body = projectService.createProject(member);
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
     // 회원의 프로젝트 전체 리스트

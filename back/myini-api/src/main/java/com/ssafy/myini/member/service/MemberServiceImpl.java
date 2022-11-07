@@ -4,6 +4,7 @@ import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.member.domain.*;
 import com.ssafy.myini.member.query.*;
+import com.ssafy.myini.member.request.UpdateMemberJiraEmailRequest;
 import com.ssafy.myini.member.response.*;
 import com.ssafy.myini.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -75,5 +76,12 @@ public class MemberServiceImpl implements MemberService {
         findMember.updateMemberProfileImg(fileName);
     }
 
+    @Override
+    @Transactional
+    public void updateMemberJiraEmail(Member member, UpdateMemberJiraEmailRequest request) {
+        Member findMember = memberRepository.findById(member.getMemberId())
+                .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
 
+        findMember.updateMemberJiraEmail(request.getMemberJiraEmail());
+    }
 }

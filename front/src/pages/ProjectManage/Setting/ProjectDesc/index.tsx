@@ -1,18 +1,25 @@
 import { faPen, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import './style.scss';
 
 interface Props {
-  desc: string;
-  onDescChange: (e: any) => void;
+  store: any;
 }
-export default function DetailInfo({ desc, onDescChange }: Props) {
+export default function DetailInfo({ store }: Props) {
   const [isEdit, setIsEdit] = useState(false);
 
   const onSubmitClick = useCallback(() => {
     setIsEdit(false);
   }, []);
+
+  const onDescChange = useCallback(
+    (e: any) => {
+      store.pjt.desc = e.target.value;
+    },
+    [store],
+  );
+
   return (
     <div className="detail-info">
       <div className="project-detail-title-wrapper normal">
@@ -34,7 +41,7 @@ export default function DetailInfo({ desc, onDescChange }: Props) {
 
       <textarea
         className={`project-info-desc ${isEdit && 'edit'}`}
-        value={desc}
+        value={store.pjt.desc || ''}
         onChange={onDescChange}
         disabled={!isEdit}
       />

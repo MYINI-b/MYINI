@@ -86,7 +86,7 @@ public class EntityWrite {
             depth--;
 
             //패키지, 클래스메인함수 등 작성
-            contents.append("package " + initializerRequest.getSpring_package_name() + ".entity;\n")
+            contents.append("package " + initializerRequest.getSpringPackageName() + ".entity;\n")
                     .append("\n")
                     .append(entityImportContents)
                     .append("\n")
@@ -250,7 +250,7 @@ public class EntityWrite {
 //                        "@JoinColumn(name = \""+endColumnName+"\")\n"+
 //                        "private "+startTableName+" "+JdbcUtils.convertUnderscoreNameToPropertyName(endColumnName.substring(0,endColumnName.length()-3))+";\n\n");
 
-                entityImportContents.append("import "+ initializerRequest.getSpring_package_name() + ".entity." + startTableName+";\n");
+                entityImportContents.append("import "+ initializerRequest.getSpringPackageName() + ".entity." + startTableName+";\n");
             }
 
             //OneToMany 작성

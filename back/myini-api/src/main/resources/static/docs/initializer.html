@@ -454,10 +454,22 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_응답">응답</a></li>
 </ul>
 </li>
-<li><a href="#_이니셜라이저_시작_api">1.2. 이니셜라이저 시작 API</a>
+<li><a href="#_이니셜라이저_시작">1.2. 이니셜라이저 시작</a>
 <ul class="sectlevel4">
 <li><a href="#_요청_2">요청</a></li>
 <li><a href="#_응답_2">응답</a></li>
+</ul>
+</li>
+<li><a href="#_이니셜라이저_미리보기">1.3. 이니셜라이저 미리보기</a>
+<ul class="sectlevel4">
+<li><a href="#_요청_3">요청</a></li>
+<li><a href="#_응답_3">응답</a></li>
+</ul>
+</li>
+<li><a href="#_myini_다운로드">1.4. myini 다운로드</a>
+<ul class="sectlevel4">
+<li><a href="#_요청_4">요청</a></li>
+<li><a href="#_응답_4">응답</a></li>
 </ul>
 </li>
 </ul>
@@ -581,7 +593,7 @@ Content-Length: 53
 </div>
 </div>
 <div class="sect3">
-<h4 id="_이니셜라이저_시작_api"><a class="anchor" href="#_이니셜라이저_시작_api"></a><a class="link" href="#_이니셜라이저_시작_api">1.2. 이니셜라이저 시작 API</a></h4>
+<h4 id="_이니셜라이저_시작"><a class="anchor" href="#_이니셜라이저_시작"></a><a class="link" href="#_이니셜라이저_시작">1.2. 이니셜라이저 시작</a></h4>
 <div class="sect4">
 <h5 id="_요청_2"><a class="anchor" href="#_요청_2"></a><a class="link" href="#_요청_2">요청</a></h5>
 <div class="listingblock">
@@ -589,22 +601,22 @@ Content-Length: 53
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/initializers/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer
-Content-Length: 425
+Content-Length: 402
 Host: localhost:8080
 
 {
-  "spring_base_path" : "내용",
-  "spring_type" : "내용",
-  "spring_language" : "내용",
-  "spring_platform_version" : "내용",
-  "spring_packaging" : "내용",
-  "spring_jvm_version" : "내용",
-  "spring_group_id" : "내용",
-  "spring_artifact_id" : "내용",
-  "spring_name" : "내용",
-  "spring_description" : "내용",
-  "spring_package_name" : "내용",
-  "spring_dependency_name" : [ "내용" ]
+  "springBasePath" : "내용",
+  "springType" : "내용",
+  "springLanguage" : "내용",
+  "springPlatformVersion" : "내용",
+  "springPackaging" : "내용",
+  "springJvmVersion" : "내용",
+  "springGroupId" : "내용",
+  "springArtifactId" : "내용",
+  "springName" : "내용",
+  "springDescription" : "내용",
+  "springPackageName" : "내용",
+  "springDependencyName" : "내용"
 }</code></pre>
 </div>
 </div>
@@ -656,18 +668,18 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
-  "spring_base_path" : "내용",
-  "spring_type" : "내용",
-  "spring_language" : "내용",
-  "spring_platform_version" : "내용",
-  "spring_packaging" : "내용",
-  "spring_jvm_version" : "내용",
-  "spring_group_id" : "내용",
-  "spring_artifact_id" : "내용",
-  "spring_name" : "내용",
-  "spring_description" : "내용",
-  "spring_package_name" : "내용",
-  "spring_dependency_name" : [ "내용" ]
+  "springBasePath" : "내용",
+  "springType" : "내용",
+  "springLanguage" : "내용",
+  "springPlatformVersion" : "내용",
+  "springPackaging" : "내용",
+  "springJvmVersion" : "내용",
+  "springGroupId" : "내용",
+  "springArtifactId" : "내용",
+  "springName" : "내용",
+  "springDescription" : "내용",
+  "springPackageName" : "내용",
+  "springDependencyName" : "내용"
 }</code></pre>
 </div>
 </div>
@@ -680,7 +692,190 @@ Host: localhost:8080
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers</code></pre>
+Vary: Access-Control-Request-Headers
+Content-Disposition: attachment; filename=testZip.zip
+Cache-Control: no-cache, no-store, must-revalidate
+Pragma: no-cache
+Expires: 0
+Content-Length: 22
+Content-Type: application/octet-stream;charset=UTF-8
+
+PK</code></pre>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_body_4"><a class="anchor" href="#_body_4"></a><a class="link" href="#_body_4">Body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">PK</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_이니셜라이저_미리보기"><a class="anchor" href="#_이니셜라이저_미리보기"></a><a class="link" href="#_이니셜라이저_미리보기">1.3. 이니셜라이저 미리보기</a></h4>
+<div class="sect4">
+<h5 id="_요청_3"><a class="anchor" href="#_요청_3"></a><a class="link" href="#_요청_3">요청</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/initializers/1/previews HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: Bearer
+Content-Length: 402
+Host: localhost:8080
+
+{
+  "springBasePath" : "내용",
+  "springType" : "내용",
+  "springLanguage" : "내용",
+  "springPlatformVersion" : "내용",
+  "springPackaging" : "내용",
+  "springJvmVersion" : "내용",
+  "springGroupId" : "내용",
+  "springArtifactId" : "내용",
+  "springName" : "내용",
+  "springDescription" : "내용",
+  "springPackageName" : "내용",
+  "springDependencyName" : "내용"
+}</code></pre>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_header_3"><a class="anchor" href="#_header_3"></a><a class="link" href="#_header_3">Header</a></h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AccessToken</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_path_3"><a class="anchor" href="#_path_3"></a><a class="link" href="#_path_3">Path</a></h6>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 3. /api/initializers/{projectid}/previews</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>projectid</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">프로젝트 ID</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_body_5"><a class="anchor" href="#_body_5"></a><a class="link" href="#_body_5">Body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
+  "springBasePath" : "내용",
+  "springType" : "내용",
+  "springLanguage" : "내용",
+  "springPlatformVersion" : "내용",
+  "springPackaging" : "내용",
+  "springJvmVersion" : "내용",
+  "springGroupId" : "내용",
+  "springArtifactId" : "내용",
+  "springName" : "내용",
+  "springDescription" : "내용",
+  "springPackageName" : "내용",
+  "springDependencyName" : "내용"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_응답_3"><a class="anchor" href="#_응답_3"></a><a class="link" href="#_응답_3">응답</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+Content-Length: 89
+
+[ {
+  "fileCategory" : "내용",
+  "fileName" : "내용",
+  "contents" : "내용"
+} ]</code></pre>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_body_6"><a class="anchor" href="#_body_6"></a><a class="link" href="#_body_6">Body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">[ {
+  "fileCategory" : "내용",
+  "fileName" : "내용",
+  "contents" : "내용"
+} ]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_myini_다운로드"><a class="anchor" href="#_myini_다운로드"></a><a class="link" href="#_myini_다운로드">1.4. myini 다운로드</a></h4>
+<div class="sect4">
+<h5 id="_요청_4"><a class="anchor" href="#_요청_4"></a><a class="link" href="#_요청_4">요청</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/initializers/downloads HTTP/1.1
+Accept: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_body_7"><a class="anchor" href="#_body_7"></a><a class="link" href="#_body_7">Body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_응답_4"><a class="anchor" href="#_응답_4"></a><a class="link" href="#_응답_4">응답</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/octet-stream;charset=UTF-8
+Content-Disposition: attachment; filename="front Setup 0.1.0.exe"</code></pre>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_body_8"><a class="anchor" href="#_body_8"></a><a class="link" href="#_body_8">Body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs"></code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -690,7 +885,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-11-04 10:25:29 +0900
+Last updated 2022-11-07 14:36:17 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

@@ -675,7 +675,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 361
+Content-Length: 397
 
 [ {
   "requirementId" : 1,
@@ -688,6 +688,7 @@ Content-Length: 361
   "requirementContent" : "내용",
   "requirementPart" : "BE",
   "memberNickName" : "이름",
+  "memberJiraEmail" : "이메일",
   "requirementPriority" : 1,
   "requirementStoryPoint" : 1.0
 } ]</code></pre>
@@ -758,6 +759,11 @@ Content-Length: 361
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].memberNickName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">요구사항 멤버</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].memberJiraEmail</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">요구사항 멤버 이메일</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].requirementPriority</code></p></td>

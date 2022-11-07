@@ -6,23 +6,17 @@ import './style.scss';
 import { ELEMENTPOS, ROW } from 'types/Requirement';
 
 interface Props {
-  managers: string[];
-  setManagers: Dispatch<React.SetStateAction<string[]>>;
   closeManagerModal: () => void;
   clickElementPos: ELEMENTPOS;
-  rows: ROW[];
-  setRows: Dispatch<React.SetStateAction<ROW[]>>;
   idx: number;
+  store: any;
 }
 
 export default function CategoryListModal({
-  managers,
-  setManagers,
   closeManagerModal,
   clickElementPos,
-  rows,
-  setRows,
   idx,
+  store,
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
   const [managerInput, setManagerInput] = useState('');
@@ -30,25 +24,28 @@ export default function CategoryListModal({
   const deleteManager = useCallback(
     (e: any, idx: number) => {
       e.stopPropagation();
-      const copyManagers = [...managers];
-      const copyRows = [...rows];
-      copyRows.forEach((e) => {
-        if (e.manager === copyManagers[idx]) e.manager = '';
+
+      store.pjt.rows.forEach((e: ROW) => {
+        if (e.manager === store.pjt.managers[idx]) e.manager = '';
       });
-      copyManagers.splice(idx, 1);
-      setManagers(copyManagers);
-      setRows(copyRows);
+      store.pjt.managers.splice(idx, 1);
+      closeManagerModal();
     },
-    [managers, setManagers, rows],
+    [store],
   );
 
-  const addNewCategory = (e: any) => {
-    if (e.key === 'Enter') {
-      setManagers([...managers, managerInput]);
-      setManagerInput('');
-      e.target.value = '';
-    }
-  };
+  const addNewManager = useCallback(
+    (e: any) => {
+      if (e.key === 'Enter') {
+        if (store.pjt.managers === undefined) store.pjt.managers = [];
+        store.pjt.managers.push(managerInput);
+        store.pjt.rows[idx].manager = managerInput;
+        closeManagerModal();
+        setManagerInput('');
+      }
+    },
+    [store, managerInput],
+  );
 
   const onChangemanagerInput = useCallback(
     (e: any) => {
@@ -59,12 +56,10 @@ export default function CategoryListModal({
 
   const selectManager = useCallback(
     (manager: string) => {
-      const copyRows = [...rows];
-      copyRows[idx].manager = manager;
-      setRows(copyRows);
+      store.pjt.rows[idx].manager = manager;
       closeManagerModal();
     },
-    [rows, idx],
+    [store, idx],
   );
 
   useEffect(() => {
@@ -86,27 +81,29 @@ export default function CategoryListModal({
             className="category-search-input"
             placeholder="새 담당자 등록"
             onChange={onChangemanagerInput}
-            onKeyDown={addNewCategory}
+            onKeyDown={addNewManager}
             onClick={(e) => e.stopPropagation()}
+            value={managerInput}
           />
-          {managers.map((e, i) => {
-            return (
-              <span
-                className={`category-row ${
-                  rows[idx].manager === e && 'select'
-                }`}
-                key={i}
-                onClick={() => selectManager(e)}
-              >
-                {e}
-                <FontAwesomeIcon
-                  icon={faClose}
-                  className="category-delete-button"
-                  onClick={(e) => deleteManager(e, i)}
-                />
-              </span>
-            );
-          })}
+          {store.pjt.managers &&
+            store.pjt.managers.map((e: string, i: number) => {
+              return (
+                <span
+                  className={`category-row ${
+                    store.pjt.rows[idx].manager === e && 'select'
+                  }`}
+                  key={i}
+                  onClick={() => selectManager(e)}
+                >
+                  {e}
+                  <FontAwesomeIcon
+                    icon={faClose}
+                    className="category-delete-button"
+                    onClick={(e) => deleteManager(e, i)}
+                  />
+                </span>
+              );
+            })}
         </div>
       </div>
     </div>

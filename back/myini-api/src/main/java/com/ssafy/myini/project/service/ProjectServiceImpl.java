@@ -14,6 +14,7 @@ import com.ssafy.myini.project.request.FindByMemberEmailRequest;
 import com.ssafy.myini.jira.request.UpdateJiraAccountRequest;
 import com.ssafy.myini.jira.request.UpdateJiraProjectRequest;
 import com.ssafy.myini.project.request.UpdateProjectRequest;
+import com.ssafy.myini.project.response.ProjectCreateResponse;
 import com.ssafy.myini.project.response.ProjectInfoResponse;
 import com.ssafy.myini.project.response.ProjectListResponse;
 import com.ssafy.myini.project.response.ProjectMemberResponse;
@@ -41,12 +42,13 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional
     @Override
-    public void createProject(Member member) {
+    public ProjectCreateResponse createProject(Member member) {
         Project project = Project.createProject();
         projectRepository.save(project);
 
         MemberProject memberProject = MemberProject.createMemberProject(member, project);
         memberProjectRepository.save(memberProject);
+        return ProjectCreateResponse.from(project);
     }
 
     @Override
@@ -119,7 +121,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectMemberResponse> findByMemberEmail(FindByMemberEmailRequest request) {
-        System.out.println("request.getMemberEmail() = " + request.getMemberEmail());
         List<Member> findMember = memberRepository.findByMemberEmailContains(request.getMemberEmail());
 
         return findMember.stream().map(member -> ProjectMemberResponse.from(member)).collect(Collectors.toList());
