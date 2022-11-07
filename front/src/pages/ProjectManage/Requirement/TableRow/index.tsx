@@ -129,17 +129,14 @@ export default function TableRow({ row, idx, store }: Props) {
   }, []);
 
   const focusOutDesc = useCallback(() => {
-    // store.pjt.rows[idx].description = desc;
     setIsDescEdit(false);
   }, [store]);
 
   const focusOutRequirement = useCallback(() => {
-    // store.pjt.rows[idx].requirement = requirement;
     setIsRequireEdit(false);
   }, [store]);
 
   const focusOutPoint = useCallback(() => {
-    // store.pjt.rows[idx].point = point;
     setIsPointEdit(false);
   }, [store]);
 
@@ -149,9 +146,6 @@ export default function TableRow({ row, idx, store }: Props) {
         'focusout',
         focusOutRequirement,
       );
-
-    // if (store.pjt.rows !== undefined)
-    // store.pjt.rows[idx].requirement = requirement;
 
     return () => {
       if (requireContainer.current)
@@ -166,8 +160,6 @@ export default function TableRow({ row, idx, store }: Props) {
     if (pointContainer.current)
       pointContainer.current.addEventListener('focusout', focusOutPoint);
 
-    // if (store.pjt.rows !== undefined) store.pjt.rows[idx].point = point;
-
     return () => {
       if (pointContainer.current)
         pointContainer.current.removeEventListener('focusout', focusOutPoint);
@@ -177,8 +169,6 @@ export default function TableRow({ row, idx, store }: Props) {
   useEffect(() => {
     if (descContainer.current)
       descContainer.current.addEventListener('focusout', focusOutDesc);
-
-    // if (store.pjt.rows !== undefined) store.pjt.rows[idx].description = desc;
 
     return () => {
       if (descContainer.current)
@@ -193,8 +183,15 @@ export default function TableRow({ row, idx, store }: Props) {
         className="table-col content one-half"
         onClick={(e) => openCategoryList(e, false)}
       >
-        <div className="desc-block" onClick={(e) => openCategoryList(e, true)}>
-          {row.category}
+        <div
+          className="desc-block"
+          style={{
+            backgroundColor:
+              row.category === undefined ? '' : row.category.color,
+          }}
+          onClick={(e) => openCategoryList(e, true)}
+        >
+          {row.category === undefined ? '' : row.category.name}
         </div>
       </span>
       {isRequireEdit ? (
@@ -298,6 +295,7 @@ export default function TableRow({ row, idx, store }: Props) {
           clickElementPos={clickElementPos}
           idx={idx}
           store={store}
+          row={row}
         />
       )}
 

@@ -1,7 +1,7 @@
 import { getYjsValue, syncedStore } from '@syncedstore/core';
 import { WebrtcProvider } from 'y-webrtc';
 import { USER } from 'types/Setting';
-import { ROW } from 'types/Requirement';
+import { ROW, CATEGORY } from 'types/Requirement';
 import * as Y from 'yjs';
 
 const ydoc = new Y.Doc();
@@ -20,8 +20,7 @@ export type ProjectInfo = {
 
   // requirement
   rows: ROW[];
-  categories: string[];
-  managers: string[];
+  categories: CATEGORY[];
 };
 
 export const globalStore = syncedStore({

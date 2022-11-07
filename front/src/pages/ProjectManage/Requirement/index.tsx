@@ -2,13 +2,58 @@ import './style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { useSyncedStore } from '@syncedstore/react';
+import { useEffect } from 'react';
 
 import { globalStore } from 'store/yjsStore';
+import { getApi } from 'api';
 import RowList from './RowList';
 
-export default function Requirement() {
+interface Props {
+  pid: string;
+}
+export default function Requirement({ pid }: Props) {
   const store = useSyncedStore(globalStore);
 
+  useEffect(() => {
+    const getRequirements = async () => {
+      const { data }: any = await getApi(`/requirementdocs/${pid}`);
+      console.log(data);
+      if (data) {
+        const requirementsArray = data.map((req: any) => {
+          return {
+            id: req.requirementId,
+            category: {
+              name: req.requirementCategoryDto.categoryName,
+              color: req.requirementCategoryDto.categoryColor,
+              id: req.requirementCategoryId,
+            },
+            requirement: req.requirementName,
+            description: req.requirementContent,
+            division: req.requirementPart,
+            manager: req.memberNickName,
+            importance: req.requirementPriority,
+            point: req.requirementStoryPoint,
+          };
+        });
+        store.pjt.rows = requirementsArray;
+
+        const categoryListResp: any = await getApi(
+          `/requirementdocs/${pid}/categories`,
+        );
+        store.pjt.categories = categoryListResp.data.map((cat: any) => {
+          return {
+            name: cat.categoryName,
+            color: cat.categoryColor,
+            id: cat.requirementCategoryId,
+          };
+        });
+      } else {
+        console.log('없는 프젝의 요구사항명세 조회함');
+      }
+    };
+
+    if (pid !== 'new') getRequirements();
+  }, []);
   return (
     <div className="requirement-container">
       <h1 className="requirement-title">요구사항명세서</h1>

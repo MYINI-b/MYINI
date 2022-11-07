@@ -4,7 +4,10 @@ import { faSave } from '@fortawesome/free-regular-svg-icons';
 // import Stepper from './Stepper';
 import GenerateVuerd from './GenerateVuerd';
 
-export default function ERDPage() {
+interface Props {
+  pid: string;
+}
+export default function ERDPage({ pid }: Props) {
   return (
     <div>
       <div className="erd-container">

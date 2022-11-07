@@ -1,9 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { useCallback, Dispatch, useRef, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import './style.scss';
 import { ELEMENTPOS, ROW } from 'types/Requirement';
+import { USER } from 'types/Setting';
+import { deleteApi } from 'api';
 
 interface Props {
   closeManagerModal: () => void;
@@ -20,15 +23,21 @@ export default function CategoryListModal({
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
   const [managerInput, setManagerInput] = useState('');
+  const { pid } = useParams();
 
   const deleteManager = useCallback(
-    (e: any, idx: number) => {
+    async (e: any, i: number, user: USER) => {
       e.stopPropagation();
 
-      store.pjt.rows.forEach((e: ROW) => {
-        if (e.manager === store.pjt.managers[idx]) e.manager = '';
+      const { data }: any = await deleteApi(
+        `/projects/${pid}/members/${user.id}`,
+      );
+      console.log(data);
+
+      store.pjt.rows.forEach((row: ROW) => {
+        if (row.manager === user.name) row.manager = '';
       });
-      store.pjt.managers.splice(idx, 1);
+      store.pjt.members.splice(i, 1);
       closeManagerModal();
     },
     [store],
@@ -85,21 +94,21 @@ export default function CategoryListModal({
             onClick={(e) => e.stopPropagation()}
             value={managerInput}
           />
-          {store.pjt.managers &&
-            store.pjt.managers.map((e: string, i: number) => {
+          {store.pjt.members &&
+            store.pjt.members.map((user: USER, i: number) => {
               return (
                 <span
                   className={`category-row ${
-                    store.pjt.rows[idx].manager === e && 'select'
+                    store.pjt.rows[idx].manager === user.name && 'select'
                   }`}
                   key={i}
-                  onClick={() => selectManager(e)}
+                  onClick={() => selectManager(user.name)}
                 >
-                  {e}
+                  {user.name}
                   <FontAwesomeIcon
                     icon={faClose}
                     className="category-delete-button"
-                    onClick={(e) => deleteManager(e, i)}
+                    onClick={(e) => deleteManager(e, i, user)}
                   />
                 </span>
               );

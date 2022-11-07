@@ -15,9 +15,11 @@ import ReferenceLink from './ReferenceLink';
 import ProjectMember from './Member/index';
 import './style.scss';
 
-export default function SettingPage() {
+interface Props {
+  pid: string;
+}
+export default function SettingPage({ pid }: Props) {
   const [store, setStore] = useState<any>(useSyncedStore(globalStore));
-  const { pid } = useParams();
 
   const editProjectInfo = useCallback(async () => {
     const body = {
@@ -37,6 +39,7 @@ export default function SettingPage() {
   useEffect(() => {
     const getProjectDetail = async () => {
       const { data }: any = await getApi(`/projects/${pid}`);
+      console.log(data);
       if (data) {
         store.pjt.img = `https://myini.s3.ap-northeast-2.amazonaws.com/projectProfile/${data.projectImg}`;
         store.pjt.title = data.projectName;
@@ -74,7 +77,9 @@ export default function SettingPage() {
     };
 
     if (pid === 'new') initNewProject();
-    else getProjectDetail();
+    else {
+      getProjectDetail();
+    }
   }, []);
 
   return (

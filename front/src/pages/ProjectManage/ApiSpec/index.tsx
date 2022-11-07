@@ -13,7 +13,11 @@ import APIList from './APIList';
 import ControllerAddModal from './ControllerAddModal';
 import DatatypeModal from './DatatypeModal';
 
-export default function ApiSpec() {
+interface Props {
+  pid: string;
+}
+
+export default function ApiSpec({ pid }: Props) {
   const [objDataType, setObjDataType] = useState<Array<any>>([]);
   const [controllers, setControllers] = useState<Array<CONTROLLER>>([]); // 컨트롤러 목록
   const [controllerIdx, setControllerIdx] = useState(-1); // 현재 선택된 컨트롤러 인덱스

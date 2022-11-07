@@ -1,15 +1,18 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { useParams } from 'react-router-dom';
 import { useCallback, Dispatch, useRef, useEffect, useState } from 'react';
 
 import './style.scss';
-import { ELEMENTPOS, ROW } from 'types/Requirement';
+import { deleteApi, postApi, putApi } from 'api';
+import { ELEMENTPOS, ROW, CATEGORY } from 'types/Requirement';
 
 interface Props {
   closeCategoryList: () => void;
   clickElementPos: ELEMENTPOS;
   idx: number;
   store: any;
+  row: ROW;
 }
 
 export default function CategoryListModal({
@@ -17,15 +20,24 @@ export default function CategoryListModal({
   clickElementPos,
   idx,
   store,
+  row,
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
   const [categoryInput, setCategoryInput] = useState('');
+  const { pid } = useParams();
 
   const deleteCategory = useCallback(
-    (e: any, idx: number) => {
+    async (e: any, idx: number, cat: CATEGORY) => {
       e.stopPropagation();
-      store.pjt.rows.forEach((e: ROW) => {
-        if (e.category === store.pjt.categories[idx]) e.category = '';
+
+      await deleteApi(`/requirementdocs/categories/${cat.id}`);
+
+      store.pjt.rows.forEach((row: ROW) => {
+        if (
+          row.category !== undefined &&
+          row.category.id === store.pjt.categories[idx].id
+        )
+          e.category = undefined;
       });
       store.pjt.categories.splice(idx, 1);
       closeCategoryList();
@@ -33,15 +45,29 @@ export default function CategoryListModal({
     [store],
   );
 
-  const addNewCategory = (e: any) => {
-    if (e.key === 'Enter') {
-      store.pjt.rows[idx].category = categoryInput;
-      if (store.pjt.categories === undefined) store.pjt.categories = [];
-      store.pjt.categories.push(categoryInput);
-      setCategoryInput('');
-      closeCategoryList();
-    }
-  };
+  const addNewCategory = useCallback(
+    async (e: any) => {
+      if (e.key === 'Enter') {
+        const body = {
+          categoryName: categoryInput,
+          categoryColor: `#${Math.round(Math.random() * 0xffffff).toString(
+            16,
+          )}`,
+        };
+        const resp: any = await postApi(
+          `/requirementdocs/${pid}/categories`,
+          body,
+        );
+
+        store.pjt.rows[idx].category = body;
+        store.pjt.categories.push(body);
+
+        setCategoryInput('');
+        closeCategoryList();
+      }
+    },
+    [store, categoryInput],
+  );
 
   const onChangeCategoryInput = useCallback(
     (e: any) => {
@@ -51,8 +77,19 @@ export default function CategoryListModal({
   );
 
   const selectCategory = useCallback(
-    (cat: string) => {
-      store.pjt.rows[idx].category = cat;
+    async (cat: CATEGORY) => {
+      const reqId = row.id;
+      const body = {
+        categoryId: cat.id,
+      };
+      const { data }: any = await putApi(
+        `/requirementdocs/requirements/${reqId}/categories`,
+        body,
+      );
+
+      console.log(data);
+
+      store.pjt.rows[idx].category = { ...cat };
       closeCategoryList();
     },
     [store, idx],
@@ -81,20 +118,20 @@ export default function CategoryListModal({
             onClick={(e) => e.stopPropagation()}
           />
           {store.pjt.categories &&
-            store.pjt.categories.map((e: string, i: number) => {
+            store.pjt.categories.map((cat: CATEGORY, i: number) => {
               return (
                 <span
                   className={`category-row ${
-                    store.pjt.rows[idx].category === e && 'select'
+                    store.pjt.rows[idx].category === cat.name && 'select'
                   }`}
                   key={i}
-                  onClick={() => selectCategory(e)}
+                  onClick={() => selectCategory(cat)}
                 >
-                  {e}
+                  {cat.name}
                   <FontAwesomeIcon
                     icon={faClose}
                     className="category-delete-button"
-                    onClick={(e: any) => deleteCategory(e, i)}
+                    onClick={(e: any) => deleteCategory(e, i, cat)}
                   />
                 </span>
               );
