@@ -1,5 +1,6 @@
 package com.ssafy.myini.apidocs;
 
+import com.ssafy.myini.apidocs.domain.Api;
 import com.ssafy.myini.apidocs.request.*;
 import com.ssafy.myini.apidocs.response.*;
 
@@ -68,5 +69,8 @@ public class ApiDocsFixture {
             = new ClassTypeResponse(ID, NAME);
     public static final TypeListResponse TEST_TYPE_LIST_RESPONSE
             = new TypeListResponse(Arrays.asList(TEST_PRIMITIVE_TYPE_RESPONSE), Arrays.asList(TEST_CLASS_TYPE_RESPONSE));
-
+    public static final ApiControllerCreateResponse TEST_API_CONTROLLER_CREATE_RESPONSE
+            = new ApiControllerCreateResponse(ID);
+    public static final DtoCreateResponse TEST_DTO_CREATE_RESPONSE
+            = new DtoCreateResponse(ID);
 }
