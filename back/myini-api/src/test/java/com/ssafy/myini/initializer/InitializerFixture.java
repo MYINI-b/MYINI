@@ -3,6 +3,7 @@ package com.ssafy.myini.initializer;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
 import com.ssafy.myini.initializer.response.PreviewResponse;
+import org.junit.rules.TemporaryFolder;
 import org.springframework.core.io.InputStreamResource;
 
 import java.io.*;
@@ -15,8 +16,9 @@ public class InitializerFixture {
     public static final String CONTENT = "내용";
     public static final Boolean FLAG = Boolean.TRUE;
     public static final ByteArrayOutputStream BYTES = new ByteArrayOutputStream();
-    public static final InputStream INPUT_STREAM = new ByteArrayInputStream("Content".getBytes(StandardCharsets.UTF_8));
-    public static final InputStreamResource RESOURCE = new InputStreamResource(INPUT_STREAM, "test");
+    public static TemporaryFolder TEMPORARY_FOLDER = new TemporaryFolder();
+    public static File FILE = new File("");
+
 
     public static final InitializerRequest TEST_INITIALIZER_REQUEST
             = new InitializerRequest(CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT);
