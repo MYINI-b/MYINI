@@ -615,7 +615,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 343
+Content-Length: 390
 
 [ {
   "projectName" : "프로젝트 이름",
@@ -625,7 +625,8 @@ Content-Length: 343
     "memberId" : 1,
     "memberEmail" : "프로젝트 이름",
     "memberProfileImg" : "프로젝트 이미지",
-    "memberName" : "프로젝트 이름"
+    "memberName" : "프로젝트 이름",
+    "memberNickName" : "프로젝트 이름"
   } ]
 } ]</code></pre>
 </div>
@@ -691,6 +692,11 @@ Content-Length: 343
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].projectMemberResponses.[].memberName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Member 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].projectMemberResponses.[].memberNickName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Member 닉네임</p></td>
 </tr>
 </tbody>
 </table>
@@ -1162,13 +1168,14 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 159
+Content-Length: 204
 
 [ {
   "memberId" : 1,
   "memberEmail" : "프로젝트 이름",
   "memberProfileImg" : "프로젝트 이미지",
-  "memberName" : "프로젝트 이름"
+  "memberName" : "프로젝트 이름",
+  "memberNickName" : "프로젝트 이름"
 } ]</code></pre>
 </div>
 </div>
@@ -1213,6 +1220,11 @@ Content-Length: 159
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].memberName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Member 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].memberNickName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Member 닉네임</p></td>
 </tr>
 </tbody>
 </table>
@@ -1290,14 +1302,15 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 155
+Content-Length: 204
 
-{
+[ {
   "memberId" : 1,
   "memberEmail" : "프로젝트 이름",
   "memberProfileImg" : "프로젝트 이미지",
-  "memberName" : "프로젝트 이름"
-}</code></pre>
+  "memberName" : "프로젝트 이름",
+  "memberNickName" : "프로젝트 이름"
+} ]</code></pre>
 </div>
 </div>
 </div>
@@ -1318,24 +1331,34 @@ Content-Length: 155
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>memberId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 배열</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].memberId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Member ID</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>memberEmail</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].memberEmail</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Member Email</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>memberProfileImg</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].memberProfileImg</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Member 프로필이미지</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>memberName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].memberName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Member 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].memberNickName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Member 닉네임</p></td>
 </tr>
 </tbody>
 </table>
@@ -1490,7 +1513,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-11-07 11:36:21 +0900
+Last updated 2022-11-07 11:39:56 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

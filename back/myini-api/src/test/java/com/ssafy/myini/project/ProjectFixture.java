@@ -32,7 +32,7 @@ public class ProjectFixture {
     public static final ProjectCreateResponse TEST_PROJECT_CREATE_RESPONSE
             = new ProjectCreateResponse(ID);
     public static final ProjectMemberResponse TEST_PROJECT_MEMBER_RESPONSE
-            = new ProjectMemberResponse(ID, EMAIL, IMG, NAME);
+            = new ProjectMemberResponse(ID, EMAIL, IMG, NAME, NAME);
     public static final ProjectInfoResponse TEST_PROJECT_INFO_RESPONSE
             = new ProjectInfoResponse(NAME, DESCRIPTION, IMG, DATE, DATE, PROJECT_URL, PROJECT_URL, PROJECT_URL, PROJECT_URL);
     public static final ProjectListResponse TEST_PROJECT_LIST_RESPONSE

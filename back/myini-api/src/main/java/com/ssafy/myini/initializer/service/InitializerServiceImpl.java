@@ -124,7 +124,7 @@ public class InitializerServiceImpl implements InitializerService {
             projectInfoListResponses.forEach(projectInfoListResponse -> DtoWrite.dtoWrite(projectInfoListResponse, initializerRequest));
 
             ZipFile zipFile = new ZipFile("project.zip");
-            zipFile.addFolder(new File(initializerRequest.getSpring_base_path() + initializerRequest.getSpring_name()));
+            zipFile.addFolder(new File(initializerRequest.getSpringPackageName() + initializerRequest.getSpringName()));
 
             deletefolder(initializerRequest);
             return zipFile;
@@ -134,7 +134,7 @@ public class InitializerServiceImpl implements InitializerService {
     }
 
     private static void deletefolder(InitializerRequest initializerRequest) throws Exception {
-        String path = initializerRequest.getSpring_base_path() + initializerRequest.getSpring_name();
+        String path = initializerRequest.getSpringPackageName() + initializerRequest.getSpringName();
 
         File deleteZip = new File(path + ".zip");
         if (deleteZip.exists()) {

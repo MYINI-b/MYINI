@@ -39,7 +39,7 @@ public class InitializerController {
         return ResponseEntity.ok().body(body);
     }
 
-    @GetMapping("/{projectid}")
+    @PostMapping("/{projectid}")
     public ResponseEntity<InputStreamResource> initializerStart(@PathVariable("projectid") Long projectId,
                                                                 @Valid InitializerRequest initializerRequest
     ) throws IOException {
