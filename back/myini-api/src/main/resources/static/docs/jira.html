@@ -437,7 +437,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body class="erd toc2 toc-left">
+<body class="jira toc2 toc-left">
 <div id="header">
 <h1>RESTFUL Notes API Guide</h1>
 <div class="details">
@@ -446,72 +446,30 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel2">
-<li><a href="#API">1. ERD</a>
+<li><a href="#API">1. Jira</a>
 <ul class="sectlevel3">
-<li><a href="#_erd_table_생성_api">1.1. ERD Table 생성 API</a>
+<li><a href="#_프로젝트_지라_연동_수정한다">1.1. 프로젝트 지라 연동 수정한다.</a>
 <ul class="sectlevel4">
 <li><a href="#_요청">요청</a></li>
 <li><a href="#_응답">응답</a></li>
 </ul>
 </li>
-<li><a href="#_erd_table_전체_조회_api">1.2. ERD Table 전체 조회 API</a>
+<li><a href="#_연동된_지라_프로젝트를_수정한다">1.2. 연동된 지라 프로젝트를 수정한다.</a>
 <ul class="sectlevel4">
 <li><a href="#_요청_2">요청</a></li>
 <li><a href="#_응답_2">응답</a></li>
 </ul>
 </li>
-<li><a href="#_erd_table_수정_api">1.3. ERD Table 수정 API</a>
+<li><a href="#_지라_프로젝트_리스트를_조회한다">1.3. 지라 프로젝트 리스트를 조회한다.</a>
 <ul class="sectlevel4">
 <li><a href="#_요청_3">요청</a></li>
 <li><a href="#_응답_3">응답</a></li>
 </ul>
 </li>
-<li><a href="#_erd_table_삭제_api">1.4. ERD Table 삭제 API</a>
+<li><a href="#_지라_이슈를_등록한다">1.4. 지라 이슈를 등록한다.</a>
 <ul class="sectlevel4">
 <li><a href="#_요청_4">요청</a></li>
 <li><a href="#_응답_4">응답</a></li>
-</ul>
-</li>
-<li><a href="#_테이블_연관관계_생성_api">1.5. 테이블 연관관계 생성 API</a>
-<ul class="sectlevel4">
-<li><a href="#_요청_5">요청</a></li>
-<li><a href="#_응답_5">응답</a></li>
-</ul>
-</li>
-<li><a href="#_테이블_연관관계_삭제_api">1.6. 테이블 연관관계 삭제 API</a>
-<ul class="sectlevel4">
-<li><a href="#_요청_6">요청</a></li>
-<li><a href="#_응답_6">응답</a></li>
-</ul>
-</li>
-<li><a href="#_테이블_연관관계_아이템_전체조회_api">1.7. 테이블 연관관계 아이템 전체조회 API</a>
-<ul class="sectlevel4">
-<li><a href="#_요청_7">요청</a></li>
-<li><a href="#_응답_7">응답</a></li>
-</ul>
-</li>
-<li><a href="#_테이블_컬럼_제약조건_아이템_전체조회_api">1.8. 테이블 컬럼 제약조건 아이템 전체조회 API</a>
-<ul class="sectlevel4">
-<li><a href="#_요청_8">요청</a></li>
-<li><a href="#_응답_8">응답</a></li>
-</ul>
-</li>
-<li><a href="#_테이블_컬럼_생성_api">1.9. 테이블 컬럼 생성 API</a>
-<ul class="sectlevel4">
-<li><a href="#_요청_9">요청</a></li>
-<li><a href="#_응답_9">응답</a></li>
-</ul>
-</li>
-<li><a href="#_테이블_컬럼_수정_api">1.10. 테이블 컬럼 수정 API</a>
-<ul class="sectlevel4">
-<li><a href="#_요청_10">요청</a></li>
-<li><a href="#_응답_10">응답</a></li>
-</ul>
-</li>
-<li><a href="#_테이블_컬럼_삭제_api">1.11. 테이블 컬럼 삭제 API</a>
-<ul class="sectlevel4">
-<li><a href="#_요청_11">요청</a></li>
-<li><a href="#_응답_11">응답</a></li>
 </ul>
 </li>
 </ul>
@@ -521,24 +479,22 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect2">
-<h3 id="API"><a class="anchor" href="#API"></a><a class="link" href="#API">1. ERD</a></h3>
+<h3 id="API"><a class="anchor" href="#API"></a><a class="link" href="#API">1. Jira</a></h3>
 <div class="sect3">
-<h4 id="_erd_table_생성_api"><a class="anchor" href="#_erd_table_생성_api"></a><a class="link" href="#_erd_table_생성_api">1.1. ERD Table 생성 API</a></h4>
+<h4 id="_프로젝트_지라_연동_수정한다"><a class="anchor" href="#_프로젝트_지라_연동_수정한다"></a><a class="link" href="#_프로젝트_지라_연동_수정한다">1.1. 프로젝트 지라 연동 수정한다.</a></h4>
 <div class="sect4">
 <h5 id="_요청"><a class="anchor" href="#_요청"></a><a class="link" href="#_요청">요청</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/erds/1/erdtables HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/jiras/1/jiraaccount HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer
-Content-Length: 108
+Content-Length: 47
 Host: localhost:8080
 
 {
-  "erdTableName" : "이름",
-  "erdTableX" : 1.0,
-  "erdTableY" : 1.0,
-  "erdTableColor" : "내용"
+  "jiraId" : "1",
+  "jiraApiKey" : "Key"
 }</code></pre>
 </div>
 </div>
@@ -566,7 +522,7 @@ Host: localhost:8080
 <div class="sect5">
 <h6 id="_path"><a class="anchor" href="#_path"></a><a class="link" href="#_path">Path</a></h6>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. /api/erds/{projectid}/erdtables</caption>
+<caption class="title">Table 1. /api/jiras/{projectid}/jiraaccount</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -580,30 +536,17 @@ Host: localhost:8080
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>projectid</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">프로젝트 ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Project ID</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="sect5">
-<h6 id="_body"><a class="anchor" href="#_body"></a><a class="link" href="#_body">Body</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
-  "erdTableName" : "이름",
-  "erdTableX" : 1.0,
-  "erdTableY" : 1.0,
-  "erdTableColor" : "내용"
-}</code></pre>
-</div>
-</div>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_응답"><a class="anchor" href="#_응답"></a><a class="link" href="#_응답">응답</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers</code></pre>
@@ -612,15 +555,22 @@ Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_erd_table_전체_조회_api"><a class="anchor" href="#_erd_table_전체_조회_api"></a><a class="link" href="#_erd_table_전체_조회_api">1.2. ERD Table 전체 조회 API</a></h4>
+<h4 id="_연동된_지라_프로젝트를_수정한다"><a class="anchor" href="#_연동된_지라_프로젝트를_수정한다"></a><a class="link" href="#_연동된_지라_프로젝트를_수정한다">1.2. 연동된 지라 프로젝트를 수정한다.</a></h4>
 <div class="sect4">
 <h5 id="_요청_2"><a class="anchor" href="#_요청_2"></a><a class="link" href="#_요청_2">요청</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/erds/1/erdtables HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/jiras/1/jiraproject HTTP/1.1
+Content-Type: application/json;charset=UTF-8
 Authorization: Bearer
-Accept: application/json
-Host: localhost:8080</code></pre>
+Content-Length: 91
+Host: localhost:8080
+
+{
+  "jiraProjectId" : "1",
+  "jiraProjectKey" : "Key",
+  "jiraProjectName" : "이름"
+}</code></pre>
 </div>
 </div>
 <div class="sect5">
@@ -647,7 +597,7 @@ Host: localhost:8080</code></pre>
 <div class="sect5">
 <h6 id="_path_2"><a class="anchor" href="#_path_2"></a><a class="link" href="#_path_2">Path</a></h6>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 2. /api/erds/{projectid}/erdtables</caption>
+<caption class="title">Table 2. /api/jiras/{projectid}/jiraproject</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -661,7 +611,7 @@ Host: localhost:8080</code></pre>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>projectid</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">프로젝트 ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Project ID</p></td>
 </tr>
 </tbody>
 </table>
@@ -674,163 +624,21 @@ Host: localhost:8080</code></pre>
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json;charset=UTF-8
-Content-Length: 524
-
-[ {
-  "erdTableId" : 1,
-  "erdTableName" : "이름",
-  "erdTableX" : 1.0,
-  "erdTableY" : 1.0,
-  "erdTableColor" : "내용",
-  "tableColumnDtos" : [ {
-    "tableColumnId" : 1,
-    "tableColumnName" : "이름",
-    "tableColumnType" : "이름",
-    "conditionItemDtos" : [ {
-      "conditionItemId" : 1,
-      "conditionItemName" : "이름"
-    } ]
-  } ],
-  "tableRelationDtos" : [ {
-    "toTableId" : 1,
-    "toTableName" : "이름",
-    "relationItemId" : 1,
-    "relationItemName" : "이름"
-  } ]
-} ]</code></pre>
+Vary: Access-Control-Request-Headers</code></pre>
 </div>
-</div>
-<div class="sect5">
-<h6 id="_body_2"><a class="anchor" href="#_body_2"></a><a class="link" href="#_body_2">Body</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">결과 배열</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].erdTableId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table ID</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].erdTableName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].erdTableX</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table X좌표</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].erdTableY</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table Y좌표</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].erdTableColor</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table 색깔</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].tableColumnDtos</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table 컬럼 배열</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].tableColumnDtos.[].tableColumnId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table 컬럼 ID</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].tableColumnDtos.[].tableColumnName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table 컬럼 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].tableColumnDtos.[].tableColumnType</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table 컬럼 자료형</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].tableColumnDtos.[].conditionItemDtos</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table 컬럼 제약조건 배열</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].tableColumnDtos.[].conditionItemDtos.[].conditionItemId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table 컬럼 제약조건 ID</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].tableColumnDtos.[].conditionItemDtos.[].conditionItemName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table 컬럼 제약조건 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].tableRelationDtos</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table 연관관계 배열</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].tableRelationDtos.[].toTableId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table 연관 당하는 테이블 ID</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].tableRelationDtos.[].toTableName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table 연관 당하는 테이블 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].tableRelationDtos.[].relationItemId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table 연관관계 ID</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].tableRelationDtos.[].relationItemName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table 연관관계 이름</p></td>
-</tr>
-</tbody>
-</table>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_erd_table_수정_api"><a class="anchor" href="#_erd_table_수정_api"></a><a class="link" href="#_erd_table_수정_api">1.3. ERD Table 수정 API</a></h4>
+<h4 id="_지라_프로젝트_리스트를_조회한다"><a class="anchor" href="#_지라_프로젝트_리스트를_조회한다"></a><a class="link" href="#_지라_프로젝트_리스트를_조회한다">1.3. 지라 프로젝트 리스트를 조회한다.</a></h4>
 <div class="sect4">
 <h5 id="_요청_3"><a class="anchor" href="#_요청_3"></a><a class="link" href="#_요청_3">요청</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/erds/erdtables/1 HTTP/1.1
-Content-Type: application/json;charset=UTF-8
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/jiras/1/projects HTTP/1.1
 Authorization: Bearer
-Content-Length: 108
-Host: localhost:8080
-
-{
-  "erdTableName" : "이름",
-  "erdTableX" : 1.0,
-  "erdTableY" : 1.0,
-  "erdTableColor" : "내용"
-}</code></pre>
+Accept: application/json
+Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect5">
@@ -857,7 +665,7 @@ Host: localhost:8080
 <div class="sect5">
 <h6 id="_path_3"><a class="anchor" href="#_path_3"></a><a class="link" href="#_path_3">Path</a></h6>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 3. /api/erds/erdtables/{erdtableid}</caption>
+<caption class="title">Table 3. /api/jiras/{projectid}/projects</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -870,24 +678,11 @@ Host: localhost:8080
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>erdtableid</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>projectid</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Project ID</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="sect5">
-<h6 id="_body_3"><a class="anchor" href="#_body_3"></a><a class="link" href="#_body_3">Body</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
-  "erdTableName" : "이름",
-  "erdTableX" : 1.0,
-  "erdTableY" : 1.0,
-  "erdTableColor" : "내용"
-}</code></pre>
-</div>
-</div>
 </div>
 </div>
 <div class="sect4">
@@ -897,21 +692,36 @@ Host: localhost:8080
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers</code></pre>
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+Content-Length: 95
+
+[ {
+  "jiraProjectId" : "1",
+  "jiraProjectKey" : "Key",
+  "jiraProjectName" : "이름"
+} ]</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_erd_table_삭제_api"><a class="anchor" href="#_erd_table_삭제_api"></a><a class="link" href="#_erd_table_삭제_api">1.4. ERD Table 삭제 API</a></h4>
+<h4 id="_지라_이슈를_등록한다"><a class="anchor" href="#_지라_이슈를_등록한다"></a><a class="link" href="#_지라_이슈를_등록한다">1.4. 지라 이슈를 등록한다.</a></h4>
 <div class="sect4">
 <h5 id="_요청_4"><a class="anchor" href="#_요청_4"></a><a class="link" href="#_요청_4">요청</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/erds/erdtables/1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/jiras/1/createissue HTTP/1.1
+Content-Type: application/json;charset=UTF-8
 Authorization: Bearer
-Accept: application/json
-Host: localhost:8080</code></pre>
+Content-Length: 91
+Host: localhost:8080
+
+{
+  "jiraProjectId" : "1",
+  "jiraProjectKey" : "Key",
+  "jiraProjectName" : "이름"
+}</code></pre>
 </div>
 </div>
 <div class="sect5">
@@ -938,7 +748,7 @@ Host: localhost:8080</code></pre>
 <div class="sect5">
 <h6 id="_path_4"><a class="anchor" href="#_path_4"></a><a class="link" href="#_path_4">Path</a></h6>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 4. /api/erds/erdtables/{erdtableid}</caption>
+<caption class="title">Table 4. /api/jiras/{projectid}/createissue</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -951,8 +761,8 @@ Host: localhost:8080</code></pre>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>erdtableid</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>projectid</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Project ID</p></td>
 </tr>
 </tbody>
 </table>
@@ -962,604 +772,7 @@ Host: localhost:8080</code></pre>
 <h5 id="_응답_4"><a class="anchor" href="#_응답_4"></a><a class="link" href="#_응답_4">응답</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_테이블_연관관계_생성_api"><a class="anchor" href="#_테이블_연관관계_생성_api"></a><a class="link" href="#_테이블_연관관계_생성_api">1.5. 테이블 연관관계 생성 API</a></h4>
-<div class="sect4">
-<h5 id="_요청_5"><a class="anchor" href="#_요청_5"></a><a class="link" href="#_요청_5">요청</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/erds/erdtables/1/tablecolumns HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Authorization: Bearer
-Host: localhost:8080</code></pre>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_header_5"><a class="anchor" href="#_header_5"></a><a class="link" href="#_header_5">Header</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">AccessToken</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect5">
-<h6 id="_path_5"><a class="anchor" href="#_path_5"></a><a class="link" href="#_path_5">Path</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 5. /api/erds/erdtables/{erdtableid}/tablecolumns</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>erdtableid</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table ID</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect5">
-<h6 id="_body_4"><a class="anchor" href="#_body_4"></a><a class="link" href="#_body_4">Body</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-none hljs"></code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_응답_5"><a class="anchor" href="#_응답_5"></a><a class="link" href="#_응답_5">응답</a></h5>
-<div class="listingblock">
-<div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_테이블_연관관계_삭제_api"><a class="anchor" href="#_테이블_연관관계_삭제_api"></a><a class="link" href="#_테이블_연관관계_삭제_api">1.6. 테이블 연관관계 삭제 API</a></h4>
-<div class="sect4">
-<h5 id="_요청_6"><a class="anchor" href="#_요청_6"></a><a class="link" href="#_요청_6">요청</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/erds/tablerelations/1 HTTP/1.1
-Authorization: Bearer
-Accept: application/json
-Host: localhost:8080</code></pre>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_header_6"><a class="anchor" href="#_header_6"></a><a class="link" href="#_header_6">Header</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">AccessToken</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect5">
-<h6 id="_path_6"><a class="anchor" href="#_path_6"></a><a class="link" href="#_path_6">Path</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 6. /api/erds/tablerelations/{tablerelationid}</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tablerelationid</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">테이블 연관관계 ID</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_응답_6"><a class="anchor" href="#_응답_6"></a><a class="link" href="#_응답_6">응답</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_테이블_연관관계_아이템_전체조회_api"><a class="anchor" href="#_테이블_연관관계_아이템_전체조회_api"></a><a class="link" href="#_테이블_연관관계_아이템_전체조회_api">1.7. 테이블 연관관계 아이템 전체조회 API</a></h4>
-<div class="sect4">
-<h5 id="_요청_7"><a class="anchor" href="#_요청_7"></a><a class="link" href="#_요청_7">요청</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/erds/relationitems HTTP/1.1
-Authorization: Bearer
-Accept: application/json
-Host: localhost:8080</code></pre>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_header_7"><a class="anchor" href="#_header_7"></a><a class="link" href="#_header_7">Header</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">AccessToken</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_응답_7"><a class="anchor" href="#_응답_7"></a><a class="link" href="#_응답_7">응답</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json;charset=UTF-8
-Content-Length: 66
-
-[ {
-  "relationItemId" : 1,
-  "relationItemName" : "이름"
-} ]</code></pre>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_body_5"><a class="anchor" href="#_body_5"></a><a class="link" href="#_body_5">Body</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">결과 배열</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].relationItemId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">테이블 연관관계 아이템 ID</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].relationItemName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">테이블 연관관계 아이템 이름</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_테이블_컬럼_제약조건_아이템_전체조회_api"><a class="anchor" href="#_테이블_컬럼_제약조건_아이템_전체조회_api"></a><a class="link" href="#_테이블_컬럼_제약조건_아이템_전체조회_api">1.8. 테이블 컬럼 제약조건 아이템 전체조회 API</a></h4>
-<div class="sect4">
-<h5 id="_요청_8"><a class="anchor" href="#_요청_8"></a><a class="link" href="#_요청_8">요청</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/erds/conditionitems HTTP/1.1
-Authorization: Bearer
-Accept: application/json
-Host: localhost:8080</code></pre>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_header_8"><a class="anchor" href="#_header_8"></a><a class="link" href="#_header_8">Header</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">AccessToken</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_응답_8"><a class="anchor" href="#_응답_8"></a><a class="link" href="#_응답_8">응답</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json;charset=UTF-8
-Content-Length: 68
-
-[ {
-  "conditionItemId" : 1,
-  "conditionItemName" : "이름"
-} ]</code></pre>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_body_6"><a class="anchor" href="#_body_6"></a><a class="link" href="#_body_6">Body</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">결과 배열</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].conditionItemId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">테이블 컬럼 제약조건 아이템 ID</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].conditionItemName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">테이블 컬럼 제약조건 아이템 이름</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_테이블_컬럼_생성_api"><a class="anchor" href="#_테이블_컬럼_생성_api"></a><a class="link" href="#_테이블_컬럼_생성_api">1.9. 테이블 컬럼 생성 API</a></h4>
-<div class="sect4">
-<h5 id="_요청_9"><a class="anchor" href="#_요청_9"></a><a class="link" href="#_요청_9">요청</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/erds/erdtables/1/tablecolumns HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Authorization: Bearer
-Host: localhost:8080</code></pre>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_header_9"><a class="anchor" href="#_header_9"></a><a class="link" href="#_header_9">Header</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">AccessToken</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect5">
-<h6 id="_path_7"><a class="anchor" href="#_path_7"></a><a class="link" href="#_path_7">Path</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 7. /api/erds/erdtables/{erdtableid}/tablecolumns</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>erdtableid</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERD Table ID</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect5">
-<h6 id="_body_7"><a class="anchor" href="#_body_7"></a><a class="link" href="#_body_7">Body</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>toErdTableId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">연관당하는 테이블 ID</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>fromErdTableId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">연관시키는 테이블 ID</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>relationItemId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">테이블 연관관계 아이템 ID</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_응답_9"><a class="anchor" href="#_응답_9"></a><a class="link" href="#_응답_9">응답</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_테이블_컬럼_수정_api"><a class="anchor" href="#_테이블_컬럼_수정_api"></a><a class="link" href="#_테이블_컬럼_수정_api">1.10. 테이블 컬럼 수정 API</a></h4>
-<div class="sect4">
-<h5 id="_요청_10"><a class="anchor" href="#_요청_10"></a><a class="link" href="#_요청_10">요청</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/erds/tablecolumns/1 HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Authorization: Bearer
-Content-Length: 100
-Host: localhost:8080
-
-{
-  "tableColumnName" : "이름",
-  "tableColumnType" : "내용",
-  "conditionItemIds" : [ 1 ]
-}</code></pre>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_header_10"><a class="anchor" href="#_header_10"></a><a class="link" href="#_header_10">Header</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">AccessToken</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect5">
-<h6 id="_path_8"><a class="anchor" href="#_path_8"></a><a class="link" href="#_path_8">Path</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 8. /api/erds/tablecolumns/{tablecolumnid}</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tablecolumnid</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">테이블 컬럼 ID</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect5">
-<h6 id="_body_8"><a class="anchor" href="#_body_8"></a><a class="link" href="#_body_8">Body</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tableColumnName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">테이블 컬럼 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tableColumnType</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">테이블 컬럼 자료형</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>conditionItemIds</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">테이블 컬럼 제약조건 배열</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_응답_10"><a class="anchor" href="#_응답_10"></a><a class="link" href="#_응답_10">응답</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_테이블_컬럼_삭제_api"><a class="anchor" href="#_테이블_컬럼_삭제_api"></a><a class="link" href="#_테이블_컬럼_삭제_api">1.11. 테이블 컬럼 삭제 API</a></h4>
-<div class="sect4">
-<h5 id="_요청_11"><a class="anchor" href="#_요청_11"></a><a class="link" href="#_요청_11">요청</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/erds/tablecolumns/1 HTTP/1.1
-Authorization: Bearer
-Accept: application/json
-Host: localhost:8080</code></pre>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_header_11"><a class="anchor" href="#_header_11"></a><a class="link" href="#_header_11">Header</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">AccessToken</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect5">
-<h6 id="_path_9"><a class="anchor" href="#_path_9"></a><a class="link" href="#_path_9">Path</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 9. /api/erds/tablecolumns/{tablecolumnid}</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tablecolumnid</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">테이블 컬럼 ID</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_응답_11"><a class="anchor" href="#_응답_11"></a><a class="link" href="#_응답_11">응답</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers</code></pre>
@@ -1572,7 +785,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-11-01 09:02:37 +0900
+Last updated 2022-11-07 14:26:10 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
