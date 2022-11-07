@@ -131,38 +131,38 @@ class JiraControllerTest extends ControllerTest {
 
     }
 
-    @Test
-    @DisplayName("지라 이슈를 등록한다.")
-    void jiraCreateIssue() throws Exception {
-        // given
-        willDoNothing()
-                .given(jiraService)
-                .jiraCreateIssue(any(), any());
-
-        // when
-        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/jiras/{projectid}/createissue", ID)
-                        .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(TEST_CREATE_JIRA_ISSUE_REQUEST)))
-                .andExpect(status().isCreated())
-                .andDo(document("api/jiras/{projectid}/createissue",
-                        requestHeaders(
-                                headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
-                        ),
-                        pathParameters(
-                                parameterWithName("projectid").description("Project ID")
-                        ),
-                        requestFields(
-                                fieldWithPath("jiraProjectId").type(JsonFieldType.STRING).description("JIRA Project ID"),
-                                fieldWithPath("jiraProjectKey").type(JsonFieldType.STRING).description("JIRA Project KEY"),
-                                fieldWithPath("jiraProjectName").type(JsonFieldType.STRING).description("JIRA Project 이름")
-
-                        )
-                ));
-
-
-        // then
-        then(jiraService).should(times(1)).jiraCreateIssue(any(), any());
-
-    }
+//    @Test
+//    @DisplayName("지라 이슈를 등록한다.")
+//    void jiraCreateIssue() throws Exception {
+//        // given
+//        willDoNothing()
+//                .given(jiraService)
+//                .jiraCreateIssue(any(), any());
+//
+//        // when
+//        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/jiras/{projectid}/createissue", ID)
+//                        .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
+//                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+//                        .content(objectMapper.writeValueAsString(TEST_CREATE_JIRA_ISSUE_REQUEST)))
+//                .andExpect(status().isCreated())
+//                .andDo(document("api/jiras/{projectid}/createissue",
+//                        requestHeaders(
+//                                headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
+//                        ),
+//                        pathParameters(
+//                                parameterWithName("projectid").description("Project ID")
+//                        ),
+//                        requestFields(
+//                                fieldWithPath("jiraProjectId").type(JsonFieldType.STRING).description("JIRA Project ID"),
+//                                fieldWithPath("jiraProjectKey").type(JsonFieldType.STRING).description("JIRA Project KEY"),
+//                                fieldWithPath("jiraProjectName").type(JsonFieldType.STRING).description("JIRA Project 이름")
+//
+//                        )
+//                ));
+//
+//
+//        // then
+//        then(jiraService).should(times(1)).jiraCreateIssue(any(), any());
+//
+//    }
 }
