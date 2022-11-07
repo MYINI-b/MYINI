@@ -489,7 +489,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/jiras/1/jiraaccount HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer
-Content-Length: 47
+Content-Length: 44
 Host: localhost:8080
 
 {
@@ -563,7 +563,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/jiras/1/jiraproject HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer
-Content-Length: 91
+Content-Length: 87
 Host: localhost:8080
 
 {
@@ -694,7 +694,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 95
+Content-Length: 91
 
 [ {
   "jiraProjectId" : "1",
@@ -709,74 +709,18 @@ Content-Length: 95
 <h4 id="_지라_이슈를_등록한다"><a class="anchor" href="#_지라_이슈를_등록한다"></a><a class="link" href="#_지라_이슈를_등록한다">1.4. 지라 이슈를 등록한다.</a></h4>
 <div class="sect4">
 <h5 id="_요청_4"><a class="anchor" href="#_요청_4"></a><a class="link" href="#_요청_4">요청</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/jiras/1/createissue HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Authorization: Bearer
-Content-Length: 91
-Host: localhost:8080
-
-{
-  "jiraProjectId" : "1",
-  "jiraProjectKey" : "Key",
-  "jiraProjectName" : "이름"
-}</code></pre>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_header_4"><a class="anchor" href="#_header_4"></a><a class="link" href="#_header_4">Header</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">AccessToken</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect5">
-<h6 id="_path_4"><a class="anchor" href="#_path_4"></a><a class="link" href="#_path_4">Path</a></h6>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 4. /api/jiras/{projectid}/createissue</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>projectid</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Project ID</p></td>
-</tr>
-</tbody>
-</table>
+<div class="paragraph">
+<p>Unresolved directive in jira.adoc - include::/Users/handabin/SSAFY/S07P31B203/S07P31B203/back/myini-api/build/generated-snippets/api/jiras/{projectid}/createissue/http-request.adoc[]
+====== Header
+Unresolved directive in jira.adoc - include::/Users/handabin/SSAFY/S07P31B203/S07P31B203/back/myini-api/build/generated-snippets/api/jiras/{projectid}/createissue/request-headers.adoc[]
+====== Path
+Unresolved directive in jira.adoc - include::/Users/handabin/SSAFY/S07P31B203/S07P31B203/back/myini-api/build/generated-snippets/api/jiras/{projectid}/createissue/path-parameters.adoc[]</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_응답_4"><a class="anchor" href="#_응답_4"></a><a class="link" href="#_응답_4">응답</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers</code></pre>
-</div>
+<div class="paragraph">
+<p>Unresolved directive in jira.adoc - include::/Users/handabin/SSAFY/S07P31B203/S07P31B203/back/myini-api/build/generated-snippets/api/jiras/{projectid}/createissue/http-response.adoc[]</p>
 </div>
 </div>
 </div>
@@ -785,7 +729,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-11-07 14:26:10 +0900
+Last updated 2022-11-07 21:54:57 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

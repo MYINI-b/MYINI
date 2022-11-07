@@ -34,12 +34,13 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // API컨트롤러 생성
     @Transactional
     @Override
-    public void createApiController(Long projectId, CreateApiControllerRequest request) {
+    public ApiControllerCreateResponse createApiController(Long projectId, CreateApiControllerRequest request) {
         Project findProject = projectRepository.findById(projectId)
                 .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
 
         ApiController apiController = ApiController.createApiController(request.getApiControllerName(), request.getApiControllerBaseUrl(), request.getApiControllerDescription(), findProject);
         apiControllerRepository.save(apiController);
+        return ApiControllerCreateResponse.from(apiController);
     }
 
     // API컨트롤러 리스트 조회
@@ -87,12 +88,13 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // API 생성
     @Transactional
     @Override
-    public void createApi(Long apiControllerId, CreateApiRequest request) {
+    public ApiResponse createApi(Long apiControllerId, CreateApiRequest request) {
         ApiController findApiController = apiControllerRepository.findById(apiControllerId)
                 .orElseThrow(() -> new NotFoundException(APICONTROLLER_NOT_FOUND));
 
         Api api = Api.createApi(request.getApiName(), request.getApiUrl(), request.getApiMethod(), request.getApiCode(), request.getApiMethodName(), findApiController);
         apiRepository.save(api);
+        return ApiResponse.from(api);
     }
 
     // API 수정
@@ -127,12 +129,13 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // PathVariable 생성
     @Transactional
     @Override
-    public void createPathVariable(Long apiId, CreatePathVariableRequest request) {
+    public PathVariableResponse createPathVariable(Long apiId, CreatePathVariableRequest request) {
         Api findApi = apiRepository.findById(apiId)
                 .orElseThrow(() -> new NotFoundException(API_NOT_FOUND));
 
         PathVariable pathVariable = PathVariable.createPathVariable(request.getPathVariableKey(), request.getPathVariableType(), findApi);
         pathVariableRepository.save(pathVariable);
+        return PathVariableResponse.from(pathVariable);
     }
 
     // PathVariable 수정
@@ -158,12 +161,13 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // QueryString 생성
     @Transactional
     @Override
-    public void createQueryString(Long apiId, CreateQueryStringRequest request) {
+    public QueryStringResponse createQueryString(Long apiId, CreateQueryStringRequest request) {
         Api findApi = apiRepository.findById(apiId)
                 .orElseThrow(() -> new NotFoundException(API_NOT_FOUND));
 
         QueryString queryString = QueryString.createQueryString(request.getQueryStringKey(), request.getQueryStringType(), findApi);
         queryStringRepository.save(queryString);
+        return QueryStringResponse.from(queryString);
     }
 
     // QueryString 수정
@@ -189,23 +193,25 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // Dto 생성
     @Transactional
     @Override
-    public void createCustomDto(Long projectId, CreateDtoRequest request) {
+    public DtoCreateResponse createCustomDto(Long projectId, CreateDtoRequest request) {
         Project findProject = projectRepository.findById(projectId)
                 .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
 
         Dto dto = Dto.createDto(request.getDtoName(), request.getDtoType(), null, findProject, request.getDtoIsList());
         dtoRepository.save(dto);
+        return DtoCreateResponse.from(dto);
     }
 
     // Response Request 생성
     @Transactional
     @Override
-    public void createDto(Long apiId, CreateDtoRequest request) {
+    public DtoCreateResponse createDto(Long apiId, CreateDtoRequest request) {
         Api findApi = apiRepository.findById(apiId)
                 .orElseThrow(() -> new NotFoundException(API_NOT_FOUND));
 
         Dto dto = Dto.createDto(request.getDtoName(), request.getDtoType(), findApi, null, request.getDtoIsList());
         dtoRepository.save(dto);
+        return DtoCreateResponse.from(dto);
     }
 
     // Dto 수정
@@ -241,7 +247,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     // Dto변수 생성
     @Transactional
     @Override
-    public void createDtoItem(Long dtoId, CreateDtoItemRequest request) {
+    public DtoItemResponse createDtoItem(Long dtoId, CreateDtoItemRequest request) {
         Dto findDto = dtoRepository.findById(dtoId)
                 .orElseThrow(() -> new NotFoundException(DTO_NOT_FOUND));
         Dto findDtoClassType = null;
@@ -257,6 +263,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
         }
         DtoItem dtoItem = DtoItem.createDtoItem(request.getDtoItemName(), findDto, findDtoClassType, findPrimitive, request.getDtoIsList());
         dtoItemRepository.save(dtoItem);
+        return DtoItemResponse.from(dtoItem);
     }
 
     // Dto변수 수정
