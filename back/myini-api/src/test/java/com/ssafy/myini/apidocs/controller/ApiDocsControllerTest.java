@@ -38,9 +38,8 @@ class ApiDocsControllerTest extends ControllerTest {
     @DisplayName("API컨트롤러를 생성한다.")
     void createApiController() throws Exception {
         // given
-        willDoNothing()
-                .given(apiDocsService)
-                .createApiController(any(), any());
+        given(apiDocsService.createApiController(any(), any()))
+                .willReturn(TEST_API_CONTROLLER_CREATE_RESPONSE);
 
         // when
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/apidocs/{projectid}/controllers", ID)
@@ -48,6 +47,7 @@ class ApiDocsControllerTest extends ControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(TEST_CREATE_API_CONTROLLER_REQUEST)))
                 .andExpect(status().isCreated())
+                .andExpect(content().json(objectMapper.writeValueAsString(TEST_API_CONTROLLER_CREATE_RESPONSE)))
                 .andDo(document("api/apidocs/{projectid}/controllers",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
@@ -59,6 +59,9 @@ class ApiDocsControllerTest extends ControllerTest {
                                 fieldWithPath("apiControllerName").type(JsonFieldType.STRING).description("Api Controller 이름"),
                                 fieldWithPath("apiControllerBaseUrl").type(JsonFieldType.STRING).description("Api Controller Base URL"),
                                 fieldWithPath("apiControllerDescription").type(JsonFieldType.STRING).description("Api Controller 설명")
+                        ),
+                        responseFields(
+                                fieldWithPath("apiControllerId").type(JsonFieldType.NUMBER).description("Api Controller ID")
                         )
                 ));
 
@@ -197,9 +200,8 @@ class ApiDocsControllerTest extends ControllerTest {
     @DisplayName("API를 생성한다.")
     void createApi() throws Exception {
         // given
-        willDoNothing()
-                .given(apiDocsService)
-                .createApi(any(), any());
+        given(apiDocsService.createApi(any(), any()))
+                .willReturn(TEST_API_RESPONSE);
 
         // when
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/apidocs/{apicontrollerid}/apis", ID)
@@ -207,6 +209,7 @@ class ApiDocsControllerTest extends ControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(TEST_CREATE_API_REQUEST)))
                 .andExpect(status().isCreated())
+                .andExpect(content().json(objectMapper.writeValueAsString(TEST_API_RESPONSE)))
                 .andDo(document("api/apidocs/{apicontrollerid}/apis",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
@@ -215,6 +218,14 @@ class ApiDocsControllerTest extends ControllerTest {
                                 parameterWithName("apicontrollerid").description("Api Controller ID")
                         ),
                         requestFields(
+                                fieldWithPath("apiName").type(JsonFieldType.STRING).description("Api 이름"),
+                                fieldWithPath("apiUrl").type(JsonFieldType.STRING).description("Api URL"),
+                                fieldWithPath("apiMethod").type(JsonFieldType.STRING).description("Api Method"),
+                                fieldWithPath("apiCode").type(JsonFieldType.STRING).description("Api Code"),
+                                fieldWithPath("apiMethodName").type(JsonFieldType.STRING).description("Api Method 이름")
+                        ),
+                        responseFields(
+                                fieldWithPath("apiId").type(JsonFieldType.NUMBER).description("Api ID"),
                                 fieldWithPath("apiName").type(JsonFieldType.STRING).description("Api 이름"),
                                 fieldWithPath("apiUrl").type(JsonFieldType.STRING).description("Api URL"),
                                 fieldWithPath("apiMethod").type(JsonFieldType.STRING).description("Api Method"),
@@ -346,9 +357,9 @@ class ApiDocsControllerTest extends ControllerTest {
     @DisplayName("PathVariable을 생성한다.")
     void createPathVariable() throws Exception {
         // given
-        willDoNothing()
-                .given(apiDocsService)
-                .createPathVariable(any(), any());
+        given(apiDocsService.createPathVariable(any(), any()))
+                .willReturn(TEST_PATHVARIABLE_RESPONSE);
+
 
         // when
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/apidocs/{apiid}/pathvariables", ID)
@@ -356,6 +367,7 @@ class ApiDocsControllerTest extends ControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(TEST_CREATE_PATHVARIABLE_REQUEST)))
                 .andExpect(status().isCreated())
+                .andExpect(content().json(objectMapper.writeValueAsString(TEST_PATHVARIABLE_RESPONSE)))
                 .andDo(document("api/apidocs/{apiid}/pathvariables",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
@@ -364,6 +376,11 @@ class ApiDocsControllerTest extends ControllerTest {
                                 parameterWithName("apiid").description("Api ID")
                         ),
                         requestFields(
+                                fieldWithPath("pathVariableKey").type(JsonFieldType.STRING).description("Pathvariable Key"),
+                                fieldWithPath("pathVariableType").type(JsonFieldType.STRING).description("Pathvariable Type")
+                        ),
+                        responseFields(
+                                fieldWithPath("pathVariableId").type(JsonFieldType.NUMBER).description("Pathvariable ID"),
                                 fieldWithPath("pathVariableKey").type(JsonFieldType.STRING).description("Pathvariable Key"),
                                 fieldWithPath("pathVariableType").type(JsonFieldType.STRING).description("Pathvariable Type")
                         )
@@ -433,9 +450,8 @@ class ApiDocsControllerTest extends ControllerTest {
     @DisplayName("QueryString를 생성한다.")
     void createQueryString() throws Exception {
         // given
-        willDoNothing()
-                .given(apiDocsService)
-                .createQueryString(any(), any());
+        given(apiDocsService.createQueryString(any(), any()))
+                .willReturn(TEST_QUERYSTRING_RESPONSE);
 
         // when
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/apidocs/{apiid}/querystrings", ID)
@@ -443,6 +459,7 @@ class ApiDocsControllerTest extends ControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(TEST_CREATE_QUERYSTRING_REQUEST)))
                 .andExpect(status().isCreated())
+                .andExpect(content().json(objectMapper.writeValueAsString(TEST_QUERYSTRING_RESPONSE)))
                 .andDo(document("api/apidocs/{apiid}/querystrings",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
@@ -453,6 +470,12 @@ class ApiDocsControllerTest extends ControllerTest {
                         requestFields(
                                 fieldWithPath("queryStringKey").type(JsonFieldType.STRING).description("QueryString Key"),
                                 fieldWithPath("queryStringType").type(JsonFieldType.STRING).description("QueryString Type")
+                        ),
+                        responseFields(
+                                fieldWithPath("queryStringId").type(JsonFieldType.NUMBER).description("QueryString ID"),
+                                fieldWithPath("queryStringKey").type(JsonFieldType.STRING).description("QueryString Key"),
+                                fieldWithPath("queryStringType").type(JsonFieldType.STRING).description("QueryString Type")
+
                         )
                 ));
 
@@ -520,9 +543,9 @@ class ApiDocsControllerTest extends ControllerTest {
     @DisplayName("Dto를 생성한다.")
     void createCustomDto() throws Exception {
         // given
-        willDoNothing()
-                .given(apiDocsService)
-                .createCustomDto(any(), any());
+        given(apiDocsService.createCustomDto(any(), any()))
+                .willReturn(TEST_DTO_CREATE_RESPONSE);
+
 
         // when
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/apidocs/{projectid}/customdtos", ID)
@@ -530,6 +553,7 @@ class ApiDocsControllerTest extends ControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(TEST_CREATE_DTO_REQUEST)))
                 .andExpect(status().isCreated())
+                .andExpect(content().json(objectMapper.writeValueAsString(TEST_DTO_CREATE_RESPONSE)))
                 .andDo(document("api/apidocs/{projectid}/customdtos",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
@@ -541,6 +565,9 @@ class ApiDocsControllerTest extends ControllerTest {
                                 fieldWithPath("dtoName").type(JsonFieldType.STRING).description("Dto Key"),
                                 fieldWithPath("dtoType").type(JsonFieldType.STRING).description("Dto Type"),
                                 fieldWithPath("dtoIsList").type(JsonFieldType.STRING).description("Dto 리스트 여부")
+                        ),
+                        responseFields(
+                                fieldWithPath("dtoId").type(JsonFieldType.NUMBER).description("Dto ID")
                         )
                 ));
 
@@ -552,9 +579,9 @@ class ApiDocsControllerTest extends ControllerTest {
     @DisplayName("Response, Request를 생성한다.")
     void createDto() throws Exception {
         // given
-        willDoNothing()
-                .given(apiDocsService)
-                .createDto(any(), any());
+        given(apiDocsService.createDto(any(), any()))
+                .willReturn(TEST_DTO_CREATE_RESPONSE);
+
 
         // when
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/apidocs/{apiid}/dtos", ID)
@@ -562,6 +589,7 @@ class ApiDocsControllerTest extends ControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(TEST_CREATE_DTO_REQUEST)))
                 .andExpect(status().isCreated())
+                .andExpect(content().json(objectMapper.writeValueAsString(TEST_DTO_CREATE_RESPONSE)))
                 .andDo(document("api/apidocs/{apiid}/dtos",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
@@ -573,6 +601,9 @@ class ApiDocsControllerTest extends ControllerTest {
                                 fieldWithPath("dtoName").type(JsonFieldType.STRING).description("Dto Key"),
                                 fieldWithPath("dtoType").type(JsonFieldType.STRING).description("Dto Type"),
                                 fieldWithPath("dtoIsList").type(JsonFieldType.STRING).description("Dto 리스트 여부")
+                        ),
+                        responseFields(
+                                fieldWithPath("dtoId").type(JsonFieldType.NUMBER).description("Dto ID")
                         )
                 ));
 
@@ -682,9 +713,9 @@ class ApiDocsControllerTest extends ControllerTest {
     @DisplayName("Dto변수를 생성한다.")
     void createDtoItem() throws Exception {
         // given
-        willDoNothing()
-                .given(apiDocsService)
-                .createDtoItem(any(), any());
+        given(apiDocsService.createDtoItem(any(), any()))
+                .willReturn(TEST_DTO_ITEM_RESPONSE);
+
 
         // when
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/apidocs/{dtoid}/dtoitems", ID)
@@ -692,6 +723,7 @@ class ApiDocsControllerTest extends ControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(TEST_CREATE_DTO_ITEM_REQUEST)))
                 .andExpect(status().isCreated())
+                .andExpect(content().json(objectMapper.writeValueAsString(TEST_DTO_ITEM_RESPONSE)))
                 .andDo(document("api/apidocs/{dtoid}/dtoitems",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
@@ -704,6 +736,15 @@ class ApiDocsControllerTest extends ControllerTest {
                                 fieldWithPath("dtoClassType").type(JsonFieldType.NUMBER).description("Dtoitem Type"),
                                 fieldWithPath("dtoPrimitiveType").type(JsonFieldType.NUMBER).description("Dtoitem Key"),
                                 fieldWithPath("dtoIsList").type(JsonFieldType.STRING).description("Dto 리스트 여부")
+                        ),
+                        responseFields(
+                                fieldWithPath("dtoItemId").type(JsonFieldType.NUMBER).description("Dtoitem ID"),
+                                fieldWithPath("dtoItemName").type(JsonFieldType.STRING).description("Dtoitem 이름"),
+                                fieldWithPath("dtoClassTypeId").type(JsonFieldType.NUMBER).description("Dtoitem ClassType"),
+                                fieldWithPath("dtoPrimitiveTypeId").type(JsonFieldType.NUMBER).description("Dtoitem PrimitiveType"),
+                                fieldWithPath("dtoIsList").type(JsonFieldType.STRING).description("Dto 리스트 여부"),
+                                fieldWithPath("dtoClassTypeName").type(JsonFieldType.STRING).description("Dtoitem ClassType이름"),
+                                fieldWithPath("dtoPrimitiveTypeName").type(JsonFieldType.STRING).description("Dtoitem PrimitiveType이름")
                         )
                 ));
 
