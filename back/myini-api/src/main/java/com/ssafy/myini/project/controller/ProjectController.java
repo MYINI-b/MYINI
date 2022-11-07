@@ -79,6 +79,13 @@ public class ProjectController {
         return ResponseEntity.ok().body(body);
     }
 
+    // 프로젝트 팀원 중 지라이메일 일치하는 리스트 조회
+    @GetMapping("/members/{projectid}/jiras")
+    public ResponseEntity<List<ProjectMemberResponse>> findProjectMemberJiraList(@PathVariable("projectid")Long projectId){
+        List<ProjectMemberResponse> body = projectService.findProjectMemberJiraList(projectId);
+        return ResponseEntity.ok().body(body);
+    }
+
     // 프로젝트 팀원 검색
     @PostMapping("/members")
     public ResponseEntity<List<ProjectMemberResponse>> findByMemberEmail(@RequestBody @Valid FindByMemberEmailRequest request){
