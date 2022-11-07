@@ -369,19 +369,24 @@ class RequirementDocsControllerTest extends ControllerTest {
     @Test
     @DisplayName("요구사항 카테고리 생성입니다.")
     void createRequirementCategory() throws Exception{
-        willDoNothing().given(requirementDocsService).createRequirementCategory(any(),any());
+        given(requirementDocsService.createRequirementCategory(any(), any()))
+                .willReturn(TEST_REQUIREMENT_CATEGORU_RESPONSE);
 
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/requirementdocs/{projectid}/categories",ID)
                         .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(TEST_REQUIREMENT_CATEGORY_CREATE_REQUEST)))
                 .andExpect(status().isCreated())
+                .andExpect(content().json(objectMapper.writeValueAsString(TEST_REQUIREMENT_CATEGORU_RESPONSE)))
                 .andDo(document("api/requirementdocs/{projectid}/categories/create",
                         requestHeaders( headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")),
                         pathParameters(parameterWithName("projectid").description("프로젝트 ID")),
                         requestFields(
                                 fieldWithPath("categoryName").type(JsonFieldType.STRING).description("요구사항 카테고리 이름"),
                                 fieldWithPath("categoryColor").type(JsonFieldType.STRING).description("요구사항 카테고리 색깔")
+                        ),
+                        responseFields(
+                                fieldWithPath("requirementCategoryId").type(JsonFieldType.NUMBER).description("Category ID")
                         )
                 ));
 
