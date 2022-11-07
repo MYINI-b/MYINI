@@ -45,18 +45,21 @@ class ProjectControllerTest extends ControllerTest {
     @DisplayName("프로젝트를 등록한다.")
     void createProject() throws Exception {
         // given
-        willDoNothing()
-                .given(projectService)
-                .createProject(any());
+        given(projectService.createProject(any()))
+                .willReturn(TEST_PROJECT_CREATE_RESPONSE);
 
         // when
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/projects")
                         .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isCreated())
+                .andExpect(content().json(objectMapper.writeValueAsString(TEST_PROJECT_CREATE_RESPONSE)))
                 .andDo(document("api/projects",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
+                        ),
+                        responseFields(
+                                fieldWithPath("projectId").type(JsonFieldType.NUMBER).description("Project ID")
                         )
                 ));
 
