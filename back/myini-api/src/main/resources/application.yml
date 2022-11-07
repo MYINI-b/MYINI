@@ -24,6 +24,13 @@ spring:
       max-file-size: 10MB
       max-request-size: 100MB
 
+logging:
+  level:
+    org:
+      apache:
+        coyote:
+          http11: debug
+
 token:
   access_token:
     expiration_time: 604800000 #30일
