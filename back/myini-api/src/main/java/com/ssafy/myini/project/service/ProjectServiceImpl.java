@@ -1,8 +1,10 @@
 package com.ssafy.myini.project.service;
 
 import com.ssafy.myini.DuplicateException;
+import com.ssafy.myini.JiraException;
 import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.config.S3Uploader;
+import com.ssafy.myini.jira.JiraApi;
 import com.ssafy.myini.member.domain.Member;
 import com.ssafy.myini.member.domain.MemberProject;
 import com.ssafy.myini.member.domain.MemberProjectRepository;
@@ -23,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -117,6 +120,37 @@ public class ProjectServiceImpl implements ProjectService {
         return findMemberProjects.stream()
                 .map(memberProject -> ProjectMemberResponse.from(memberProject.getMember()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProjectMemberResponse> findProjectMemberJiraList(Long projectId) {
+        Project findProject = projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+        String jiraId = findProject.getJiraId();
+        String jiraApiKey = findProject.getJiraApiKey();
+        String jiraDomain = findProject.getJiraDomain();
+        String jiraProjectKey = findProject.getJiraProjectKey();
+
+        try {
+            List<JiraApi.JiraUser> jiraUser = JiraApi.getJiraUser(jiraId, jiraApiKey, jiraDomain,jiraProjectKey);
+
+            List<MemberProject> findMemberProjects = projectQueryRepository.findProjectMemberList(projectId);
+            List<ProjectMemberResponse> projectMemberResponses = new ArrayList<>();
+            for (int i = 0; i < findMemberProjects.size(); i++) {
+                for (int j = 0; j < jiraUser.size(); j++) {
+                    if(findMemberProjects.get(i).getMember().getMemberJiraEmail().contains(jiraUser.get(j).getUserEmailAddress())){
+                        projectMemberResponses.add(ProjectMemberResponse.from(findMemberProjects.get(i).getMember()));
+                        break;
+                    }
+                }
+            }
+
+            return projectMemberResponses;
+
+
+        }catch (Exception e){
+            throw new JiraException(JiraException.JIRA_FAIL);
+        }
     }
 
     @Override

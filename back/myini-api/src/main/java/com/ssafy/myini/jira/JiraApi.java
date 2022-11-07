@@ -7,7 +7,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.ssafy.myini.jira.request.CreateJiraIssueRequest;
 import com.ssafy.myini.requirementdocs.domain.Requirement;
 import com.ssafy.myini.requirementdocs.response.JiraProjectListResponse;
 import org.json.JSONArray;
@@ -17,27 +16,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JiraApi {
-    static class JiraUser {
+    public static class JiraUser {
         String userAccountId;
         String userName;
+        String userEmailAddress;
 
-        public JiraUser(String userAccountId, String userName) {
+        public JiraUser(String userAccountId, String userName, String userEmailAddress) {
             super();
             this.userAccountId = userAccountId;
             this.userName = userName;
+            this.userEmailAddress = userEmailAddress;
+        }
+
+        public String getUserEmailAddress() {
+            return userEmailAddress;
         }
     }
 
-    public static void getIssue() throws Exception{
-        HttpResponse<JsonNode> response = Unirest.get("https://ssafy.atlassian.net/rest/api/2/issue/S07P31B203-500")
-                .basicAuth("rladnqls98@gmail.com", "ioMpUuv5sNoZZRzeiyKtD124")
+    public static List<JiraUser> getJiraUser(String jiraId, String jiraApiKey, String jiraDomain, String jiraProjectKey) throws Exception{
+        HttpResponse<JsonNode> userResponse = Unirest.get("https://"+jiraDomain+".atlassian.net/rest/api/2/user/assignable/multiProjectSearch?projectKeys="+jiraProjectKey)
+                .basicAuth(jiraId, jiraApiKey)
                 .header("Accept", "application/json")
                 .asJson();
-        System.out.println("지라결과 : "+response.getBody());
+
+        JSONArray users = userResponse.getBody().getArray();
+        List<JiraUser> jiraUsers = new ArrayList<>();
+
+        for (int i = 0; i < users.length(); i++) {
+            String userAccountId = (String) ((JSONObject) users.get(i)).get("accountId");
+            String userName = (String) ((JSONObject) users.get(i)).get("displayName");
+            String userEmailAddress = (String) ((JSONObject) users.get(i)).get("emailAddress");
+
+            JiraUser jiraUser = new JiraUser(userAccountId, userName, userEmailAddress);
+            jiraUsers.add(jiraUser);
+        }
+
+        return jiraUsers;
     }
 
-    public static List<JiraProjectListResponse> getProjectList(String jiraId, String jiraApiKey) throws Exception{
-        HttpResponse<JsonNode> response = Unirest.get("https://ssafy.atlassian.net/rest/api/2/issue/createmeta")
+    public static List<JiraProjectListResponse> getProjectList(String jiraId, String jiraApiKey, String jiraDomain) throws Exception{
+        HttpResponse<JsonNode> response = Unirest.get("https://"+jiraDomain+".atlassian.net/rest/api/2/issue/createmeta")
                 .basicAuth(jiraId, jiraApiKey)
                 .header("Accept", "application/json")
                 .asJson();
@@ -58,9 +76,9 @@ public class JiraApi {
         return jiraProjectListResponses;
     }
 
-    public static void createIssue(String jiraId, String jiraApiKey, List<Requirement> requirements, CreateJiraIssueRequest createJiraIssueRequest) throws Exception{
+    public static void createIssue(String jiraId, String jiraApiKey, List<Requirement> requirements, String jiraDomain, String jiraProjectKey) throws Exception{
         //유저정보
-        HttpResponse<JsonNode> userResponse = Unirest.get("https://ssafy.atlassian.net/rest/api/2/user/assignable/multiProjectSearch?projectKeys="+createJiraIssueRequest.getProjectKey())
+        HttpResponse<JsonNode> userResponse = Unirest.get("https://"+jiraDomain+".atlassian.net/rest/api/2/user/assignable/multiProjectSearch?projectKeys="+jiraProjectKey)
                 .basicAuth(jiraId, jiraApiKey)
                 .header("Accept", "application/json")
                 .asJson();
@@ -71,13 +89,14 @@ public class JiraApi {
         for (int i = 0; i < users.length(); i++) {
             String userAccountId = (String) ((JSONObject) users.get(i)).get("accountId");
             String userName = (String) ((JSONObject) users.get(i)).get("displayName");
+            String userEmailAddress = (String) ((JSONObject) users.get(i)).get("emailAddress");
 
-            JiraUser jiraUser = new JiraUser(userAccountId, userName);
+            JiraUser jiraUser = new JiraUser(userAccountId, userName, userEmailAddress);
             jiraUsers.add(jiraUser);
         }
 
         //스토리포인트 정보
-        HttpResponse<JsonNode> fieldResponse = Unirest.get("https://ssafy.atlassian.net/rest/api/2/field")
+        HttpResponse<JsonNode> fieldResponse = Unirest.get("https://"+jiraDomain+".atlassian.net/rest/api/2/field")
                 .basicAuth(jiraId, jiraApiKey)
                 .header("Accept", "application/json")
                 .asJson();
@@ -94,7 +113,7 @@ public class JiraApi {
         }
 
         //이슈타입 정보
-        HttpResponse<JsonNode> metaResponse = Unirest.get("https://ssafy.atlassian.net/rest/api/2/issue/createmeta")
+        HttpResponse<JsonNode> metaResponse = Unirest.get("https://"+jiraDomain+".atlassian.net/rest/api/2/issue/createmeta")
                 .basicAuth(jiraId, jiraApiKey)
                 .header("Accept", "application/json")
                 .asJson();
@@ -107,7 +126,7 @@ public class JiraApi {
         la:for (int i = 0; i < projects.length(); i++) {
             String projectKey = (String) ((JSONObject)projects.get(i)).get("key");
             JSONArray issueTypes = (JSONArray) (((JSONObject) projects.get(i)).get("issuetypes"));
-            if(projectKey.equals(createJiraIssueRequest.getProjectKey())) {
+            if(projectKey.equals(jiraProjectKey)) {
                 for (int j = 0; j < issueTypes.length(); j++) {
                     String issueName = (String) ((JSONObject) issueTypes.get(j)).get("name");
                     if (issueName.equals("스토리")) {
@@ -119,6 +138,14 @@ public class JiraApi {
         }
 
         for (Requirement requirement : requirements) {
+            String reportUser = "";
+            for (JiraUser jiraUser : jiraUsers) {
+                if(jiraUser.userEmailAddress.equals(requirement.getMember().getMemberJiraEmail())){
+                    reportUser = jiraUser.userAccountId;
+                    break;
+                }
+            }
+
             //등록
             JsonNodeFactory jnf = JsonNodeFactory.instance;
             ObjectNode payload = jnf.objectNode();
@@ -136,24 +163,24 @@ public class JiraApi {
                     //이슈프로젝트
                     ObjectNode project = fields.putObject("project");
                     {
-                        project.put("id", createJiraIssueRequest.getProjectKey());
+                        project.put("id", jiraProjectKey);
                     }
                     //이슈설명
                     fields.put("description", requirement.getRequirementContent());
                     //이슈보고자
                     ObjectNode reporter = fields.putObject("reporter");
                     {
-                        reporter.put("id", "5b10a2844c20165700ede21g");
+                        reporter.put("id", reportUser);
                     }
                     //이슈우선순위
                     ObjectNode priority = fields.putObject("priority");
                     {
-                        priority.put("id", "20000");
+                        priority.put("id", requirement.getRequirementPriority());
                     }
                     //이슈담당자
                     ObjectNode assignee = fields.putObject("assignee");
                     {
-                        assignee.put("id", "5b109f2e9729b51b54dc274d");
+                        assignee.put("id", reportUser);
                     }
                     //이슈스토리포인트
                     fields.put(storyPointField, requirement.getRequirementStoryPoint());
