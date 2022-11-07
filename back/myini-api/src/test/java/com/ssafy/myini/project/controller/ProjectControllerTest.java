@@ -259,7 +259,8 @@ class ProjectControllerTest extends ControllerTest {
                                 fieldWithPath("[].memberId").type(JsonFieldType.NUMBER).description("Member ID"),
                                 fieldWithPath("[].memberEmail").type(JsonFieldType.STRING).description("Member Email"),
                                 fieldWithPath("[].memberProfileImg").type(JsonFieldType.STRING).description("Member 프로필이미지"),
-                                fieldWithPath("[].memberName").type(JsonFieldType.STRING).description("Member 이름")
+                                fieldWithPath("[].memberName").type(JsonFieldType.STRING).description("Member 이름"),
+                                fieldWithPath("[].memberNickName").type(JsonFieldType.STRING).description("Member 닉네임")
                         )));
 
 
@@ -273,7 +274,7 @@ class ProjectControllerTest extends ControllerTest {
     void findByMemberEmail() throws Exception {
         // given
         given(projectService.findByMemberEmail(any()))
-                .willReturn(TEST_PROJECT_MEMBER_RESPONSE);
+                .willReturn(Arrays.asList(TEST_PROJECT_MEMBER_RESPONSE));
 
         // when
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/projects/members", ID)
@@ -290,10 +291,12 @@ class ProjectControllerTest extends ControllerTest {
                                 fieldWithPath("memberEmail").type(JsonFieldType.STRING).description("Member Email")
                         ),
                         responseFields(
-                                fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("Member ID"),
-                                fieldWithPath("memberEmail").type(JsonFieldType.STRING).description("Member Email"),
-                                fieldWithPath("memberProfileImg").type(JsonFieldType.STRING).description("Member 프로필이미지"),
-                                fieldWithPath("memberName").type(JsonFieldType.STRING).description("Member 이름")
+                                fieldWithPath("[]").type(JsonFieldType.ARRAY).description("결과 배열"),
+                                fieldWithPath("[].memberId").type(JsonFieldType.NUMBER).description("Member ID"),
+                                fieldWithPath("[].memberEmail").type(JsonFieldType.STRING).description("Member Email"),
+                                fieldWithPath("[].memberProfileImg").type(JsonFieldType.STRING).description("Member 프로필이미지"),
+                                fieldWithPath("[].memberName").type(JsonFieldType.STRING).description("Member 이름"),
+                                fieldWithPath("[].memberNickName").type(JsonFieldType.STRING).description("Member 닉네임")
                         )));
 
 

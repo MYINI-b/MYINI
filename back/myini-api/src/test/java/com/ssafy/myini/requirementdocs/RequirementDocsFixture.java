@@ -44,6 +44,6 @@ public class RequirementDocsFixture {
             = new RequirementCategoryListResponse(ID,NAME,CONTENT);
 
     public static final RequirementListResponse TEST_REQUIREMENT_LIST_RESPONSE
-            = new RequirementListResponse(ID,TEST_REQUIREMENT_CATEGORY_DTO,NAME,CONTENT,RequirementPart.BE,NAME,NUM,DOUNUM);
+            = new RequirementListResponse(ID,TEST_REQUIREMENT_CATEGORY_DTO,NAME,CONTENT,RequirementPart.BE,NAME,NAME,NUM,DOUNUM);
 
 }
