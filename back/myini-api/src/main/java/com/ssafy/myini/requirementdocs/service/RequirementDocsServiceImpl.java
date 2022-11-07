@@ -14,6 +14,7 @@ import com.ssafy.myini.requirementdocs.domain.RequirementCategoryRepository;
 import com.ssafy.myini.requirementdocs.domain.RequirementRepository;
 import com.ssafy.myini.requirementdocs.query.RequirementDocsQueryRepository;
 import com.ssafy.myini.requirementdocs.request.*;
+import com.ssafy.myini.requirementdocs.response.RequirementCategoryCreateResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementCategoryListResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementListResponse;
 import lombok.RequiredArgsConstructor;
@@ -123,11 +124,13 @@ public class RequirementDocsServiceImpl implements RequirementDocsService{
 
     @Override
     @Transactional
-    public void createRequirementCategory(Long projectId, RequirementCategoryCreateRequest requirementCategoryCreateRequest) {
+    public RequirementCategoryCreateResponse createRequirementCategory(Long projectId, RequirementCategoryCreateRequest requirementCategoryCreateRequest) {
         Project findProject = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(NotFoundException.PROJECT_NOT_FOUND));
 
         RequirementCategory requirementCategory = RequirementCategory.createRequirementCategory(requirementCategoryCreateRequest.getCategoryName(), requirementCategoryCreateRequest.getCategoryColor(), findProject);
         requirementCategoryRepository.save(requirementCategory);
+
+        return RequirementCategoryCreateResponse.from(requirementCategory);
     }
 
     @Override
