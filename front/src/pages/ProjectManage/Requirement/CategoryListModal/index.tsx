@@ -30,16 +30,23 @@ export default function CategoryListModal({
     async (e: any, idx: number, cat: CATEGORY) => {
       e.stopPropagation();
 
-      await deleteApi(`/requirementdocs/categories/${cat.id}`);
+      const deleteResp: any = await deleteApi(
+        `/requirementdocs/categories/${cat.id}`,
+      );
 
-      store.pjt.rows.forEach((row: ROW) => {
-        if (
-          row.category !== undefined &&
-          row.category.id === store.pjt.categories[idx].id
-        )
-          e.category = undefined;
-      });
-      store.pjt.categories.splice(idx, 1);
+      if (deleteResp.status === 200) {
+        store.pjt.rows.forEach((row: ROW) => {
+          if (
+            row.category !== undefined &&
+            row.category.id === store.pjt.categories[idx].id
+          )
+            e.category = undefined;
+        });
+        store.pjt.categories.splice(idx, 1);
+      } else {
+        alert(deleteResp.response.data.message);
+      }
+
       closeCategoryList();
     },
     [store],
@@ -54,14 +61,21 @@ export default function CategoryListModal({
             16,
           )}`,
         };
-        const resp: any = await postApi(
+        const { data }: any = await postApi(
           `/requirementdocs/${pid}/categories`,
           body,
         );
 
-        store.pjt.rows[idx].category = body;
-        store.pjt.categories.push(body);
+        const newCategoryObj = {
+          name: body.categoryName,
+          color: body.categoryColor,
+          id: data.requirementCategoryId,
+        };
 
+        store.pjt.rows[idx].category = newCategoryObj;
+        store.pjt.categories.push(newCategoryObj);
+
+        selectCategory(newCategoryObj);
         setCategoryInput('');
         closeCategoryList();
       }
