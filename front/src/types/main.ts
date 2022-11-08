@@ -10,3 +10,11 @@ export interface PROJECT_LIST {
   projectImg: string;
   projectMemberResponse?: Array<MEMBER>;
 }
+
+export interface MY_INFO {
+  memberEmail: string;
+  memberId: number;
+  memberNickname: string;
+  memberProfileImg: string;
+  projectCount: number;
+}

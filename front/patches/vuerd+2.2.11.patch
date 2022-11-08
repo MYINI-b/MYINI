@@ -161,7 +161,7 @@ index 56c8801..5807d56 100644
  }
  
 diff --git a/node_modules/vuerd/dist/vuerd.js b/node_modules/vuerd/dist/vuerd.js
-index 6c3ba78..07a4aaa 100644
+index 6c3ba78..d578424 100644
 --- a/node_modules/vuerd/dist/vuerd.js
 +++ b/node_modules/vuerd/dist/vuerd.js
 @@ -20129,12 +20129,7 @@
@@ -290,7 +290,7 @@ index 6c3ba78..07a4aaa 100644
      ];
  
      /**
-@@ -25949,233 +25884,28 @@
+@@ -25949,233 +25884,27 @@
          Editor,
      };
  
@@ -385,17 +385,7 @@ index 6c3ba78..07a4aaa 100644
      /**
       * https://dev.mysql.com/doc/refman/8.0/en/data-types.html
       */
-+
-+    /*
-+      'BIGINT(Long)',
-+      'CHAR(Character)',
-+      'DATETIME(LocalDateTime)',
-+      'INT(Integer)',
-+      'SMALLINT(Short)',
-+      'TINYINT(Byte)',
-+      'VARCHAR(String)',
-+    */
-     const MySQLTypes = [
+-    const MySQLTypes = [
 -        { name: 'BIGINT', primitiveType: 'long' },
 -        { name: 'BINARY', primitiveType: 'string' },
 -        { name: 'BIT', primitiveType: 'int' },
@@ -435,13 +425,7 @@ index 6c3ba78..07a4aaa 100644
 -        { name: 'TIMESTAMP', primitiveType: 'dateTime' },
 -        { name: 'TINYBLOB', primitiveType: 'lob' },
 -        { name: 'TINYINT', primitiveType: 'int' },
-+        { name: 'BIGINT(Long)', primitiveType: 'long' },
-+        { name: 'CHAR(Character)', primitiveType: 'string' },
-+        { name: 'DATETIME(LocalDateTime)', primitiveType: 'dateTime' },
-+        { name: 'INT(Integer)', primitiveType: 'int' },
-+        { name: 'SMALLINT(Short)', primitiveType: 'int' },
-+        { name: 'TINYINT(Byte)', primitiveType: 'int' },
-         { name: 'TINYTEXT', primitiveType: 'lob' },
+-        { name: 'TINYTEXT', primitiveType: 'lob' },
 -        { name: 'VARBINARY', primitiveType: 'string' },
 -        { name: 'VARCHAR', primitiveType: 'string' },
 -        { name: 'YEAR', primitiveType: 'int' },
@@ -470,11 +454,11 @@ index 6c3ba78..07a4aaa 100644
 -        { name: 'TIMESTAMP WITH TIME ZONE', primitiveType: 'dateTime' },
 -        { name: 'TIMESTAMP', primitiveType: 'dateTime' },
 -        { name: 'UriType', primitiveType: 'string' },
-         { name: 'VARCHAR', primitiveType: 'string' },
+-        { name: 'VARCHAR', primitiveType: 'string' },
 -        { name: 'VARCHAR2', primitiveType: 'string' },
 -        { name: 'XMLType', primitiveType: 'string' },
 -    ];
--
+ 
 -    /**
 -     * https://www.postgresql.org/docs/current/datatype.html
 -     */
@@ -537,10 +521,27 @@ index 6c3ba78..07a4aaa 100644
 -        { name: 'varbit', primitiveType: 'int' },
 -        { name: 'varchar', primitiveType: 'string' },
 -        { name: 'xml', primitiveType: 'lob' },
++    /*
++      'BIGINT(Long)',
++      'CHAR(Character)',
++      'DATETIME(LocalDateTime)',
++      'INT(Integer)',
++      'SMALLINT(Short)',
++      'TINYINT(Byte)',
++      'VARCHAR(String)',
++    */
++    const MySQLTypes = [
++        { name: 'BIGINT(Long)', primitiveType: 'long' },
++        { name: 'CHAR(Character)', primitiveType: 'string' },
++        { name: 'DATETIME(LocalDateTime)', primitiveType: 'dateTime' },
++        { name: 'INT(Integer)', primitiveType: 'int' },
++        { name: 'SMALLINT(Short)', primitiveType: 'int' },
++        { name: 'TINYINT(Byte)', primitiveType: 'int' },
++        { name: 'VARCHAR(String)', primitiveType: 'string' },
      ];
  
      /**
-@@ -26190,30 +25920,10 @@
+@@ -26190,30 +25919,10 @@
      ];
  
      const databaseHints = [
@@ -571,7 +572,7 @@ index 6c3ba78..07a4aaa 100644
      ];
  
      function getPrimitiveType(dataType, database) {
-@@ -28879,16 +28589,8 @@
+@@ -28879,16 +28588,8 @@
      function createDDL(store, database) {
          const currentDatabase = database ? database : store.canvasState.database;
          switch (currentDatabase) {
@@ -588,7 +589,7 @@ index 6c3ba78..07a4aaa 100644
              case 'SQLite':
                  return createDDL$1(store);
          }
-@@ -28903,34 +28605,6 @@
+@@ -28903,34 +28604,6 @@
          const tables = tableState.tables;
          const bracket = getBracket(canvasState.bracketType);
          switch (database) {
@@ -623,7 +624,7 @@ index 6c3ba78..07a4aaa 100644
              case 'MySQL':
                  formatTable$a({ table, buffer: stringBuffer, bracket });
                  stringBuffer.push('');
-@@ -28945,34 +28619,6 @@
+@@ -28945,34 +28618,6 @@
                      stringBuffer.push('');
                  });
                  break;
@@ -658,7 +659,34 @@ index 6c3ba78..07a4aaa 100644
              case 'SQLite':
                  formatTable$7({
                      table,
-@@ -52858,15 +52504,6 @@
+@@ -29018,6 +28663,7 @@
+     };
+     const createExportMenus = (context, canvas) => {
+         const { store, snapshots, showPrompt, eventBus } = context;
++        console.log(store, '찍히냐?');
+         return [
+             {
+                 icon: {
+@@ -30368,8 +30014,8 @@
+     const exportJSON = (json, name) => {
+         const options = {
+             fileName: (name === null || name === void 0 ? void 0 : name.trim()) === ''
+-                ? `unnamed-${new Date().getTime()}.vuerd.json`
+-                : `${name}-${new Date().getTime()}.vuerd.json`,
++                ? `unnamed-${new Date().getTime()}.myini.json`
++                : `${name}-${new Date().getTime()}.myini.json`,
+         };
+         executeExport(new Blob([json], { type: 'application/json' }), options);
+     };
+@@ -30396,6 +30042,7 @@
+         const exportHelper = document.createElement('a');
+         exportHelper.href = window.URL.createObjectURL(blob);
+         exportHelper.download = options.fileName;
++        console.log(options, 'op');
+         exportHelper.click();
+     }
+     function setExportFileCallback(callback) {
+@@ -52858,15 +52505,6 @@
                  name: 'Export',
                  children: createExportMenus(context, canvas),
              },

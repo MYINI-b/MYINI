@@ -224,8 +224,8 @@
     .main-member-img {
       @include FLEX-CENTER;
       border-radius: 50%;
-      background-color: $white;
-      border: 1px solid $secondary;
+      background-color: $fourth;
+      // border: 1px solid $secondary;
       color: $primary;
       width: rem(40);
       height: rem(40);

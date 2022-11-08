@@ -1,4 +1,4 @@
-// import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import './style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
@@ -12,9 +12,7 @@ import { faSave } from '@fortawesome/free-regular-svg-icons';
 import GenerateVuerd from './GenerateVuerd';
 
 export default function ERDPage() {
-  // const [erdData, setErdData] = useState({});
-
-  // console.log(erdData);
+  const [erdData, setErdData] = useState({});
 
   // useLayoutEffect(() => {
   //   setErdData(Store.getState().ErdData.erdData);

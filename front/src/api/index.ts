@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
-const accessToken =
-  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiUk9MRSI6IlJPTEVfVVNFUiIsImlhdCI6MTY2NzI2NTcyMywiZXhwIjoxNjY3ODcwNTIzfQ.WSa3oFZmJtaXSdsMM0V46FgRFY53zP5E1sydiorQwgI';
+const accessToken = localStorage.getItem('accessToken');
+console.log(accessToken, 'token');
 
 const headers = {
   headers: {
