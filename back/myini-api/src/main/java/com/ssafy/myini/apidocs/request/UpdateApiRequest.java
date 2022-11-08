@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateApiRequest {
     private String apiName;
+    private String apiDescription;
     private String apiUrl;
     private String apiMethod;
     private String apiCode;
