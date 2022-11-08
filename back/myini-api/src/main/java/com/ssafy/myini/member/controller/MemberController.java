@@ -31,6 +31,7 @@ public class MemberController {
     // 함께했던 회원 조회
     public ResponseEntity<List<CrewResponse>> findCrewById(@LoginMember Member member) {
         List<CrewResponse> body = memberService.findCrewById(member);
+
         return ResponseEntity.ok().body(body);
     }
 
