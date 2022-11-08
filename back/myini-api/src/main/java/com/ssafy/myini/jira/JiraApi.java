@@ -239,7 +239,7 @@ public class JiraApi {
                 ObjectNode fields = payload.putObject("fields");
                 {
                     //이슈제목
-                    fields.put("summary", requirement.getRequirementName());
+                    fields.put("summary", requirement.getRequirementPart()+"_"+requirement.getRequirementName());
                     //이슈종류(스토리)
                     ObjectNode issuetype = fields.putObject("issuetype");
                     {
