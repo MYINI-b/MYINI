@@ -867,7 +867,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
+<<<<<<< HEAD
 Content-Length: 375
+=======
+Content-Length: 419
+>>>>>>> 75316ba6201d90db35d86ead031eb3204c7561b6
 
 {
   "apiControllerId" : 1,
@@ -877,6 +881,7 @@ Content-Length: 375
   "apiResponses" : [ {
     "apiId" : 1,
     "apiName" : "테스트 이름",
+    "apiDescription" : "테스트 설명",
     "apiUrl" : "테스트 URL",
     "apiMethod" : "GET",
     "apiCode" : "200",
@@ -935,6 +940,11 @@ Content-Length: 375
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>apiResponses.[].apiName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Api 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>apiResponses.[].apiDescription</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Api 설명</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>apiResponses.[].apiUrl</code></p></td>
@@ -1125,11 +1135,16 @@ Vary: Access-Control-Request-Headers</code></pre>
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/apidocs/1/apis HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer
+<<<<<<< HEAD
 Content-Length: 148
+=======
+Content-Length: 190
+>>>>>>> 75316ba6201d90db35d86ead031eb3204c7561b6
 Host: localhost:8080
 
 {
   "apiName" : "테스트 이름",
+  "apiDescription" : "테스트 설명",
   "apiUrl" : "테스트 URL",
   "apiMethod" : "GET",
   "apiCode" : "200",
@@ -1186,6 +1201,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
   "apiName" : "테스트 이름",
+  "apiDescription" : "테스트 설명",
   "apiUrl" : "테스트 URL",
   "apiMethod" : "GET",
   "apiCode" : "200",
@@ -1204,11 +1220,16 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
+<<<<<<< HEAD
 Content-Length: 164
+=======
+Content-Length: 206
+>>>>>>> 75316ba6201d90db35d86ead031eb3204c7561b6
 
 {
   "apiId" : 1,
   "apiName" : "테스트 이름",
+  "apiDescription" : "테스트 설명",
   "apiUrl" : "테스트 URL",
   "apiMethod" : "GET",
   "apiCode" : "200",
@@ -1227,11 +1248,16 @@ Content-Length: 164
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/apidocs/apis/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer
+<<<<<<< HEAD
 Content-Length: 148
+=======
+Content-Length: 190
+>>>>>>> 75316ba6201d90db35d86ead031eb3204c7561b6
 Host: localhost:8080
 
 {
   "apiName" : "테스트 이름",
+  "apiDescription" : "테스트 설명",
   "apiUrl" : "테스트 URL",
   "apiMethod" : "GET",
   "apiCode" : "200",
@@ -1288,6 +1314,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
   "apiName" : "테스트 이름",
+  "apiDescription" : "테스트 설명",
   "apiUrl" : "테스트 URL",
   "apiMethod" : "GET",
   "apiCode" : "200",
@@ -1442,12 +1469,17 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
+<<<<<<< HEAD
 Content-Length: 891
+=======
+Content-Length: 935
+>>>>>>> 75316ba6201d90db35d86ead031eb3204c7561b6
 
 {
   "apiResponse" : {
     "apiId" : 1,
     "apiName" : "테스트 이름",
+    "apiDescription" : "테스트 설명",
     "apiUrl" : "테스트 URL",
     "apiMethod" : "GET",
     "apiCode" : "200",
@@ -1511,6 +1543,11 @@ Content-Length: 891
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>apiResponse.apiName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Api 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>apiResponse.apiDescription</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Api 설명</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>apiResponse.apiUrl</code></p></td>
@@ -3223,7 +3260,11 @@ Content-Length: 203
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
+<<<<<<< HEAD
 Last updated 2022-11-04 10:25:29 +0900
+=======
+Last updated 2022-11-03 13:15:08 +0900
+>>>>>>> 75316ba6201d90db35d86ead031eb3204c7561b6
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

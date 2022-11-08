@@ -165,7 +165,7 @@ public class ProjectServiceImpl implements ProjectService {
     public void addProjectMember(Member member, Long projectId, Long memberId) {
         Project findProject = projectRepository.findById(projectId)
                 .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
-        if(memberProjectRepository.existsByMemberAndProject(member, findProject)){
+        if(!memberProjectRepository.existsByMemberAndProject(member, findProject)){
             throw new NotFoundException(MEMBER_PROJECT_NOT_FOUND);
         }else{
              Member findMember = memberRepository.findById(memberId)
