@@ -35,7 +35,7 @@ export default function ControllerAddModal({
       const curController = { ...store.pjt.controllers[clickControllerIdx] };
       setControllerName(curController.name);
       setControllerDesc(curController.desc);
-      setControllerBaseURL(curController.baseurl);
+      setControllerBaseURL(curController.baseurl.substring(1));
     }
   }, []);
 
@@ -57,17 +57,23 @@ export default function ControllerAddModal({
 
       const body = {
         apiControllerName: controllerName,
-        apiControllerBaseUrl: controllerBaseURL,
-        apiControllerDescription: `/${controllerDesc}`,
+        apiControllerBaseUrl: `/${controllerBaseURL}`,
+        apiControllerDescription: controllerDesc,
       };
 
       if (clickControllerIdx >= 0) {
-        const { data }: any = await putApi(`/apidocs/controllers/${pid}`, body);
+        const controllerId = store.pjt.controllers[clickControllerIdx].id;
+        const { data }: any = await putApi(
+          `/apidocs/controllers/${controllerId}`,
+          body,
+        );
         console.log(data);
 
         store.pjt.controllers[clickControllerIdx].name = controllerName;
         store.pjt.controllers[clickControllerIdx].desc = controllerDesc;
-        store.pjt.controllers[clickControllerIdx].baseurl = controllerBaseURL;
+        store.pjt.controllers[
+          clickControllerIdx
+        ].baseurl = `/${controllerBaseURL}`;
 
         setControllerIdx(clickControllerIdx);
       } else {
@@ -75,10 +81,9 @@ export default function ControllerAddModal({
           `/apidocs/${pid}/controllers`,
           body,
         );
-        console.log(data);
 
         store.pjt.controllers.push({
-          id: 0,
+          id: data.apiControllerId,
           name: controllerName,
           desc: controllerDesc,
           baseurl: `/${controllerBaseURL}`,
