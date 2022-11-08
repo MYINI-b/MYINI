@@ -64,7 +64,7 @@ export default function ApiContentRight({
       else setRequest(dto);
       console.log(dto);
     });
-  }, []);
+  }, [dtoResponse]);
 
   return (
     <div className="api-add-content-right">
@@ -90,13 +90,13 @@ export default function ApiContentRight({
                     : request.dtoName}
                 </div>
               </div>
-              <input
+              {/* <input
                 type="text"
                 className="content-right-boxcontent-input"
                 placeholder="변수명을 입력해주세요"
                 value={request.dtoName}
                 onChange={onReqVarNameChange}
-              />
+              /> */}
             </div>
             <div className="content-right-detail-boxcontent">
               {request.dtoItemResponses.length > 0 && (
@@ -155,11 +155,19 @@ export default function ApiContentRight({
         <div className="content-right-box">
           <div className="content-right-many-wrapper">
             <div className="many-radio-wrapper" onClick={() => {}}>
-              {/* <div className={`many-radio-button ${!resMany && 'select'}`} /> */}
+              <div
+                className={`many-radio-button ${
+                  !response.dtoIsList && 'select'
+                }`}
+              />
               <p className="many-radio-text">단건</p>
             </div>
             <div className="many-radio-wrapper" onClick={() => {}}>
-              {/* <div className={`many-radio-button ${resMany && 'select'}`} /> */}
+              <div
+                className={`many-radio-button ${
+                  response.dtoIsList && 'select'
+                }`}
+              />
               <p className="many-radio-text">다건</p>
             </div>
           </div>

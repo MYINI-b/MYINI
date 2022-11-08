@@ -4,24 +4,23 @@ import './style.scss';
 
 interface Props {
   setIsApiMethodListOpen: Dispatch<React.SetStateAction<boolean>>;
-  store: any;
+  apiMethod: string;
+  setApiMethod: Dispatch<React.SetStateAction<string>>;
 }
 
 export default function ApiMethodList({
   setIsApiMethodListOpen,
-  store,
+  apiMethod,
+  setApiMethod,
 }: Props) {
   const closeModal = useCallback(() => {
     setIsApiMethodListOpen(false);
   }, []);
 
-  const onSelectMethod = useCallback(
-    (method: string) => {
-      store.pjt.currentAPI.responses.method = method;
-      setIsApiMethodListOpen(false);
-    },
-    [store],
-  );
+  const onSelectMethod = useCallback((method: string) => {
+    setApiMethod(method);
+    setIsApiMethodListOpen(false);
+  }, []);
 
   return (
     <div className="api-method-list-container" onClick={closeModal}>
@@ -32,7 +31,7 @@ export default function ApiMethodList({
         {API_METHOD.map((method: string, i: number) => (
           <li
             className={`api-method-li ${method.toLowerCase()} ${
-              method === store.pjt.currentAPI.responses.method && 'select'
+              method === apiMethod && 'select'
             }`}
             key={i}
             onClick={() => onSelectMethod(method)}

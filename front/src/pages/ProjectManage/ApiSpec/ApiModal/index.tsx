@@ -4,7 +4,7 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 import './style.scss';
 import { API, CONTROLLER, QUERY, DTO } from 'types/ApiSpec';
-import { getApi } from 'api';
+import { deleteApi, getApi, postApi, putApi } from 'api';
 import ApiContentLeft from './ApiContentLeft';
 import ApiContentRight from './ApiContentRight';
 
@@ -34,6 +34,8 @@ export default function ApiModal({
   const [dtoResponse, setDtoResponse] = useState<DTO[]>([]);
   const [pathVarList, setPathVarList] = useState<QUERY[]>([]);
   const [queryList, setQueryList] = useState<QUERY[]>([]);
+  const [deletedPath, setDeletedPath] = useState<QUERY[]>([]);
+  const [deletedQuery, setDeletedQuery] = useState<QUERY[]>([]);
 
   useEffect(() => {
     const getApiInfo = async () => {
@@ -61,12 +63,12 @@ export default function ApiModal({
         });
         if (target !== '')
           pvl.push({
-            id: obj ? obj.pathVariableId : 0,
+            id: obj ? obj.pathVariableId : -1,
             key: target,
             type: obj ? obj.pathVariableType : 'NORMAL',
           });
       });
-      pvl.push({ id: 0, key: '', type: 'NORMAL' });
+      pvl.push({ id: -1, key: '', type: 'NORMAL' });
       setPathVarList(pvl);
 
       const qsrList = data.queryStringResponses.map((qsr: any) => {
@@ -76,7 +78,7 @@ export default function ApiModal({
           type: qsr.queryStringType,
         };
       });
-      qsrList.push({ id: 0, key: '', type: 'String' });
+      qsrList.push({ id: -1, key: '', type: 'String' });
       setQueryList(qsrList);
 
       setIsEdit(true);
@@ -85,25 +87,106 @@ export default function ApiModal({
   }, []);
 
   const submitApi = useCallback(
-    (e: any) => {
+    async (e: any) => {
       e.preventDefault();
       const newApiObj = {
-        responses: {
-          id: 0,
-          apiName,
-          desc: apiDesc,
-          methodName,
-          url: apiUrl,
-          method: apiMethod,
-          code: apiCode,
-        },
+        apiName,
+        apiDescription: apiDesc,
+        apiMethodName: methodName,
+        apiUrl,
+        apiMethod,
+        apiCode: apiCode === 200 ? 'OK' : 'CREATED',
       };
 
-      store.pjt.controller[controllerIdx].responses.push(newApiObj);
+      if (isEdit) {
+        await putApi(`/apidocs/apis/${apiId}`, newApiObj);
+
+        pathVarList.forEach(async (path) => {
+          const body = {
+            pathVariableKey: path.key,
+            pathVariableType: path.type,
+          };
+          if (path.key !== '') {
+            console.log(path);
+            if (path.id < 0) {
+              // 새로 생성된 것
+              await postApi(`/apidocs/${apiId}/pathvariables`, body);
+            } else {
+              await putApi(`/apidocs/pathvariables/${path.id}`, body);
+            }
+          }
+        });
+
+        queryList.forEach(async (query) => {
+          const body = {
+            queryStringKey: query.key,
+            queryStringType: query.type,
+          };
+          if (query.key !== '') {
+            if (query.id < 0) {
+              // 새로 생성된 것
+              await postApi(`/apidocs/${apiId}/querystrings`, body);
+            } else {
+              await putApi(`/apidocs/querystrings/${query.id}`, body);
+            }
+          }
+        });
+
+        store.pjt.controllers[controllerIdx].responses[apiRowIdx].apiName =
+          newApiObj.apiName;
+        store.pjt.controllers[controllerIdx].responses[apiRowIdx].methodName =
+          newApiObj.apiMethodName;
+        store.pjt.controllers[controllerIdx].responses[apiRowIdx].url =
+          newApiObj.apiUrl;
+        store.pjt.controllers[controllerIdx].responses[apiRowIdx].method =
+          newApiObj.apiMethod;
+        store.pjt.controllers[controllerIdx].responses[apiRowIdx].code =
+          newApiObj.apiCode === 'OK' ? 200 : 201;
+        store.pjt.controllers[controllerIdx].responses[apiRowIdx].desc =
+          newApiObj.apiDescription;
+      } else {
+        await postApi(`/apidocs/${apiId}/apis`, newApiObj);
+        pathVarList.forEach(async (path) => {
+          const body = {
+            pathVariableKey: path.key,
+            pathVariableType: path.type,
+          };
+          if (path.key !== '')
+            await postApi(`/apidocs/${apiId}/pathvariables`, body);
+        });
+
+        queryList.forEach(async (query) => {
+          const body = {
+            queryStringKey: query.key,
+            queryStringType: query.type,
+          };
+          if (query.key !== '')
+            await postApi(`/apidocs/${apiId}/querystrings`, body);
+        });
+
+        store.pjt.controllers[controllerIdx].responses.push(newApiObj);
+      }
+
+      deletedPath.forEach(async (path) => {
+        await deleteApi(`/apidocs/pathvariables/${path.id}`);
+      });
+      deletedQuery.forEach(async (path) => {
+        await deleteApi(`/apidocs/querystrings/${path.id}`);
+      });
 
       setIsApiModalOpen(false);
     },
-    [isEdit, apiName, apiDesc, methodName, apiUrl, apiMethod, apiCode],
+    [
+      isEdit,
+      apiName,
+      apiDesc,
+      methodName,
+      apiUrl,
+      apiMethod,
+      apiCode,
+      deletedPath,
+      deletedQuery,
+    ],
   );
 
   const onDeleteClick = useCallback(() => {
@@ -150,6 +233,10 @@ export default function ApiModal({
             setPathVarList={setPathVarList}
             queryList={queryList}
             setQueryList={setQueryList}
+            deletedPath={deletedPath}
+            setDeletedPath={setDeletedPath}
+            deletedQuery={deletedQuery}
+            setDeletedQuery={setDeletedQuery}
           />
           <ApiContentRight
             store={store}

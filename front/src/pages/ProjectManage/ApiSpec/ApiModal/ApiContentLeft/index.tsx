@@ -6,6 +6,7 @@ import { faClose, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { QUERY } from 'types/ApiSpec';
 import { ELEMENTPOS } from 'types/Requirement';
 import Tooltip from 'components/Tooltip';
+import { deleteApi } from 'api';
 import ApiMethodList from '../ApiMethodList';
 import PathTypeModal from './PathTypeModal';
 
@@ -28,6 +29,10 @@ interface Props {
   setPathVarList: Dispatch<React.SetStateAction<QUERY[]>>;
   queryList: QUERY[];
   setQueryList: Dispatch<React.SetStateAction<QUERY[]>>;
+  deletedPath: QUERY[];
+  setDeletedPath: Dispatch<React.SetStateAction<QUERY[]>>;
+  deletedQuery: QUERY[];
+  setDeletedQuery: Dispatch<React.SetStateAction<QUERY[]>>;
 }
 
 export default function ApiContentLeft({
@@ -49,6 +54,10 @@ export default function ApiContentLeft({
   setPathVarList,
   queryList,
   setQueryList,
+  deletedPath,
+  setDeletedPath,
+  deletedQuery,
+  setDeletedQuery,
 }: Props) {
   const [isPathVar, setIsPathVar] = useState(true);
   const [isApiMethodListOpen, setIsApiMethodListOpen] = useState(false);
@@ -69,7 +78,7 @@ export default function ApiContentLeft({
   }, []);
 
   const onDescChange = useCallback((e: any) => {
-    setApiDesc(e.target.value.trim());
+    setApiDesc(e.target.value);
   }, []);
 
   const onKeyChange = useCallback(
@@ -80,13 +89,13 @@ export default function ApiContentLeft({
         const copyList = [...pathVarList];
         copyList[idx].key = value;
         if (value !== '' && idx === pathVarList.length - 1)
-          copyList.push({ id: 0, key: '', type: 'NORMAL' });
+          copyList.push({ id: -1, key: '', type: 'NORMAL' });
         setPathVarList(copyList);
       } else {
         const copyList = [...queryList];
         copyList[idx].key = value;
         if (value !== '' && idx === queryList.length - 1)
-          copyList.push({ id: 0, key: '', type: 'String' });
+          copyList.push({ id: -1, key: '', type: 'String' });
         setQueryList(copyList);
       }
     },
@@ -94,28 +103,42 @@ export default function ApiContentLeft({
   );
 
   const deleteKey = useCallback(
-    (idx: number) => {
+    async (idx: number) => {
       if (isPathVar) {
         if (idx === 0 && pathVarList.length === 1) {
-          setPathVarList([{ id: 0, key: '', type: 'NORMAL' }]);
+          setPathVarList([{ id: -1, key: '', type: 'NORMAL' }]);
           return;
         }
 
         const copyArr = [...pathVarList];
+        const copyObj = copyArr[idx];
+        const copyDeleted = [...deletedPath];
+        if (copyObj.id >= 0) {
+          copyDeleted.push(copyObj);
+          setDeletedPath(copyDeleted);
+        }
         copyArr.splice(idx, 1);
         setPathVarList(copyArr);
       } else {
         if (idx === 0 && queryList.length === 1) {
-          setQueryList([{ id: 0, key: '', type: 'String' }]);
+          setQueryList([{ id: -1, key: '', type: 'String' }]);
           return;
         }
 
         const copyArr = [...queryList];
+        const copyObj = copyArr[idx];
+        const copyDeleted = [...deletedQuery];
+        if (copyObj.id >= 0) {
+          copyDeleted.push(copyObj);
+          setDeletedQuery(copyDeleted);
+        }
+        if (copyObj.id >= 0)
+          await deleteApi(`/apidocs/querystrings/${copyObj.id}`);
         copyArr.splice(idx, 1);
         setQueryList(copyArr);
       }
     },
-    [isPathVar, pathVarList, queryList],
+    [isPathVar, pathVarList, queryList, deletedPath, deletedQuery],
   );
 
   const onPathTypeClick = useCallback((e: any, idx: number) => {
@@ -142,6 +165,11 @@ export default function ApiContentLeft({
     });
     setApiUrl(newUrl);
   }, [pathVarList, queryList]);
+
+  useEffect(() => {
+    if (apiMethod === 'POST') setApiCode(201);
+    else setApiCode(200);
+  }, [apiMethod]);
 
   return (
     <div className="api-add-content-left">
@@ -184,7 +212,8 @@ export default function ApiContentLeft({
             {isApiMethodListOpen && (
               <ApiMethodList
                 setIsApiMethodListOpen={setIsApiMethodListOpen}
-                store={store}
+                apiMethod={apiMethod}
+                setApiMethod={setApiMethod}
               />
             )}
           </span>
@@ -292,7 +321,7 @@ export default function ApiContentLeft({
                     <FontAwesomeIcon
                       icon={faClose}
                       className="api-query-delete"
-                      // onClick={() => deleteKey(i)}
+                      onClick={() => deleteKey(i)}
                     />
                   </div>
                 );

@@ -25,7 +25,7 @@ export interface CONTROLLER {
 }
 
 export interface QUERY {
-  id?: number;
+  id: number;
   key: string;
   type: string;
 }
