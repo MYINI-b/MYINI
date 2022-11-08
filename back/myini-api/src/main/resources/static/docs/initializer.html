@@ -466,6 +466,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_응답_3">응답</a></li>
 </ul>
 </li>
+<li><a href="#_이니셜라이저_설정_정보_확인">1.4. 이니셜라이저 설정 정보 확인</a>
+<ul class="sectlevel4">
+<li><a href="#_요청_4">요청</a></li>
+<li><a href="#_응답_4">응답</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -753,16 +759,58 @@ Content-Disposition: attachment; filename="front Setup 0.1.0.exe"</code></pre>
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_이니셜라이저_설정_정보_확인"><a class="anchor" href="#_이니셜라이저_설정_정보_확인"></a><a class="link" href="#_이니셜라이저_설정_정보_확인">1.4. 이니셜라이저 설정 정보 확인</a></h4>
+<div class="sect4">
+<h5 id="_요청_4"><a class="anchor" href="#_요청_4"></a><a class="link" href="#_요청_4">요청</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/initializers/settings HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_응답_4"><a class="anchor" href="#_응답_4"></a><a class="link" href="#_응답_4">응답</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+Content-Length: 503
+
+{
+  "single-select" : {
+    "쿼리스트링 key" : {
+      "default" : "디폴트 값 id",
+      "values" : [ {
+        "name" : "화면에 표시될 이름",
+        "id" : "쿼리스트링 value"
+      } ]
+    }
+  },
+  "text" : [ {
+    "name" : "화면에 표시될 이름",
+    "id" : "쿼리스트링 key"
+  } ],
+  "dependencies" : [ {
+    "name" : "화면에 표시될 이름",
+    "description" : "해당 dependency에 대한 설명",
+    "id" : "쿼리스트링 value"
+  } ]
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-<<<<<<< HEAD
-Last updated 2022-11-07 15:16:39 +0900
-=======
-Last updated 2022-11-07 15:28:38 +0900
->>>>>>> 75316ba6201d90db35d86ead031eb3204c7561b6
+Last updated 2022-11-08 11:06:37 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

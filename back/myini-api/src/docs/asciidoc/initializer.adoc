@@ -68,3 +68,10 @@ include::{snippets}/api/initializers/downloads/request-body.adoc[]
 include::{snippets}/api/initializers/downloads/http-response.adoc[]
 ====== Body
 include::{snippets}/api/initializers/downloads/response-body.adoc[]
+
+==== 이니셜라이저 설정 정보 확인
+===== 요청
+include::{snippets}/api/initializers/settings/http-request.adoc[]
+
+===== 응답
+include::{snippets}/api/initializers/settings/http-response.adoc[]
