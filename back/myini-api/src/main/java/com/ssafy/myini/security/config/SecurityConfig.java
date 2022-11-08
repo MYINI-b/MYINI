@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/ws-stomp/**", "/api/port", "/actuator/health", "/oauth2/**", "/api/docs/**", "/docs/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/initializers/downloads", "/api/initializers/{projectid}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/initializers/downloads", "/api/initializers/{projectid}", "/api/initializers/settings").permitAll()
                 .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and()
                 .exceptionHandling()

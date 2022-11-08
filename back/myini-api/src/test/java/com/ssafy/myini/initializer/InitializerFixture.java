@@ -3,13 +3,10 @@ package com.ssafy.myini.initializer;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
 import com.ssafy.myini.initializer.response.PreviewResponse;
+import org.json.simple.JSONObject;
 import org.junit.rules.TemporaryFolder;
-import org.springframework.core.io.InputStreamResource;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.zip.ZipFile;
 
 public class InitializerFixture {
     public static final Long ID = 1L;
@@ -18,6 +15,7 @@ public class InitializerFixture {
     public static final ByteArrayOutputStream BYTES = new ByteArrayOutputStream();
     public static TemporaryFolder TEMPORARY_FOLDER = new TemporaryFolder();
     public static File FILE = new File("");
+    public static JSONObject JSON = new JSONObject();
 
 
     public static final InitializerRequest TEST_INITIALIZER_REQUEST
