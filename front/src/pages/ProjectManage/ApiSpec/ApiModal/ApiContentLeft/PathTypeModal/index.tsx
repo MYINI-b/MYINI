@@ -10,6 +10,8 @@ interface Props {
   selectIdx: number;
   isPathVar: boolean;
   store: any;
+  list: QUERY[];
+  setList: Dispatch<React.SetStateAction<QUERY[]>>;
 }
 
 export default function PathTypeModal({
@@ -18,6 +20,8 @@ export default function PathTypeModal({
   selectIdx,
   isPathVar,
   store,
+  list,
+  setList,
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
 
@@ -28,15 +32,13 @@ export default function PathTypeModal({
 
   const onPathTypeClick = useCallback(
     (e: any, type: string) => {
-      if (isPathVar) {
-        store.pjt.currentAPI.pathVarList[selectIdx].type = type;
-      } else {
-        store.pjt.currentAPI.queryList[selectIdx].type = type;
-      }
+      const copyArr = [...list];
+      copyArr[selectIdx].type = type;
+      setList(copyArr);
 
       setIsPathTypeOpen(false);
     },
-    [store],
+    [list],
   );
 
   return (
@@ -55,8 +57,7 @@ export default function PathTypeModal({
                 return (
                   <li
                     className={`pathtype-modal-row ${
-                      store.pjt.currentAPI.pathVarList[selectIdx].type ===
-                        type && 'select'
+                      list[selectIdx].type === type && 'select'
                     }`}
                     key={i}
                     onClick={(e) => onPathTypeClick(e, type)}
@@ -69,8 +70,7 @@ export default function PathTypeModal({
                 return (
                   <li
                     className={`pathtype-modal-row ${
-                      store.pjt.currentAPI.queryList[selectIdx].type === type &&
-                      'select'
+                      list[selectIdx].type === type && 'select'
                     }`}
                     key={i}
                     onClick={(e) => onPathTypeClick(e, type)}

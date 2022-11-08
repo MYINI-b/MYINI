@@ -46,13 +46,38 @@ export default function ApiModal({
       setApiName(data.apiResponse.apiName);
       setApiDesc(data.apiResponse.apiDescription);
       setMethodName(data.apiResponse.apiMethodName);
-      setApiUrl(data.apiResponse.url);
-      setApiMethod(data.apiResponse.method);
+      setApiUrl(data.apiResponse.apiUrl);
+      setApiMethod(data.apiResponse.apiMethod);
       setApiCode(data.apiResponse.apiCode === 'OK' ? 200 : 201);
       setDtoResponse(data.dtoResponses);
 
-      setPathVarList(data.pathVariableResponses);
-      setQueryList(data.queryStringResponses);
+      const pvl = [];
+      data.pathListResponse.forEach((path: string) => {
+        const target =
+          path.indexOf('{') >= 0 ? path.substring(1, path.length - 1) : path;
+        let obj: any = null;
+        data.pathVariableResponses.forEach((pvrs: any) => {
+          if (target === pvrs.pathVariableKey) obj = { ...pvrs };
+        });
+        if (target !== '')
+          pvl.push({
+            id: obj ? obj.pathVariableId : 0,
+            key: target,
+            type: obj ? obj.pathVariableType : 'NORMAL',
+          });
+      });
+      pvl.push({ id: 0, key: '', type: 'NORMAL' });
+      setPathVarList(pvl);
+
+      const qsrList = data.queryStringResponses.map((qsr: any) => {
+        return {
+          id: qsr.queryStringId,
+          key: qsr.queryStringKey,
+          type: qsr.queryStringType,
+        };
+      });
+      qsrList.push({ id: 0, key: '', type: 'String' });
+      setQueryList(qsrList);
 
       setIsEdit(true);
     };
@@ -106,7 +131,26 @@ export default function ApiModal({
         </article>
 
         <article className="api-add-content-container">
-          <ApiContentLeft store={store} controllerIdx={controllerIdx} />
+          <ApiContentLeft
+            store={store}
+            controllerIdx={controllerIdx}
+            apiName={apiName}
+            setApiName={setApiName}
+            apiDesc={apiDesc}
+            setApiDesc={setApiDesc}
+            methodName={methodName}
+            setMethodName={setMethodName}
+            apiUrl={apiUrl}
+            setApiUrl={setApiUrl}
+            apiMethod={apiMethod}
+            setApiMethod={setApiMethod}
+            apiCode={apiCode}
+            setApiCode={setApiCode}
+            pathVarList={pathVarList}
+            setPathVarList={setPathVarList}
+            queryList={queryList}
+            setQueryList={setQueryList}
+          />
           <ApiContentRight
             store={store}
             objDataType={objDataType}
