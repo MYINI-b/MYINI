@@ -27,9 +27,9 @@ public class ApiDocsFixture {
     public static final UpdateApiControllerRequest TEST_UPDATE_API_CONTROLLER_REQUEST
             = new UpdateApiControllerRequest(NAME, URL, APIDESCRIPTION);
     public static final CreateApiRequest TEST_CREATE_API_REQUEST
-            = new CreateApiRequest(NAME, URL, APIMETHOD, APICODE, API_METHOD_NAME);
+            = new CreateApiRequest(NAME, APIDESCRIPTION, URL, APIMETHOD, APICODE, API_METHOD_NAME);
     public static final UpdateApiRequest TEST_UPDATE_API_REQUEST
-            = new UpdateApiRequest(NAME, URL, APIMETHOD, APICODE, API_METHOD_NAME);
+            = new UpdateApiRequest(NAME, APIDESCRIPTION, URL, APIMETHOD, APICODE, API_METHOD_NAME);
     public static final CreatePathVariableRequest TEST_CREATE_PATHVARIABLE_REQUEST
             = new CreatePathVariableRequest(KEY, TYPE);
     public static final UpdatePathVariableRequest TEST_UPDATE_PATHVARIABLE_REQUEST
@@ -50,7 +50,7 @@ public class ApiDocsFixture {
     public static final ApiControllerListResponse TEST_API_CONTROLLER_LIST_RESPONSE
             = new ApiControllerListResponse(ID, NAME);
     public static final ApiResponse TEST_API_RESPONSE
-            = new ApiResponse(ID, NAME, URL, APIMETHOD, APICODE, API_METHOD_NAME);
+            = new ApiResponse(ID, NAME, APIDESCRIPTION, URL, APIMETHOD, APICODE, API_METHOD_NAME);
     public static final ApiControllerResponse TEST_API_CONTROLLER_RESPONSE
             = new ApiControllerResponse(ID, NAME, URL, APIDESCRIPTION, Arrays.asList(TEST_API_RESPONSE));
     public static final PathVariableResponse TEST_PATHVARIABLE_RESPONSE
@@ -62,7 +62,7 @@ public class ApiDocsFixture {
     public static final DtoResponse TEST_DTO_RESPONSE
             = new DtoResponse(ID, NAME, TYPE, Arrays.asList(TEST_DTO_ITEM_RESPONSE), YN_FIELD);
     public static final ApiInfoResponse TEST_API_INFO_RESPONSE
-            = new ApiInfoResponse(TEST_API_RESPONSE, Arrays.asList(TEST_PATHVARIABLE_RESPONSE), Arrays.asList(TEST_QUERYSTRING_RESPONSE), Arrays.asList(TEST_DTO_RESPONSE));
+            = new ApiInfoResponse(TEST_API_RESPONSE, Arrays.asList(TEST_PATHVARIABLE_RESPONSE), Arrays.asList(TEST_QUERYSTRING_RESPONSE), Arrays.asList(TEST_DTO_RESPONSE), Arrays.asList(NAME));
     public static final PrimitiveTypeResponse TEST_PRIMITIVE_TYPE_RESPONSE
             = new PrimitiveTypeResponse(ID, NAME);
     public static final ClassTypeResponse TEST_CLASS_TYPE_RESPONSE

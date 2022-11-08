@@ -12,6 +12,7 @@ import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,7 +93,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
         ApiController findApiController = apiControllerRepository.findById(apiControllerId)
                 .orElseThrow(() -> new NotFoundException(APICONTROLLER_NOT_FOUND));
 
-        Api api = Api.createApi(request.getApiName(), request.getApiUrl(), request.getApiMethod(), request.getApiCode(), request.getApiMethodName(), findApiController);
+        Api api = Api.createApi(request.getApiName(), request.getApiDescription(), request.getApiUrl(), request.getApiMethod(), request.getApiCode(), request.getApiMethodName(), findApiController);
         apiRepository.save(api);
         return ApiResponse.from(api);
     }
@@ -104,7 +105,7 @@ public class ApiDocsServiceImpl implements ApiDocsService {
         Api findApi = apiRepository.findById(apiId)
                 .orElseThrow(() -> new NotFoundException(API_NOT_FOUND));
 
-        findApi.updateApi(request.getApiName(),request.getApiUrl(), request.getApiMethod(), request.getApiCode(), request.getApiMethodName());
+        findApi.updateApi(request.getApiName(), request.getApiDescription(), request.getApiUrl(), request.getApiMethod(), request.getApiCode(), request.getApiMethodName());
     }
 
     // API 삭제
@@ -123,7 +124,18 @@ public class ApiDocsServiceImpl implements ApiDocsService {
         Api findApi = apiRepository.findById(apiId)
                 .orElseThrow(() -> new NotFoundException(API_NOT_FOUND));
         Api findApiInfo = apiDocsQueryRepository.findByApiId(findApi);
-        return ApiInfoResponse.from(findApiInfo);
+
+        List<String> basePath = new ArrayList<>();
+        String[] split = findApiInfo.getApiUrl().split("/");
+        for (String s : split) {
+            if(s.contains("?")) {
+                basePath.add(s.split("\\?")[0]);
+                continue;
+            }
+            if(s.equals("")) continue;
+            basePath.add(s);
+        }
+        return ApiInfoResponse.from(findApiInfo, basePath);
     }
 
     // PathVariable 생성
