@@ -62,7 +62,7 @@ public class ApiDocsFixture {
     public static final DtoResponse TEST_DTO_RESPONSE
             = new DtoResponse(ID, NAME, TYPE, Arrays.asList(TEST_DTO_ITEM_RESPONSE), YN_FIELD);
     public static final ApiInfoResponse TEST_API_INFO_RESPONSE
-            = new ApiInfoResponse(TEST_API_RESPONSE, Arrays.asList(TEST_PATHVARIABLE_RESPONSE), Arrays.asList(TEST_QUERYSTRING_RESPONSE), Arrays.asList(TEST_DTO_RESPONSE));
+            = new ApiInfoResponse(TEST_API_RESPONSE, Arrays.asList(TEST_PATHVARIABLE_RESPONSE), Arrays.asList(TEST_QUERYSTRING_RESPONSE), Arrays.asList(TEST_DTO_RESPONSE), Arrays.asList(NAME));
     public static final PrimitiveTypeResponse TEST_PRIMITIVE_TYPE_RESPONSE
             = new PrimitiveTypeResponse(ID, NAME);
     public static final ClassTypeResponse TEST_CLASS_TYPE_RESPONSE
