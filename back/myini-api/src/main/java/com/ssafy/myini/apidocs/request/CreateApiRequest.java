@@ -14,6 +14,7 @@ import javax.validation.constraints.Pattern;
 public class CreateApiRequest {
     @NotBlank(message = "api 이름은 필수값입니다.")
     private String apiName;
+    private String apiDescription;
     private String apiUrl;
     private String apiMethod;
     private String apiCode;
