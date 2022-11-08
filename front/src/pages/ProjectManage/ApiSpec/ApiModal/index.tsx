@@ -83,13 +83,18 @@ export default function ApiModal({
 
       setIsEdit(true);
     };
+
     if (apiRowIdx >= 0) getApiInfo();
+    else {
+      setPathVarList([{ id: -1, key: '', type: 'NORMAL' }]);
+      setQueryList([{ id: -1, key: '', type: 'String' }]);
+    }
   }, []);
 
   const submitApi = useCallback(
     async (e: any) => {
       e.preventDefault();
-      const newApiObj = {
+      const newApiObj: any = {
         apiName,
         apiDescription: apiDesc,
         apiMethodName: methodName,
@@ -145,14 +150,20 @@ export default function ApiModal({
         store.pjt.controllers[controllerIdx].responses[apiRowIdx].desc =
           newApiObj.apiDescription;
       } else {
-        await postApi(`/apidocs/${apiId}/apis`, newApiObj);
+        const { data }: any = await postApi(
+          `/apidocs/${store.pjt.controllers[controllerIdx].id}/apis`,
+          newApiObj,
+        );
+
+        newApiObj.apiId = data.apiId;
+        console.log(newApiObj);
         pathVarList.forEach(async (path) => {
           const body = {
             pathVariableKey: path.key,
             pathVariableType: path.type,
           };
           if (path.key !== '')
-            await postApi(`/apidocs/${apiId}/pathvariables`, body);
+            await postApi(`/apidocs/${data.apiId}/pathvariables`, body);
         });
 
         queryList.forEach(async (query) => {
@@ -161,10 +172,19 @@ export default function ApiModal({
             queryStringType: query.type,
           };
           if (query.key !== '')
-            await postApi(`/apidocs/${apiId}/querystrings`, body);
+            await postApi(`/apidocs/${data.apiId}/querystrings`, body);
         });
 
-        store.pjt.controllers[controllerIdx].responses.push(newApiObj);
+        const parsedObj = {
+          id: newApiObj.apiId,
+          apiName: newApiObj.apiName,
+          methodName: newApiObj.apiMethodName,
+          url: newApiObj.apiUrl,
+          method: newApiObj.apiMethod,
+          code: newApiObj.apiCode,
+          desc: newApiObj.apiDescription,
+        };
+        store.pjt.controllers[controllerIdx].responses.push(parsedObj);
       }
 
       deletedPath.forEach(async (path) => {
@@ -189,15 +209,11 @@ export default function ApiModal({
     ],
   );
 
-  const onDeleteClick = useCallback(() => {
-    // const copyArr = [...[...apis]];
-    // const deletedArr = [...copyArr[controllerIdx]].filter(
-    //   (e, i) => i !== apiRowIdx,
-    // );
-    // copyArr[controllerIdx] = deletedArr;
-    // setApis(copyArr);
+  const onDeleteClick = useCallback(async () => {
+    await deleteApi(`/apidocs/apis/${apiId}`);
+    store.pjt.controllers[controllerIdx].responses.splice(apiRowIdx, 1);
     setIsApiModalOpen(false);
-  }, [apiRowIdx]);
+  }, [apiRowIdx, apiId]);
 
   return (
     <section className="modal-empty" onClick={() => setIsApiModalOpen(false)}>

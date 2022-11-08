@@ -58,6 +58,12 @@ export default function ApiContentRight({
     [response],
   );
 
+  const onManyClick = useCallback(() => {
+    const copyObj = { ...response };
+    copyObj.dtoIsList = !copyObj.dtoIsList;
+    setResponse(copyObj);
+  }, [response]);
+
   useEffect(() => {
     dtoResponse.forEach((dto: any) => {
       if (dto.dtoType === 'RESPONSE') setResponse(dto);
@@ -154,22 +160,18 @@ export default function ApiContentRight({
         <h1 className="content-right-title">RESPONSE BODY</h1>
         <div className="content-right-box">
           <div className="content-right-many-wrapper">
-            <div className="many-radio-wrapper" onClick={() => {}}>
-              <div
-                className={`many-radio-button ${
-                  !response.dtoIsList && 'select'
-                }`}
+            단건 &nbsp;
+            <div
+              className={`many-checkbox-wrapper  ${
+                response.dtoIsList && 'list'
+              }`}
+              onClick={onManyClick}
+            >
+              <span
+                className={`many-checker ${response.dtoIsList && 'list'}`}
               />
-              <p className="many-radio-text">단건</p>
             </div>
-            <div className="many-radio-wrapper" onClick={() => {}}>
-              <div
-                className={`many-radio-button ${
-                  response.dtoIsList && 'select'
-                }`}
-              />
-              <p className="many-radio-text">다건</p>
-            </div>
+            &nbsp; 다건
           </div>
           <div className="content-right-boxtitle-wrapper">
             <h3 className="content-right-boxtitle static">자료형</h3>

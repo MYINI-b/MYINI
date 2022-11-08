@@ -33,33 +33,36 @@
 
       .content-right-many-wrapper {
         width: 100%;
+        margin-bottom: rem(10);
         @include FLEX-ALIGN-CENTER;
 
-        .many-radio-wrapper {
-          @include FLEX-COLUMN;
-          align-items: center;
+        .many-checkbox-wrapper {
+          width: rem(50);
+          height: rem(25);
+          padding-left: 1px;
+          background-color: green;
+          border-radius: rem(25);
           cursor: pointer;
-          .many-radio-button {
-            width: rem(16);
-            height: rem(16);
-            background-color: $pure-white;
-            border: 1px solid $gray;
-            border-radius: rem(16);
+          transition: 0.3s ease;
+          @include FLEX-ALIGN-CENTER;
 
+          &.list {
+            background-color: red;
+          }
+
+          .many-checker {
+            width: rem(22);
+            height: rem(22);
+            background-color: white;
+            border-radius: rem(22);
+            cursor: pointer;
+            transition: 0.3s ease;
             content: '';
 
-            &.select {
-              background-color: $get;
+            &.list {
+              transform: translateX(26px);
             }
           }
-          .many-radio-text {
-            margin-top: rem(4);
-            font-size: rem(14);
-          }
-        }
-
-        .many-radio-wrapper + .many-radio-wrapper {
-          margin-left: rem(10);
         }
       }
 
