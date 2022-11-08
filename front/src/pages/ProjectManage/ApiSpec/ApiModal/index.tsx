@@ -30,21 +30,8 @@ export default function ApiModal({
 
       const { data }: any = await getApi(`/apidocs/apis/${editRow.id}`);
       console.log(data);
-      if (!store.pjt.currentAPI)
-        store.pjt.currentAPI = {
-          responses: {
-            id: 0,
-            apiName: '',
-            methodName: '',
-            url: '',
-            method: 'GET',
-            code: 200,
-            desc: '',
-          },
-          pathVarList: [],
-          queryList: [],
-          dtoResponse: [],
-        };
+
+      if (!store.pjt.currentAPI) initCurrentAPI();
 
       store.pjt.currentAPI.responses.id = data.apiResponse.apiId;
       store.pjt.currentAPI.responses.apiName = data.apiResponse.apiName;
@@ -64,7 +51,8 @@ export default function ApiModal({
       setIsEdit(true);
     };
 
-    const initCurrentAPI = async () => {
+    const initCurrentAPI = () => {
+      console.log('init current api');
       if (!store.pjt.currentAPI)
         store.pjt.currentAPI = {
           responses: {
@@ -76,8 +64,8 @@ export default function ApiModal({
             code: 200,
             desc: '',
           },
-          pathVarList: [],
-          queryList: [],
+          pathVarList: [{ name: '', type: 'PATH' }],
+          queryList: [{ name: '', type: 'STRING' }],
           dtoResponse: [],
         };
     };
@@ -120,7 +108,7 @@ export default function ApiModal({
         </article>
 
         <article className="api-add-content-container">
-          <ApiContentLeft store={store} />
+          <ApiContentLeft store={store} controllerIdx={controllerIdx} />
           <ApiContentRight objDataType={objDataType} store={store} />
         </article>
 

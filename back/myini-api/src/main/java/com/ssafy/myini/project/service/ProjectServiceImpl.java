@@ -1,8 +1,10 @@
 package com.ssafy.myini.project.service;
 
 import com.ssafy.myini.DuplicateException;
+import com.ssafy.myini.JiraException;
 import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.config.S3Uploader;
+import com.ssafy.myini.jira.JiraApi;
 import com.ssafy.myini.member.domain.Member;
 import com.ssafy.myini.member.domain.MemberProject;
 import com.ssafy.myini.member.domain.MemberProjectRepository;
@@ -11,7 +13,10 @@ import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import com.ssafy.myini.project.query.ProjectQueryRepository;
 import com.ssafy.myini.project.request.FindByMemberEmailRequest;
+import com.ssafy.myini.jira.request.UpdateJiraAccountRequest;
+import com.ssafy.myini.jira.request.UpdateJiraProjectRequest;
 import com.ssafy.myini.project.request.UpdateProjectRequest;
+import com.ssafy.myini.project.response.ProjectCreateResponse;
 import com.ssafy.myini.project.response.ProjectInfoResponse;
 import com.ssafy.myini.project.response.ProjectListResponse;
 import com.ssafy.myini.project.response.ProjectMemberResponse;
@@ -20,9 +25,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.ssafy.myini.DuplicateException.MEMBER_PROJECT_DUPLICATE;
 import static com.ssafy.myini.NotFoundException.*;
@@ -39,12 +45,13 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional
     @Override
-    public void createProject(Member member) {
+    public ProjectCreateResponse createProject(Member member) {
         Project project = Project.createProject();
         projectRepository.save(project);
 
         MemberProject memberProject = MemberProject.createMemberProject(member, project);
         memberProjectRepository.save(memberProject);
+        return ProjectCreateResponse.from(project);
     }
 
     @Override
@@ -116,10 +123,41 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectMemberResponse findByMemberEmail(FindByMemberEmailRequest request) {
-        Member findMember = memberRepository.findByMemberEmail(request.getMemberEmail())
-                .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
-        return ProjectMemberResponse.from(findMember);
+    public List<ProjectMemberResponse> findProjectMemberJiraList(Long projectId) {
+        Project findProject = projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+        String jiraId = findProject.getJiraId();
+        String jiraApiKey = findProject.getJiraApiKey();
+        String jiraDomain = findProject.getJiraDomain();
+        String jiraProjectKey = findProject.getJiraProjectKey();
+
+        try {
+            List<JiraApi.JiraUser> jiraUser = JiraApi.getJiraUser(jiraId, jiraApiKey, jiraDomain,jiraProjectKey);
+
+            List<MemberProject> findMemberProjects = projectQueryRepository.findProjectMemberList(projectId);
+            List<ProjectMemberResponse> projectMemberResponses = new ArrayList<>();
+            for (int i = 0; i < findMemberProjects.size(); i++) {
+                for (int j = 0; j < jiraUser.size(); j++) {
+                    if(findMemberProjects.get(i).getMember().getMemberJiraEmail().contains(jiraUser.get(j).getUserEmailAddress())){
+                        projectMemberResponses.add(ProjectMemberResponse.from(findMemberProjects.get(i).getMember()));
+                        break;
+                    }
+                }
+            }
+
+            return projectMemberResponses;
+
+
+        }catch (Exception e){
+            throw new JiraException(JiraException.JIRA_FAIL);
+        }
+    }
+
+    @Override
+    public List<ProjectMemberResponse> findByMemberEmail(FindByMemberEmailRequest request) {
+        List<Member> findMember = memberRepository.findByMemberEmailContains(request.getMemberEmail());
+
+        return findMember.stream().map(member -> ProjectMemberResponse.from(member)).collect(Collectors.toList());
     }
 
     @Transactional
@@ -129,16 +167,16 @@ public class ProjectServiceImpl implements ProjectService {
                 .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
         if(!memberProjectRepository.existsByMemberAndProject(member, findProject)){
             throw new NotFoundException(MEMBER_PROJECT_NOT_FOUND);
-        }
+        }else{
+             Member findMember = memberRepository.findById(memberId)
+                    .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
+            if(memberProjectRepository.existsByMemberAndProject(findMember, findProject)){
+                throw new DuplicateException(MEMBER_PROJECT_DUPLICATE);
+            }
 
-        Member findMember = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
-        if(memberProjectRepository.existsByMemberAndProject(findMember, findProject)){
-            throw new DuplicateException(MEMBER_PROJECT_DUPLICATE);
+            MemberProject memberProject = MemberProject.createMemberProject(findMember, findProject);
+            memberProjectRepository.save(memberProject);
         }
-
-        MemberProject memberProject = MemberProject.createMemberProject(findMember, findProject);
-        memberProjectRepository.save(memberProject);
     }
 
     @Transactional

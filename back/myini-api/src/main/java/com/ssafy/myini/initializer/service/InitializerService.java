@@ -4,6 +4,8 @@ import com.ssafy.myini.initializer.request.InitializerRequest;
 import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
 import com.ssafy.myini.initializer.response.PreviewResponse;
 import com.ssafy.myini.member.domain.Member;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import net.lingala.zip4j.ZipFile;
 
 import javax.servlet.http.HttpServletResponse;

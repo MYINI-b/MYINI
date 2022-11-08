@@ -1,6 +1,8 @@
 package com.ssafy.myini.requirementdocs.controller;
 
 import com.ssafy.myini.requirementdocs.request.*;
+import com.ssafy.myini.requirementdocs.response.JiraProjectListResponse;
+import com.ssafy.myini.requirementdocs.response.RequirementCategoryCreateResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementCategoryListResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementListResponse;
 import com.ssafy.myini.requirementdocs.service.RequirementDocsService;
@@ -102,23 +104,16 @@ public class RequirementDocsController {
     }
 
     @PostMapping("/{projectid}/categories")
-    public ResponseEntity<Void> createRequirementCategory(@PathVariable("projectid") Long projectId,
+    public ResponseEntity<RequirementCategoryCreateResponse> createRequirementCategory(@PathVariable("projectid") Long projectId,
                                                           @RequestBody RequirementCategoryCreateRequest requirementCategoryCreateRequest){
-        requirementDocsService.createRequirementCategory(projectId,requirementCategoryCreateRequest);
+        RequirementCategoryCreateResponse body = requirementDocsService.createRequirementCategory(projectId,requirementCategoryCreateRequest);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
     @DeleteMapping("/categories/{requirementcategoryid}")
     public ResponseEntity<Void> deleteRequirementCategory(@PathVariable("requirementcategoryid") Long requirementCategoryId){
         requirementDocsService.deleteRequirementCategory(requirementCategoryId);
-
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
-    @PostMapping("/jira")
-    public ResponseEntity<Void> jira(){
-        requirementDocsService.jira();
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }

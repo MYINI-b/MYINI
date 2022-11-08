@@ -1,0 +1,56 @@
+:basedir: {docdir}
+:snippets: {basedir}/build/generated-snippets
+
+= RESTFUL Notes API Guide
+:doctype: jira
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectnums:
+:sectlinks:
+:sectanchors:
+
+[[API]]
+=== Jira
+==== 프로젝트 지라 연동 수정한다.
+===== 요청
+include::{snippets}/api/jiras/{projectid}/jiraaccount/http-request.adoc[]
+====== Header
+include::{snippets}/api/jiras/{projectid}/jiraaccount/request-headers.adoc[]
+====== Path
+include::{snippets}/api/jiras/{projectid}/jiraaccount/path-parameters.adoc[]
+===== 응답
+include::{snippets}/api/jiras/{projectid}/jiraaccount/http-response.adoc[]
+
+==== 연동된 지라 프로젝트를 수정한다.
+===== 요청
+include::{snippets}/api/jiras/{projectid}/jiraproject/http-request.adoc[]
+====== Header
+include::{snippets}/api/jiras/{projectid}/jiraproject/request-headers.adoc[]
+====== Path
+include::{snippets}/api/jiras/{projectid}/jiraproject/path-parameters.adoc[]
+===== 응답
+include::{snippets}/api/jiras/{projectid}/jiraproject/http-response.adoc[]
+
+==== 지라 프로젝트 리스트를 조회한다.
+===== 요청
+include::{snippets}/api/jiras/{projectid}/projects/http-request.adoc[]
+====== Header
+include::{snippets}/api/jiras/{projectid}/projects/request-headers.adoc[]
+====== Path
+include::{snippets}/api/jiras/{projectid}/projects/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/jiras/{projectid}/projects/http-response.adoc[]
+
+==== 지라 이슈를 등록한다.
+===== 요청
+include::{snippets}/api/jiras/{projectid}/createissue/http-request.adoc[]
+====== Header
+include::{snippets}/api/jiras/{projectid}/createissue/request-headers.adoc[]
+====== Path
+include::{snippets}/api/jiras/{projectid}/createissue/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/jiras/{projectid}/createissue/http-response.adoc[]

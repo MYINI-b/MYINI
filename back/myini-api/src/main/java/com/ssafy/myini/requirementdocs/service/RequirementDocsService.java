@@ -1,6 +1,7 @@
 package com.ssafy.myini.requirementdocs.service;
 
 import com.ssafy.myini.requirementdocs.request.*;
+import com.ssafy.myini.requirementdocs.response.RequirementCategoryCreateResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementCategoryListResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementListResponse;
 
@@ -18,8 +19,8 @@ public interface RequirementDocsService {
     void updateRequirementStoryPoint(Long requirementId, RequirementStoryPointUpdateRequest requirementStoryPointUpdateRequest);
     void deleteRequirement(Long requirementId);
     List<RequirementCategoryListResponse> findAllRequirementsCategory(Long projectId);
-    void createRequirementCategory(Long projectId, RequirementCategoryCreateRequest requirementCategoryCreateRequest);
+    RequirementCategoryCreateResponse createRequirementCategory(Long projectId, RequirementCategoryCreateRequest requirementCategoryCreateRequest);
     void deleteRequirementCategory(Long requirementCategoryId);
-    void jira();
+
 
 }

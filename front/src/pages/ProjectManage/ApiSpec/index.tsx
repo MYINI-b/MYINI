@@ -11,7 +11,6 @@ import { useSyncedStore } from '@syncedstore/react';
 
 import { globalStore } from 'store/yjsStore';
 import './style.scss';
-import { API, CONTROLLER } from 'types/ApiSpec';
 import { getApi } from 'api';
 import APIList from './APIList';
 import ControllerAddModal from './ControllerAddModal';
@@ -25,11 +24,9 @@ export default function ApiSpec({ pid }: Props) {
   const store = useSyncedStore(globalStore);
 
   const [objDataType, setObjDataType] = useState<Array<any>>([]);
-  const [controllers, setControllers] = useState<Array<CONTROLLER>>([]); // 컨트롤러 목록
   const [controllerIdx, setControllerIdx] = useState(-1); // 현재 선택된 컨트롤러 인덱스
   const [clickControllerIdx, setClickControllerIdx] = useState(0); // 현재 선택된 컨트롤러 인덱스
 
-  const [apis, setApis] = useState<Array<Array<API>>>([]); // [controllerIdx]의 api 목록
   const [isControllerAddModalOpen, setIsControllerAddModalOpen] =
     useState(false);
   const [isDatatypeModalOpen, setIsDatatypeModalOpen] = useState(false);

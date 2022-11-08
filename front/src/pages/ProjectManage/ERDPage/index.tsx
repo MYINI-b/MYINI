@@ -1,7 +1,14 @@
+// import React, { useLayoutEffect, useState } from 'react';
 import './style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
+
 // import Stepper from './Stepper';
+
+// redux
+// import { Store } from 'Store';
+
+// components
 import GenerateVuerd from './GenerateVuerd';
 
 interface Props {
