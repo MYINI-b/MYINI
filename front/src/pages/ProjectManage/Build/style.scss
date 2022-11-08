@@ -31,11 +31,17 @@ $breakpoints: (
     font-size: rem(36);
   }
   .build-project-title {
-      margin-right: rem(20);
-      color: $primary;
-      font-size: rem(20);
-      font-family: $eng-title;
-      @include FLEX-ALIGN-CENTER;
+    margin-right: rem(20);
+    color: $primary;
+    font-size: rem(20);
+    font-family: $eng-title;
+    @include FLEX-ALIGN-CENTER;
+  }
+  .build-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    
   }
   .build-main {
     width: 100%;
@@ -77,6 +83,28 @@ $breakpoints: (
             padding-bottom: rem(35);
             width: 40%;
           }
+          .single-select {
+            @include FLEX-COLUMN;
+            .container {
+              .radio-set {
+                display: flex;
+                border: rem(0);
+                .radio-input {
+                  display: none;
+                  margin: rem(10);
+                }
+                .radio-field {
+                  display: inline-block;
+                  margin: rem(-2);
+                  padding: rem(8) rem(19);
+                  background-image: none;
+                  background-color: $primary;
+                  border: rem(1) solid #ccc;
+                  width: 100%;
+                }
+              }
+            }
+          }
         }
         .metadata {
           padding-bottom: rem(20);
@@ -89,11 +117,15 @@ $breakpoints: (
           .metadata-name {
             width: rem(150);
           }
-          .text-box {
-            @include FLEX-CENTER;
-            width: 150%;
-            height: rem(30);
-            margin-bottom: rem(35);
+          .submit-box {
+            padding-left: rem(25);
+            width: 75%;
+            .text-box {
+              @include FLEX-CENTER;
+              width: 100%;
+              height: rem(30);
+              margin-bottom: rem(35);
+            }
           }
         }
         .dependency {
@@ -119,6 +151,9 @@ $breakpoints: (
       @include respond-to('small') {
         height: 70%;
       }
+      .build-project-button {
+        margin-top: rem(30);
+      }
     }
     
     .confirmcode-title {
@@ -133,14 +168,19 @@ $breakpoints: (
 
 .confirm-total {
   height: rem(250);
+  @include respond-to('small') {
+    height: rem(240);
+  }
   overflow-y: scroll;
   margin-bottom: rem(10);
   .confirm-title {
     font-size: rem(20);
     font-family: $eng-content;
+    padding-top: rem(15 );
   }
   .confirm-content {
     font-size: rem(15);
+    font-family: $eng-content;
     padding-top: rem(5);
   }
 }
