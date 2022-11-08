@@ -53,6 +53,7 @@ export default function ApiSpec({ pid }: Props) {
           await getApi(
             `/apidocs/controllers/${apiController.apiControllerId}`,
           ).then(({ data }: any) => {
+            console.log(data);
             if (store.pjt.controllers !== undefined)
               store.pjt.controllers.push({
                 id: data.apiControllerId,

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 import './style.scss';
-import { API, CONTROLLER, QUERY } from 'types/ApiSpec';
+import { API, CONTROLLER, QUERY, DTO } from 'types/ApiSpec';
 import { getApi } from 'api';
 import ApiContentLeft from './ApiContentLeft';
 import ApiContentRight from './ApiContentRight';
@@ -24,6 +24,17 @@ export default function ApiModal({
   const [isEdit, setIsEdit] = useState(false);
   const objDataType: any[] = [];
 
+  const [apiId, setApiId] = useState(0);
+  const [apiName, setApiName] = useState('');
+  const [apiDesc, setApiDesc] = useState('');
+  const [methodName, setMethodName] = useState('');
+  const [apiUrl, setApiUrl] = useState('');
+  const [apiMethod, setApiMethod] = useState('GET');
+  const [apiCode, setApiCode] = useState(200);
+  const [dtoResponse, setDtoResponse] = useState<DTO[]>([]);
+  const [pathVarList, setPathVarList] = useState<QUERY[]>([]);
+  const [queryList, setQueryList] = useState<QUERY[]>([]);
+
   useEffect(() => {
     const getApiInfo = async () => {
       const editRow = store.pjt.controllers[controllerIdx].responses[apiRowIdx];
@@ -31,56 +42,43 @@ export default function ApiModal({
       const { data }: any = await getApi(`/apidocs/apis/${editRow.id}`);
       console.log(data);
 
-      if (!store.pjt.currentAPI) initCurrentAPI();
+      setApiId(data.apiResponse.apiId);
+      setApiName(data.apiResponse.apiName);
+      setApiDesc(data.apiResponse.apiDescription);
+      setMethodName(data.apiResponse.apiMethodName);
+      setApiUrl(data.apiResponse.url);
+      setApiMethod(data.apiResponse.method);
+      setApiCode(data.apiResponse.apiCode === 'OK' ? 200 : 201);
+      setDtoResponse(data.dtoResponses);
 
-      store.pjt.currentAPI.responses.id = data.apiResponse.apiId;
-      store.pjt.currentAPI.responses.apiName = data.apiResponse.apiName;
-      store.pjt.currentAPI.responses.methodName =
-        data.apiResponse.apiMethodName;
-      store.pjt.currentAPI.responses.url = data.apiResponse.apiUrl;
-      store.pjt.currentAPI.responses.method = data.apiResponse.apiMethod;
-      store.pjt.currentAPI.responses.code =
-        data.apiResponse.apiCode === 'OK' ? 200 : 201;
-      store.pjt.currentAPI.responses.desc =
-        data.apiResponse.apiDescription || '';
-
-      store.pjt.currentAPI.pathVarList = data.pathVariableResponses;
-      store.pjt.currentAPI.queryList = data.queryStringResponses;
-      store.pjt.currentAPI.dtoResponse = data.dtoResponses;
+      setPathVarList(data.pathVariableResponses);
+      setQueryList(data.queryStringResponses);
 
       setIsEdit(true);
     };
-
-    const initCurrentAPI = () => {
-      console.log('init current api');
-      if (!store.pjt.currentAPI)
-        store.pjt.currentAPI = {
-          responses: {
-            id: 0,
-            apiName: '',
-            methodName: '',
-            url: '',
-            method: 'GET',
-            code: 200,
-            desc: '',
-          },
-          pathVarList: [{ name: '', type: 'PATH' }],
-          queryList: [{ name: '', type: 'STRING' }],
-          dtoResponse: [],
-        };
-    };
-
     if (apiRowIdx >= 0) getApiInfo();
-    else initCurrentAPI();
   }, []);
 
   const submitApi = useCallback(
     (e: any) => {
       e.preventDefault();
+      const newApiObj = {
+        responses: {
+          id: 0,
+          apiName,
+          desc: apiDesc,
+          methodName,
+          url: apiUrl,
+          method: apiMethod,
+          code: apiCode,
+        },
+      };
+
+      store.pjt.controller[controllerIdx].responses.push(newApiObj);
 
       setIsApiModalOpen(false);
     },
-    [isEdit],
+    [isEdit, apiName, apiDesc, methodName, apiUrl, apiMethod, apiCode],
   );
 
   const onDeleteClick = useCallback(() => {
@@ -109,7 +107,11 @@ export default function ApiModal({
 
         <article className="api-add-content-container">
           <ApiContentLeft store={store} controllerIdx={controllerIdx} />
-          <ApiContentRight objDataType={objDataType} store={store} />
+          <ApiContentRight
+            store={store}
+            objDataType={objDataType}
+            dtoResponse={dtoResponse}
+          />
         </article>
 
         <article className="closebtn-container">

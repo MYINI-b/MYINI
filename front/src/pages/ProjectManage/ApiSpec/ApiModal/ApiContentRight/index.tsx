@@ -1,32 +1,37 @@
-import { useState, useCallback, Dispatch } from 'react';
+import { useState, useCallback, Dispatch, useEffect } from 'react';
 import DataTypeList from 'components/DataTypeList';
 import './style.scss';
-import { MOUSEPOS, ATTRIBUTE } from 'types/ApiSpec';
+import { MOUSEPOS, ATTRIBUTE, DTO } from 'types/ApiSpec';
 import Tooltip from 'components/Tooltip';
 
 interface Props {
   objDataType: any[];
   store: any;
+  dtoResponse: DTO[];
 }
 
-export default function ApiContentRight({ objDataType, store }: Props) {
+export default function ApiContentRight({
+  objDataType,
+  store,
+  dtoResponse,
+}: Props) {
   const [isReq, setIsReq] = useState(false);
   const [isDatatypeListOpen, setIsDatatypeListOpen] = useState(false);
   const [mousePos, setMousePos] = useState<MOUSEPOS>({ x: 0, y: 0 });
-  const [reqObjAttribute, setReqObjAttribute] = useState<Array<ATTRIBUTE>>([
-    {
-      name: 'string',
-      type: 'string',
-      isList: false,
-    },
-  ]);
-  const [resObjAttribute, setResObjAttribute] = useState<Array<ATTRIBUTE>>([
-    {
-      name: 'string',
-      type: 'string',
-      isList: false,
-    },
-  ]);
+  const [request, setRequest] = useState<any>({
+    dtoId: 0,
+    dtoIsList: false,
+    dtoItemResponses: [],
+    dtoName: '',
+    dtoType: '',
+  });
+  const [response, setResponse] = useState<any>({
+    dtoId: 0,
+    dtoIsList: false,
+    dtoItemResponses: [],
+    dtoName: '',
+    dtoType: '',
+  });
 
   const openDataTypeList = useCallback((e: any, isReq: boolean) => {
     e.stopPropagation();
@@ -37,9 +42,29 @@ export default function ApiContentRight({ objDataType, store }: Props) {
     setIsDatatypeListOpen((prev) => !prev);
   }, []);
 
-  const onReqVarNameChange = useCallback((e: any) => {}, []);
+  const onReqVarNameChange = useCallback(
+    (e: any) => {
+      const copyRequest = { ...request };
+      copyRequest.dtoName = e.target.value;
+    },
+    [request],
+  );
 
-  const onResVarNameChange = useCallback((e: any) => {}, []);
+  const onResVarNameChange = useCallback(
+    (e: any) => {
+      const copyResponse = { ...response };
+      copyResponse.dtoName = e.target.value;
+    },
+    [response],
+  );
+
+  useEffect(() => {
+    dtoResponse.forEach((dto: any) => {
+      if (dto.dtoType === 'RESPONSE') setResponse(dto);
+      else setRequest(dto);
+      console.log(dto);
+    });
+  }, []);
 
   return (
     <div className="api-add-content-right">
@@ -60,60 +85,62 @@ export default function ApiContentRight({ objDataType, store }: Props) {
                   className="datatype-block"
                   onClick={(e) => openDataTypeList(e, true)}
                 >
-                  {reqObjAttribute[0].isList
-                    ? `List<${reqObjAttribute[0].type}>`
-                    : reqObjAttribute[0].type}
+                  {request.dtoIsList
+                    ? `List<${request.dtoName}>`
+                    : request.dtoName}
                 </div>
               </div>
               <input
                 type="text"
                 className="content-right-boxcontent-input"
                 placeholder="변수명을 입력해주세요"
-                value=""
+                value={request.dtoName}
                 onChange={onReqVarNameChange}
               />
             </div>
             <div className="content-right-detail-boxcontent">
-              {reqObjAttribute[0].attr && reqObjAttribute[0].attr.length > 0 && (
+              {request.dtoItemResponses.length > 0 && (
                 <>
-                  {reqObjAttribute[0].isList && (
+                  {request.dtoIsList && (
                     <p className="datatype-add-brace">&#91;</p>
                   )}
                   <p
                     className={`datatype-add-brace ${
-                      reqObjAttribute[0].isList && 'second'
+                      request.dtoIsList && 'second'
                     }`}
                   >
                     &#123;
                   </p>
-                  {reqObjAttribute[0].attr.map((atr, i) => {
+                  {request.dtoItemResponses.map((req: any, i: number) => {
                     return (
                       <div
-                        className={`attr-div ${
-                          reqObjAttribute[0].isList && 'second'
-                        }`}
+                        className={`attr-div ${req.dtoIsList && 'second'}`}
                         key={i}
                       >
                         <button type="button" className="attr-type-button">
-                          {atr.isList ? `List<${atr.type}>` : atr.type}
+                          {req.dtoIsList
+                            ? `List<${
+                                req.dtoClassTypeName || req.dtoPrimitiveTypeName
+                              }>`
+                            : req.dtoClassTypeName || req.dtoPrimitiveTypeName}
                         </button>
-                        <input
+                        {/* <input
                           type="text"
-                          value={atr.name}
+                          value={req.dtoItemName}
                           className="attr-type-name"
                           readOnly
-                        />
+                        /> */}
                       </div>
                     );
                   })}
                   <p
                     className={`datatype-add-brace ${
-                      reqObjAttribute[0].isList && 'second'
+                      request.dtoIsList && 'second'
                     }`}
                   >
                     &#123;
                   </p>
-                  {reqObjAttribute[0].isList && (
+                  {request.dtoIsList && (
                     <p className="datatype-add-brace"> &#93;</p>
                   )}
                 </>
@@ -147,46 +174,48 @@ export default function ApiContentRight({ objDataType, store }: Props) {
                   className="datatype-block"
                   onClick={(e) => openDataTypeList(e, false)}
                 >
-                  {resObjAttribute[0].isList
-                    ? `List<${resObjAttribute[0].type}>`
-                    : resObjAttribute[0].type}
+                  {response.dtoIsList
+                    ? `List<${response.dtoName}>`
+                    : response.dtoName}
                 </div>
               </div>
-              <input
+              {/* <input
                 type="text"
                 className="content-right-boxcontent-input"
                 placeholder="변수명을 입력해주세요"
-                value=""
+                value={response.dtoName}
                 onChange={onResVarNameChange}
-              />
+              /> */}
             </div>
             <div className="content-right-detail-boxcontent">
-              {resObjAttribute[0].attr && resObjAttribute[0].attr.length > 0 && (
+              {response.dtoItemResponses.length > 0 && (
                 <>
-                  {resObjAttribute[0].isList && (
+                  {response.dtoIsList && (
                     <p className="datatype-add-brace">&#91;</p>
                   )}
                   <p
                     className={`datatype-add-brace ${
-                      resObjAttribute[0].isList && 'second'
+                      response.dtoIsList && 'second'
                     }`}
                   >
                     &#123;
                   </p>
-                  {resObjAttribute[0].attr.map((atr, i) => {
+                  {response.dtoItemResponses.map((res: any, i: number) => {
                     return (
                       <div
-                        className={`attr-div ${
-                          resObjAttribute[0].isList && 'second'
-                        }`}
+                        className={`attr-div ${res.dtoIsList && 'second'}`}
                         key={i}
                       >
                         <button type="button" className="attr-type-button">
-                          {atr.isList ? `List<${atr.type}>` : atr.type}
+                          {res.dtoIsList
+                            ? `List<${
+                                res.dtoPrimitiveTypeName || res.dtoClassTypeName
+                              }>`
+                            : res.dtoPrimitiveTypeName || res.dtoClassTypeName}
                         </button>
                         <input
                           type="text"
-                          value={atr.name}
+                          value={res.dtoItemName}
                           className="attr-type-name"
                           readOnly
                         />
@@ -195,12 +224,12 @@ export default function ApiContentRight({ objDataType, store }: Props) {
                   })}
                   <p
                     className={`datatype-add-brace ${
-                      resObjAttribute[0].isList && 'second'
+                      response.dtoIsList && 'second'
                     }`}
                   >
                     &#123;
                   </p>
-                  {resObjAttribute[0].isList && (
+                  {response.dtoIsList && (
                     <p className="datatype-add-brace"> &#93;</p>
                   )}
                 </>
@@ -210,7 +239,7 @@ export default function ApiContentRight({ objDataType, store }: Props) {
         </div>
       </section>
 
-      {isDatatypeListOpen && (
+      {/* {isDatatypeListOpen && (
         <DataTypeList
           setIsDatatypeListOpen={setIsDatatypeListOpen}
           mousePos={mousePos}
@@ -223,7 +252,7 @@ export default function ApiContentRight({ objDataType, store }: Props) {
           newObjAttribute={isReq ? reqObjAttribute : resObjAttribute}
           setNewObjAttribute={isReq ? setReqObjAttribute : setResObjAttribute}
         />
-      )}
+      )} */}
     </div>
   );
 }

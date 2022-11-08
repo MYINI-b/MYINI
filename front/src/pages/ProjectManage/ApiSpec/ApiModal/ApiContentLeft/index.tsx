@@ -100,6 +100,25 @@ export default function ApiContentLeft({ store, controllerIdx }: Props) {
     setSelectIdx(idx);
   }, []);
 
+  useEffect(() => {
+    let newUrl = store.pjt.controllers[controllerIdx].baseurl;
+
+    if (store.pjt.currentAPI) {
+      store.pjt.currentAPI.pathVarList.forEach((path: QUERY) => {
+        const pathurl =
+          path.type === 'PATH' ? `/${path.key}` : `/{${path.key}}`;
+        newUrl += pathurl;
+      });
+
+      store.pjt.currentAPI.queryList.forEach((query: QUERY, i: number) => {
+        const queryurl = i === 0 ? `?${query.key}=` : `&${query.key}=`;
+        newUrl += queryurl;
+      });
+      store.pjt.currentAPI.responses.url = newUrl;
+      console.log(newUrl);
+    }
+  }, [store.pjt.currentAPI]);
+
   return (
     <div className="api-add-content-left">
       {store.pjt.currentAPI && (
@@ -194,11 +213,13 @@ export default function ApiContentLeft({ store, controllerIdx }: Props) {
                             className="api-query-input"
                             placeholder="KEY"
                             onChange={(e) => onKeyChange(i, e)}
-                            value={pathvar.key}
+                            value={pathvar.key || ''}
                           />
                           <div className="api-query-div">
                             <label onClick={(e) => onPathTypeClick(e, i)}>
-                              {pathvar.type === '' ? 'TYPE' : pathvar.type}{' '}
+                              {!pathvar || pathvar.type === ''
+                                ? 'TYPE'
+                                : pathvar.type}
                             </label>
                             <FontAwesomeIcon icon={faChevronDown} />
                             {isPathTypeOpen && (
@@ -230,11 +251,13 @@ export default function ApiContentLeft({ store, controllerIdx }: Props) {
                             className="api-query-input"
                             placeholder="KEY"
                             onChange={(e) => onKeyChange(i, e)}
-                            value={query.key}
+                            value={query.key || ''}
                           />
                           <div className="api-query-div">
                             <label onClick={(e) => onPathTypeClick(e, i)}>
-                              {query.type === '' ? 'TYPE' : query.type}
+                              {!query || query.type === ''
+                                ? 'TYPE'
+                                : query.type}
                             </label>
                             <FontAwesomeIcon icon={faChevronDown} />
                             {isPathTypeOpen && (
