@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectListResponse {
+    private Long projectId;
     private String projectName;
     private String projectDescription;
     private String projectImg;
@@ -19,6 +20,7 @@ public class ProjectListResponse {
 
     public static ProjectListResponse from(Project project){
         ProjectListResponse projectListResponse = new ProjectListResponse();
+        projectListResponse.projectId = project.getProjectId();
         projectListResponse.projectName = project.getProjectName();
         projectListResponse.projectDescription = project.getProjectDescription();
         projectListResponse.projectImg = project.getProjectImg();
