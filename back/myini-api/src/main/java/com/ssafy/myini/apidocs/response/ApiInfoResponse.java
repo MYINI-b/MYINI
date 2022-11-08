@@ -19,7 +19,26 @@ public class ApiInfoResponse {
     private List<QueryStringResponse> queryStringResponses;
 
     private List<DtoResponse> dtoResponses;
+    
+    private List<String> pathListResponse;
 
+
+    public static ApiInfoResponse from(Api api, List<String> pathListResponse){
+        ApiInfoResponse apiInfoResponse = new ApiInfoResponse();
+        apiInfoResponse.apiResponse = ApiResponse.from(api);
+        apiInfoResponse.pathVariableResponses = api.getPathVariables().stream()
+                .map(PathVariableResponse::from)
+                .collect(Collectors.toList());
+        apiInfoResponse.queryStringResponses = api.getQueryStrings().stream()
+                .map(QueryStringResponse::from)
+                .collect(Collectors.toList());
+        apiInfoResponse.dtoResponses = api.getDtos().stream()
+                .map(DtoResponse::from)
+                .collect(Collectors.toList());
+        apiInfoResponse.pathListResponse = pathListResponse;
+
+        return apiInfoResponse;
+    }
 
     public static ApiInfoResponse from(Api api){
         ApiInfoResponse apiInfoResponse = new ApiInfoResponse();
@@ -33,6 +52,7 @@ public class ApiInfoResponse {
         apiInfoResponse.dtoResponses = api.getDtos().stream()
                 .map(DtoResponse::from)
                 .collect(Collectors.toList());
+
         return apiInfoResponse;
     }
 }
