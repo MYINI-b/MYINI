@@ -301,6 +301,7 @@ class ApiDocsControllerTest extends ControllerTest {
         then(apiDocsService).should(times(1)).deleteApi(any());
     }
 
+<<<<<<< HEAD
     @Test
     @DisplayName("API를 조회한다.")
     void findByApiId() throws Exception {
@@ -357,6 +358,64 @@ class ApiDocsControllerTest extends ControllerTest {
         // then
         then(apiDocsService).should(times(1)).findByApiId(any());
     }
+=======
+//    @Test
+//    @DisplayName("API를 조회한다.")
+//    void findByApiId() throws Exception {
+//        // given
+//        given(apiDocsService.findByApiId(any()))
+//                .willReturn(TEST_API_INFO_RESPONSE);
+//
+//        // when
+//        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/apidocs/apis/{apiid}", ID)
+//                        .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
+//                        .accept(MediaType.APPLICATION_JSON_VALUE))
+//                .andExpect(status().isOk())
+//                .andExpect(content().json(objectMapper.writeValueAsString(TEST_API_INFO_RESPONSE)))
+//                .andDo(document("api/apidocs/apis/{apiid}",
+//                        requestHeaders(
+//                                headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
+//                        ),
+//                        pathParameters(
+//                                parameterWithName("apiid").description("Api ID")
+//                        ),
+//                        responseFields(
+//                                fieldWithPath("apiResponse").type(JsonFieldType.OBJECT).description("Api 조회결과 객체"),
+//                                fieldWithPath("apiResponse.apiId").type(JsonFieldType.NUMBER).description("Api ID"),
+//                                fieldWithPath("apiResponse.apiName").type(JsonFieldType.STRING).description("Api 이름"),
+//                                fieldWithPath("apiResponse.apiDescription").type(JsonFieldType.STRING).description("Api 설명"),
+//                                fieldWithPath("apiResponse.apiUrl").type(JsonFieldType.STRING).description("Api URL"),
+//                                fieldWithPath("apiResponse.apiMethod").type(JsonFieldType.STRING).description("Api Method"),
+//                                fieldWithPath("apiResponse.apiCode").type(JsonFieldType.STRING).description("Api Code"),
+//                                fieldWithPath("apiResponse.apiMethodName").type(JsonFieldType.STRING).description("Api 메서드 이름"),
+//                                fieldWithPath("pathVariableResponses").type(JsonFieldType.ARRAY).description("PathVariable 조회결과 배열"),
+//                                fieldWithPath("pathVariableResponses.[].pathVariableId").type(JsonFieldType.NUMBER).description("Pathvariable ID"),
+//                                fieldWithPath("pathVariableResponses.[].pathVariableKey").type(JsonFieldType.STRING).description("Pathvariable Key"),
+//                                fieldWithPath("pathVariableResponses.[].pathVariableType").type(JsonFieldType.STRING).description("Pathvariable Type"),
+//                                fieldWithPath("queryStringResponses").type(JsonFieldType.ARRAY).description("QueryString 조회결과 배열"),
+//                                fieldWithPath("queryStringResponses.[].queryStringId").type(JsonFieldType.NUMBER).description("Querystring ID"),
+//                                fieldWithPath("queryStringResponses.[].queryStringKey").type(JsonFieldType.STRING).description("Querystring Key"),
+//                                fieldWithPath("queryStringResponses.[].queryStringType").type(JsonFieldType.STRING).description("Querystring Type"),
+//                                fieldWithPath("dtoResponses").type(JsonFieldType.ARRAY).description("Dto 조회결과 배열"),
+//                                fieldWithPath("dtoResponses.[].dtoId").type(JsonFieldType.NUMBER).description("Dto ID"),
+//                                fieldWithPath("dtoResponses.[].dtoName").type(JsonFieldType.STRING).description("Dto 이름"),
+//                                fieldWithPath("dtoResponses.[].dtoType").type(JsonFieldType.STRING).description("Dto Type"),
+//                                fieldWithPath("dtoResponses.[].dtoIsList").type(JsonFieldType.STRING).description("Dto 리스트 여부"),
+//                                fieldWithPath("dtoResponses.[].dtoItemResponses").type(JsonFieldType.ARRAY).description("DtoItem 조회결과 배열"),
+//                                fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoItemId").type(JsonFieldType.NUMBER).description("DtoItem ID"),
+//                                fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoItemName").type(JsonFieldType.STRING).description("DtoItem 이름"),
+//                                fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoClassTypeId").type(JsonFieldType.NUMBER).description("DtoItem DtoClassTypeId"),
+//                                fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoPrimitiveTypeId").type(JsonFieldType.NUMBER).description("DtoItem DtoPrimitiveTypeId"),
+//                                fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoIsList").type(JsonFieldType.STRING).description("리스트여부"),
+//                                fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoClassTypeName").type(JsonFieldType.STRING).description("DtoItem DtoClassTypeName"),
+//                                fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoPrimitiveTypeName").type(JsonFieldType.STRING).description("DtoItem DtoPrimitiveTypeName")
+//
+//                        )));
+//
+//        // then
+//        then(apiDocsService).should(times(1)).findByApiId(any());
+//    }
+>>>>>>> c8606cf68b5cb017fe0729c148617859a8e13262
 
     @Test
     @DisplayName("PathVariable을 생성한다.")
