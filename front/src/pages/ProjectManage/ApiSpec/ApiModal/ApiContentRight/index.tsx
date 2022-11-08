@@ -6,25 +6,10 @@ import Tooltip from 'components/Tooltip';
 
 interface Props {
   objDataType: any[];
-  apiMethod: string;
-  resVarName: string;
-  setResVarName: Dispatch<React.SetStateAction<string>>;
-  reqVarName: string;
-  setReqVarName: Dispatch<React.SetStateAction<string>>;
-  resMany: boolean;
-  setResMany: Dispatch<React.SetStateAction<boolean>>;
+  store: any;
 }
 
-export default function ApiContentRight({
-  objDataType,
-  apiMethod,
-  resVarName,
-  setResVarName,
-  reqVarName,
-  setReqVarName,
-  resMany,
-  setResMany,
-}: Props) {
+export default function ApiContentRight({ objDataType, store }: Props) {
   const [isReq, setIsReq] = useState(false);
   const [isDatatypeListOpen, setIsDatatypeListOpen] = useState(false);
   const [mousePos, setMousePos] = useState<MOUSEPOS>({ x: 0, y: 0 });
@@ -43,20 +28,18 @@ export default function ApiContentRight({
     },
   ]);
 
-  const openDataTypeList = useCallback(
-    (e: any, isReq: boolean) => {
-      e.stopPropagation();
-      e.preventDefault();
+  const openDataTypeList = useCallback((e: any, isReq: boolean) => {
+    e.stopPropagation();
+    e.preventDefault();
 
-      // if (isReq && (apiMethod === 'GET' || apiMethod === 'DELETE')) return;
-      // if (!isReq && apiMethod !== 'GET') return;
+    setIsReq(isReq);
+    setMousePos({ x: e.clientX, y: e.clientY });
+    setIsDatatypeListOpen((prev) => !prev);
+  }, []);
 
-      setIsReq(isReq);
-      setMousePos({ x: e.clientX, y: e.clientY });
-      setIsDatatypeListOpen((prev) => !prev);
-    },
-    [apiMethod],
-  );
+  const onReqVarNameChange = useCallback((e: any) => {}, []);
+
+  const onResVarNameChange = useCallback((e: any) => {}, []);
 
   return (
     <div className="api-add-content-right">
@@ -86,8 +69,8 @@ export default function ApiContentRight({
                 type="text"
                 className="content-right-boxcontent-input"
                 placeholder="변수명을 입력해주세요"
-                value={reqVarName}
-                onChange={(e) => setReqVarName(e.target.value.trim())}
+                value=""
+                onChange={onReqVarNameChange}
               />
             </div>
             <div className="content-right-detail-boxcontent">
@@ -144,18 +127,12 @@ export default function ApiContentRight({
         <h1 className="content-right-title">RESPONSE BODY</h1>
         <div className="content-right-box">
           <div className="content-right-many-wrapper">
-            <div
-              className="many-radio-wrapper"
-              onClick={() => setResMany(false)}
-            >
-              <div className={`many-radio-button ${!resMany && 'select'}`} />
+            <div className="many-radio-wrapper" onClick={() => {}}>
+              {/* <div className={`many-radio-button ${!resMany && 'select'}`} /> */}
               <p className="many-radio-text">단건</p>
             </div>
-            <div
-              className="many-radio-wrapper"
-              onClick={() => setResMany(true)}
-            >
-              <div className={`many-radio-button ${resMany && 'select'}`} />
+            <div className="many-radio-wrapper" onClick={() => {}}>
+              {/* <div className={`many-radio-button ${resMany && 'select'}`} /> */}
               <p className="many-radio-text">다건</p>
             </div>
           </div>
@@ -179,8 +156,8 @@ export default function ApiContentRight({
                 type="text"
                 className="content-right-boxcontent-input"
                 placeholder="변수명을 입력해주세요"
-                value={resVarName}
-                onChange={(e) => setResVarName(e.target.value.trim())}
+                value=""
+                onChange={onResVarNameChange}
               />
             </div>
             <div className="content-right-detail-boxcontent">

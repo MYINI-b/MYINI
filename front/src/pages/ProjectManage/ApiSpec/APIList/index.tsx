@@ -90,17 +90,14 @@ export default function APIList({ store, controllerIdx }: Props) {
           </>
         )}
 
-      {/* {isApiModalOpen && (
+      {isApiModalOpen && (
         <ApiModal
           setIsApiModalOpen={setIsApiModalOpen}
-          controllers={controllers}
           controllerIdx={controllerIdx}
           apiRowIdx={apiRowIdx}
-          objDataType={objDataType}
-          apis={apis}
-          setApis={setApis}
+          store={store}
         />
-      )} */}
+      )}
     </section>
   );
 }

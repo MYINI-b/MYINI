@@ -10,44 +10,10 @@ import ApiMethodList from '../ApiMethodList';
 import PathTypeModal from './PathTypeModal';
 
 interface Props {
-  pathVarList: QUERY[];
-  setPathVarList: Dispatch<React.SetStateAction<QUERY[]>>;
-  queryList: QUERY[];
-  setQueryList: Dispatch<React.SetStateAction<QUERY[]>>;
-  apiName: string;
-  setApiName: Dispatch<React.SetStateAction<string>>;
-  methodName: string;
-  setMethodName: Dispatch<React.SetStateAction<string>>;
-  apiDesc: string;
-  setApiDesc: Dispatch<React.SetStateAction<string>>;
-  apiMethod: string;
-  setApiMethod: Dispatch<React.SetStateAction<string>>;
-  apiCode: number;
-  setApiCode: Dispatch<React.SetStateAction<number>>;
-  apiUrl: string;
-  setApiUrl: Dispatch<React.SetStateAction<string>>;
-  apiBaseUrl: string;
+  store: any;
 }
 
-export default function ApiContentLeft({
-  pathVarList,
-  setPathVarList,
-  queryList,
-  setQueryList,
-  apiName,
-  setApiName,
-  methodName,
-  setMethodName,
-  apiDesc,
-  setApiDesc,
-  apiMethod,
-  setApiMethod,
-  apiCode,
-  setApiCode,
-  apiUrl,
-  setApiUrl,
-  apiBaseUrl,
-}: Props) {
+export default function ApiContentLeft({ store }: Props) {
   const [isPathVar, setIsPathVar] = useState(true);
   const [isApiMethodListOpen, setIsApiMethodListOpen] = useState(false);
   const [isPathTypeOpen, setIsPathTypeOpen] = useState(false);
@@ -58,61 +24,70 @@ export default function ApiContentLeft({
   });
   const [selectIdx, setSelectIdx] = useState(0);
 
-  // const onKeyChange = useCallback(
-  //   (idx: number, e: any) => {
-  //     const copyList = isPathVar ? [...pathVarList] : [...queryList];
-  //     const copyObj = { ...copyList[idx] };
-  //     copyObj.key = e.target.value.trim();
-  //     copyList[idx] = copyObj;
+  const onApiNameChange = useCallback(
+    (e: any) => {
+      store.pjt.currentAPI.responses.apiName = e.target.value.trim();
+    },
+    [store],
+  );
 
-  //     if (isPathVar) {
-  //       if (e.target.value !== '' && idx === pathVarList.length - 1) {
-  //         copyList.push({ key: '', type: 'PATH' });
-  //       }
+  const onMethodNameChange = useCallback(
+    (e: any) => {
+      store.pjt.currentAPI.responses.methodName = e.target.value.trim();
+    },
+    [store],
+  );
 
-  //       setPathVarList([...copyList]);
-  //     } else {
-  //       const copyList = [...queryList];
-  //       const copyObj = { ...queryList[idx] };
-  //       copyObj.key = e.target.value;
-  //       copyList[idx] = copyObj;
+  const onDescChange = useCallback(
+    (e: any) => {
+      store.pjt.currentAPI.responses.desc = e.target.value.trim();
+    },
+    [store],
+  );
 
-  //       if (e.target.value !== '' && idx === queryList.length - 1) {
-  //         copyList.push({ key: '', type: 'STRING' });
-  //       }
+  const onKeyChange = useCallback(
+    (idx: number, e: any) => {
+      const value = e.target.value.trim();
 
-  //       setQueryList([...copyList]);
-  //     }
-  //   },
-  //   [isPathVar, pathVarList, queryList],
-  // );
+      if (isPathVar) {
+        store.pjt.currentAPI.pathVarList[idx].key = value;
+        if (
+          value !== '' &&
+          idx === store.pjt.currentAPI.pathVarList.length - 1
+        ) {
+          store.pjt.currentAPI.pathVarList.push({ key: '', type: 'PATH' });
+        }
+      } else {
+        store.pjt.currentAPI.queryList[idx].key = value;
 
-  // const deleteKey = useCallback(
-  //   (idx: number) => {
-  //     const copyList = isPathVar ? [...pathVarList] : [...queryList];
+        if (value !== '' && idx === store.pjt.currentAPI.queryList.length - 1) {
+          store.pjt.currentAPI.queryList.push({ key: '', type: 'STRING' });
+        }
+      }
+    },
+    [isPathVar],
+  );
 
-  //     if (isPathVar) {
-  //       if (idx === 0 && pathVarList.length === 1) {
-  //         setPathVarList([{ key: '', type: 'PATH' }]);
-  //         return;
-  //       }
+  const deleteKey = useCallback(
+    (idx: number) => {
+      if (isPathVar) {
+        if (idx === 0 && store.pjt.currentAPI.pathVarList.length === 1) {
+          store.pjt.currentAPI.pathVarList = [{ key: '', type: 'PATH' }];
+          return;
+        }
 
-  //       copyList.splice(idx, 1);
-  //       setPathVarList([...copyList]);
-  //     } else {
-  //       const copyList = [...queryList];
+        store.pjt.currentAPI.pathVarList.splice(idx, 1);
+      } else {
+        if (idx === 0 && store.pjt.currentAPI.queryList.length === 1) {
+          store.pjt.currentAPI.queryList = [{ key: '', type: 'PATH' }];
+          return;
+        }
 
-  //       if (idx === 0 && queryList.length === 1) {
-  //         setQueryList([{ key: '', type: 'STRING' }]);
-  //         return;
-  //       }
-
-  //       copyList.splice(idx, 1);
-  //       setQueryList([...copyList]);
-  //     }
-  //   },
-  //   [pathVarList, isPathVar, queryList],
-  // );
+        store.pjt.currentAPI.queryList.splice(idx, 1);
+      }
+    },
+    [isPathVar],
+  );
 
   const onPathTypeClick = useCallback((e: any, idx: number) => {
     setIsPathTypeOpen(true);
@@ -124,43 +99,14 @@ export default function ApiContentLeft({
     setSelectIdx(idx);
   }, []);
 
-  useEffect(() => {
-    let newApiUrl = '';
-
-    pathVarList.forEach((e) => {
-      if (e.key !== '') {
-        if (e.type === 'PATH') newApiUrl += `/${e.key}`;
-        else newApiUrl += `/{${e.key}}`;
-      }
-    });
-
-    newApiUrl +=
-      queryList.length > 1 || (queryList.length > 0 && queryList[0].key !== '')
-        ? '?'
-        : '';
-    queryList.forEach((e, i) => {
-      if (e.key !== '') newApiUrl += i > 0 ? `&${e.key}=` : `${e.key}=`;
-    });
-
-    setApiUrl(newApiUrl);
-  }, [pathVarList, queryList]);
-
-  useEffect(() => {
-    if (apiMethod === 'POST') {
-      setApiCode(201);
-    } else {
-      setApiCode(200);
-    }
-  }, [apiMethod]);
-
   return (
     <div className="api-add-content-left">
       <input
         type="text"
         className="api-add-input"
         placeholder="API Name"
-        value={apiName}
-        onChange={(e) => setApiName(e.target.value.trim())}
+        value={store.pjt.currentAPI.responses.apiName}
+        onChange={onApiNameChange}
         required
       />
       <Tooltip text="Camel Case 양식으로 작성해주세요.">
@@ -168,8 +114,8 @@ export default function ApiContentLeft({
           type="text"
           className="api-add-input"
           placeholder="Method Name"
-          value={methodName}
-          onChange={(e) => setMethodName(e.target.value.trim())}
+          value={store.pjt.currentAPI.responses.methodName}
+          onChange={onMethodNameChange}
           required
         />
       </Tooltip>
@@ -178,8 +124,8 @@ export default function ApiContentLeft({
         type="text"
         className="api-add-input"
         placeholder="Api Description"
-        value={apiDesc}
-        onChange={(e) => setApiDesc(e.target.value)}
+        value={store.pjt.currentAPI.responses.desc}
+        onChange={onDescChange}
         required
       />
 
@@ -187,22 +133,23 @@ export default function ApiContentLeft({
         <div className="method-code-div">
           <h3 className="method-code-title">메소드</h3>
           <span
-            className={`method-code-block ${apiMethod.toLowerCase()}`}
+            className={`method-code-block ${store.pjt.currentAPI.responses.method.toLowerCase()}`}
             onClick={() => setIsApiMethodListOpen(true)}
           >
-            {apiMethod}
+            {store.pjt.currentAPI.responses.method}
             {isApiMethodListOpen && (
               <ApiMethodList
                 setIsApiMethodListOpen={setIsApiMethodListOpen}
-                apiMethod={apiMethod}
-                setApiMethod={setApiMethod}
+                store={store}
               />
             )}
           </span>
         </div>
         <div className="method-code-div">
           <h3 className="method-code-title">코드</h3>
-          <span className="method-code-block code">{apiCode}</span>
+          <span className="method-code-block code">
+            {store.pjt.currentAPI.responses.code}
+          </span>
         </div>
       </div>
 
@@ -211,7 +158,7 @@ export default function ApiContentLeft({
         <input
           type="text"
           className="api-url-input"
-          value={`${apiBaseUrl}${apiUrl}`}
+          value={store.pjt.currentAPI.responses.url}
           readOnly
         />
       </div>
@@ -235,49 +182,51 @@ export default function ApiContentLeft({
         </Tooltip>
         <div className="api-query-content-container">
           {isPathVar
-            ? pathVarList.map((pathvar, i) => {
-                return (
-                  <div className="api-query-input-container" key={i}>
-                    <input
-                      type="text"
-                      className="api-query-input"
-                      placeholder="KEY"
-                      // onChange={(e) => onKeyChange(i, e)}
-                      value={pathvar.key}
-                    />
-                    <div className="api-query-div">
-                      <label onClick={(e) => onPathTypeClick(e, i)}>
-                        {pathvar.type === '' ? 'TYPE' : pathvar.type}{' '}
-                      </label>
-                      <FontAwesomeIcon icon={faChevronDown} />
-                      {isPathTypeOpen && (
-                        <PathTypeModal
-                          setIsPathTypeOpen={setIsPathTypeOpen}
-                          clickElementPos={clickElementPos}
-                          list={pathVarList}
-                          setList={setPathVarList}
-                          selectIdx={selectIdx}
-                          isPathVar={isPathVar}
-                        />
-                      )}
-                    </div>
+            ? store.pjt.currentAPI.pathVarList &&
+              store.pjt.currentAPI.pathVarList.map(
+                (pathvar: QUERY, i: number) => {
+                  return (
+                    <div className="api-query-input-container" key={i}>
+                      <input
+                        type="text"
+                        className="api-query-input"
+                        placeholder="KEY"
+                        onChange={(e) => onKeyChange(i, e)}
+                        value={pathvar.key}
+                      />
+                      <div className="api-query-div">
+                        <label onClick={(e) => onPathTypeClick(e, i)}>
+                          {pathvar.type === '' ? 'TYPE' : pathvar.type}{' '}
+                        </label>
+                        <FontAwesomeIcon icon={faChevronDown} />
+                        {isPathTypeOpen && (
+                          <PathTypeModal
+                            setIsPathTypeOpen={setIsPathTypeOpen}
+                            clickElementPos={clickElementPos}
+                            selectIdx={selectIdx}
+                            isPathVar={isPathVar}
+                            store={store}
+                          />
+                        )}
+                      </div>
 
-                    <FontAwesomeIcon
-                      icon={faClose}
-                      className="api-query-delete"
-                      // onClick={() => deleteKey(i)}
-                    />
-                  </div>
-                );
-              })
-            : queryList.map((query, i) => {
+                      <FontAwesomeIcon
+                        icon={faClose}
+                        className="api-query-delete"
+                        // onClick={() => deleteKey(i)}
+                      />
+                    </div>
+                  );
+                },
+              )
+            : store.pjt.currentAPI.queryList.map((query: QUERY, i: number) => {
                 return (
                   <div className="api-query-input-container" key={i}>
                     <input
                       type="text"
                       className="api-query-input"
                       placeholder="KEY"
-                      // onChange={(e) => onKeyChange(i, e)}
+                      onChange={(e) => onKeyChange(i, e)}
                       value={query.key}
                     />
                     <div className="api-query-div">
@@ -289,10 +238,9 @@ export default function ApiContentLeft({
                         <PathTypeModal
                           setIsPathTypeOpen={setIsPathTypeOpen}
                           clickElementPos={clickElementPos}
-                          list={queryList}
-                          setList={setQueryList}
                           selectIdx={selectIdx}
                           isPathVar={isPathVar}
+                          store={store}
                         />
                       )}
                     </div>

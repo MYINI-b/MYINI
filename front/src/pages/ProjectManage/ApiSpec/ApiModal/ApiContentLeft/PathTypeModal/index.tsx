@@ -7,36 +7,36 @@ import { PATHVARIABLE_TYPE, DATATYPE } from 'constants/index';
 interface Props {
   setIsPathTypeOpen: Dispatch<React.SetStateAction<boolean>>;
   clickElementPos: ELEMENTPOS;
-  list: QUERY[];
-  setList: Dispatch<React.SetStateAction<QUERY[]>>;
   selectIdx: number;
   isPathVar: boolean;
+  store: any;
 }
 
 export default function PathTypeModal({
   setIsPathTypeOpen,
   clickElementPos,
-  list,
-  setList,
   selectIdx,
   isPathVar,
+  store,
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
 
   useEffect(() => {
     modalContainer.current.style.left = `${clickElementPos.x}px`;
     modalContainer.current.style.top = `${clickElementPos.y}px`;
-    // modalContainer.current.style.width = `${clickElementPos.width}px`;
   }, [clickElementPos]);
 
   const onPathTypeClick = useCallback(
     (e: any, type: string) => {
-      const copyArr = [...list];
-      copyArr[selectIdx].type = type;
-      setList(copyArr);
+      if (isPathVar) {
+        store.pjt.currentAPI.pathVarList[selectIdx].type = type;
+      } else {
+        store.pjt.currentAPI.queryList[selectIdx].type = type;
+      }
+
       setIsPathTypeOpen(false);
     },
-    [list],
+    [store],
   );
 
   return (
@@ -55,7 +55,8 @@ export default function PathTypeModal({
                 return (
                   <li
                     className={`pathtype-modal-row ${
-                      list[selectIdx].type === type && 'select'
+                      store.pjt.currentAPI.pathVarList[selectIdx].type ===
+                        type && 'select'
                     }`}
                     key={i}
                     onClick={(e) => onPathTypeClick(e, type)}
@@ -68,7 +69,8 @@ export default function PathTypeModal({
                 return (
                   <li
                     className={`pathtype-modal-row ${
-                      list[selectIdx].type === type && 'select'
+                      store.pjt.currentAPI.queryList[selectIdx].type === type &&
+                      'select'
                     }`}
                     key={i}
                     onClick={(e) => onPathTypeClick(e, type)}

@@ -4,117 +4,106 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 import './style.scss';
 import { API, CONTROLLER, QUERY } from 'types/ApiSpec';
+import { getApi } from 'api';
 import ApiContentLeft from './ApiContentLeft';
 import ApiContentRight from './ApiContentRight';
 
 interface Props {
-  controllers: Array<CONTROLLER>;
   controllerIdx: number;
   apiRowIdx: number;
   setIsApiModalOpen: Dispatch<React.SetStateAction<boolean>>;
-  objDataType: any[];
-  apis: API[][];
-  setApis: React.Dispatch<React.SetStateAction<API[][]>>;
+  store: any;
 }
 
 export default function ApiModal({
-  controllers,
   controllerIdx,
   apiRowIdx,
   setIsApiModalOpen,
-  objDataType,
-  apis,
-  setApis,
+  store,
 }: Props) {
   const [isEdit, setIsEdit] = useState(false);
-
-  const [apiName, setApiName] = useState('');
-  const [apiDesc, setApiDesc] = useState('');
-  const [methodName, setMethodName] = useState('');
-  const [apiUrl, setApiUrl] = useState('');
-  const [apiMethod, setApiMethod] = useState('GET');
-  const [apiCode, setApiCode] = useState(200);
-  const [reqVarName, setReqVarName] = useState('');
-  const [resVarName, setResVarName] = useState('');
-  const [resMany, setResMany] = useState(false);
-
-  const [pathVarList, setPathVarList] = useState<Array<QUERY>>([
-    { key: '', type: 'PATH' },
-  ]);
-  const [queryList, setQueryList] = useState<Array<QUERY>>([
-    { key: '', type: 'STRING' },
-  ]);
+  const objDataType: any[] = [];
 
   useEffect(() => {
-    const isEditIdx = apiRowIdx >= 0;
-    if (isEditIdx) {
-      // const editRow = { ...apis[controllerIdx][apiRowIdx] };
-      // setApiName(editRow.apiName);
-      // setApiDesc(editRow.desc);
-      // setMethodName(editRow.methodName);
-      // setApiUrl(editRow.url);
-      // setApiMethod(editRow.method);
-      // setApiCode(editRow.code);
-      // setReqVarName(editRow.reqVarName);
-      // setResVarName(editRow.resVarName);
-      // setPathVarList(editRow.pathVarList);
-      // setQueryList(editRow.queryList);
-    }
-    setIsEdit(isEditIdx);
+    const getApiInfo = async () => {
+      const editRow = store.pjt.controllers[controllerIdx].responses[apiRowIdx];
+
+      const { data }: any = await getApi(`/apidocs/apis/${editRow.id}`);
+      console.log(data);
+      if (!store.pjt.currentAPI)
+        store.pjt.currentAPI = {
+          responses: {
+            id: 0,
+            apiName: '',
+            methodName: '',
+            url: '',
+            method: 'GET',
+            code: 200,
+            desc: '',
+          },
+          pathVarList: [],
+          queryList: [],
+          dtoResponse: [],
+        };
+
+      store.pjt.currentAPI.responses.id = data.apiResponse.apiId;
+      store.pjt.currentAPI.responses.apiName = data.apiResponse.apiName;
+      store.pjt.currentAPI.responses.methodName =
+        data.apiResponse.apiMethodName;
+      store.pjt.currentAPI.responses.url = data.apiResponse.apiUrl;
+      store.pjt.currentAPI.responses.method = data.apiResponse.apiMethod;
+      store.pjt.currentAPI.responses.code =
+        data.apiResponse.apiCode === 'OK' ? 200 : 201;
+      store.pjt.currentAPI.responses.desc =
+        data.apiResponse.apiDescription || '';
+
+      store.pjt.currentAPI.pathVarList = data.pathVariableResponses;
+      store.pjt.currentAPI.queryList = data.queryStringResponses;
+      store.pjt.currentAPI.dtoResponse = data.dtoResponses;
+
+      setIsEdit(true);
+    };
+
+    const initCurrentAPI = async () => {
+      if (!store.pjt.currentAPI)
+        store.pjt.currentAPI = {
+          responses: {
+            id: 0,
+            apiName: '',
+            methodName: '',
+            url: '',
+            method: 'GET',
+            code: 200,
+            desc: '',
+          },
+          pathVarList: [],
+          queryList: [],
+          dtoResponse: [],
+        };
+    };
+
+    if (apiRowIdx >= 0) getApiInfo();
+    else initCurrentAPI();
   }, []);
 
   const submitApi = useCallback(
     (e: any) => {
       e.preventDefault();
-      const newApiObj = {
-        id: apis.length,
-        apiName,
-        desc: apiDesc,
-        methodName,
-        url: apiUrl,
-        method: apiMethod,
-        code: apiCode,
-        reqVarName,
-        resVarName,
-        pathVarList,
-        queryList,
-      };
-      const copyArr = [...[...apis]];
 
-      // if (isEdit) {
-      //   copyArr[controllerIdx][apiRowIdx] = newApiObj;
-      // } else {
-      //   copyArr[controllerIdx].push(newApiObj);
-      // }
-
-      setApis(copyArr);
       setIsApiModalOpen(false);
     },
-    [
-      isEdit,
-      apis,
-      apiName,
-      apiDesc,
-      methodName,
-      apiUrl,
-      apiMethod,
-      apiCode,
-      reqVarName,
-      resVarName,
-      pathVarList,
-      queryList,
-    ],
+    [isEdit],
   );
 
   const onDeleteClick = useCallback(() => {
-    const copyArr = [...[...apis]];
-    const deletedArr = [...copyArr[controllerIdx]].filter(
-      (e, i) => i !== apiRowIdx,
-    );
-    copyArr[controllerIdx] = deletedArr;
-    setApis(copyArr);
+    // const copyArr = [...[...apis]];
+    // const deletedArr = [...copyArr[controllerIdx]].filter(
+    //   (e, i) => i !== apiRowIdx,
+    // );
+    // copyArr[controllerIdx] = deletedArr;
+    // setApis(copyArr);
     setIsApiModalOpen(false);
-  }, [apis, apiRowIdx]);
+  }, [apiRowIdx]);
 
   return (
     <section className="modal-empty" onClick={() => setIsApiModalOpen(false)}>
@@ -131,35 +120,8 @@ export default function ApiModal({
         </article>
 
         <article className="api-add-content-container">
-          <ApiContentLeft
-            queryList={queryList}
-            setQueryList={setQueryList}
-            pathVarList={pathVarList}
-            setPathVarList={setPathVarList}
-            apiName={apiName}
-            setApiName={setApiName}
-            apiDesc={apiDesc}
-            setApiDesc={setApiDesc}
-            methodName={methodName}
-            setMethodName={setMethodName}
-            apiMethod={apiMethod}
-            setApiMethod={setApiMethod}
-            apiCode={apiCode}
-            setApiCode={setApiCode}
-            apiUrl={apiUrl}
-            setApiUrl={setApiUrl}
-            apiBaseUrl={`/${controllers[controllerIdx].baseurl}`}
-          />
-          <ApiContentRight
-            apiMethod={apiMethod}
-            objDataType={objDataType}
-            resVarName={resVarName}
-            reqVarName={reqVarName}
-            setResVarName={setResVarName}
-            setReqVarName={setReqVarName}
-            resMany={resMany}
-            setResMany={setResMany}
-          />
+          <ApiContentLeft store={store} />
+          <ApiContentRight objDataType={objDataType} store={store} />
         </article>
 
         <article className="closebtn-container">

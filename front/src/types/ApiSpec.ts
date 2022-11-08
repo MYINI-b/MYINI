@@ -13,6 +13,7 @@ export interface RESPONSE {
   url: string;
   method: string;
   code: number;
+  desc?: string;
 }
 
 export interface CONTROLLER {
