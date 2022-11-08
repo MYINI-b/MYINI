@@ -5,6 +5,9 @@ import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.initializer.service.InitializerService;
 import com.ssafy.myini.project.ProjectFixture;
 import net.lingala.zip4j.ZipFile;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,6 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 
 import static com.ssafy.myini.CommonFixture.TEST_AUTHORIZATION;
@@ -124,7 +129,7 @@ class InitializerControllerTest extends ControllerTest {
     @Test
     @DisplayName("이니셜라이징 미리보기를 시작한다.")
     void initializerPreview() throws Exception {
-        given(initializerService.initializerPreview(any(),any())).willReturn(Arrays.asList(TEST_PREVIEW_RESPONSE));
+        given(initializerService.initializerPreview(any(), any())).willReturn(Arrays.asList(TEST_PREVIEW_RESPONSE));
 
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/initializers/{projectid}/previews", ID)
                         .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
@@ -158,7 +163,7 @@ class InitializerControllerTest extends ControllerTest {
                                 fieldWithPath("[].fileName").type(JsonFieldType.STRING).description("파일 이름"),
                                 fieldWithPath("[].contents").type(JsonFieldType.STRING).description("파일 내용")
                         )
-                        ));
+                ));
 
         then(initializerService).should(times(1)).initializerPreview(any(), any());
 
@@ -179,7 +184,30 @@ class InitializerControllerTest extends ControllerTest {
 
         // then
         then(initializerService).should(times(1)).myIniDownload();
+    }
 
+    @Test
+    @DisplayName("이니셜라이저 설정 정보를 확인한다.")
+    void initializerDependencies() throws Exception {
+        JSONParser p = new JSONParser();
+        JSONObject obj = (JSONObject) p.parse(
+                "{\"single-select\":{\"쿼리스트링 key\":{\"default\":\"디폴트 값 id\",\"values\":[{\"name\":\"화면에 표시될 이름\",\"id\":\"쿼리스트링 value\"}]}}" +
+                        ", \"text\":[{\"name\":\"화면에 표시될 이름\", \"id\":\"쿼리스트링 key\"}]" +
+                        ", \"dependencies\":[{\"name\":\"화면에 표시될 이름\",\"description\":\"해당 dependency에 대한 설명\",\"id\":\"쿼리스트링 value\"}]}"
+        );
+
+        // given
+        given(initializerService.initializerSettings())
+                .willReturn(obj);
+
+        // when
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/initializers/settings"))
+                .andExpect(status().isOk())
+                .andDo(document("api/initializers/settings"));
+
+        // then
+        then(initializerService).should(times(1)).initializerSettings();
 
     }
+
 }
