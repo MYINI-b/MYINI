@@ -53,6 +53,8 @@ public class Project {
 
     private String jiraProjectKey;
 
+    private String jiraProjectId;
+
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<MemberProject> memberProjects = new ArrayList<>();
 
@@ -94,14 +96,17 @@ public class Project {
         this.jiraApiKey = jiraApiKey;
         this.jiraDomain = null;
         this.jiraProjectKey = null;
+        this.jiraProjectId = null;
     }
 
     public void updateJiraDomain(String jiraDomain){
         this.jiraDomain = jiraDomain;
         this.jiraProjectKey = null;
+        this.jiraProjectId = null;
     }
 
-    public void updateJiraProject(String jiraProjectKey){
+    public void updateJiraProject(String jiraProjectKey, String jiraProjectId){
+        this.jiraProjectId = jiraProjectId;
         this.jiraProjectKey = jiraProjectKey;
     }
 

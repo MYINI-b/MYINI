@@ -52,7 +52,7 @@ public class JiraServiceImpl implements JiraService{
         if(!memberProjectRepository.existsByMemberAndProject(member, findProject)){
             throw new NotFoundException(MEMBER_PROJECT_NOT_FOUND);
         }
-        findProject.updateJiraProject(request.getJiraDomain());
+        findProject.updateJiraDomain(request.getJiraDomain());
     }
 
     @Transactional
@@ -63,7 +63,7 @@ public class JiraServiceImpl implements JiraService{
         if(!memberProjectRepository.existsByMemberAndProject(member, findProject)){
             throw new NotFoundException(MEMBER_PROJECT_NOT_FOUND);
         }
-        findProject.updateJiraProject(request.getJiraProjectKey());
+        findProject.updateJiraProject(request.getJiraProjectKey(), request.getJiraProjectId());
     }
 
     @Override
@@ -88,7 +88,6 @@ public class JiraServiceImpl implements JiraService{
 
     @Override
     public void jiraCreateIssue(Long projectId) {
-        System.out.println("2");
         List<Requirement> findRequirements = requirementDocsQueryRepository.findAllRequirement(projectId);
 
         Project findProject = projectRepository.findById(projectId)
@@ -97,12 +96,10 @@ public class JiraServiceImpl implements JiraService{
         String jiraApiKey = findProject.getJiraApiKey();
         String jiraDomain = findProject.getJiraDomain();
         String jiraProjectKey = findProject.getJiraProjectKey();
-        System.out.println("3");
+        String jiraProjectId = findProject.getJiraProjectId();
+
         try {
-            System.out.println("4");
-//            JiraApi.getIssue();
-            JiraApi.createIssue(jiraId, jiraApiKey, findRequirements, jiraDomain, jiraProjectKey);
-            System.out.println("5");
+            JiraApi.createIssue(jiraId, jiraApiKey, findRequirements, jiraDomain, jiraProjectKey, jiraProjectId);
         }catch (Exception e){
             throw new JiraException(JiraException.JIRA_FAIL);
         }
