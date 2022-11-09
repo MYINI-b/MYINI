@@ -66,9 +66,8 @@ public class InitializerServiceImpl implements InitializerService {
         //ERD json 받아오기
         try {
             JSONParser jsonParser = new JSONParser();
-            File file = new File("erd");
+            File file = new File(projectId + "_erd");
             FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/" + projectId + ".vuerd.json"), file);
-
 
             Reader reader = new FileReader(file);
             JSONObject erd = (JSONObject) jsonParser.parse(reader);
@@ -113,9 +112,18 @@ public class InitializerServiceImpl implements InitializerService {
             // zipFile 삭제
             if (zipFile.getFile().exists()) {
                 if (zipFile.getFile().delete()) {
-                    System.out.println("파일 삭제 성공");
+                    System.out.println("zip 파일 삭제 성공");
                 } else {
-                    System.out.println("파일 삭제 실패");
+                    System.out.println("zip 파일 삭제 실패");
+                }
+            }
+            // erd 파일 삭제
+            reader.close();
+            if (file.exists()) {
+                if (file.delete()) {
+                    System.out.println("erd 파일 삭제 성공");
+                } else {
+                    System.out.println("erd 파일 삭제 실패");
                 }
             }
 
