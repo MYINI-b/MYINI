@@ -234,7 +234,15 @@ export default function DatatypeModal({
           )}
           {dtoRows.length > 0 &&
             dtoRows.map((dt, i) => {
-              return <DatatypeRow rowId={dt.dtoId} key={i} />;
+              return (
+                <DatatypeRow
+                  rowId={dt.dtoId}
+                  dtoRows={dtoRows}
+                  setDtoRows={setDtoRows}
+                  rowIdx={i}
+                  key={i}
+                />
+              );
             })}
         </div>
 

@@ -8,16 +8,25 @@ import {
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DTO, DTO_RESPONSE, MOUSEPOS } from 'types/ApiSpec';
-import { getApi, postApi, putApi } from 'api';
+import { deleteApi, getApi, postApi, putApi } from 'api';
 import DataTypeList from 'components/DataTypeList';
 import './style.scss';
 
 interface Props {
   rowId: number;
+  dtoRows: any[];
+  setDtoRows: React.Dispatch<React.SetStateAction<any[]>>;
+  rowIdx: number;
 }
-export default function DatatypeRow({ rowId }: Props) {
+export default function DatatypeRow({
+  rowId,
+  dtoRows,
+  setDtoRows,
+  rowIdx,
+}: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [isList, setIsList] = useState(false);
   const [mousePos, setMousePos] = useState<MOUSEPOS>({ x: 0, y: 0 });
   const [isDtoModalOpen, setIsDtoModalOpen] = useState(false);
   const [attributes, setAttributes] = useState<Array<DTO_RESPONSE>>([]);
@@ -33,26 +42,44 @@ export default function DatatypeRow({ rowId }: Props) {
   const toggleDto = useCallback(() => {
     setIsOpen((prev) => !prev);
     setIsEdit(false);
-    if (isOpen) setAttributes([]);
   }, []);
 
-  const deleteDatatype = useCallback(() => {}, []);
+  const deleteDatatype = useCallback(async () => {
+    await deleteApi(`/apidocs/dtos/${dto.dtoId}`);
+    const copyRows = [...dtoRows];
+    copyRows.splice(rowIdx, 1);
+    setDtoRows(copyRows);
+    setIsEdit(false);
+  }, [dtoRows, dto, rowIdx]);
 
   const onEditClick = useCallback(() => {
     setIsEdit(true);
   }, []);
 
   const onEditFinishClick = useCallback(async () => {
+    // dto제목 정보 수정
     const copyDto: any = { ...dto };
-    copyDto.dtoIsList = copyDto === 'Y';
-
+    copyDto.dtoItemResponses = [...attributes].map((attr) => {
+      return {
+        ...attr,
+        dtoIsList: attr.dtoIsList ? 'Y' : 'N',
+      };
+    });
+    copyDto.dtoIsList = copyDto.dtoIsList ? 'Y' : 'N';
+    console.log(copyDto);
     await putApi(`/apidocs/dtos/${dto.dtoId}`, copyDto);
 
-    //
+    let cnt = 0;
+    attributes.forEach((attr) => {
+      if (attr.dtoItemName !== '') cnt++;
+    });
 
-    // await putApi(`/apidocs/dtoitems/${dto.dtoId}`);
     setIsEdit(false);
-    setAttributes([]);
+    // 모든 속성이 다 빈칸이면 지움
+    if (cnt === 0) {
+      deleteDatatype();
+      await deleteApi(`/apidocs/dtos/${dto.dtoId}`);
+    }
   }, [dto, attributes]);
 
   const onNameChange = useCallback(
@@ -65,12 +92,32 @@ export default function DatatypeRow({ rowId }: Props) {
   );
 
   const onAttrChange = useCallback(
-    (e: any, i: number) => {
+    async (e: any, i: number) => {
       const copyAttrs = [...attributes];
-      copyAttrs[i].dtoItemName = e.target.value;
+
+      if (copyAttrs[i].dtoItemId === -1) {
+        const body = {
+          dtoItemName: e.target.value,
+          dtoPrimitiveType: copyAttrs[i].dtoPrimitiveTypeId
+            ? copyAttrs[i].dtoPrimitiveTypeId
+            : null,
+          dtoClassType: copyAttrs[i].dtoClassTypeId
+            ? copyAttrs[i].dtoClassTypeId
+            : null,
+          dtoIsList: 'N',
+        };
+        const { data }: any = await postApi(
+          `/apidocs/${dto.dtoId}/dtoitems`,
+          body,
+        );
+        data.dtoIsList = data.dtoIsList === 'Y';
+        copyAttrs[i] = { ...data };
+        console.log(copyAttrs);
+      } else copyAttrs[i].dtoItemName = e.target.value;
+
       setAttributes(copyAttrs);
     },
-    [attributes],
+    [attributes, dto],
   );
 
   const onTypeClick = useCallback(
@@ -83,13 +130,11 @@ export default function DatatypeRow({ rowId }: Props) {
     [isEdit],
   );
 
-  const addNewAttribute = useCallback(() => {
+  const addNewAttribute = useCallback(async () => {
     const copyResponses = [...attributes];
     copyResponses.push({
       dtoItemId: -1,
       dtoItemName: '',
-      dtoClassTypeId: 0,
-      dtoClassTypeName: '',
       dtoPrimitiveTypeId: 9,
       dtoPrimitiveTypeName: 'String',
       dtoIsList: false,
@@ -101,9 +146,29 @@ export default function DatatypeRow({ rowId }: Props) {
   const deleteAttr = useCallback(
     (idx: number, e: any) => {
       e.stopPropagation();
+      if (!isEdit) return;
       const copyArr = [...attributes];
       copyArr.splice(idx, 1);
       setAttributes(copyArr);
+    },
+    [attributes, isEdit],
+  );
+
+  const focusOutAttr = useCallback(
+    async (idx: number) => {
+      const body = {
+        dtoItemName: attributes[idx].dtoItemName,
+        dtoClassType: attributes[idx].dtoClassTypeId
+          ? attributes[idx].dtoClassTypeId
+          : null,
+        dtoPrimitiveType: attributes[idx].dtoPrimitiveTypeId
+          ? attributes[idx].dtoPrimitiveTypeId
+          : null,
+        dtoIsList: attributes[idx].dtoIsList ? 'Y' : 'N',
+      };
+      console.log(attributes[idx]);
+      if (attributes[idx].dtoItemName !== '')
+        await putApi(`/apidocs/dtoitems/${attributes[idx].dtoItemId}`, body);
     },
     [attributes],
   );
@@ -111,14 +176,44 @@ export default function DatatypeRow({ rowId }: Props) {
   useEffect(() => {
     const getDtoInfo = async () => {
       const { data }: any = await getApi(`/apidocs/dtos/${rowId}`);
+      data.dtoIsList = data.dtoIsList === 'Y';
       setDto(data);
-      setAttributes(data.dtoItemResponses);
+      setAttributes(
+        data.dtoItemResponses.map((item: any) => {
+          console.log(item);
+          return {
+            ...item,
+            dtoIsList: item.dtoIsList === 'Y',
+          };
+        }),
+      );
+      console.log(data);
     };
 
     setTimeout(() => {
       getDtoInfo();
     }, 50);
-  }, []);
+  }, [rowId]);
+
+  useEffect(() => {
+    const inputs = document.querySelectorAll(
+      `.attr-div > .attr-type-name.edit`,
+    );
+    if (isEdit) {
+      inputs.forEach((elem, i) => {
+        elem.addEventListener('focusout', () => {
+          focusOutAttr(i);
+        });
+      });
+    }
+    return () => {
+      inputs.forEach((elem, i) => {
+        elem.removeEventListener('focusout', () => {
+          focusOutAttr(i);
+        });
+      });
+    };
+  }, [isEdit]);
 
   return (
     <div className="datatype-content">
@@ -129,7 +224,7 @@ export default function DatatypeRow({ rowId }: Props) {
           value={dto.dtoName}
           readOnly={!isEdit}
           onChange={onNameChange}
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => isEdit && e.stopPropagation()}
         />
         <FontAwesomeIcon
           icon={isOpen ? faChevronUp : faChevronDown}
@@ -143,7 +238,7 @@ export default function DatatypeRow({ rowId }: Props) {
 
             {attributes.map((atr: DTO_RESPONSE, j: number) => {
               return (
-                <div className="attr-div" key={j}>
+                <div className={`attr-div ${isEdit && 'edit'}`} key={j}>
                   <button
                     type="button"
                     className="attr-type-button"
@@ -159,7 +254,7 @@ export default function DatatypeRow({ rowId }: Props) {
                     type="text"
                     value={atr.dtoItemName}
                     onChange={(e) => onAttrChange(e, j)}
-                    className={`attr-type-name ${isEdit && 'edit'}`}
+                    className={`attr-type-name  ${isEdit && 'edit'}`}
                     readOnly={!isEdit}
                     required
                   />
@@ -202,7 +297,7 @@ export default function DatatypeRow({ rowId }: Props) {
                 <FontAwesomeIcon
                   icon={faTrashCan}
                   className="attr-type-delete"
-                  onClick={() => deleteDatatype}
+                  onClick={deleteDatatype}
                 />
               </>
             )}

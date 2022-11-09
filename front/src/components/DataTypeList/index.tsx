@@ -10,10 +10,8 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './style.scss';
 import { useParams } from 'react-router-dom';
-import { DATATYPE } from 'constants/';
 import { DTO_RESPONSE } from 'types/ApiSpec';
 import { getApi } from 'api';
-import { type } from '@testing-library/user-event/dist/type';
 
 interface MousePos {
   x: number;
@@ -39,7 +37,9 @@ export default function DataTypeList({
 }: Props) {
   const { pid } = useParams();
   const [types, setTypes] = useState<any[]>([]);
-  const [isListCheck, setIsListCheck] = useState(false);
+  const [isListCheck, setIsListCheck] = useState(
+    attribute[selectIdx].dtoIsList,
+  );
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
 
   useEffect(() => {
