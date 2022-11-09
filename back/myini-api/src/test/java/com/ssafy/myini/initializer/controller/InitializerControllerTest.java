@@ -109,7 +109,6 @@ class InitializerControllerTest extends ControllerTest {
 //                                parameterWithName("projectid").description("프로젝트 ID")
 //                        ),
 //                        requestFields(
-//                                fieldWithPath("springBasePath").type(JsonFieldType.STRING).description("스프링 기본경로"),
 //                                fieldWithPath("springType").type(JsonFieldType.STRING).description("스프링 타입"),
 //                                fieldWithPath("springLanguage").type(JsonFieldType.STRING).description("스프링 언어"),
 //                                fieldWithPath("springPlatformVersion").type(JsonFieldType.STRING).description("스프링 버전"),
@@ -131,7 +130,7 @@ class InitializerControllerTest extends ControllerTest {
     void initializerPreview() throws Exception {
         given(initializerService.initializerPreview(any(), any())).willReturn(Arrays.asList(TEST_PREVIEW_RESPONSE));
 
-        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/initializers/{projectid}/previews", ID)
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/initializers/{projectid}/previews", ID)
                         .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(TEST_INITIALIZER_REQUEST)))
@@ -144,7 +143,6 @@ class InitializerControllerTest extends ControllerTest {
                                 parameterWithName("projectid").description("프로젝트 ID")
                         ),
                         requestFields(
-                                fieldWithPath("springBasePath").type(JsonFieldType.STRING).description("스프링 기본경로"),
                                 fieldWithPath("springType").type(JsonFieldType.STRING).description("스프링 타입"),
                                 fieldWithPath("springLanguage").type(JsonFieldType.STRING).description("스프링 언어"),
                                 fieldWithPath("springPlatformVersion").type(JsonFieldType.STRING).description("스프링 버전"),
