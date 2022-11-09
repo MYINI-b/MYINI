@@ -32,9 +32,10 @@ public class InitializerController {
     }
 
     @GetMapping("/{projectid}")
-    public ResponseEntity<InputStreamResource> initializerStart(@PathVariable("projectid") Long projectId,
+    public ResponseEntity<byte[]> initializerStart(@PathVariable("projectid") Long projectId,
                                                                 @Valid InitializerRequest initializerRequest) {
         InitializerStartResponse resp = initializerService.initializerStart(projectId, initializerRequest);
+
         return ResponseEntity.ok()
                 .headers(resp.getHeaders())
                 .contentLength(resp.getLength())

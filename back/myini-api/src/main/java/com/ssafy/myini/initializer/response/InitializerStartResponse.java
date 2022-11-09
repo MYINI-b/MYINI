@@ -3,7 +3,6 @@ package com.ssafy.myini.initializer.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 
 
@@ -13,5 +12,5 @@ import org.springframework.http.HttpHeaders;
 public class InitializerStartResponse {
     private HttpHeaders headers;
     private long length;
-    private InputStreamResource resource;
+    private byte[] resource;
 }

@@ -29,6 +29,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.FileSystem;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -98,11 +99,6 @@ public class InitializerServiceImpl implements InitializerService {
             zipFile.addFolder(new File(FileUtil.basePath + initializerRequest.getSpringName() + "/"));
 
             FileUtil.deletefolder(FileUtil.basePath);
-            // 경로 생성
-//            File folder = new File(FileUtil.basePath);
-//            if (!folder.exists()) {
-//                folder.mkdirs();
-//            }
 
             HttpHeaders header = new HttpHeaders();
 
@@ -111,18 +107,17 @@ public class InitializerServiceImpl implements InitializerService {
             header.add("Pragma", "no-cache");
             header.add("Expires", "0");
 
-            FileInputStream fileInputStream = new FileInputStream(zipFile.getFile());
-            InputStreamResource resource = new InputStreamResource(fileInputStream);
-            InitializerStartResponse response = new InitializerStartResponse(header, zipFile.getFile().length(), resource);
+            byte[] bytes = Files.readAllBytes(zipFile.getFile().toPath());
+            InitializerStartResponse response = new InitializerStartResponse(header, zipFile.getFile().length(), bytes);
 
-//            // zipFile 삭제
-//            if (zipFile.getFile().exists()) {
-//                if (zipFile.getFile().delete()) {
-//                    System.out.println("파일 삭제 성공");
-//                } else {
-//                    System.out.println("파일 삭제 실패");
-//                }
-//            }
+            // zipFile 삭제
+            if (zipFile.getFile().exists()) {
+                if (zipFile.getFile().delete()) {
+                    System.out.println("파일 삭제 성공");
+                } else {
+                    System.out.println("파일 삭제 실패");
+                }
+            }
 
             return response;
         } catch (Exception e) {
