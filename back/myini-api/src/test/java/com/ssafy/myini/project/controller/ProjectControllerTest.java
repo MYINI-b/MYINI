@@ -87,6 +87,7 @@ class ProjectControllerTest extends ControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("[]").type(JsonFieldType.ARRAY).description("결과 배열"),
+                                fieldWithPath("[].projectId").type(JsonFieldType.NUMBER).description("Project ID"),
                                 fieldWithPath("[].projectName").type(JsonFieldType.STRING).description("Project 이름"),
                                 fieldWithPath("[].projectDescription").type(JsonFieldType.STRING).description("Project 설명"),
                                 fieldWithPath("[].projectImg").type(JsonFieldType.STRING).description("Project 이미지"),

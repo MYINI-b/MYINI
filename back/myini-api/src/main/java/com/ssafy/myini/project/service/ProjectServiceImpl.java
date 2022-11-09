@@ -56,9 +56,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectListResponse> findAll(Member member) {
-        List<Project> findMemberProjects = projectQueryRepository.findAll(member);
+        List<MemberProject> findMemberProjects = projectQueryRepository.findAll(member);
         return findMemberProjects.stream()
-                .map(ProjectListResponse :: from)
+                .map(memberProject -> ProjectListResponse.from(memberProject.getProject()))
                 .collect(Collectors.toList());
     }
 

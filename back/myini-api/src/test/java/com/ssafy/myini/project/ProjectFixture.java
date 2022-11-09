@@ -36,5 +36,5 @@ public class ProjectFixture {
     public static final ProjectInfoResponse TEST_PROJECT_INFO_RESPONSE
             = new ProjectInfoResponse(NAME, DESCRIPTION, IMG, DATE, DATE, PROJECT_URL, PROJECT_URL, PROJECT_URL, PROJECT_URL);
     public static final ProjectListResponse TEST_PROJECT_LIST_RESPONSE
-            = new ProjectListResponse(NAME, DESCRIPTION, IMG, Arrays.asList(TEST_PROJECT_MEMBER_RESPONSE));
+            = new ProjectListResponse(ID, NAME, DESCRIPTION, IMG, Arrays.asList(TEST_PROJECT_MEMBER_RESPONSE));
 }
