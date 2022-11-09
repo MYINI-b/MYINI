@@ -32,7 +32,7 @@ public class InitializerController {
         return ResponseEntity.ok().body(body);
     }
 
-    @PostMapping("/{projectid}")
+    @GetMapping("/{projectid}")
     public ResponseEntity<InputStreamResource> initializerStart(@PathVariable("projectid") Long projectId,
                                                                 @Valid InitializerRequest initializerRequest
     ) throws IOException {
@@ -53,9 +53,9 @@ public class InitializerController {
                 .body(resource3);
     }
 
-    @PostMapping("/{projectid}/previews")
+    @GetMapping("/{projectid}/previews")
     public ResponseEntity<List<PreviewResponse>> initializerPreview(@PathVariable("projectid") Long projectId,
-                                                                    @RequestBody InitializerRequest initializerRequest) {
+                                                                    @Valid InitializerRequest initializerRequest) {
         List<PreviewResponse> body = initializerService.initializerPreview(projectId, initializerRequest);
 
         return ResponseEntity.ok().body(body);

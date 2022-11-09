@@ -26,20 +26,10 @@ public class InitProjectDownload {
                 "packageName=" + initializerRequest.getSpringPackageName() + "&" +
                 "dependencies=" + initializerRequest.getSpringDependencyName();
         System.out.println("address = " + address);
-//        System.out.println("initializerRequest = " + initializerRequest.getSpring_name());
-//        if (initializerRequest.getSpring_dependency_name().size() != 0){
-//            address += "&dependencies=";
-//            for (int i=0;i<initializerRequest.getSpring_dependency_name().size();i++){
-//                if (i != initializerRequest.getSpring_dependency_name().size()-1){
-//                    address = address + initializerRequest.getSpring_dependency_name().get(i) + ",";
-//                }else {
-//                    address = address + initializerRequest.getSpring_dependency_name().get(i);
-//                }
-//            }
-//        }
+
         try {
             //이미 만들어진게 있다면 삭제
-            fileDelete(initializerRequest);
+            FileUtil.deletefolder(FileUtil.basePath + initializerRequest.getSpringName() + "/");
 
             URI url = URI.create(address);
 
@@ -47,45 +37,21 @@ public class InitProjectDownload {
             RestTemplate rt = new RestTemplate();
             ResponseEntity<byte[]> res = rt.getForEntity(url, byte[].class);
             byte[] buffer = res.getBody();
-//            System.out.println(initializerRequest.getSpring_base_path()+initializerRequest.getSpring_name()+".zip");
             // 로컬 서버에 저장
-            System.out.println("initializerRequest = " + initializerRequest.getSpringBasePath());
-            File folder = new File(initializerRequest.getSpringBasePath());
+            File folder = new File(FileUtil.basePath);
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-            Path target = Paths.get(initializerRequest.getSpringBasePath(), initializerRequest.getSpringName() + ".zip");    // 파일 저장 경로
+            Path target = Paths.get(FileUtil.basePath, initializerRequest.getSpringName() + ".zip");    // 파일 저장 경로
 
             FileCopyUtils.copy(buffer, target.toFile());
 
 
-            File file = new File(initializerRequest.getSpringBasePath() + initializerRequest.getSpringName() + ".zip");
+            File file = new File(FileUtil.basePath + initializerRequest.getSpringName() + ".zip");
             ZipFile zipFile = new ZipFile(file);
-            zipFile.extractAll(initializerRequest.getSpringBasePath() + initializerRequest.getSpringName());
+            zipFile.extractAll(FileUtil.basePath + initializerRequest.getSpringName());
         } catch (Exception e) {
             System.out.println("e = " + e);
-        }
-    }
-
-    private static void fileDelete(InitializerRequest initializerRequest) throws Exception {
-        String path = initializerRequest.getSpringBasePath() + initializerRequest.getSpringName();
-
-        File deleteZip = new File(path + ".zip");
-        if (deleteZip.exists()) {
-            deleteZip.delete();
-        }
-
-        File deleteFolder = new File(path);
-        if (deleteFolder.exists()) {
-            File[] deleteFolderList = deleteFolder.listFiles();
-
-            for (int j = 0; j < deleteFolderList.length; j++) {
-                deleteFolderList[j].delete();
-            }
-
-            if (deleteFolderList.length == 0 && deleteFolder.isDirectory()) {
-                deleteFolder.delete();
-            }
         }
     }
 }
