@@ -5,7 +5,7 @@ import ProjectCard from 'components/ProjectCard';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Link } from 'react-router-dom';
-import { RootState } from 'modules';
+import { RootState } from 'modules/Reducers';
 
 // types
 import { MEMBER } from 'types/main';
@@ -63,7 +63,7 @@ export default function MainPage() {
     const fetchData = async () => {
       await authAxios
         .get('members')
-        .then((res) => {
+        .then((res: any) => {
           const data = {
             memberEmail: res.data.memberEmail,
             memberId: res.data.memberId,

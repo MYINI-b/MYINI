@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import './style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
-import { RootState } from 'modules/index';
+import { RootState } from 'modules/Reducers';
 
 // redux
 import { useSelector } from 'react-redux';

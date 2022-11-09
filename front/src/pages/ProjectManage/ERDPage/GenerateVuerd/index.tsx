@@ -1,8 +1,7 @@
-import { useLayoutEffect, useState } from 'react';
-import { RootState } from 'modules';
-import { ERD } from 'modules/erd';
+/* eslint-disable object-shorthand */
+import { useLayoutEffect } from 'react';
 
-import { connect, useSelector, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import './style.scss';
 
 // 3rd party
@@ -10,15 +9,7 @@ import 'vuerd';
 
 import { assignCurrentErd } from 'modules/vuerd';
 
-const mapToDispatch = (dispatch: any) => ({
-  onCurrentErd: (action: string) => dispatch(assignCurrentErd(action)),
-});
-
 function GenerateVuerd(props: any) {
-  const getERDData = useSelector((state: RootState) => state.erd);
-
-  // const dispatch = useDispatch();
-
   const { erdData } = props;
   const { onCurrentErd } = props;
   const { erdName } = props;
@@ -26,7 +17,7 @@ function GenerateVuerd(props: any) {
   useLayoutEffect(() => {
     generateVuerd();
     // dispatch(ERD(onCurrentErd));
-  }, [erdData]);
+  }, []);
 
   const generateVuerd = () => {
     // vuerd import
@@ -38,13 +29,15 @@ function GenerateVuerd(props: any) {
     } else editor = document.createElement('erd-editor');
 
     container?.appendChild(editor);
-    const payload = { editor };
+    console.log(container, 'container');
+    const payload = {
+      editor: editor,
+    };
+    console.log(payload, 'payload');
+    // onCurrentErd({ payload });
+    // console.log(onCurrentErd, 'asdsadsa?');
 
-    console.log(payload, '???');
-    // onCurrentErd(payload);
-    console.log(onCurrentErd, 'asdsadsa?');
-
-    editor.initLoadJson(erdData);
+    // editor.initLoadJson(erdData);
 
     window.addEventListener('resize', () => {
       editor.width = window.innerWidth * 0.96;
@@ -55,5 +48,9 @@ function GenerateVuerd(props: any) {
 
   return <div id="app-erd" />;
 }
+
+const mapToDispatch = (dispatch: any) => ({
+  onCurrentErd: (action: any) => dispatch(assignCurrentErd(action)),
+});
 
 export default connect(null, mapToDispatch)(GenerateVuerd);

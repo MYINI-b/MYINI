@@ -1,0 +1,70 @@
+diff --git a/node_modules/vuerd/dist/vuerd.esm.js b/node_modules/vuerd/dist/vuerd.esm.js
+index d964bef..84adf9d 100644
+--- a/node_modules/vuerd/dist/vuerd.esm.js
++++ b/node_modules/vuerd/dist/vuerd.esm.js
+@@ -8777,12 +8777,7 @@ const canvasTypeList = [
+     "Visualization",
+ ];
+ const databaseList = [
+-    "MariaDB",
+-    "MSSQL",
+     "MySQL",
+-    "Oracle",
+-    "PostgreSQL",
+-    "SQLite",
+ ];
+ const languageList = [
+     "GraphQL",
+@@ -8810,9 +8805,9 @@ function createCanvasState() {
+             columnComment: true,
+             columnDataType: true,
+             columnDefault: true,
+-            columnAutoIncrement: false,
++            columnAutoIncrement: true,
+             columnPrimaryKey: true,
+-            columnUnique: false,
++            columnUnique: true,
+             columnNotNull: true,
+             relationship: true,
+         },
+diff --git a/node_modules/vuerd/dist/vuerd.js b/node_modules/vuerd/dist/vuerd.js
+index c6fdb87..67fc47d 100644
+--- a/node_modules/vuerd/dist/vuerd.js
++++ b/node_modules/vuerd/dist/vuerd.js
+@@ -8780,12 +8780,7 @@ var vuerd = (function (exports) {
+         "Visualization",
+     ];
+     const databaseList = [
+-        "MariaDB",
+-        "MSSQL",
+         "MySQL",
+-        "Oracle",
+-        "PostgreSQL",
+-        "SQLite",
+     ];
+     const languageList = [
+         "GraphQL",
+@@ -8813,9 +8808,9 @@ var vuerd = (function (exports) {
+                 columnComment: true,
+                 columnDataType: true,
+                 columnDefault: true,
+-                columnAutoIncrement: false,
++                columnAutoIncrement: true,
+                 columnPrimaryKey: true,
+-                columnUnique: false,
++                columnUnique: true,
+                 columnNotNull: true,
+                 relationship: true,
+             },
+@@ -22793,11 +22788,6 @@ var vuerd = (function (exports) {
+     }
+     const databaseKeys = [
+         "MySQL",
+-        "MariaDB",
+-        "PostgreSQL",
+-        "SQLite",
+-        "Oracle",
+-        "MSSQL",
+     ];
+     function createDatabaseMenus(store) {
+         const { canvasState } = store;

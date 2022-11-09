@@ -1,14 +1,8 @@
-import { combineReducers } from 'redux';
-import member from './member';
-import erd from './erd';
-import vuerd from './vuerd';
+import { createStore } from 'redux';
+import { persistStore } from 'redux-persist';
+import Reducers from './Reducers';
 
-const rootReducer = combineReducers({
-  member,
-  erd,
-  vuerd,
-});
+export const Store = createStore(Reducers);
+export const Persistor = persistStore(Store);
 
-export default rootReducer;
-
-export type RootState = ReturnType<typeof rootReducer>;
+export default { Store, Persistor };
