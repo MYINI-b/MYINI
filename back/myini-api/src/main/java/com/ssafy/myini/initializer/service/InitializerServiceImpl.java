@@ -8,6 +8,7 @@ import com.ssafy.myini.fileio.*;
 import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
+import com.ssafy.myini.initializer.response.InitializerStartResponse;
 import com.ssafy.myini.initializer.response.PreviewResponse;
 import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
@@ -17,12 +18,17 @@ import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.FileSystem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +43,8 @@ public class InitializerServiceImpl implements InitializerService {
     private final S3Uploader s3Uploader;
     private final ApiDocsQueryRepository apiDocsQueryRepository;
 
+    private final ApplicationEventPublisher publisher; // 1
+
     @Override
     public InitializerPossibleResponse initializerIsPossible(Long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
@@ -46,7 +54,7 @@ public class InitializerServiceImpl implements InitializerService {
 
     @Override
     @Transactional
-    public ZipFile initializerStart(Long projectId, InitializerRequest initializerRequest) {
+    public InitializerStartResponse initializerStart(Long projectId, InitializerRequest initializerRequest) {
         //프로젝트 init
         InitProjectDownload.initProject(initializerRequest);
 
@@ -89,13 +97,47 @@ public class InitializerServiceImpl implements InitializerService {
             ZipFile zipFile = new ZipFile(initializerRequest.getSpringName() + ".zip");
             zipFile.addFolder(new File(FileUtil.basePath + initializerRequest.getSpringName() + "/"));
 
-            FileUtil.deletefolder(FileUtil.basePath + initializerRequest.getSpringName() + "/");
-            return zipFile;
+            FileUtil.deletefolder(FileUtil.basePath);
+            // 경로 생성
+//            File folder = new File(FileUtil.basePath);
+//            if (!folder.exists()) {
+//                folder.mkdirs();
+//            }
+
+            HttpHeaders header = new HttpHeaders();
+
+            header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + zipFile.getFile().getName());
+            header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+            header.add("Pragma", "no-cache");
+            header.add("Expires", "0");
+
+            FileInputStream fileInputStream = new FileInputStream(zipFile.getFile());
+            InputStreamResource resource = new InputStreamResource(fileInputStream);
+            InitializerStartResponse response = new InitializerStartResponse(header, zipFile.getFile().length(), resource);
+
+//            // zipFile 삭제
+//            if (zipFile.getFile().exists()) {
+//                if (zipFile.getFile().delete()) {
+//                    System.out.println("파일 삭제 성공");
+//                } else {
+//                    System.out.println("파일 삭제 실패");
+//                }
+//            }
+
+            return response;
         } catch (Exception e) {
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
     }
 
+    @Override
+    public void deleteZipfile(String fileName) {
+        File deleteFile = new File(fileName + ".zip");
+
+        if (deleteFile.exists()) {
+            deleteFile.delete();
+        }
+    }
 
     @Override
     @Transactional
@@ -243,6 +285,7 @@ public class InitializerServiceImpl implements InitializerService {
             throw new RuntimeException("JSON Parsing 에 실패하였습니다.");
         }
     }
+
 
     private JSONObject addDependencies(JSONObject dependency) {
         JSONObject jsonObject = new JSONObject();
