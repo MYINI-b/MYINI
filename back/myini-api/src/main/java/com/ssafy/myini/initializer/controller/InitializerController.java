@@ -25,6 +25,7 @@ import java.util.List;
 public class InitializerController {
     private final InitializerService initializerService;
 
+    //이니셜라이저 가능한지 확인
     @GetMapping("/{projectid}/ispossible")
     public ResponseEntity<InitializerPossibleResponse> initializerIsPossible(@PathVariable("projectid") Long projectId) {
         InitializerPossibleResponse body = initializerService.initializerIsPossible(projectId);
@@ -32,6 +33,7 @@ public class InitializerController {
         return ResponseEntity.ok().body(body);
     }
 
+    //이니셜라이징 시작
     @PostMapping("/{projectid}")
     public ResponseEntity<InputStreamResource> initializerStart(@PathVariable("projectid") Long projectId,
                                                                 @Valid InitializerRequest initializerRequest
@@ -53,6 +55,7 @@ public class InitializerController {
                 .body(resource3);
     }
 
+    //이니셜라이징 미리보기
     @PostMapping("/{projectid}/previews")
     public ResponseEntity<List<PreviewResponse>> initializerPreview(@PathVariable("projectid") Long projectId,
                                                                     @RequestBody InitializerRequest initializerRequest) {
@@ -61,6 +64,7 @@ public class InitializerController {
         return ResponseEntity.ok().body(body);
     }
 
+    //myini 다운로드
     @GetMapping("/downloads")
     public ResponseEntity<byte[]> myIniDownload() {
         ByteArrayOutputStream byteArrayOutputStream = initializerService.myIniDownload();
@@ -71,6 +75,7 @@ public class InitializerController {
                 .body(byteArrayOutputStream.toByteArray());
     }
 
+    //이니셜라이징 세팅값 조회
     @GetMapping("/settings")
     public ResponseEntity<JSONObject> initializerSettings() {
         JSONObject body = initializerService.initializerSettings();

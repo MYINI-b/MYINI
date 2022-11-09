@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class JiraApi {
     public static class JiraUser {
@@ -33,6 +34,24 @@ public class JiraApi {
 
         public String getUserEmailAddress() {
             return userEmailAddress;
+        }
+    }
+
+    public static class EpicIssue{
+        String epicId;
+        String epicName;
+
+        public EpicIssue(String epicId, String epicName) {
+            this.epicId = epicId;
+            this.epicName = epicName;
+        }
+
+        @Override
+        public String toString() {
+            return "EpicIssue{" +
+                    "epicId='" + epicId + '\'' +
+                    ", epicName='" + epicName + '\'' +
+                    '}';
         }
     }
 
@@ -124,6 +143,7 @@ public class JiraApi {
                 .asJson();
 
         String storyId = "";
+        String epicId = "";
 
         JSONObject meta = metaResponse.getBody().getObject();
         JSONArray projects = (JSONArray) meta.get("projects");
@@ -136,8 +156,11 @@ public class JiraApi {
                     String issueName = (String) ((JSONObject) issueTypes.get(j)).get("name");
                     if (issueName.equals("스토리")) {
                         storyId = (String) ((JSONObject) issueTypes.get(j)).get("id");
-                        break la;
                     }
+                    if (issueName.equals("에픽")) {
+                        epicId = (String) ((JSONObject) issueTypes.get(j)).get("id");
+                    }
+                    if(!storyId.equals("") && !epicId.equals("")) break la;
                 }
             }
         }
@@ -221,7 +244,121 @@ public class JiraApi {
                 .asJson();
         //커스텀필드 스크린 입력 끝
 
+        //에픽입력 시작
+        //등록된 에픽들 먼저 가져오기
+        String temp = "https://"+jiraDomain+".atlassian.net/rest/api/2/search?jql=project="+jiraProjectKey+" AND type = Epic";
+        System.out.println(temp.replaceAll(" ","%20"));
+        HttpResponse<JsonNode> epicResponse = Unirest.get(temp.replaceAll(" ", "%20"))
+                .basicAuth(jiraId, jiraApiKey)
+                .header("Accept", "application/json")
+                .asJson();
 
+        List<EpicIssue> epicIssues = new ArrayList<>();
+
+        JSONObject epics = epicResponse.getBody().getObject();
+        JSONArray issues = (JSONArray) epics.get("issues");
+
+        la:for (int i = 0; i < issues.length(); i++) {
+            String id = (String) ((JSONObject)(issues.get(i))).get("id");
+            JSONObject fields = (JSONObject) ((JSONObject) (issues.get(i))).get("fields");
+            String name = (String) fields.get("summary");
+            for (EpicIssue epicIssue : epicIssues) {
+                if(epicIssue.epicName.equals(name)) continue la;
+            }
+            epicIssues.add(new EpicIssue(id, name));
+        }
+
+        //에픽 만들기
+        List<String> categoryList = requirements.stream().map(r->r.getRequirementCategory().getCategoryName()).collect(Collectors.toList());
+        categoryList = categoryList.stream().distinct().collect(Collectors.toList());
+
+        la:for (String category : categoryList) {
+            for (EpicIssue epicIssue : epicIssues) {
+                if(epicIssue.epicName.equals(category)) continue la;
+            }
+            epicIssues.add(new EpicIssue(null, category));
+
+            //등록
+            JsonNodeFactory jnf = JsonNodeFactory.instance;
+            ObjectNode payload = jnf.objectNode();
+            {
+                ObjectNode fields = payload.putObject("fields");
+                {
+                    //이슈요약
+                    fields.put("summary", category);
+                    //이슈종류(에픽)
+                    ObjectNode issuetype = fields.putObject("issuetype");
+                    {
+                        issuetype.put("id", epicId);
+                    }
+                    //이슈프로젝트
+                    ObjectNode project = fields.putObject("project");
+                    {
+                        project.put("id", jiraProjectId);
+                    }
+                    //이슈설명
+                    fields.put("description", category);
+                    //이슈보고자
+                    ObjectNode reporter = fields.putObject("reporter");
+                    {
+                        reporter.put("id", jiraUsers.get(1).userAccountId);
+                    }
+                    //이슈제목
+                    fields.put("customfield_10011", category);
+                }
+            }
+
+            Unirest.setObjectMapper(new ObjectMapper() {
+                private com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper
+                        = new com.fasterxml.jackson.databind.ObjectMapper();
+
+                public <T> T readValue(String value, Class<T> valueType) {
+                    try {
+                        return jacksonObjectMapper.readValue(value, valueType);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+                public String writeValue(Object value) {
+                    try {
+                        return jacksonObjectMapper.writeValueAsString(value);
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+
+            HttpResponse<JsonNode> createIssueResponse = Unirest.post("https://"+jiraDomain+".atlassian.net/rest/api/2/issue")
+                    .basicAuth(jiraId, jiraApiKey)
+                    .header("Accept", "application/json")
+                    .header("Content-Type", "application/json")
+                    .body(payload)
+                    .asJson();
+
+        }
+
+        HttpResponse<JsonNode> epicResponse2 = Unirest.get("https://"+jiraDomain+".atlassian.net/rest/api/2/search")
+                .basicAuth(jiraId, jiraApiKey)
+                .header("Accept", "application/json")
+                .asJson();
+
+        JSONObject epics2 = epicResponse2.getBody().getObject();
+        JSONArray issues2 = (JSONArray) epics2.get("issues");
+
+        la:for (int i = 0; i < issues2.length(); i++) {
+            String id = (String) ((JSONObject)(issues2.get(i))).get("id");
+            JSONObject fields = (JSONObject) ((JSONObject) (issues2.get(i))).get("fields");
+            String name = (String) fields.get("summary");
+            for (EpicIssue epicIssue : epicIssues) {
+                if(epicIssue.epicName.equals(name) && epicIssue.epicId == null) {
+                    epicIssue.epicId = id;
+                    continue;
+                }
+            }
+        }
+        //에픽입력 끝
+        System.out.println("6");
         //요구사항 - 스토리 연동 시작
         for (Requirement requirement : requirements) {
             String reportUser = "";
@@ -249,6 +386,11 @@ public class JiraApi {
                     ObjectNode project = fields.putObject("project");
                     {
                         project.put("id", jiraProjectId);
+                    }
+                    //이슈 에픽
+                    ObjectNode parent = fields.putObject("parent");
+                    {
+                        parent.put("id", epicParent(epicIssues, requirement.getRequirementCategory().getCategoryName()));
                     }
                     //이슈설명
                     fields.put("description", requirement.getRequirementContent());
@@ -303,6 +445,13 @@ public class JiraApi {
         }
 
 //        System.out.println("지라결과 : "+s);
+    }
+
+    private static String epicParent(List<EpicIssue> epicIssues, String categoryName) {
+        for (EpicIssue epicIssue : epicIssues) {
+            if (epicIssue.epicName.equals(categoryName)) return  epicIssue.epicId;
+        }
+        return null;
     }
 
 
