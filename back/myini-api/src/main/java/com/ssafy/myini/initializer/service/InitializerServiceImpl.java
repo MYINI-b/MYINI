@@ -86,37 +86,16 @@ public class InitializerServiceImpl implements InitializerService {
             // dto 생성
             projectInfoListResponses.forEach(projectInfoListResponse -> DtoWrite.dtoWrite(projectInfoListResponse, initializerRequest));
 
-            ZipFile zipFile = new ZipFile("project.zip");
-            zipFile.addFolder(new File(initializerRequest.getSpringPackageName() + initializerRequest.getSpringName()));
+            ZipFile zipFile = new ZipFile(initializerRequest.getSpringName() + ".zip");
+            zipFile.addFolder(new File(FileUtil.basePath + initializerRequest.getSpringName() + "/"));
 
-            deletefolder(initializerRequest);
+            FileUtil.deletefolder(FileUtil.basePath + initializerRequest.getSpringName() + "/");
             return zipFile;
         } catch (Exception e) {
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
     }
 
-    private static void deletefolder(InitializerRequest initializerRequest) throws Exception {
-        String path = initializerRequest.getSpringPackageName() + initializerRequest.getSpringName();
-
-        File deleteZip = new File(path + ".zip");
-        if (deleteZip.exists()) {
-            deleteZip.delete();
-        }
-
-        File deleteFolder = new File(path);
-        if (deleteFolder.exists()) {
-            File[] deleteFolderList = deleteFolder.listFiles();
-
-            for (int j = 0; j < deleteFolderList.length; j++) {
-                deleteFolderList[j].delete();
-            }
-
-            if (deleteFolderList.length == 0 && deleteFolder.isDirectory()) {
-                deleteFolder.delete();
-            }
-        }
-    }
 
     @Override
     @Transactional
@@ -231,20 +210,20 @@ public class InitializerServiceImpl implements InitializerService {
 
             // single-select
             JSONObject selectValues = new JSONObject();
-            selectValues.put("spring_type", addSingleSelectValues(starter, "type"));
-            selectValues.put("spring_packaging", addSingleSelectValues(starter, "packaging"));
-            selectValues.put("spring_jvm_version", addSingleSelectValues(starter, "javaVersion"));
-            selectValues.put("spring_language", addSingleSelectValues(starter, "language"));
-            selectValues.put("spring_platform_version", addSingleSelectValues(starter, "bootVersion"));
+            selectValues.put("springType", addSingleSelectValues(starter, "type"));
+            selectValues.put("springPackaging", addSingleSelectValues(starter, "packaging"));
+            selectValues.put("springJvmVersion", addSingleSelectValues(starter, "javaVersion"));
+            selectValues.put("springLanguage", addSingleSelectValues(starter, "language"));
+            selectValues.put("springPlatformVersion", addSingleSelectValues(starter, "bootVersion"));
             returnObj.put("single-select", selectValues);
 
             // text
             JSONArray textValues = new JSONArray();
-            textValues.add(addTextValues("Group", "spring_group_id"));
-            textValues.add(addTextValues("Artifact", "spring_artifact_id"));
-            textValues.add(addTextValues("Name", "spring_name"));
-            textValues.add(addTextValues("Description", "spring_description"));
-            textValues.add(addTextValues("Package name", "spring_package_name"));
+            textValues.add(addTextValues("Group", "springGroupId"));
+            textValues.add(addTextValues("Artifact", "springArtifactId"));
+            textValues.add(addTextValues("Name", "springName"));
+            textValues.add(addTextValues("Description", "springDescription"));
+            textValues.add(addTextValues("Package name", "springPackageName"));
             returnObj.put("text", textValues);
 
             // dependencies
