@@ -199,6 +199,20 @@ public class ApiDocsController {
         return ResponseEntity.ok().body(body);
     }
 
+    // primitive 자료형 조회
+    @GetMapping("/primitive")
+    public ResponseEntity<List<PrimitiveTypeResponse>> findPrimitiveType(){
+        List<PrimitiveTypeResponse> body = apiDocsService.findPrimitiveType();
+        return ResponseEntity.ok().body(body);
+    }
+
+    // Dto type 자료형 조회
+    @GetMapping("/{projectid}/dtotype")
+    public ResponseEntity<List<ClassTypeResponse>> findDtoClassType(@PathVariable("projectid")Long projectId){
+        List<ClassTypeResponse> body = apiDocsService.findDtoClassType(projectId);
+        return ResponseEntity.ok().body(body);
+    }
+
     @GetMapping("/{projectid}/lists")
     public ResponseEntity<List<ProjectInfoListResponse>> findAll(@PathVariable("projectid")Long projectId){
         List<ProjectInfoListResponse> body = apiDocsService.findAll(projectId);

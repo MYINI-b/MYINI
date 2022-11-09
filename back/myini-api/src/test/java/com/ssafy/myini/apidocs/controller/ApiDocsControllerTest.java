@@ -849,4 +849,61 @@ class ApiDocsControllerTest extends ControllerTest {
         then(apiDocsService).should(times(1)).findTypeList(any());
     }
 
+    @Test
+    @DisplayName("primitive 자료형을 조회한다.")
+    void findPrimitiveType() throws Exception {
+        // given
+        given(apiDocsService.findPrimitiveType())
+                .willReturn(Arrays.asList(TEST_PRIMITIVE_TYPE_RESPONSE));
+
+        // when
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/apidocs/primitive")
+                        .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
+                        .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(Arrays.asList(TEST_PRIMITIVE_TYPE_RESPONSE))))
+                .andDo(document("api/apidocs/primitive",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
+                        ),
+                        responseFields(
+                                fieldWithPath("[]").type(JsonFieldType.ARRAY).description("기본 자료형 조회결과 배열"),
+                                fieldWithPath("[].primitiveId").type(JsonFieldType.NUMBER).description("기본 자료형 ID"),
+                                fieldWithPath("[].primitiveName").type(JsonFieldType.STRING).description("기본 자료형 이름")
+                        )));
+
+        // then
+        then(apiDocsService).should(times(1)).findPrimitiveType();
+    }
+
+    @Test
+    @DisplayName("Dto type 자료형을 조회한다.")
+    void findDtoClassType() throws Exception {
+        // given
+        given(apiDocsService.findDtoClassType(any()))
+                .willReturn(Arrays.asList(TEST_CLASS_TYPE_RESPONSE));
+
+        // when
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/apidocs/{projectid}/dtotype", ID)
+                        .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
+                        .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(Arrays.asList(TEST_CLASS_TYPE_RESPONSE))))
+                .andDo(document("api/apidocs/{projectid}/dtotype",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
+                        ),
+                        pathParameters(
+                                parameterWithName("projectid").description("Project ID")
+                        ),
+                        responseFields(
+                                fieldWithPath("[]").type(JsonFieldType.ARRAY).description("Class 자료형 조회결과 배열"),
+                                fieldWithPath("[].dtoId").type(JsonFieldType.NUMBER).description("Class 자료형 ID"),
+                                fieldWithPath("[].dtoName").type(JsonFieldType.STRING).description("Class 자료형 이름")
+                        )));
+
+        // then
+        then(apiDocsService).should(times(1)).findDtoClassType(any());
+    }
+
 }
