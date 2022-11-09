@@ -32,8 +32,8 @@
   @include FLEX-CENTER;
   @include FLEX-COLUMN;
   padding: 0.5rem;
-  padding-right: 7rem;
-  padding-left: 7rem;
+  padding-right: 5rem;
+  padding-left: 5rem;
   margin-right: 1rem;
   border: solid;
   border-color: $gray;
@@ -103,10 +103,6 @@
   height: rem(300);
   flex-shrink: 0;
   margin-right: 4rem;
-
-  .main-link-style {
-    color: black
-  }
 
   .project-start {
     @include FLEX-CENTER;
@@ -242,5 +238,7 @@
   }
 }
 
-
+.main-link-style {
+  color: black
+}
 

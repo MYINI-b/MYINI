@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import MainHeader from 'components/MainHeader';
 import ProjectCard from 'components/ProjectCard';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { Link } from 'react-router-dom';
 import { RootState } from 'modules';
 
@@ -56,6 +57,7 @@ export default function MainPage() {
 
   const dispatch = useDispatch();
 
+  // redux 사용
   const getMyInfo = useSelector((state: RootState) => state.member);
   useEffect(() => {
     const fetchData = async () => {
@@ -111,13 +113,14 @@ export default function MainPage() {
           <div className="project-div1">
             <h2 className="project-info-title">함께 했던 팀원</h2>
             <div className="main-members-container">
-              {myMember === null ? (
-                <span>함께한 멤버가 아직 없습니다.</span>
-              ) : null}
               {myMember.map((content, idx) => {
                 return (
                   <div key={idx} className="main-member-container">
-                    {content.memberProfileImg === null ? (
+                    {content === null ? (
+                      <div>
+                        <span>함께한 팀원이 없습니다.</span>
+                      </div>
+                    ) : content.memberProfileImg === null ? (
                       <div className="main-member">
                         <div className="main-member-img">
                           <FontAwesomeIcon
@@ -176,14 +179,13 @@ export default function MainPage() {
         <section className="card-container">
           <div className="card-scroll">
             <div className="project-start-container">
-              <Link to="/projectmanage" className="main-link-style">
+              <Link to="/projectmanage/new" className="main-link-style">
                 <div className="project-start">
                   <img src={CardLogo} alt="" className="card-logo" />
                   <span>새 프로젝트</span>
                 </div>
               </Link>
             </div>
-
             <ProjectCard />
           </div>
         </section>

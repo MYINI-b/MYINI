@@ -39,15 +39,13 @@ function GenerateVuerd(props: any) {
 
     container?.appendChild(editor);
     const payload = { editor };
+    console.log(payload, 'pay');
 
-    console.log(payload, '???');
+    console.log(onCurrentErd, 'onCurrent');
     // onCurrentErd(payload);
-    console.log(onCurrentErd, 'asdsadsa?');
-
-    editor.initLoadJson(erdData);
 
     window.addEventListener('resize', () => {
-      editor.width = window.innerWidth * 0.96;
+      editor.width = window.innerWidth * 0.97;
       editor.height = window.innerHeight;
     });
     window.dispatchEvent(new Event('resize'));

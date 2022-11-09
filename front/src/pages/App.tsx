@@ -9,6 +9,8 @@ import LoginPage from './User/LoginPage';
 import MainPage from './MainPage';
 import ProjectManage from './ProjectManage';
 import Social from './User/Social';
+import TestPage from './TestPage';
+import ERDTest from './ERDTest';
 
 function App() {
   const store = configureStore({ reducer: rootReducer });
@@ -20,7 +22,9 @@ function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/social/redirect" element={<Social />} />
           <Route path="/main" element={<MainPage />} />
-          <Route path="/projectmanage" element={<ProjectManage />} />
+          <Route path="/projectmanage/:pid" element={<ProjectManage />} />
+          <Route path="/test1" element={<TestPage />} />
+          <Route path="/test" element={<ERDTest />} />
         </Routes>
       </BrowserRouter>
     </Provider>

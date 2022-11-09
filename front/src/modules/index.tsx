@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import auth from './Auth';
 import member from './member';
+import erd from './erd';
+import vuerd from './vuerd';
 
 const rootReducer = combineReducers({
-  auth,
   member,
+  erd,
+  vuerd,
 });
 
 export default rootReducer;

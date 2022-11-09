@@ -5,6 +5,7 @@ export interface MEMBER {
 }
 
 export interface PROJECT_LIST {
+  projectId: number;
   projectName: string;
   projectDescription: string;
   projectImg: string;

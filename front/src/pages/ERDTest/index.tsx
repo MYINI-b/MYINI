@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useLayoutEffect, useState } from 'react';
 import './style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,7 +14,7 @@ import GenerateVuerd from './GenerateVuerd';
 export default function ERDPage() {
   const [erdData, setErdData] = useState({});
 
-  const asd = useSelector((state: RootState) => state.vuerd);
+  // const asd = useSelector((state: RootState) => state.vuerd);
   useLayoutEffect(() => {
     // setErdData();
   });

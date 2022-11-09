@@ -6,6 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { globalStore } from 'store/yjsStore';
 import { getApi } from 'api';
 import DefaultProfile from 'assets/default-profile.png';
+// import { PROJECT_LIST } from 'types/main';
 import ImageTitle from './ImageTitle';
 import ProjectDesc from './ProjectDesc/index';
 import Period from './Period/index';
@@ -13,15 +14,17 @@ import ReferenceLink from './ReferenceLink';
 import ProjectMember from './Member/index';
 import './style.scss';
 
+// interface props {
+//   myProjectList: PROJECT_LIST[];
+// }
+// { myProjectList }: props
 export default function SettingPage() {
   const store = useSyncedStore(globalStore);
   const { pid } = useParams();
   const navigate = useNavigate();
-
   useEffect(() => {
     const getProjectDetail = async () => {
       const { data }: any = await getApi(`/projects/${pid}`);
-      console.log(data);
       if (data) {
         store.pjt.img = `https://myini.s3.ap-northeast-2.amazonaws.com/projectProfile/${data.projectImg}`;
         store.pjt.title = data.projectName;
@@ -46,7 +49,7 @@ export default function SettingPage() {
         });
         store.pjt.members = memberData;
       } else {
-        alert('없는 프젝');
+        console.log('상관없는콘솔');
       }
     };
 
