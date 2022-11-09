@@ -73,4 +73,15 @@ public class ApiDocsQueryRepository {
                 .where(apiController.project.eq(findProject))
                 .fetch();
     }
+
+    public List<Dto> findDtoClassTypeByProjectId(Project findProject) {
+        return queryFactory
+                .selectFrom(dto)
+                .leftJoin(dto.api, api)
+                .leftJoin(api.apiController, apiController)
+                .where(dto.project.eq(findProject)
+                        .and(dto.dtoType.eq(DtoType.DTO))
+                )
+                .fetch();
+    }
 }

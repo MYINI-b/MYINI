@@ -30,5 +30,7 @@ public interface ApiDocsService {
     void updateDtoItem(Long dtoItemId, UpdateDtoItemRequest request);
     void deleteDtoItem(Long dtoItemId);
     TypeListResponse findTypeList(Long projectId);
+    List<PrimitiveTypeResponse> findPrimitiveType();
+    List<ClassTypeResponse> findDtoClassType(Long projectId);
     List<ProjectInfoListResponse> findAll(Long projectId);
 }

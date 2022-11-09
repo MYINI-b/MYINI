@@ -586,10 +586,22 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_응답_23">응답</a></li>
 </ul>
 </li>
-<li><a href="#_api컨트롤러_조회_api_2">1.24. API컨트롤러 조회 API</a>
+<li><a href="#_자료형_리스트_조회_api">1.24. 자료형 리스트 조회 API</a>
 <ul class="sectlevel4">
 <li><a href="#_요청_24">요청</a></li>
 <li><a href="#_응답_24">응답</a></li>
+</ul>
+</li>
+<li><a href="#_primitive자료형_리스트_조회_api">1.25. primitive자료형 리스트 조회 API</a>
+<ul class="sectlevel4">
+<li><a href="#_요청_25">요청</a></li>
+<li><a href="#_응답_25">응답</a></li>
+</ul>
+</li>
+<li><a href="#_dtotype_자료형_리스트_조회_api">1.26. Dtotype 자료형 리스트 조회 API</a>
+<ul class="sectlevel4">
+<li><a href="#_요청_26">요청</a></li>
+<li><a href="#_응답_26">응답</a></li>
 </ul>
 </li>
 </ul>
@@ -3106,7 +3118,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_api컨트롤러_조회_api_2"><a class="anchor" href="#_api컨트롤러_조회_api_2"></a><a class="link" href="#_api컨트롤러_조회_api_2">1.24. API컨트롤러 조회 API</a></h4>
+<h4 id="_자료형_리스트_조회_api"><a class="anchor" href="#_자료형_리스트_조회_api"></a><a class="link" href="#_자료형_리스트_조회_api">1.24. 자료형 리스트 조회 API</a></h4>
 <div class="sect4">
 <h5 id="_요청_24"><a class="anchor" href="#_요청_24"></a><a class="link" href="#_요청_24">요청</a></h5>
 <div class="listingblock">
@@ -3235,12 +3247,208 @@ Content-Length: 203
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_primitive자료형_리스트_조회_api"><a class="anchor" href="#_primitive자료형_리스트_조회_api"></a><a class="link" href="#_primitive자료형_리스트_조회_api">1.25. primitive자료형 리스트 조회 API</a></h4>
+<div class="sect4">
+<h5 id="_요청_25"><a class="anchor" href="#_요청_25"></a><a class="link" href="#_요청_25">요청</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/apidocs/primitive HTTP/1.1
+Authorization: Bearer
+Accept: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_header_25"><a class="anchor" href="#_header_25"></a><a class="link" href="#_header_25">Header</a></h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AccessToken</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_응답_25"><a class="anchor" href="#_응답_25"></a><a class="link" href="#_응답_25">응답</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+Content-Length: 70
+
+[ {
+  "primitiveId" : 1,
+  "primitiveName" : "테스트 이름"
+} ]</code></pre>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_body_19"><a class="anchor" href="#_body_19"></a><a class="link" href="#_body_19">Body</a></h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기본 자료형 조회결과 배열</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].primitiveId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기본 자료형 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].primitiveName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기본 자료형 이름</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_dtotype_자료형_리스트_조회_api"><a class="anchor" href="#_dtotype_자료형_리스트_조회_api"></a><a class="link" href="#_dtotype_자료형_리스트_조회_api">1.26. Dtotype 자료형 리스트 조회 API</a></h4>
+<div class="sect4">
+<h5 id="_요청_26"><a class="anchor" href="#_요청_26"></a><a class="link" href="#_요청_26">요청</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/apidocs/1/dtotype HTTP/1.1
+Authorization: Bearer
+Accept: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_header_26"><a class="anchor" href="#_header_26"></a><a class="link" href="#_header_26">Header</a></h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AccessToken</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_path_25"><a class="anchor" href="#_path_25"></a><a class="link" href="#_path_25">Path</a></h6>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 25. /api/apidocs/{projectid}/dtotype</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>projectid</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Project ID</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_응답_26"><a class="anchor" href="#_응답_26"></a><a class="link" href="#_응답_26">응답</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+Content-Length: 58
+
+[ {
+  "dtoId" : 1,
+  "dtoName" : "테스트 이름"
+} ]</code></pre>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_body_20"><a class="anchor" href="#_body_20"></a><a class="link" href="#_body_20">Body</a></h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class 자료형 조회결과 배열</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].dtoId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class 자료형 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].dtoName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class 자료형 이름</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-11-03 13:15:08 +0900
+Last updated 2022-11-09 13:13:19 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

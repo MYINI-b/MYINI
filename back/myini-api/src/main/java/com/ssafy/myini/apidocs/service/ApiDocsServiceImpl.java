@@ -308,6 +308,24 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     }
 
     @Override
+    public List<PrimitiveTypeResponse> findPrimitiveType() {
+        List<Primitive> findPrimitives = primitiveRepository.findAll();
+        return findPrimitives.stream()
+                .map(primitive -> PrimitiveTypeResponse.from(primitive))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ClassTypeResponse> findDtoClassType(Long projectId) {
+        Project findProject = projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+        List<Dto> findDtos = apiDocsQueryRepository.findDtoClassTypeByProjectId(findProject);
+        return findDtos.stream()
+                .map(dto -> ClassTypeResponse.from(dto))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<ProjectInfoListResponse> findAll(Long projectId) {
         Project findProject = projectRepository.findById(projectId)
                 .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
