@@ -47,18 +47,19 @@ export interface ATTRIBUTE_PLUS extends ATTRIBUTE {
 }
 
 export interface DTO {
-  id: number;
-  name: string;
-  type: string;
-  responses: DTO_RESPONSE[];
+  dtoId: number;
+  dtoName: string;
+  dtoType: string;
+  dtoItemResponses: DTO_RESPONSE[];
+  dtoIsList?: boolean;
 }
 
 export interface DTO_RESPONSE {
-  id: number;
-  name: string;
-  classTypeId: number;
-  primitiveTypeId: number;
-  classTypeName: string;
-  primitiveTypeName: string;
-  isList: boolean;
+  dtoItemId: number;
+  dtoItemName: string;
+  dtoClassTypeId?: number;
+  dtoPrimitiveTypeId?: number;
+  dtoClassTypeName?: string;
+  dtoPrimitiveTypeName?: string;
+  dtoIsList: boolean;
 }

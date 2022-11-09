@@ -33,6 +33,11 @@
     overflow: auto;
     @include FLEX-COLUMN;
 
+    &::-webkit-scrollbar {
+      width: 0px;
+      height: 0px;
+    }
+
     .datatype-content {
       width: 100%;
       padding: rem(6) 0;
@@ -47,7 +52,16 @@
         cursor: pointer;
 
         .datatype-content-title {
+          width: 100%;
+          font-weight: bold;
           font-size: rem(20);
+          font-family: $eng-content;
+          border: none;
+
+          &.edit {
+            padding: rem(6);
+            border: 1px solid $lightx2-gray;
+          }
         }
 
         .datatype-content-openbtn {
@@ -77,11 +91,17 @@
         }
 
         .attr-type-name {
+          width: 100%;
           height: rem(32);
           font-size: rem(18);
           font-family: $eng-content;
           background-color: transparent;
           border: none;
+
+          &.edit {
+            padding: rem(4);
+            border-bottom: 1px solid $lightx2-gray;
+          }
         }
       }
     }
@@ -92,12 +112,22 @@
 
     .datatype-add-button {
       @include FLEX-CENTER;
-      @include WHITE-BTN;
       width: rem(30);
       height: rem(30);
       margin-top: rem(10);
       padding: rem(10);
+      color: $white;
+      font-size: rem(18);
+      background-color: $secondary;
+      border: 2px solid $secondary;
       border-radius: 30px;
+      transition: 0.3s ease;
+
+      &:hover {
+        color: $black;
+        font-weight: bold;
+        background-color: $pure-white;
+      }
     }
   }
 
@@ -156,6 +186,7 @@
       }
 
       .attr-type-name {
+        width: 100%;
         height: rem(32);
         font-size: rem(18);
         font-family: $eng-content;
@@ -182,17 +213,12 @@
       }
     }
 
-    .attr-div + .attr-div {
-      margin-top: rem(6);
-    }
-
     .datatype-add-btn {
-      @include WHITE-BTN;
+      @include ADD-BUTTON;
       width: rem(16);
       height: rem(16);
       margin-left: rem(20);
       padding: rem(12);
-      border-radius: rem(12);
     }
   }
 }
@@ -214,6 +240,7 @@
   }
 }
 .attr-type-delete {
+  margin-right: rem(6);
   color: $black;
   font-size: rem(18);
   cursor: pointer;
@@ -222,4 +249,14 @@
   &:hover {
     color: $delete;
   }
+}
+.attr-div + .attr-div {
+  margin-top: rem(6);
+}
+.datatype-add-btn {
+  @include ADD-BUTTON;
+  width: rem(16);
+  height: rem(16);
+  margin-left: rem(20);
+  padding: rem(12);
 }

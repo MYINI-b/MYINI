@@ -141,3 +141,23 @@ $shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
   background-color: $white;
   border: 2px solid $third;
 }
+
+@mixin ADD-BUTTON() {
+  @include FLEX-CENTER;
+  width: rem(30);
+  height: rem(30);
+  margin-top: rem(10);
+  padding: rem(10);
+  color: $white;
+  font-size: rem(18);
+  background-color: $secondary;
+  border: 2px solid $secondary;
+  border-radius: 30px;
+  transition: 0.3s ease;
+
+  &:hover {
+    color: $black;
+    font-weight: bold;
+    background-color: $pure-white;
+  }
+}

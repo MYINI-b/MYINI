@@ -3,6 +3,8 @@ import DataTypeList from 'components/DataTypeList';
 import './style.scss';
 import { MOUSEPOS, ATTRIBUTE, DTO } from 'types/ApiSpec';
 import Tooltip from 'components/Tooltip';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
   objDataType: any[];
@@ -81,8 +83,7 @@ export default function ApiContentRight({
 
         <div className="content-right-box">
           <div className="content-right-boxtitle-wrapper">
-            <h3 className="content-right-boxtitle static">자료형</h3>
-            <h3 className="content-right-boxtitle">변수명</h3>
+            <h3 className="content-right-boxtitle">자료형</h3>
           </div>
           <div className="content-right-boxcontent-wrapper">
             <div className="content-right-normal-boxcontent">
@@ -91,9 +92,13 @@ export default function ApiContentRight({
                   className="datatype-block"
                   onClick={(e) => openDataTypeList(e, true)}
                 >
-                  {request.dtoIsList
-                    ? `List<${request.dtoName}>`
-                    : request.dtoName}
+                  {request.dtoName === '' ? (
+                    <FontAwesomeIcon icon={faPlus} />
+                  ) : request.dtoIsList ? (
+                    `List<${request.dtoName}>`
+                  ) : (
+                    request.dtoName
+                  )}
                 </div>
               </div>
               {/* <input
@@ -174,8 +179,7 @@ export default function ApiContentRight({
             &nbsp; 다건
           </div>
           <div className="content-right-boxtitle-wrapper">
-            <h3 className="content-right-boxtitle static">자료형</h3>
-            <h3 className="content-right-boxtitle">변수명</h3>
+            <h3 className="content-right-boxtitle">자료형</h3>
           </div>
           <div className="content-right-boxcontent-wrapper">
             <div className="content-right-normal-boxcontent">
@@ -184,9 +188,13 @@ export default function ApiContentRight({
                   className="datatype-block"
                   onClick={(e) => openDataTypeList(e, false)}
                 >
-                  {response.dtoIsList
-                    ? `List<${response.dtoName}>`
-                    : response.dtoName}
+                  {response.dtoName === '' ? (
+                    <FontAwesomeIcon icon={faPlus} />
+                  ) : response.dtoIsList ? (
+                    `List<${response.dtoName}>`
+                  ) : (
+                    response.dtoName
+                  )}
                 </div>
               </div>
               {/* <input

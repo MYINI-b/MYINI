@@ -74,13 +74,13 @@
         .content-right-boxtitle {
           width: 100%;
           font-size: rem(20);
-          @include FLEX-CENTER;
+          @include FLEX-ALIGN-CENTER;
 
-          &.static {
-            flex-shrink: 0;
-            width: rem(200);
-            border-right: 1px solid $light-gray;
-          }
+          // &.static {
+          //   flex-shrink: 0;
+          //   width: rem(200);
+          //   border-right: 1px solid $light-gray;
+          // }
         }
       }
     }
@@ -153,9 +153,9 @@
 
   .datatype-wrapper {
     flex-shrink: 0;
-    width: rem(200);
-    overflow: hidden;
-    white-space: nowrap;
+    // width: rem(200);
+    // overflow: hidden;
+    // white-space: nowrap;
 
     @include FLEX-CENTER;
   }
@@ -166,6 +166,7 @@
     font-size: rem(16);
     background-color: $fourth;
     border-radius: rem(5);
+
     cursor: pointer;
   }
 }
