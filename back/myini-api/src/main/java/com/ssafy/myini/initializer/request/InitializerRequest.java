@@ -10,7 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InitializerRequest {
-    private String springBasePath;
     private String springType;
     private String springLanguage;
     private String springPlatformVersion;
