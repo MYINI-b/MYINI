@@ -350,8 +350,8 @@ class ApiDocsControllerTest extends ControllerTest {
                                 fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoPrimitiveTypeId").type(JsonFieldType.NUMBER).description("DtoItem DtoPrimitiveTypeId"),
                                 fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoIsList").type(JsonFieldType.STRING).description("리스트여부"),
                                 fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoClassTypeName").type(JsonFieldType.STRING).description("DtoItem DtoClassTypeName"),
-                                fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoPrimitiveTypeName").type(JsonFieldType.STRING).description("DtoItem DtoPrimitiveTypeName")
-
+                                fieldWithPath("dtoResponses.[].dtoItemResponses.[].dtoPrimitiveTypeName").type(JsonFieldType.STRING).description("DtoItem DtoPrimitiveTypeName"),
+                                fieldWithPath("pathListResponse").type(JsonFieldType.ARRAY).description("Path 조회결과 배열")
                         )));
 
         // then

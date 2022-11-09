@@ -57,7 +57,7 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND));
 
         return memberQueryRepository.findCrewById(member)
-                .stream().map(CrewResponse::from)
+                .stream().distinct().map(CrewResponse::from)
                 .collect(Collectors.toList());
     }
 

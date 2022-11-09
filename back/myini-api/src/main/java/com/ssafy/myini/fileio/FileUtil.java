@@ -10,11 +10,12 @@ import java.io.FileWriter;
 import java.util.Set;
 
 public class FileUtil {
+    public static String basePath = "/myini/initializer/";
 
     public static void fileWrite(InitializerRequest initializerRequest, String contents, String folderPath, String fileName) {
         try {
             //폴더 찾아가기
-            String path = initializerRequest.getSpringBasePath() + "/" + initializerRequest.getSpringName() + "/src/main/java/";
+            String path = basePath + "/" + initializerRequest.getSpringName() + "/src/main/java/";
 
             String[] packagePath = initializerRequest.getSpringPackageName().split("[.]");
             for (String s : packagePath) {
@@ -90,6 +91,27 @@ public class FileUtil {
             }
         }
         return "void";
+    }
+
+    public static void deletefolder(String path) {
+        File folder = new File(path);
+        try {
+            if (folder.exists()) {
+                File[] folder_list = folder.listFiles(); //파일리스트 얻어오기
+
+                for (int i = 0; i < folder_list.length; i++) {
+                    if (folder_list[i].isFile()) {
+                        folder_list[i].delete();
+                    } else {
+                        deletefolder(folder_list[i].getPath()); //재귀함수호출
+                    }
+                    folder_list[i].delete();
+                }
+                folder.delete(); //폴더 삭제
+            }
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
     }
 
 
