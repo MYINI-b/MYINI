@@ -19,7 +19,7 @@ public class InitializerFixture {
 
 
     public static final InitializerRequest TEST_INITIALIZER_REQUEST
-            = new InitializerRequest(CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT);
+            = new InitializerRequest(CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT);
 
     public static final InitializerPossibleResponse TEST_INITIALIZER_POSSIBLE_RESPONSE
             = new InitializerPossibleResponse(FLAG, CONTENT);

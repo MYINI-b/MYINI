@@ -2,21 +2,20 @@ package com.ssafy.myini.initializer.controller;
 
 import com.ssafy.myini.initializer.request.InitializerRequest;
 import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
+import com.ssafy.myini.initializer.response.InitializerStartResponse;
 import com.ssafy.myini.initializer.response.PreviewResponse;
 import com.ssafy.myini.initializer.service.InitializerService;
 import lombok.RequiredArgsConstructor;
-import net.lingala.zip4j.ZipFile;
 import org.json.simple.JSONObject;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.List;
 
 @RequestMapping("/api/initializers")
@@ -33,32 +32,30 @@ public class InitializerController {
         return ResponseEntity.ok().body(body);
     }
 
-    //이니셜라이징 시작
-    @PostMapping("/{projectid}")
-    public ResponseEntity<InputStreamResource> initializerStart(@PathVariable("projectid") Long projectId,
-                                                                @Valid InitializerRequest initializerRequest
-    ) throws IOException {
-        ZipFile body = initializerService.initializerStart(projectId, initializerRequest);
 
-        InputStreamResource resource3 = new InputStreamResource(new FileInputStream(body.getFile()));
+    @GetMapping("/{projectid}")
+    public ResponseEntity<byte[]> initializerStart(@PathVariable("projectid") Long projectId,
+                                                                @Valid InitializerRequest initializerRequest) {
+        InitializerStartResponse resp = initializerService.initializerStart(projectId, initializerRequest);
 
-        HttpHeaders header = new HttpHeaders();
-
-        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + body.getFile().getName());
-        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        header.add("Pragma", "no-cache");
-        header.add("Expires", "0");
         return ResponseEntity.ok()
-                .headers(header)
-                .contentLength(body.getFile().length())
+                .headers(resp.getHeaders())
+                .contentLength(resp.getLength())
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
-                .body(resource3);
+                .body(resp.getResource());
     }
 
-    //이니셜라이징 미리보기
-    @PostMapping("/{projectid}/previews")
+
+    @DeleteMapping("/{projectid}")
+    public ResponseEntity<Void> deleteZipfile(@Valid String fileName) {
+        initializerService.deleteZipfile(fileName);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+
+    @GetMapping("/{projectid}/previews")
     public ResponseEntity<List<PreviewResponse>> initializerPreview(@PathVariable("projectid") Long projectId,
-                                                                    @RequestBody InitializerRequest initializerRequest) {
+                                                                    @Valid InitializerRequest initializerRequest) {
         List<PreviewResponse> body = initializerService.initializerPreview(projectId, initializerRequest);
 
         return ResponseEntity.ok().body(body);

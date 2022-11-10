@@ -302,7 +302,7 @@ include::{snippets}/api/apidocs/dtoitems/{dtoitemid}/delete/path-parameters.adoc
 ===== 응답
 include::{snippets}/api/apidocs/dtoitems/{dtoitemid}/delete/http-response.adoc[]
 
-==== API컨트롤러 조회 API
+==== 자료형 리스트 조회 API
 ===== 요청
 include::{snippets}/api/apidocs/{projectid}/types/http-request.adoc[]
 ====== Header
@@ -314,3 +314,27 @@ include::{snippets}/api/apidocs/{projectid}/types/path-parameters.adoc[]
 include::{snippets}/api/apidocs/{projectid}/types/http-response.adoc[]
 ====== Body
 include::{snippets}/api/apidocs/{projectid}/types/response-fields.adoc[]
+
+==== primitive자료형 리스트 조회 API
+===== 요청
+include::{snippets}/api/apidocs/primitive/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/primitive/request-headers.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/primitive/http-response.adoc[]
+====== Body
+include::{snippets}/api/apidocs/primitive/response-fields.adoc[]
+
+==== Dtotype 자료형 리스트 조회 API
+===== 요청
+include::{snippets}/api/apidocs/{projectid}/dtotype/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/{projectid}/dtotype/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/{projectid}/dtotype/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/{projectid}/dtotype/http-response.adoc[]
+====== Body
+include::{snippets}/api/apidocs/{projectid}/dtotype/response-fields.adoc[]

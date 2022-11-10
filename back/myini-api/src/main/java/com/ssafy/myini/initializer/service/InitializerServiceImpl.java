@@ -8,6 +8,7 @@ import com.ssafy.myini.fileio.*;
 import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
+import com.ssafy.myini.initializer.response.InitializerStartResponse;
 import com.ssafy.myini.initializer.response.PreviewResponse;
 import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
@@ -17,12 +18,18 @@ import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +44,8 @@ public class InitializerServiceImpl implements InitializerService {
     private final S3Uploader s3Uploader;
     private final ApiDocsQueryRepository apiDocsQueryRepository;
 
+    private final ApplicationEventPublisher publisher; // 1
+
     @Override
     public InitializerPossibleResponse initializerIsPossible(Long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
@@ -46,7 +55,7 @@ public class InitializerServiceImpl implements InitializerService {
 
     @Override
     @Transactional
-    public ZipFile initializerStart(Long projectId, InitializerRequest initializerRequest) {
+    public InitializerStartResponse initializerStart(Long projectId, InitializerRequest initializerRequest) {
         //프로젝트 init
         InitProjectDownload.initProject(initializerRequest);
 
@@ -57,9 +66,8 @@ public class InitializerServiceImpl implements InitializerService {
         //ERD json 받아오기
         try {
             JSONParser jsonParser = new JSONParser();
-            File file = new File("erd");
+            File file = new File(projectId + "_erd");
             FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/" + projectId + ".vuerd.json"), file);
-
 
             Reader reader = new FileReader(file);
             JSONObject erd = (JSONObject) jsonParser.parse(reader);
@@ -86,35 +94,51 @@ public class InitializerServiceImpl implements InitializerService {
             // dto 생성
             projectInfoListResponses.forEach(projectInfoListResponse -> DtoWrite.dtoWrite(projectInfoListResponse, initializerRequest));
 
-            ZipFile zipFile = new ZipFile("project.zip");
-            zipFile.addFolder(new File(initializerRequest.getSpringPackageName() + initializerRequest.getSpringName()));
+            ZipFile zipFile = new ZipFile(initializerRequest.getSpringName() + ".zip");
+            zipFile.addFolder(new File(FileUtil.basePath + initializerRequest.getSpringName() + "/"));
 
-            deletefolder(initializerRequest);
-            return zipFile;
+            FileUtil.deletefolder(FileUtil.basePath);
+
+            HttpHeaders header = new HttpHeaders();
+
+            header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + zipFile.getFile().getName());
+            header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+            header.add("Pragma", "no-cache");
+            header.add("Expires", "0");
+
+            byte[] bytes = Files.readAllBytes(zipFile.getFile().toPath());
+            InitializerStartResponse response = new InitializerStartResponse(header, zipFile.getFile().length(), bytes);
+
+            // zipFile 삭제
+            if (zipFile.getFile().exists()) {
+                if (zipFile.getFile().delete()) {
+                    System.out.println("zip 파일 삭제 성공");
+                } else {
+                    System.out.println("zip 파일 삭제 실패");
+                }
+            }
+            // erd 파일 삭제
+            reader.close();
+            if (file.exists()) {
+                if (file.delete()) {
+                    System.out.println("erd 파일 삭제 성공");
+                } else {
+                    System.out.println("erd 파일 삭제 실패");
+                }
+            }
+
+            return response;
         } catch (Exception e) {
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
     }
 
-    private static void deletefolder(InitializerRequest initializerRequest) throws Exception {
-        String path = initializerRequest.getSpringPackageName() + initializerRequest.getSpringName();
+    @Override
+    public void deleteZipfile(String fileName) {
+        File deleteFile = new File(fileName + ".zip");
 
-        File deleteZip = new File(path + ".zip");
-        if (deleteZip.exists()) {
-            deleteZip.delete();
-        }
-
-        File deleteFolder = new File(path);
-        if (deleteFolder.exists()) {
-            File[] deleteFolderList = deleteFolder.listFiles();
-
-            for (int j = 0; j < deleteFolderList.length; j++) {
-                deleteFolderList[j].delete();
-            }
-
-            if (deleteFolderList.length == 0 && deleteFolder.isDirectory()) {
-                deleteFolder.delete();
-            }
+        if (deleteFile.exists()) {
+            deleteFile.delete();
         }
     }
 
@@ -232,20 +256,20 @@ public class InitializerServiceImpl implements InitializerService {
 
             // single-select
             JSONObject selectValues = new JSONObject();
-            selectValues.put("spring_type", addSingleSelectValues(starter, "type"));
-            selectValues.put("spring_packaging", addSingleSelectValues(starter, "packaging"));
-            selectValues.put("spring_jvm_version", addSingleSelectValues(starter, "javaVersion"));
-            selectValues.put("spring_language", addSingleSelectValues(starter, "language"));
-            selectValues.put("spring_platform_version", addSingleSelectValues(starter, "bootVersion"));
+            selectValues.put("springType", addSingleSelectValues(starter, "type"));
+            selectValues.put("springPackaging", addSingleSelectValues(starter, "packaging"));
+            selectValues.put("springJvmVersion", addSingleSelectValues(starter, "javaVersion"));
+            selectValues.put("springLanguage", addSingleSelectValues(starter, "language"));
+            selectValues.put("springPlatformVersion", addSingleSelectValues(starter, "bootVersion"));
             returnObj.put("single-select", selectValues);
 
             // text
             JSONArray textValues = new JSONArray();
-            textValues.add(addTextValues("Group", "spring_group_id"));
-            textValues.add(addTextValues("Artifact", "spring_artifact_id"));
-            textValues.add(addTextValues("Name", "spring_name"));
-            textValues.add(addTextValues("Description", "spring_description"));
-            textValues.add(addTextValues("Package name", "spring_package_name"));
+            textValues.add(addTextValues("Group", "springGroupId"));
+            textValues.add(addTextValues("Artifact", "springArtifactId"));
+            textValues.add(addTextValues("Name", "springName"));
+            textValues.add(addTextValues("Description", "springDescription"));
+            textValues.add(addTextValues("Package name", "springPackageName"));
             returnObj.put("text", textValues);
 
             // dependencies
@@ -265,6 +289,7 @@ public class InitializerServiceImpl implements InitializerService {
             throw new RuntimeException("JSON Parsing 에 실패하였습니다.");
         }
     }
+
 
     private JSONObject addDependencies(JSONObject dependency) {
         JSONObject jsonObject = new JSONObject();
