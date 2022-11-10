@@ -66,6 +66,7 @@ public class ApiDocsController {
     @PutMapping("/apis/{apiid}")
     public ResponseEntity<Void> updateApi(@PathVariable("apiid")Long apiId,
                                           @RequestBody @Valid UpdateApiRequest request){
+        System.out.println("request = " + request.getUpdateApiDtoRequest());
         apiDocsService.updateApi(apiId, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

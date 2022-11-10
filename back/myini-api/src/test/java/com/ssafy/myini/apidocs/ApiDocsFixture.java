@@ -28,8 +28,24 @@ public class ApiDocsFixture {
             = new UpdateApiControllerRequest(NAME, URL, APIDESCRIPTION);
     public static final CreateApiRequest TEST_CREATE_API_REQUEST
             = new CreateApiRequest(NAME, APIDESCRIPTION, URL, APIMETHOD, APICODE, API_METHOD_NAME);
+    public static final CreateDtoRequest TEST_CREATE_DTO_REQUEST
+            = new CreateDtoRequest(NAME, TYPE, YN_FIELD);
+
+    public static final CreateDtoItemRequest TEST_CREATE_DTO_ITEM_REQUEST
+            = new CreateDtoItemRequest(NAME, ID, ID, YN_FIELD);
+    public static final UpdateDtoRequest TEST_UPDATE_DTO_REQUEST
+            = new UpdateDtoRequest(NAME, TYPE, YN_FIELD);
+    public static final UpdateDtoItemRequest TEST_UPDATE_DTO_ITEM_REQUEST
+            = new UpdateDtoItemRequest(NAME, ID, ID, YN_FIELD);
+    public static final UpdateApiDtoItemRequest TEST_UPDATE_API_DTO_ITEM_REQUEST
+            = new UpdateApiDtoItemRequest(ID, TEST_UPDATE_DTO_ITEM_REQUEST);
+    public static final DeleteDtoItemRequest TEST_DELETE_API_DTO_ITEM_REQUEST
+            = new DeleteDtoItemRequest(ID);
+    public static final UpdateApiDtoRequest TEST_UPDATE_API_DTO_REQUEST
+            = new UpdateApiDtoRequest(ID, TEST_UPDATE_DTO_REQUEST, Arrays.asList(TEST_CREATE_DTO_ITEM_REQUEST), Arrays.asList(TEST_UPDATE_API_DTO_ITEM_REQUEST), Arrays.asList(TEST_DELETE_API_DTO_ITEM_REQUEST));
     public static final UpdateApiRequest TEST_UPDATE_API_REQUEST
-            = new UpdateApiRequest(NAME, APIDESCRIPTION, URL, APIMETHOD, APICODE, API_METHOD_NAME);
+            = new UpdateApiRequest(NAME, APIDESCRIPTION, URL, APIMETHOD, APICODE, API_METHOD_NAME, Arrays.asList(TEST_UPDATE_API_DTO_REQUEST));
+
     public static final CreatePathVariableRequest TEST_CREATE_PATHVARIABLE_REQUEST
             = new CreatePathVariableRequest(KEY, TYPE);
     public static final UpdatePathVariableRequest TEST_UPDATE_PATHVARIABLE_REQUEST
@@ -38,14 +54,8 @@ public class ApiDocsFixture {
             = new CreateQueryStringRequest(KEY, TYPE);
     public static final UpdateQueryStringRequest TEST_UPDATE_QUERYSTRING_REQUEST
             = new UpdateQueryStringRequest(KEY, TYPE);
-    public static final CreateDtoRequest TEST_CREATE_DTO_REQUEST
-            = new CreateDtoRequest(NAME, TYPE, YN_FIELD);
-    public static final UpdateDtoRequest TEST_UPDATE_DTO_REQUEST
-            = new UpdateDtoRequest(NAME, TYPE, YN_FIELD);
-    public static final CreateDtoItemRequest TEST_CREATE_DTO_ITEM_REQUEST
-            = new CreateDtoItemRequest(NAME, ID, ID, YN_FIELD);
-    public static final UpdateDtoItemRequest TEST_UPDATE_DTO_ITEM_REQUEST
-            = new UpdateDtoItemRequest(NAME, ID, ID, YN_FIELD);
+
+
 
     public static final ApiControllerListResponse TEST_API_CONTROLLER_LIST_RESPONSE
             = new ApiControllerListResponse(ID, NAME);
