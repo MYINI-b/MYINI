@@ -39,6 +39,8 @@ public class Requirement {
 
     private Double requirementStoryPoint;
 
+    private String jiraIssueId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
@@ -69,6 +71,9 @@ public class Requirement {
     }
     public void updateRequirementStoryPoint(Double requirementStoryPoint){
         this.requirementStoryPoint = requirementStoryPoint;
+    }
+    public void updateJiraIssueId(String jiraIssueId){
+        this.jiraIssueId = jiraIssueId;
     }
 
 }
