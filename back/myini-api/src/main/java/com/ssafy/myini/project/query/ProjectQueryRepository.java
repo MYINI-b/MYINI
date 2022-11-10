@@ -20,7 +20,7 @@ import static com.ssafy.myini.project.domain.QProject.project;
 public class ProjectQueryRepository {
     private final JPAQueryFactory queryFactory;
 
-    public List<MemberProject> findProjectMemberList(Long projectId){
+    public List<MemberProject> findProjectMemberList(Long projectId) {
         return queryFactory
                 .selectFrom(memberProject)
                 .join(memberProject.member, member).fetchJoin()
@@ -28,18 +28,15 @@ public class ProjectQueryRepository {
                 .fetch();
     }
 
-    public List<Project> findAll(Member findMember){
+    public List<MemberProject> findAll(Member findMember) {
 
-        return queryFactory
-                .selectFrom(project).distinct()
-                .leftJoin(project.memberProjects, memberProject).fetchJoin()
+        List<MemberProject> results = queryFactory
+                .selectFrom(memberProject).distinct()
+                .leftJoin(memberProject.project, project).fetchJoin()
                 .leftJoin(memberProject.member, member).fetchJoin()
-                .where(project.in(
-                        JPAExpressions
-                                .select(project)
-                                .from(memberProject)
-                                .where(memberProject.member.eq(findMember))
-                        ))
+                .where(memberProject.member.eq(findMember))
                 .fetch();
+
+        return results;
     }
 }

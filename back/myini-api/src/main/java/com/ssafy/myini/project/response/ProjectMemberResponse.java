@@ -15,6 +15,7 @@ public class ProjectMemberResponse {
     private String memberEmail;
     private String memberProfileImg;
     private String memberName;
+    private String memberNickName;
 
     public static ProjectMemberResponse from(Member member){
         ProjectMemberResponse projectMemberResponse = new ProjectMemberResponse();
@@ -22,6 +23,7 @@ public class ProjectMemberResponse {
         projectMemberResponse.memberEmail = member.getMemberEmail();
         projectMemberResponse.memberProfileImg = member.getMemberProfileImg();
         projectMemberResponse.memberName = member.getMemberName();
+        projectMemberResponse.memberNickName = member.getMemberNickname();
         return projectMemberResponse;
     }
 }

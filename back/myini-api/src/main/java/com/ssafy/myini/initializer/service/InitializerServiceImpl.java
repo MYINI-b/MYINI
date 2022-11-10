@@ -2,18 +2,13 @@ package com.ssafy.myini.initializer.service;
 
 import com.ssafy.myini.InitializerException;
 import com.ssafy.myini.apidocs.query.ApiDocsQueryRepository;
-import com.ssafy.myini.apidocs.response.DtoResponse;
 import com.ssafy.myini.apidocs.response.ProjectInfoListResponse;
 import com.ssafy.myini.config.S3Uploader;
-import com.ssafy.myini.erd.domain.entity.ErdTable;
-import com.ssafy.myini.erd.domain.entity.TableColumn;
-import com.ssafy.myini.erd.domain.repository.ErdTableRepository;
-import com.ssafy.myini.erd.domain.repository.TableColumnRepository;
-import com.ssafy.myini.erd.response.ErdTableListResponse;
 import com.ssafy.myini.fileio.*;
 import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
+import com.ssafy.myini.initializer.response.InitializerStartResponse;
 import com.ssafy.myini.initializer.response.PreviewResponse;
 import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
@@ -23,18 +18,18 @@ import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.security.core.parameters.P;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileReader;
-import java.io.Reader;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,42 +41,21 @@ import static com.ssafy.myini.NotFoundException.*;
 @Transactional
 public class InitializerServiceImpl implements InitializerService {
     private final ProjectRepository projectRepository;
-    private final ErdTableRepository erdTableRepository;
-    private final TableColumnRepository tableColumnRepository;
     private final S3Uploader s3Uploader;
     private final ApiDocsQueryRepository apiDocsQueryRepository;
+
+    private final ApplicationEventPublisher publisher; // 1
 
     @Override
     public InitializerPossibleResponse initializerIsPossible(Long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
-
-//        //ERD체크
-//        InitializerPossibleResponse initializerPossibleResponse = null;
-//        //테이블유무
-//        List<ErdTable> erdTables = erdTableRepository.findAllByProject(project);
-//        if (erdTables.size() == 0) {
-//            initializerPossibleResponse = new InitializerPossibleResponse(false, "테이블이 없습니다.");
-//            return initializerPossibleResponse;
-//        } else {
-//            //테이블 컬럼유무
-//            for (ErdTable erdTable : erdTables) {
-//                List<TableColumn> tableColumns = tableColumnRepository.findAllByErdTable(erdTable);
-//                if (tableColumns.size() == 0) {
-//                    initializerPossibleResponse = new InitializerPossibleResponse(false, "컬럼이 없습니다.");
-//                    return initializerPossibleResponse;
-//                }
-//            }
-//        }
-
         //API명세서 체크
-
         return new InitializerPossibleResponse(true, "빌드가능");
     }
 
     @Override
     @Transactional
-    public ZipFile initializerStart(Long projectId, InitializerRequest initializerRequest) {
-
+    public InitializerStartResponse initializerStart(Long projectId, InitializerRequest initializerRequest) {
         //프로젝트 init
         InitProjectDownload.initProject(initializerRequest);
 
@@ -92,9 +66,8 @@ public class InitializerServiceImpl implements InitializerService {
         //ERD json 받아오기
         try {
             JSONParser jsonParser = new JSONParser();
-            File file = new File("erd");
+            File file = new File(projectId + "_erd");
             FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/" + projectId + ".vuerd.json"), file);
-
 
             Reader reader = new FileReader(file);
             JSONObject erd = (JSONObject) jsonParser.parse(reader);
@@ -121,38 +94,51 @@ public class InitializerServiceImpl implements InitializerService {
             // dto 생성
             projectInfoListResponses.forEach(projectInfoListResponse -> DtoWrite.dtoWrite(projectInfoListResponse, initializerRequest));
 
+            ZipFile zipFile = new ZipFile(initializerRequest.getSpringName() + ".zip");
+            zipFile.addFolder(new File(FileUtil.basePath + initializerRequest.getSpringName() + "/"));
 
-//            ZipFile zipFile = new ZipFile(initializerRequest.getSpring_base_path() + initializerRequest.getSpring_name() + ".zip");
-            ZipFile zipFile = new ZipFile("project.zip");
-            zipFile.addFolder(new File(initializerRequest.getSpring_base_path() + initializerRequest.getSpring_name()));
+            FileUtil.deletefolder(FileUtil.basePath);
 
-            deletefolder(initializerRequest);
+            HttpHeaders header = new HttpHeaders();
 
-            return zipFile;
+            header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + zipFile.getFile().getName());
+            header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+            header.add("Pragma", "no-cache");
+            header.add("Expires", "0");
+
+            byte[] bytes = Files.readAllBytes(zipFile.getFile().toPath());
+            InitializerStartResponse response = new InitializerStartResponse(header, zipFile.getFile().length(), bytes);
+
+            // zipFile 삭제
+            if (zipFile.getFile().exists()) {
+                if (zipFile.getFile().delete()) {
+                    System.out.println("zip 파일 삭제 성공");
+                } else {
+                    System.out.println("zip 파일 삭제 실패");
+                }
+            }
+            // erd 파일 삭제
+            reader.close();
+            if (file.exists()) {
+                if (file.delete()) {
+                    System.out.println("erd 파일 삭제 성공");
+                } else {
+                    System.out.println("erd 파일 삭제 실패");
+                }
+            }
+
+            return response;
         } catch (Exception e) {
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
     }
 
-    private static void deletefolder(InitializerRequest initializerRequest) throws Exception {
-        String path = initializerRequest.getSpring_base_path() + initializerRequest.getSpring_name();
+    @Override
+    public void deleteZipfile(String fileName) {
+        File deleteFile = new File(fileName + ".zip");
 
-        File deleteZip = new File(path + ".zip");
-        if (deleteZip.exists()) {
-            deleteZip.delete();
-        }
-
-        File deleteFolder = new File(path);
-        if (deleteFolder.exists()) {
-            File[] deleteFolderList = deleteFolder.listFiles();
-
-            for (int j = 0; j < deleteFolderList.length; j++) {
-                deleteFolderList[j].delete();
-            }
-
-            if (deleteFolderList.length == 0 && deleteFolder.isDirectory()) {
-                deleteFolder.delete();
-            }
+        if (deleteFile.exists()) {
+            deleteFile.delete();
         }
     }
 
@@ -242,6 +228,109 @@ public class InitializerServiceImpl implements InitializerService {
         ByteArrayOutputStream byteArrayOutputStream = s3Uploader.downloadFile("front Setup 0.1.0.exe");
 
         return byteArrayOutputStream;
+    }
+
+    @Override
+    public JSONObject initializerSettings() {
+        try {
+            // start.spring.io에서 얻은 dependendy 기반
+            URL url = new URL("https://start.spring.io/metadata/client");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("spring initializer 에서 dependency 메타데이터를 다운로드하는데 실패하였습니다.");
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            StringBuilder sb = new StringBuilder();
+
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            JSONParser parser = new JSONParser();
+            JSONObject starter = (JSONObject) parser.parse(sb.toString());
+
+            JSONObject returnObj = new JSONObject();
+
+            // single-select
+            JSONObject selectValues = new JSONObject();
+            selectValues.put("springType", addSingleSelectValues(starter, "type"));
+            selectValues.put("springPackaging", addSingleSelectValues(starter, "packaging"));
+            selectValues.put("springJvmVersion", addSingleSelectValues(starter, "javaVersion"));
+            selectValues.put("springLanguage", addSingleSelectValues(starter, "language"));
+            selectValues.put("springPlatformVersion", addSingleSelectValues(starter, "bootVersion"));
+            returnObj.put("single-select", selectValues);
+
+            // text
+            JSONArray textValues = new JSONArray();
+            textValues.add(addTextValues("Group", "springGroupId"));
+            textValues.add(addTextValues("Artifact", "springArtifactId"));
+            textValues.add(addTextValues("Name", "springName"));
+            textValues.add(addTextValues("Description", "springDescription"));
+            textValues.add(addTextValues("Package name", "springPackageName"));
+            returnObj.put("text", textValues);
+
+            // dependencies
+            JSONArray categories = (JSONArray) ((JSONObject) starter.get("dependencies")).get("values");
+            JSONArray dependencies = new JSONArray();
+            for (Object category : categories) {
+                JSONArray sub = (JSONArray) ((JSONObject) category).get("values");
+                for (Object dependency : sub) {
+                    dependencies.add(addDependencies((JSONObject) dependency));
+                }
+            }
+            returnObj.put("dependencies", dependencies);
+
+            return returnObj;
+
+        } catch (Exception e) {
+            throw new RuntimeException("JSON Parsing 에 실패하였습니다.");
+        }
+    }
+
+
+    private JSONObject addDependencies(JSONObject dependency) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", dependency.get("id"));
+        jsonObject.put("name", dependency.get("name"));
+        jsonObject.put("description", dependency.get("description"));
+
+        return jsonObject;
+    }
+
+    private JSONObject addTextValues(String name, String id) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("name", name);
+        jsonObject.put("id", id);
+
+        return jsonObject;
+    }
+
+    private JSONObject addSingleSelectValues(JSONObject starter, String name) {
+        JSONObject original = (JSONObject) starter.get(name);
+
+        String defaultValue = (String) original.get("default");
+
+        JSONArray values = (JSONArray) original.get("values");
+
+        JSONObject jsonObject = new JSONObject();
+
+        jsonObject.put("default", defaultValue);
+
+        JSONArray jsonArray = new JSONArray();
+        for (Object value : values) {
+            JSONObject tmp = new JSONObject();
+            tmp.put("id", ((JSONObject) value).get("id"));
+            tmp.put("name", ((JSONObject) value).get("name"));
+
+            jsonArray.add(tmp);
+        }
+
+        jsonObject.put("values", jsonArray);
+
+        return jsonObject;
+
     }
 
 }

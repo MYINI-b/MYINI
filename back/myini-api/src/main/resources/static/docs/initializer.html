@@ -454,10 +454,22 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_응답">응답</a></li>
 </ul>
 </li>
-<li><a href="#_이니셜라이저_시작_api">1.2. 이니셜라이저 시작 API</a>
+<li><a href="#_이니셜라이저_미리보기">1.2. 이니셜라이저 미리보기</a>
 <ul class="sectlevel4">
 <li><a href="#_요청_2">요청</a></li>
 <li><a href="#_응답_2">응답</a></li>
+</ul>
+</li>
+<li><a href="#_myini_다운로드">1.3. myini 다운로드</a>
+<ul class="sectlevel4">
+<li><a href="#_요청_3">요청</a></li>
+<li><a href="#_응답_3">응답</a></li>
+</ul>
+</li>
+<li><a href="#_이니셜라이저_설정_정보_확인">1.4. 이니셜라이저 설정 정보 확인</a>
+<ul class="sectlevel4">
+<li><a href="#_요청_4">요청</a></li>
+<li><a href="#_응답_4">응답</a></li>
 </ul>
 </li>
 </ul>
@@ -581,23 +593,213 @@ Content-Length: 53
 </div>
 </div>
 <div class="sect3">
-<h4 id="_이니셜라이저_시작_api"><a class="anchor" href="#_이니셜라이저_시작_api"></a><a class="link" href="#_이니셜라이저_시작_api">1.2. 이니셜라이저 시작 API</a></h4>
+<h4 id="_이니셜라이저_미리보기"><a class="anchor" href="#_이니셜라이저_미리보기"></a><a class="link" href="#_이니셜라이저_미리보기">1.2. 이니셜라이저 미리보기</a></h4>
 <div class="sect4">
 <h5 id="_요청_2"><a class="anchor" href="#_요청_2"></a><a class="link" href="#_요청_2">요청</a></h5>
-<div class="paragraph">
-<p>Unresolved directive in initializer.adoc - include::C:/Users/multicampus/Desktop/myINI/S07P31B203/back/myini-api/build/generated-snippets/api/initializers/{projectid}/http-request.adoc[]
-====== Header
-Unresolved directive in initializer.adoc - include::C:/Users/multicampus/Desktop/myINI/S07P31B203/back/myini-api/build/generated-snippets/api/initializers/{projectid}/request-headers.adoc[]
-====== Path
-Unresolved directive in initializer.adoc - include::C:/Users/multicampus/Desktop/myINI/S07P31B203/back/myini-api/build/generated-snippets/api/initializers/{projectid}/path-parameters.adoc[]
-====== Body
-Unresolved directive in initializer.adoc - include::C:/Users/multicampus/Desktop/myINI/S07P31B203/back/myini-api/build/generated-snippets/api/initializers/{projectid}/request-body.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/initializers/1/previews HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: Bearer
+Content-Length: 370
+Host: localhost:8080
+
+{
+  "springType" : "내용",
+  "springLanguage" : "내용",
+  "springPlatformVersion" : "내용",
+  "springPackaging" : "내용",
+  "springJvmVersion" : "내용",
+  "springGroupId" : "내용",
+  "springArtifactId" : "내용",
+  "springName" : "내용",
+  "springDescription" : "내용",
+  "springPackageName" : "내용",
+  "springDependencyName" : "내용"
+}</code></pre>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_header_2"><a class="anchor" href="#_header_2"></a><a class="link" href="#_header_2">Header</a></h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AccessToken</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_path_2"><a class="anchor" href="#_path_2"></a><a class="link" href="#_path_2">Path</a></h6>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. /api/initializers/{projectid}/previews</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>projectid</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">프로젝트 ID</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_body_3"><a class="anchor" href="#_body_3"></a><a class="link" href="#_body_3">Body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
+  "springType" : "내용",
+  "springLanguage" : "내용",
+  "springPlatformVersion" : "내용",
+  "springPackaging" : "내용",
+  "springJvmVersion" : "내용",
+  "springGroupId" : "내용",
+  "springArtifactId" : "내용",
+  "springName" : "내용",
+  "springDescription" : "내용",
+  "springPackageName" : "내용",
+  "springDependencyName" : "내용"
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_응답_2"><a class="anchor" href="#_응답_2"></a><a class="link" href="#_응답_2">응답</a></h5>
-<div class="paragraph">
-<p>Unresolved directive in initializer.adoc - include::C:/Users/multicampus/Desktop/myINI/S07P31B203/back/myini-api/build/generated-snippets/api/initializers/{projectid}/http-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+Content-Length: 89
+
+[ {
+  "fileCategory" : "내용",
+  "fileName" : "내용",
+  "contents" : "내용"
+} ]</code></pre>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_body_4"><a class="anchor" href="#_body_4"></a><a class="link" href="#_body_4">Body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">[ {
+  "fileCategory" : "내용",
+  "fileName" : "내용",
+  "contents" : "내용"
+} ]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_myini_다운로드"><a class="anchor" href="#_myini_다운로드"></a><a class="link" href="#_myini_다운로드">1.3. myini 다운로드</a></h4>
+<div class="sect4">
+<h5 id="_요청_3"><a class="anchor" href="#_요청_3"></a><a class="link" href="#_요청_3">요청</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/initializers/downloads HTTP/1.1
+Accept: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_body_5"><a class="anchor" href="#_body_5"></a><a class="link" href="#_body_5">Body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_응답_3"><a class="anchor" href="#_응답_3"></a><a class="link" href="#_응답_3">응답</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/octet-stream;charset=UTF-8
+Content-Disposition: attachment; filename="front Setup 0.1.0.exe"</code></pre>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_body_6"><a class="anchor" href="#_body_6"></a><a class="link" href="#_body_6">Body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs"></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_이니셜라이저_설정_정보_확인"><a class="anchor" href="#_이니셜라이저_설정_정보_확인"></a><a class="link" href="#_이니셜라이저_설정_정보_확인">1.4. 이니셜라이저 설정 정보 확인</a></h4>
+<div class="sect4">
+<h5 id="_요청_4"><a class="anchor" href="#_요청_4"></a><a class="link" href="#_요청_4">요청</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/initializers/settings HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_응답_4"><a class="anchor" href="#_응답_4"></a><a class="link" href="#_응답_4">응답</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+Content-Length: 503
+
+{
+  "single-select" : {
+    "쿼리스트링 key" : {
+      "default" : "디폴트 값 id",
+      "values" : [ {
+        "name" : "화면에 표시될 이름",
+        "id" : "쿼리스트링 value"
+      } ]
+    }
+  },
+  "text" : [ {
+    "name" : "화면에 표시될 이름",
+    "id" : "쿼리스트링 key"
+  } ],
+  "dependencies" : [ {
+    "name" : "화면에 표시될 이름",
+    "description" : "해당 dependency에 대한 설명",
+    "id" : "쿼리스트링 value"
+  } ]
+}</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -606,7 +808,7 @@ Unresolved directive in initializer.adoc - include::C:/Users/multicampus/Desktop
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-11-04 08:49:19 +0900
+Last updated 2022-11-09 13:22:50 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
