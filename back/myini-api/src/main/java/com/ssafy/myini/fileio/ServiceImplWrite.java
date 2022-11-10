@@ -12,14 +12,11 @@ public class ServiceImplWrite {
     private static int depth = 0;
 
     private static boolean containList;
-
-    private static Set<String> responseImportContents;
-    private static Set<String> requestImportContents;
+    private static boolean containRequest;
+    private static boolean containResponse;
 
     public static String serviceImplPreview(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
         serviceImplImportContents = new StringBuilder();
-        responseImportContents = new HashSet<>();
-        requestImportContents = new HashSet<>();
         containList = false;
 
         // 필수 import 선언
@@ -33,18 +30,9 @@ public class ServiceImplWrite {
         String body = methodWrite(projectInfoListResponse.getApiInfoResponses()).replaceAll(",", ", ");
         depth--;
 
-        // list import 추가하기
-        if (containList) {
-            serviceImplImportContents.append("import java.util.List;\n\n");
-        }
-        // request, response import 추가하기
-        for (String requestImport : requestImportContents) {
-            serviceImplImportContents.append("import ").append(initializerRequest.getSpringPackageName()).append(".request.").append(requestImport).append(";\n");
-        }
-        for (String responseImport : responseImportContents) {
-            serviceImplImportContents.append("import ").append(initializerRequest.getSpringPackageName()).append(".response.").append(responseImport).append(";\n");
-        }
-        serviceImplImportContents.append("\n");
+        // list, request, response import 추가하기
+        FileUtil.addImportContents(containList, containRequest, containResponse, serviceImplImportContents, initializerRequest.getSpringPackageName());
+
 
         contents.append("package " + initializerRequest.getSpringPackageName() + ".service;\n")
                 .append("\n")
@@ -77,7 +65,7 @@ public class ServiceImplWrite {
             methodContents.append("@Override\n");
             FileUtil.appendTab(methodContents, depth);
             // 메서드 response type
-            String response = FileUtil.responseWrite(apiInfoResponse, responseImportContents);
+            String response = FileUtil.responseWrite(apiInfoResponse);
             methodContents.append("public ").append(response).append(" "). // return type
                     append(apiInfoResponse.getApiResponse().getApiMethodName()); // 메서드 이름
 
@@ -100,9 +88,9 @@ public class ServiceImplWrite {
             // 3. requestBody
             for (DtoResponse dtoResponse : apiInfoResponse.getDtoResponses()) {
                 if (dtoResponse.getDtoType().equals("REQUEST")) {
+                    containRequest = true;
                     methodContents.append(FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName()))
                             .append(" request");
-                    requestImportContents.add(FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName()));
                     break;
                 }
             }
@@ -112,6 +100,7 @@ public class ServiceImplWrite {
             FileUtil.appendTab(methodContents, depth);
             methodContents.append("// TODO : ").append(apiInfoResponse.getApiResponse().getApiMethodName()).append(" 코드를 작성하세요.\n");
             if (!response.equals("void")) {
+                containResponse = true;
                 FileUtil.appendTab(methodContents, depth);
                 methodContents.append("return null;\n");
             }

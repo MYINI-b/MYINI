@@ -5,19 +5,15 @@ import com.ssafy.myini.apidocs.response.DtoResponse;
 import com.ssafy.myini.apidocs.response.ProjectInfoListResponse;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class DtoWrite {
     static StringBuilder dtoImportContents;
     private static int depth = 0;
-    private static Set<String> importDtos;
     private static boolean containList;
 
     public static String dtoPreview(DtoResponse dtoResponse, InitializerRequest initializerRequest) {
         dtoImportContents = new StringBuilder();
-        importDtos = new HashSet<>();
         containList = false;
 
         // 필수 import 선언
@@ -32,10 +28,6 @@ public class DtoWrite {
         // list import 추가하기
         if (containList) {
             dtoImportContents.append("import java.util.List;\n\n");
-        }
-
-        for (String importDto : importDtos) {
-            dtoImportContents.append("import ").append(initializerRequest.getSpringPackageName()).append(".dto.").append(importDto).append(";\n");
         }
 
         StringBuilder contents = new StringBuilder();
@@ -80,13 +72,13 @@ public class DtoWrite {
         StringBuilder methodContents = new StringBuilder();
 
         for (DtoItemResponse dtoItemResponse : dtoItemResponses) {
+            FileUtil.appendTab(methodContents, depth);
             methodContents.append("private ");
 
             String type = "";
 
             if (dtoItemResponse.getDtoClassTypeName() != null) {
                 // Dto 클래스 타입을 갖는 경우
-                importDtos.add(dtoItemResponse.getDtoItemName());
                 type = dtoItemResponse.getDtoClassTypeName();
             } else if (dtoItemResponse.getDtoPrimitiveTypeName() != null) {
                 // 기본 타입을 갖는 경우
@@ -95,8 +87,6 @@ public class DtoWrite {
                     dtoImportContents.append("import java.time.LocalDateTime;\n");
                 }
                 type = dtoItemResponse.getDtoPrimitiveTypeName();
-            } else {
-                // 둘 다 null이면 error
             }
             if (dtoItemResponse.getDtoIsList().equals("Y")) {
                 containList = true;

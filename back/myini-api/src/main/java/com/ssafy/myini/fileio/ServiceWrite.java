@@ -3,22 +3,17 @@ package com.ssafy.myini.fileio;
 import com.ssafy.myini.apidocs.response.*;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ServiceWrite {
     static StringBuilder serviceImportContents;
     private static int depth = 0;
     private static boolean containList;
-
-    private static Set<String> responseImportContents;
-    private static Set<String> requestImportContents;
+    private static boolean containRequest;
+    private static boolean containResponse;
 
     public static String servicePreview(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
         serviceImportContents = new StringBuilder();
-        responseImportContents = new HashSet<>();
-        requestImportContents = new HashSet<>();
         containList = false;
 
         StringBuilder contents = new StringBuilder();
@@ -26,18 +21,9 @@ public class ServiceWrite {
         String body = methodWrite(projectInfoListResponse.getApiInfoResponses()).replaceAll(",", ", ");
         depth--;
 
-        // list import 추가하기
-        if (containList) {
-            serviceImportContents.append("import java.util.List;\n\n");
-        }
-        // request, response import 추가하기
-        for (String requestImport : requestImportContents) {
-            serviceImportContents.append("import ").append(initializerRequest.getSpringPackageName()).append(".request.").append(requestImport).append(";\n");
-        }
-        for (String responseImport : responseImportContents) {
-            serviceImportContents.append("import ").append(initializerRequest.getSpringPackageName()).append(".response.").append(responseImport).append(";\n");
-        }
-        serviceImportContents.append("\n");
+        // list, request, response import 추가하기
+        FileUtil.addImportContents(containList, containRequest, containResponse, serviceImportContents, initializerRequest.getSpringPackageName());
+
 
         contents.append("package " + initializerRequest.getSpringPackageName() + ".service;\n")
                 .append("\n")
@@ -66,10 +52,13 @@ public class ServiceWrite {
             methodContents.append("\n");
             FileUtil.appendTab(methodContents, depth);
             // 메서드 response type
-            String response = FileUtil.responseWrite(apiInfoResponse, responseImportContents);
+            String response = FileUtil.responseWrite(apiInfoResponse);
             methodContents.append(response).append(" "). // return type
                     append(apiInfoResponse.getApiResponse().getApiMethodName()); // 메서드 이름
 
+            if(!response.equals("void")){
+                containResponse = true;
+            }
             if (response.contains("List")) {
                 containList = true;
             }
@@ -89,9 +78,9 @@ public class ServiceWrite {
             // 3. requestBody
             for (DtoResponse dtoResponse : apiInfoResponse.getDtoResponses()) {
                 if (dtoResponse.getDtoType().equals("REQUEST")) {
+                    containRequest = true;
                     methodContents.append(FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName()))
                             .append(" request");
-                    requestImportContents.add(FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName()));
                     break;
                 }
             }

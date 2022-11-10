@@ -7,7 +7,6 @@ import com.ssafy.myini.initializer.request.InitializerRequest;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.Set;
 
 public class FileUtil {
     public static String basePath = "/myini/initializer/";
@@ -78,11 +77,10 @@ public class FileUtil {
         return firstIndexToUpperCase(method.toLowerCase());
     }
 
-    public static String responseWrite(ApiInfoResponse apiInfoResponse, Set<String> responseImportContents) {
+    public static String responseWrite(ApiInfoResponse apiInfoResponse) {
         for (DtoResponse dtoResponse : apiInfoResponse.getDtoResponses()) {
             if (dtoResponse.getDtoType().equals("RESPONSE")) {
                 String type = FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName().trim());
-                responseImportContents.add(type);
                 if (dtoResponse.getDtoIsList().equals("Y")) {
                     return "List<" + type + ">";
                 } else {
@@ -112,6 +110,20 @@ public class FileUtil {
         } catch (Exception e) {
             e.getStackTrace();
         }
+    }
+
+    public static void addImportContents(boolean containList, boolean containRequest, boolean containResponse, StringBuilder sb, String packageName) {
+        // list, valid, request, response import 추가하기
+        if (containList) {
+            sb.append("import java.util.List;\n\n");
+        }
+        if (containRequest) {
+            sb.append("import ").append(packageName).append(".request.*;\n");
+        }
+        if (containResponse) {
+            sb.append("import ").append(packageName).append(".response.*;\n");
+        }
+        sb.append("\n");
     }
 
 

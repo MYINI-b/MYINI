@@ -4,9 +4,7 @@ import com.ssafy.myini.apidocs.response.*;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 public class ControllerWrite {
@@ -14,14 +12,12 @@ public class ControllerWrite {
     private static int depth;
     private static String service;
     private static boolean containList;
-
-    private static Set<String> responseImportContents;
-    private static Set<String> requestImportContents;
+    private static boolean containValid;
+    private static boolean containRequest;
+    private static boolean containResponse;
 
     public static String controllerPreview(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
         controllerImportContents = new StringBuilder();
-        responseImportContents = new HashSet<>();
-        requestImportContents = new HashSet<>();
         containList = false;
         depth = 0;
 
@@ -39,19 +35,11 @@ public class ControllerWrite {
         String body = methodWrite(projectInfoListResponse.getApiInfoResponses()).toString().replaceAll(",", ", ");
         depth--;
 
-        // list import 추가하기
-        if (containList) {
-            controllerImportContents.append("import java.util.List;\n\n");
+        if (containValid) {
+            controllerImportContents.append("import javax.validation.Valid;\n\n");
         }
-        // request, response import 추가하기
-        for (String requestImport : requestImportContents) {
-            controllerImportContents.append("import ").append(initializerRequest.getSpringPackageName()).append(".request.").append(requestImport).append(";\n");
-        }
-        for (String responseImport : responseImportContents) {
-            controllerImportContents.append("import ").append(initializerRequest.getSpringPackageName()).append(".response.").append(responseImport).append(";\n");
-        }
-        controllerImportContents.append("\n");
-
+        // list, valid, request, response import 추가하기
+        FileUtil.addImportContents(containList, containRequest, containResponse, controllerImportContents, initializerRequest.getSpringPackageName());
 
         // class 생성 및 service 선언
         contents.append("package " + initializerRequest.getSpringPackageName() + ".controller;\n")
@@ -65,6 +53,7 @@ public class ControllerWrite {
         // 서비스 불러오기
         depth++;
 
+        FileUtil.appendTab(contents, depth);
         contents.append("private final ")
                 .append(projectInfoListResponse.getApiControllerName()).append("Service ")
                 .append(service).append("Service;\n");
@@ -107,7 +96,7 @@ public class ControllerWrite {
             methodContents.append("public ResponseEntity<");
 
             // 메서드 response type
-            String response = FileUtil.responseWrite(apiInfoResponse, responseImportContents);
+            String response = FileUtil.responseWrite(apiInfoResponse);
             if (response.equals("void")) {
                 response = FileUtil.firstIndexToUpperCase(response);
             } else {
@@ -140,10 +129,11 @@ public class ControllerWrite {
             // 3. requestBody
             for (DtoResponse dtoResponse : apiInfoResponse.getDtoResponses()) {
                 if (dtoResponse.getDtoType().equals("REQUEST")) {
-                    methodContents.append("@RequestBody ").append(FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName()))
+                    containValid = true;
+                    containRequest = true;
+                    methodContents.append("@RequestBody @Valid ").append(FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName()))
                             .append(" request");
                     variableNames.add("request");
-                    requestImportContents.add(FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName()));
                     break;
                 }
             }
@@ -183,6 +173,7 @@ public class ControllerWrite {
             if (response.equals("Void")) {
                 methodContents.append("build();\n");
             } else {
+                containResponse = true;
                 methodContents.append("body(body);\n");
             }
 
