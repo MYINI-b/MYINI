@@ -139,7 +139,7 @@ public class JiraApi {
         if (kanbanDefaultId == -1) throw new JiraException(JiraException.SCREEN_INFO_NOT_FOUND);
 
         //탭 정보 가져오기
-        JSONArray tabs = get("https://" + jiraDomain + ".atlassian.net/rest/api/2/screens/" + String.valueOf(kanbanDefaultId) + "/tabs", jiraId, jiraApiKey)
+        JSONArray tabs = get("https://" + jiraDomain + ".atlassian.net/rest/api/2/screens/" + kanbanDefaultId + "/tabs", jiraId, jiraApiKey)
                 .getBody().getArray();
         Integer fieldTabId = -1;
 
@@ -180,61 +180,37 @@ public class JiraApi {
                 }
             }
         });
-
-        HttpResponse<JsonNode> storyPointAddResponse = Unirest.post("https://" + jiraDomain + ".atlassian.net/rest/api/2/screens/" + kanbanDefaultId + "/tabs/" + fieldTabId + "/fields")
-                .basicAuth(jiraId, jiraApiKey)
-                .header("Accept", "application/json")
-                .header("Content-Type", "application/json")
-                .body(sppayload)
-                .asJson();
         //커스텀필드 스크린 입력 끝
 
         //이슈타입 정보 시작
-        HttpResponse<JsonNode> metaResponse = Unirest.get("https://" + jiraDomain + ".atlassian.net/rest/api/2/issue/createmeta")
-                .basicAuth(jiraId, jiraApiKey)
-                .header("Accept", "application/json")
-                .asJson();
-
         String storyId = "";
         String epicId = "";
 
-        JSONObject meta = metaResponse.getBody().getObject();
-        JSONArray projects = (JSONArray) meta.get("projects");
+        JSONObject projectInfo = (JSONObject) ((JSONArray) get("https://" + jiraDomain + ".atlassian.net/rest/api/2/issue/createmeta", jiraId, jiraApiKey)
+                .getBody().getObject().get("projects")).get(0);
 
-        la:
-        for (int i = 0; i < projects.length(); i++) {
-            String projectKey = (String) ((JSONObject) projects.get(i)).get("key");
-            JSONArray issueTypes = (JSONArray) (((JSONObject) projects.get(i)).get("issuetypes"));
-            if (projectKey.equals(jiraProjectKey)) {
-                for (int j = 0; j < issueTypes.length(); j++) {
-                    String issueName = (String) ((JSONObject) issueTypes.get(j)).get("name");
-                    if (issueName.equals("스토리")) {
-                        storyId = (String) ((JSONObject) issueTypes.get(j)).get("id");
-                    }
-                    if (issueName.equals("에픽")) {
-                        epicId = (String) ((JSONObject) issueTypes.get(j)).get("id");
-                    }
-                    if (!storyId.equals("") && !epicId.equals("")) break la;
-                }
+        if (!projectInfo.get("key").equals(jiraProjectKey)) {
+            throw new JiraException(JiraException.PROJECT_KEY_NOT_MATCH);
+        }
+        JSONArray issueTypes = (JSONArray) ((projectInfo.get("issuetypes")));
+
+        for (Object obj : issueTypes) {
+            JSONObject issueType = (JSONObject) obj;
+            String name = (String) issueType.get("name");
+            if (name.equals("스토리")) {
+                storyId = (String) issueType.get("id");
+            } else if (name.equals("에픽")) {
+                epicId = (String) issueType.get("id");
             }
         }
-
-        if (storyId.equals("")) throw new JiraException(JiraException.JIRA_FAIL);
+        if (storyId.isEmpty()) throw new JiraException(JiraException.ISSUE_TYPE_NOT_FOUND);
         //이슈타입 정보 끝
 
         //에픽입력 시작
         //등록된 에픽들 먼저 가져오기
-        String temp = "https://" + jiraDomain + ".atlassian.net/rest/api/2/search?jql=project=" + jiraProjectKey + " AND type = Epic";
-        System.out.println(temp.replaceAll(" ", "%20"));
-        HttpResponse<JsonNode> epicResponse = Unirest.get(temp.replaceAll(" ", "%20"))
-                .basicAuth(jiraId, jiraApiKey)
-                .header("Accept", "application/json")
-                .asJson();
-
         List<EpicIssue> epicIssues = new ArrayList<>();
-
-        JSONObject epics = epicResponse.getBody().getObject();
-        JSONArray issues = (JSONArray) epics.get("issues");
+        JSONArray issues = (JSONArray) get("https://" + jiraDomain + ".atlassian.net/rest/api/2/search?jql=project=" + jiraProjectKey + "%20AND%20type%20=%20Epic", jiraId, jiraApiKey)
+                .getBody().getObject().get("issues");
 
         la:
         for (int i = 0; i < issues.length(); i++) {
@@ -246,7 +222,6 @@ public class JiraApi {
             }
             epicIssues.add(new EpicIssue(id, name));
         }
-
 
         //에픽 만들기
         List<String> categoryList = requirements.stream().map(r -> r.getRequirementCategory().getCategoryName()).collect(Collectors.toList());
@@ -328,86 +303,91 @@ public class JiraApi {
         //에픽입력 끝
         //요구사항 - 스토리 연동 시작
         for (Requirement requirement : requirements) {
-            if (isExist(requirement, jiraDomain, jiraApiKey, jiraId)) continue;
+            //수정
+            if (isExist(requirement, jiraDomain, jiraApiKey, jiraId)){
 
-            String reportUser = "";
-            for (JiraUser jiraUser : jiraUsers) {
-                if (jiraUser.userEmailAddress.equals(requirement.getMember().getMemberJiraEmail())) {
-                    reportUser = jiraUser.userAccountId;
-                    break;
-                }
             }
-            ;
+            //생성
+            else{
+                String reportUser = "";
+                for (JiraUser jiraUser : jiraUsers) {
+                    if (jiraUser.userEmailAddress.equals(requirement.getMember().getMemberJiraEmail())) {
+                        reportUser = jiraUser.userAccountId;
+                        break;
+                    }
+                }
+                ;
 
-            //등록
-            JsonNodeFactory jnf = JsonNodeFactory.instance;
-            ObjectNode payload = jnf.objectNode();
-            {
-                ObjectNode fields = payload.putObject("fields");
+                //등록
+                JsonNodeFactory jnf = JsonNodeFactory.instance;
+                ObjectNode payload = jnf.objectNode();
                 {
-                    //이슈제목
-                    fields.put("summary", requirement.getRequirementPart() + "_" + requirement.getRequirementName());
-                    //이슈종류(스토리)
-                    ObjectNode issuetype = fields.putObject("issuetype");
+                    ObjectNode fields = payload.putObject("fields");
                     {
-                        issuetype.put("id", storyId);
+                        //이슈제목
+                        fields.put("summary", requirement.getRequirementPart() + "_" + requirement.getRequirementName());
+                        //이슈종류(스토리)
+                        ObjectNode issuetype = fields.putObject("issuetype");
+                        {
+                            issuetype.put("id", storyId);
+                        }
+                        //이슈프로젝트
+                        ObjectNode project = fields.putObject("project");
+                        {
+                            project.put("id", jiraProjectId);
+                        }
+                        //이슈 에픽
+                        ObjectNode parent = fields.putObject("parent");
+                        {
+                            parent.put("id", epicParent(epicIssues, requirement.getRequirementCategory().getCategoryName()));
+                        }
+                        //이슈설명
+                        fields.put("description", requirement.getRequirementContent());
+                        //이슈보고자
+                        ObjectNode reporter = fields.putObject("reporter");
+                        {
+                            reporter.put("id", reportUser);
+                        }
+                        //이슈우선순위
+                        ObjectNode priority = fields.putObject("priority");
+                        {
+                            priority.put("id", String.valueOf(requirement.getRequirementPriority()));
+                        }
+                        //이슈담당자
+                        ObjectNode assignee = fields.putObject("assignee");
+                        {
+                            assignee.put("id", reportUser);
+                        }
+                        //이슈스토리포인트
+                        fields.put(storyPointField, requirement.getRequirementStoryPoint());
                     }
-                    //이슈프로젝트
-                    ObjectNode project = fields.putObject("project");
-                    {
-                        project.put("id", jiraProjectId);
-                    }
-                    //이슈 에픽
-                    ObjectNode parent = fields.putObject("parent");
-                    {
-                        parent.put("id", epicParent(epicIssues, requirement.getRequirementCategory().getCategoryName()));
-                    }
-                    //이슈설명
-                    fields.put("description", requirement.getRequirementContent());
-                    //이슈보고자
-                    ObjectNode reporter = fields.putObject("reporter");
-                    {
-                        reporter.put("id", reportUser);
-                    }
-                    //이슈우선순위
-                    ObjectNode priority = fields.putObject("priority");
-                    {
-                        priority.put("id", String.valueOf(requirement.getRequirementPriority()));
-                    }
-                    //이슈담당자
-                    ObjectNode assignee = fields.putObject("assignee");
-                    {
-                        assignee.put("id", reportUser);
-                    }
-                    //이슈스토리포인트
-                    fields.put(storyPointField, requirement.getRequirementStoryPoint());
                 }
+
+                HttpResponse<JsonNode> createIssueResponse = Unirest.post("https://" + jiraDomain + ".atlassian.net/rest/api/2/issue")
+                        .basicAuth(jiraId, jiraApiKey)
+                        .header("Accept", "application/json")
+                        .header("Content-Type", "application/json")
+                        .body(payload)
+                        .asJson();
+
+                JSONObject response2 = createIssueResponse.getBody().getObject();
+                String responseId2 = (String) response2.get("id");
+                System.out.println("responseId2 = " + responseId2);
+                requirement.updateJiraIssueId(responseId2);
             }
-
-            HttpResponse<JsonNode> createIssueResponse = Unirest.post("https://" + jiraDomain + ".atlassian.net/rest/api/2/issue")
-                    .basicAuth(jiraId, jiraApiKey)
-                    .header("Accept", "application/json")
-                    .header("Content-Type", "application/json")
-                    .body(payload)
-                    .asJson();
-
-            JSONObject response2 = createIssueResponse.getBody().getObject();
-            String responseId2 = (String) response2.get("id");
-            System.out.println("responseId2 = " + responseId2);
-            requirement.updateJiraIssueId(responseId2);
-
-
         }
-
 //        System.out.println("지라결과 : "+s);
     }
 
-    private static boolean isExist(Requirement requirement, String jiraDomain, String jiraApiKey, String jiraId) throws UnirestException {
-        HttpResponse<JsonNode> issueResponse = Unirest.get("https://" + jiraDomain + ".atlassian.net/rest/api/2/search")
+    private static boolean isExist(Requirement requirement, String jiraDomain, String jiraApiKey, String jiraId) throws
+            UnirestException {
+        HttpResponse<JsonNode> issueResponse = Unirest.get("https://" + jiraDomain + ".atlassian.net/rest/api/2/issue/" + requirement.getJiraIssueId())
                 .basicAuth(jiraId, jiraApiKey)
                 .header("Accept", "application/json")
                 .asJson();
 
+        if (issueResponse.getStatus() == 404) return false;
+        else if (issueResponse.getStatus() == 200) return true;
 
         return false;
     }
