@@ -66,7 +66,7 @@
         height: rem(40);
         margin-right: rem(12);
         padding: 0 rem(8);
-        font-size: rem(20);
+        font-size: rem(18);
         border-top-left-radius: rem(8);
         border-top-right-radius: rem(8);
         cursor: pointer;
@@ -106,7 +106,13 @@
       font-weight: bold;
       font-size: rem(20);
       cursor: pointer;
+      transition: 0.3s ease;
       @include FLEX-ALIGN-CENTER;
+
+      &:hover {
+        color: $secondary;
+        transform: scale(1.03);
+      }
     }
   }
 }

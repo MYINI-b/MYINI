@@ -38,14 +38,14 @@
           width: rem(50);
           height: rem(25);
           padding-left: 1px;
-          background-color: green;
+          background-color: #92C68D;
           border-radius: rem(25);
           cursor: pointer;
           transition: 0.3s ease;
           @include FLEX-ALIGN-CENTER;
 
           &.list {
-            background-color: red;
+            background-color: $secondary;
           }
 
           .many-checker {
@@ -103,6 +103,11 @@
         overflow: auto;
         @include FLEX-COLUMN;
 
+        &::-webkit-scrollbar {
+          width: 0px;
+          height: 0px;
+        }
+
         .datatype-add-brace {
           font-size: rem(20);
 
@@ -129,6 +134,8 @@
           }
 
           .attr-type-name {
+            width:100%;
+            max-width:rem(300);
             height: rem(32);
             font-size: rem(18);
             font-family: $eng-content;
@@ -153,13 +160,14 @@
     padding: rem(6);
     font-weight: bold;
     font-size: rem(16);
-    background-color: $fourth;
+    @include BTN-COLOR($fourth);
     border-radius: rem(5);
     width:fit-content;
     cursor: pointer;
     svg{
       cursor:pointer;
     }
+
   }
 }
 

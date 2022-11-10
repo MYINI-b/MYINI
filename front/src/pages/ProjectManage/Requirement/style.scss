@@ -50,6 +50,7 @@
     background-color: $pure-white;
     border-radius: 20px;
     box-shadow: $shadow;
+    padding:20px;
 
     .table-title-article {
       width: 100%;
@@ -70,7 +71,7 @@
     }
 
     .table-row + .table-row {
-      border-top: 1px solid $light-gray;
+      border-top: 1px solid $lightx2-gray;
     }
 
     .table-col {
@@ -125,8 +126,10 @@
         padding: rem(4) rem(6);
         background-color: $light-gray;
         border-radius: 4px;
+        min-height: rem(18);
+        min-width: rem(50);
         cursor:pointer;
-        @include FLEX-ALIGN-CENTER;
+        @include FLEX-CENTER;
 
         &.FE {
           background-color: $FE;
@@ -167,6 +170,7 @@
         }
       }
     }
+
 
     .table-more-button {
       @include CIRCLE-BTN;

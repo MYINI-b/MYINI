@@ -191,7 +191,10 @@ export default function ApiModal({
             updateDtoRequest: {
               dtoName: dtoObj.dtoName,
               dtoType: dtoObj.dtoType,
-              dtoIsList: dtoObj.dtoIsList ? 'Y' : 'N',
+              dtoIsList:
+                dtoObj.dtoIsList && dtoObj.dtoItemResponses.length !== 0
+                  ? 'Y'
+                  : 'N',
             },
             createDtoItemRequests: updateArr
               .filter((item: any) => item.dtoItemId === -1)

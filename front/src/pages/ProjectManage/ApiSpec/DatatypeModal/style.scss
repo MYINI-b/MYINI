@@ -140,6 +140,8 @@
   @include FLEX-COLUMN;
   width: 100%;
   margin-top: rem(10);
+  padding-bottom: rem(10);
+  border-bottom: 2px solid $secondary;
 
   .datatype-add-input {
     width: 100%;
