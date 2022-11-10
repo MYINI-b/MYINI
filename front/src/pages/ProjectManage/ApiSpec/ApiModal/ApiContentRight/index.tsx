@@ -60,7 +60,7 @@ export default function ApiContentRight({
       const copyObj = isReq ? { ...request } : { ...response };
       const copyDtoResponse = [...dtoResponse];
       copyObj.dtoIsList = !copyObj.dtoIsList;
-      console.log(copyDtoResponse);
+
       if (isReq) {
         setRequest(copyObj);
         copyDtoResponse[0] = { ...copyObj };
@@ -68,7 +68,7 @@ export default function ApiContentRight({
         setResponse(copyObj);
         copyDtoResponse[1] = { ...copyObj };
       }
-      console.log(copyDtoResponse);
+
       setDtoResponse(copyDtoResponse);
     },
     [response, request, dtoResponse],

@@ -53,16 +53,41 @@ export default function ApiModal({
       setApiUrl(data.apiResponse.apiUrl);
       setApiMethod(data.apiResponse.apiMethod);
       setApiCode(data.apiResponse.apiCode === 'OK' ? 200 : 201);
-      setDtoResponse(
-        data.dtoResponses.map((res: any) => {
-          return {
-            ...res,
-            dtoIsList: res.dtoIsList === 'Y',
-          };
-        }),
-      );
+      const dtoresponses = data.dtoResponses.map((res: any) => {
+        return {
+          ...res,
+          dtoIsList: res.dtoIsList === 'Y',
+        };
+      });
 
-      data.dtoResponses.forEach((dtoItem: any) => {
+      if (
+        dtoresponses.find((element: any) => {
+          return element.dtoType === 'REQUEST';
+        }) === undefined
+      )
+        dtoresponses.splice(0, 0, {
+          dtoId: -1,
+          dtoName: '',
+          dtoType: 'REQUEST',
+          dtoItemResponses: [],
+          dtoIsList: false,
+        });
+      if (
+        dtoresponses.find((element: any) => {
+          return element.dtoType === 'RESPONSE';
+        }) === undefined
+      )
+        dtoresponses.push({
+          dtoId: -1,
+          dtoName: '',
+          dtoType: 'RESPONSE',
+          dtoItemResponses: [],
+          dtoIsList: false,
+        });
+
+      setDtoResponse(dtoresponses);
+
+      dtoresponses.forEach((dtoItem: any) => {
         if (dtoItem.dtoType === 'RESPONSE') {
           setResItems(
             dtoItem.dtoItemResponses.map((item: any) => {
