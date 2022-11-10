@@ -195,9 +195,9 @@ export default function DatatypeRow({
       console.log(data);
     };
 
-    // setTimeout(() => {
-    getDtoInfo();
-    // }, 50);
+    setTimeout(() => {
+      getDtoInfo();
+    }, 50);
   }, [rowId]);
 
   useEffect(() => {

@@ -2,10 +2,8 @@ import { Dispatch, useCallback, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useParams } from 'react-router-dom';
 import { faClose, faPlus } from '@fortawesome/free-solid-svg-icons';
-
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
-import { DTO, MOUSEPOS, DTO_RESPONSE } from 'types/ApiSpec';
-
+import { MOUSEPOS, DTO_RESPONSE, DTO } from 'types/ApiSpec';
 import './style.scss';
 
 import DataTypeList from 'components/DataTypeList';
@@ -19,8 +17,12 @@ interface Props {
 export default function DatatypeModal({ setIsDatatypeModalOpen }: Props) {
   const { pid } = useParams();
   const [isDatatypeAddOpen, setIsDatatypeAddOpen] = useState(false);
-  const [dtoId, setDtoId] = useState(-1);
-  const [dtoName, setDtoName] = useState('');
+  const [dto, setDto] = useState<DTO>({
+    dtoId: -1,
+    dtoName: '',
+    dtoType: '',
+    dtoItemResponses: [],
+  });
   const [attributes, setAttributes] = useState<Array<DTO_RESPONSE>>([]); // 새로 추가하는 dto의 속성들
   const [selectIdx, setSelectIdx] = useState(-1);
   const [isDatatypeListOpen, setIsDatatypeListOpen] = useState(false);
@@ -35,17 +37,29 @@ export default function DatatypeModal({ setIsDatatypeModalOpen }: Props) {
     setIsDatatypeAddOpen(true);
   }, []);
 
-  const makeDto = useCallback(async () => {
-    const body = {
-      dtoName,
-      dtoType: 'DTO',
-      dtoIsList: 'N',
-    };
-    const { data }: any = await postApi(`/apidocs/${pid}/customdtos`, body);
-    return data;
+  const onCancleClick = useCallback(() => {
+    setIsDatatypeAddOpen(false);
+    setDto({
+      dtoId: -1,
+      dtoName: '',
+      dtoType: '',
+      dtoItemResponses: [],
+    });
   }, []);
 
-  const addNewAttribute = useCallback(() => {
+  const addNewAttribute = useCallback(async () => {
+    if (dto.dtoId === -1) {
+      const body = {
+        dtoName: dto.dtoName || 'UNTITLED',
+        dtoType: 'DTO',
+        dtoIsList: 'N',
+      };
+      const { data }: any = await postApi(`/apidocs/${pid}/customdtos`, body);
+      const copyDto = { ...dto };
+      copyDto.dtoId = data.dtoId;
+      console.log(copyDto, data);
+      setDto(copyDto);
+    }
     const copyArr = [...attributes];
     copyArr.push({
       dtoItemId: 0,
@@ -55,7 +69,7 @@ export default function DatatypeModal({ setIsDatatypeModalOpen }: Props) {
       dtoIsList: false,
     });
     setAttributes(copyArr);
-  }, [attributes]);
+  }, [attributes, dto]);
 
   const changeAttrName = useCallback(
     (idx: number, e: any) => {
@@ -87,11 +101,18 @@ export default function DatatypeModal({ setIsDatatypeModalOpen }: Props) {
     [attributes],
   );
 
+  const onNameChange = useCallback(
+    (e: any) => {
+      const copyDto = { ...dto };
+      copyDto.dtoName = e.target.value;
+      setDto(copyDto);
+    },
+    [dto],
+  );
+
   const addDataType = useCallback(
     async (e: any) => {
       e.preventDefault();
-
-      const data: any = makeDto();
 
       attributes.forEach(async (attr: any) => {
         const attrBody = {
@@ -106,22 +127,31 @@ export default function DatatypeModal({ setIsDatatypeModalOpen }: Props) {
               : attr.dtoPrimitiveTypeId,
           dtoIsList: attr.dtoIsList ? 'Y' : 'N',
         };
-        await postApi(`/apidocs/${data.dtoId}/dtoitems`, attrBody);
+        if (attrBody.dtoItemName !== '') {
+          await postApi(`/apidocs/${dto.dtoId}/dtoitems`, attrBody);
+        }
       });
 
       const copyDtoArr = [...dtoRows];
 
       const newDto = {
-        dtoId: data.dtoId,
-        dtoName,
+        dtoId: dto.dtoId,
+        dtoName: dto.dtoName,
+        dtoItemResponses: [...attributes],
       };
       copyDtoArr.push(newDto);
+      console.log(copyDtoArr);
       setAttributes([]);
-      setDtoName('');
+      setDto({
+        dtoId: -1,
+        dtoName: '',
+        dtoType: '',
+        dtoItemResponses: [],
+      });
       setIsDatatypeAddOpen(false);
       setDtoRows(copyDtoArr);
     },
-    [attributes, dtoRows],
+    [attributes, dtoRows, dto],
   );
 
   useEffect(() => {
@@ -150,8 +180,8 @@ export default function DatatypeModal({ setIsDatatypeModalOpen }: Props) {
                 type="text"
                 className="datatype-add-input"
                 placeholder="Dto 명"
-                value={dtoName}
-                onChange={(e) => setDtoName(e.target.value)}
+                value={dto.dtoName}
+                onChange={onNameChange}
                 required
               />
               <div className="datatype-add-body">
@@ -199,7 +229,7 @@ export default function DatatypeModal({ setIsDatatypeModalOpen }: Props) {
                 <button
                   className="datatype-add-form-button"
                   type="button"
-                  onClick={() => setIsDatatypeAddOpen(false)}
+                  onClick={onCancleClick}
                 >
                   취소
                 </button>

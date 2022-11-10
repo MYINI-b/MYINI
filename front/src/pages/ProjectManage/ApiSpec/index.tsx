@@ -12,6 +12,7 @@ import { useSyncedStore } from '@syncedstore/react';
 import { globalStore } from 'store/yjsStore';
 import './style.scss';
 import { getApi } from 'api';
+import { DTO } from 'types/ApiSpec';
 import APIList from './APIList';
 import ControllerAddModal from './ControllerAddModal';
 import DatatypeModal from './DatatypeModal';
@@ -23,6 +24,7 @@ interface Props {
 export default function ApiSpec({ pid }: Props) {
   const store = useSyncedStore(globalStore);
 
+  const [objDataType, setObjDataType] = useState<Array<DTO>>([]);
   const [controllerIdx, setControllerIdx] = useState(-1); // 현재 선택된 컨트롤러 인덱스
   const [clickControllerIdx, setClickControllerIdx] = useState(0); // 현재 선택된 컨트롤러 인덱스
 

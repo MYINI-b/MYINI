@@ -8,18 +8,24 @@ import AddDataTypeList from 'components/AddDataTypeList';
 
 interface Props {
   dtoResponse: DTO[];
+  setDtoResponse: Dispatch<React.SetStateAction<DTO[]>>;
   reqItems: DTO_RESPONSE[];
   resItems: DTO_RESPONSE[];
   setReqItems: Dispatch<React.SetStateAction<DTO_RESPONSE[]>>;
   setResItems: Dispatch<React.SetStateAction<DTO_RESPONSE[]>>;
+  deletedDtoItems: number[];
+  setDeletedDtoItems: Dispatch<React.SetStateAction<number[]>>;
 }
 
 export default function ApiContentRight({
   dtoResponse,
+  setDtoResponse,
   reqItems,
   setReqItems,
   resItems,
   setResItems,
+  deletedDtoItems,
+  setDeletedDtoItems,
 }: Props) {
   const [isReq, setIsReq] = useState(false);
   const [isDatatypeListOpen, setIsDatatypeListOpen] = useState(false);
@@ -52,21 +58,33 @@ export default function ApiContentRight({
   const onManyClick = useCallback(
     (isReq: boolean) => {
       const copyObj = isReq ? { ...request } : { ...response };
+      const copyDtoResponse = [...dtoResponse];
       copyObj.dtoIsList = !copyObj.dtoIsList;
-      if (isReq) setRequest(copyObj);
-      else setResponse(copyObj);
+      console.log(copyDtoResponse);
+      if (isReq) {
+        setRequest(copyObj);
+        copyDtoResponse[0] = { ...copyObj };
+      } else {
+        setResponse(copyObj);
+        copyDtoResponse[1] = { ...copyObj };
+      }
+      console.log(copyDtoResponse);
+      setDtoResponse(copyDtoResponse);
     },
-    [response, request],
+    [response, request, dtoResponse],
   );
 
   const deleteDtoItem = useCallback(
     (idx: number, isReq: boolean) => {
       const copyArr = isReq ? [...reqItems] : [...resItems];
+      const copyDeleted = [...deletedDtoItems];
+      copyDeleted.push(copyArr[idx].dtoItemId);
       copyArr.splice(idx, 1);
       if (isReq) setReqItems(copyArr);
       else setResItems(copyArr);
+      setDeletedDtoItems(copyDeleted);
     },
-    [reqItems, resItems],
+    [reqItems, resItems, deletedDtoItems],
   );
 
   const onDtoItemNameChange = useCallback(
@@ -83,6 +101,7 @@ export default function ApiContentRight({
 
   useEffect(() => {
     dtoResponse.forEach((dtoItem: any) => {
+      console.log(dtoItem);
       if (dtoItem.dtoType === 'RESPONSE') {
         setResponse(dtoItem);
       } else {

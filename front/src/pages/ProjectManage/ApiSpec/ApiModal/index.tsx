@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 import './style.scss';
-import { API, CONTROLLER, QUERY, DTO, DTO_RESPONSE } from 'types/ApiSpec';
+import { QUERY, DTO, DTO_RESPONSE } from 'types/ApiSpec';
 import { deleteApi, getApi, postApi, putApi } from 'api';
 import ApiContentLeft from './ApiContentLeft';
 import ApiContentRight from './ApiContentRight';
@@ -22,7 +22,6 @@ export default function ApiModal({
   store,
 }: Props) {
   const [isEdit, setIsEdit] = useState(false);
-  const objDataType: any[] = [];
 
   const [apiId, setApiId] = useState(0);
   const [apiName, setApiName] = useState('');
@@ -36,6 +35,7 @@ export default function ApiModal({
   const [queryList, setQueryList] = useState<QUERY[]>([]);
   const [deletedPath, setDeletedPath] = useState<QUERY[]>([]);
   const [deletedQuery, setDeletedQuery] = useState<QUERY[]>([]);
+  const [deletedDtoItems, setDeletedDtoItems] = useState<number[]>([]);
   const [reqItems, setReqItems] = useState<DTO_RESPONSE[]>([]);
   const [resItems, setResItems] = useState<DTO_RESPONSE[]>([]);
 
@@ -53,9 +53,16 @@ export default function ApiModal({
       setApiUrl(data.apiResponse.apiUrl);
       setApiMethod(data.apiResponse.apiMethod);
       setApiCode(data.apiResponse.apiCode === 'OK' ? 200 : 201);
-      setDtoResponse(data.dtoResponses);
+      setDtoResponse(
+        data.dtoResponses.map((res: any) => {
+          return {
+            ...res,
+            dtoIsList: res.dtoIsList === 'Y',
+          };
+        }),
+      );
 
-      dtoResponse.forEach((dtoItem: any) => {
+      data.dtoResponses.forEach((dtoItem: any) => {
         if (dtoItem.dtoType === 'RESPONSE') {
           setResItems(
             dtoItem.dtoItemResponses.map((item: any) => {
@@ -112,6 +119,22 @@ export default function ApiModal({
     else {
       setPathVarList([{ id: -1, key: '', type: 'NORMAL' }]);
       setQueryList([{ id: -1, key: '', type: 'String' }]);
+      setDtoResponse([
+        {
+          dtoId: -1,
+          dtoName: '',
+          dtoType: 'REQUEST',
+          dtoItemResponses: [],
+          dtoIsList: false,
+        },
+        {
+          dtoId: -1,
+          dtoName: '',
+          dtoType: 'RESPONSE',
+          dtoItemResponses: [],
+          dtoIsList: false,
+        },
+      ]);
     }
   }, []);
 
@@ -127,10 +150,8 @@ export default function ApiModal({
         apiCode: apiCode === 200 ? 'OK' : 'CREATED',
       };
 
-      console.log(reqItems, resItems);
+      console.log(reqItems, resItems, dtoResponse);
       if (isEdit) {
-        await putApi(`/apidocs/apis/${apiId}`, newApiObj);
-
         pathVarList.forEach(async (path) => {
           const body = {
             pathVariableKey: path.key,
@@ -162,6 +183,60 @@ export default function ApiModal({
           }
         });
 
+        const updatedRequest: any[] = [];
+        dtoResponse.forEach((dtoObj: any, j: number) => {
+          const updateArr = dtoObj.dtoType === 'REQUEST' ? reqItems : resItems;
+          updatedRequest.push({
+            dtoId: dtoObj.dtoId,
+            updateDtoRequest: {
+              dtoName: dtoObj.dtoName,
+              dtoType: dtoObj.dtoType,
+              dtoIsList: dtoObj.dtoIsList ? 'Y' : 'N',
+            },
+            createDtoItemRequests: updateArr
+              .filter((item: any) => item.dtoItemId === -1)
+              .map((item) => {
+                return {
+                  dtoItemName: item.dtoItemName,
+                  dtoClassType: item.dtoClassTypeId
+                    ? item.dtoClassTypeId
+                    : null,
+                  dtoPrimitiveType: item.dtoPrimitiveTypeId
+                    ? item.dtoPrimitiveTypeId
+                    : null,
+                  dtoIsList: item.dtoIsList ? 'Y' : 'N',
+                };
+              }),
+            updateApiDtoItemRequests: updateArr
+              .filter((item: any) => item.dtoItemId !== -1)
+              .map((item: any) => {
+                return {
+                  dtoItemId: item.dtoItemId,
+                  updateDtoItemRequest: {
+                    ...item,
+                    dtoClassType: item.dtoClassTypeId
+                      ? item.dtoClassTypeId
+                      : null,
+                    dtoPrimitiveType: item.dtoPrimitiveTypeId
+                      ? item.dtoPrimitiveTypeId
+                      : null,
+                    dtoIsList: item.dtoIsList ? 'Y' : 'N',
+                  },
+                };
+              }),
+            deleteDtoItemRequests:
+              j === 0
+                ? deletedDtoItems.map((dId: number) => {
+                    return { dtoItemId: dId };
+                  })
+                : [],
+          });
+        });
+
+        newApiObj.updateApiDtoRequest = updatedRequest;
+        await putApi(`/apidocs/apis/${apiId}`, newApiObj);
+        console.log(newApiObj);
+
         store.pjt.controllers[controllerIdx].responses[apiRowIdx].apiName =
           newApiObj.apiName;
         store.pjt.controllers[controllerIdx].responses[apiRowIdx].methodName =
@@ -175,13 +250,14 @@ export default function ApiModal({
         store.pjt.controllers[controllerIdx].responses[apiRowIdx].desc =
           newApiObj.apiDescription;
       } else {
+        // api 생성
         const { data }: any = await postApi(
           `/apidocs/${store.pjt.controllers[controllerIdx].id}/apis`,
           newApiObj,
         );
 
         newApiObj.apiId = data.apiId;
-        console.log(newApiObj);
+        // pathvar 생성
         pathVarList.forEach(async (path) => {
           const body = {
             pathVariableKey: path.key,
@@ -191,6 +267,7 @@ export default function ApiModal({
             await postApi(`/apidocs/${data.apiId}/pathvariables`, body);
         });
 
+        // querylist 생성
         queryList.forEach(async (query) => {
           const body = {
             queryStringKey: query.key,
@@ -200,13 +277,68 @@ export default function ApiModal({
             await postApi(`/apidocs/${data.apiId}/querystrings`, body);
         });
 
+        // request 생성
+        const reqBody = {
+          dtoName: `RequestDto${methodName}`,
+          dtoType: 'REQUEST',
+          dtoIsList: dtoResponse[0].dtoIsList ? 'Y' : 'N',
+        };
+
+        // response 생성
+        const resBody = {
+          dtoName: `ResponseDto${methodName}`,
+          dtoType: 'RESPONSE',
+          dtoIsList: dtoResponse[1].dtoIsList ? 'Y' : 'N',
+        };
+
+        const reqDtoResp: any = await postApi(
+          `/apidocs/${data.apiId}/dtos`,
+          reqBody,
+        );
+        const resDtoResp: any = await postApi(
+          `/apidocs/${data.apiId}/dtos`,
+          resBody,
+        );
+
+        // request item 생성
+        reqItems.forEach(async (item) => {
+          const reqItemBody = {
+            dtoItemName: item.dtoItemName,
+            dtoClassType: item.dtoClassTypeId ? item.dtoClassTypeId : null,
+            dtoPrimitiveType: item.dtoPrimitiveTypeId
+              ? item.dtoPrimitiveTypeId
+              : null,
+            dtoIsList: item.dtoIsList ? 'Y' : 'N',
+          };
+          await postApi(
+            `/apidocs/${reqDtoResp.data.dtoId}/dtoitems`,
+            reqItemBody,
+          );
+        });
+
+        // response item 생성
+        resItems.forEach(async (item) => {
+          const resItemBody = {
+            dtoItemName: item.dtoItemName,
+            dtoClassType: item.dtoClassTypeId ? item.dtoClassTypeId : null,
+            dtoPrimitiveType: item.dtoPrimitiveTypeId
+              ? item.dtoPrimitiveTypeId
+              : null,
+            dtoIsList: item.dtoIsList ? 'Y' : 'N',
+          };
+          await postApi(
+            `/apidocs/${resDtoResp.data.dtoId}/dtoitems`,
+            resItemBody,
+          );
+        });
+
         const parsedObj = {
           id: newApiObj.apiId,
           apiName: newApiObj.apiName,
           methodName: newApiObj.apiMethodName,
           url: newApiObj.apiUrl,
           method: newApiObj.apiMethod,
-          code: newApiObj.apiCode,
+          code: newApiObj.apiCode === 'OK' ? 200 : 201,
           desc: newApiObj.apiDescription,
         };
         store.pjt.controllers[controllerIdx].responses.push(parsedObj);
@@ -231,8 +363,12 @@ export default function ApiModal({
       apiCode,
       deletedPath,
       deletedQuery,
+      deletedDtoItems,
       resItems,
       reqItems,
+      dtoResponse,
+      pathVarList,
+      queryList,
     ],
   );
 
@@ -287,6 +423,9 @@ export default function ApiModal({
             setReqItems={setReqItems}
             setResItems={setResItems}
             dtoResponse={dtoResponse}
+            setDtoResponse={setDtoResponse}
+            deletedDtoItems={deletedDtoItems}
+            setDeletedDtoItems={setDeletedDtoItems}
           />
         </article>
 
