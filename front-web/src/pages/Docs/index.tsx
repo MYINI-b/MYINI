@@ -38,9 +38,22 @@ export default function Docs() {
             </div>
           ) : docsStep === 1 ? (
             <div className="docs-content">
-              <h1>우리는 컨트리뷰트를 환영합니다.</h1>
+              <h1>MYINI에 기여해보세요.</h1>
               <hr />
-              <span>여기로 연락주세용~~~~</span>
+              <br />
+              <h3>시작하기 전</h3>
+              <br />
+              <span>
+                저희 MYINI는 올바른 오픈소스 문화를 토대로 컨트리부트를 진행하고
+                있습니다.
+              </span>
+              <span>
+                <a href="https://www.contributor-covenant.org/ko/version/1/4/code-of-conduct/">
+                  컨트리부트 행동강령
+                </a>
+                을 읽고 진행해주세요!
+              </span>
+              {/* <span>여기로 연락주세용~~~~</span> */}
             </div>
           ) : (
             <div className="docs-content">
