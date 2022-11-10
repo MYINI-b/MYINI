@@ -25,10 +25,9 @@ function Modal({
       modalClose();
     }
   };
-
+  const autoData = ['web', 'jpa', 'lombok', 'devtools', 'validation'];
   // Handle the onChange event of the select
   const getDependenciesData = (event: React.MouseEvent<HTMLLIElement>) => {
-    console.log(initDependenciesList[event.currentTarget.value].id);
     const sampleData = dependenciesData;
     if (
       sampleData &&
@@ -86,20 +85,21 @@ function Modal({
 
         <div className="dependencies-select">
           <ul className="dependencies-ul">
-            {initDependenciesList.map((item, idx) => (
-              <li
-                key={idx}
-                onClick={getDependenciesData}
-                value={idx}
-                className="dependencies-button"
-              >
-                <div className="dependencies-name">{item.name}</div>
-                {/* <div className="dependencies-description">
-                  {item.description}
-                </div> */}
-                <hr />
-              </li>
-            ))}
+            {initDependenciesList.map((item, idx) =>
+              !autoData.includes(item.id) ? (
+                <li
+                  key={idx}
+                  onClick={getDependenciesData}
+                  value={idx}
+                  className="dependencies-button"
+                >
+                  <div className="dependencies-name">{item.id}</div>
+                  <hr />
+                </li>
+              ) : (
+                <div />
+              ),
+            )}
           </ul>
         </div>
       </div>

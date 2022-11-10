@@ -1,8 +1,9 @@
 import './style.scss';
 
 import { useState, useEffect } from 'react';
-import { postApi, getApi } from 'api';
+import { getApi } from 'api';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import Modal from './Modal';
 import Accordion1 from './Accor';
 
@@ -48,23 +49,15 @@ export default function Build() {
   const [initSelectTypeList, setInitSelectTypeList] = useState([]);
   const [initDependencies, setInitDependencies] = useState<string>();
   const [initDependenciesList, setInitDependenciesList] = useState([]);
-  const [dependenciesData, setDependenciesData] = useState<string[]>([]);
+  const [dependenciesData, setDependenciesData] = useState<string[]>([
+    'web',
+    'jpa',
+    'lombok',
+    'devtools',
+    'validation',
+  ]);
   const getDependencies = () => {
     setDependenciesData(dependenciesData);
-  };
-
-  const ConfirmData = {
-    springType: 'gradle-project',
-    springLanguage: 'java',
-    springPlatformVersion: '2.2.0.RELEASE',
-    springPackaging: 'jar',
-    springJvmVersion: '1.8',
-    springGroupId: 'com.example',
-    springArtifactId: 'demo',
-    springName: 'demo',
-    springDescription: 'Demo%20project%20for%20Spring%20Boot',
-    springPackageName: 'com.example.demo',
-    springDependencyName: 'web,jpa,lombok,devtools',
   };
 
   const radioHandlerSelectJvm = (
@@ -97,26 +90,54 @@ export default function Build() {
   ) => {
     setInitDependencies(event.target.value);
   };
-  useEffect(() => {
-    const getProjectDetail = async () => {
-      const ConfirmCode: any = await getApi(
-        `https://k7b203.p.ssafy.io/api/initializers/1/preview/${ConfirmData}`,
-      );
-      console.log(ConfirmCode);
-      // setConfirmData(ConfirmCode.data);
-    };
-    getProjectDetail();
-  }, []);
 
-  useEffect(() => {
-    const buildProcess = async () => {
-      const BuildSet: any = await getApi(
-        `https://k7b203.p.ssafy.io/api/initializers/downloads`,
-      );
-      // setConfirmData(BuildSet.data);
-    };
-    buildProcess();
-  }, []);
+  const ConfirmCodeData = {
+    springType: 'gradle-project',
+    springLanguage: 'java',
+    springPlatformVersion: '2.2.0.RELEASE',
+    springPackaging: 'jar',
+    springJvmVersion: '1.8',
+    springGroupId: 'com.example',
+    springArtifactId: 'demo',
+    springName: 'demo',
+    springDescription: 'Demo%20project%20for%20Spring%20Boot',
+    springPackageName: 'com.example.demo',
+    springDependencyName: 'web,jpa,lombok,devtools',
+  };
+  const getProjectDetail = async () => {
+    const ConfirmCode: any = await getApi(
+      `https://k7b203.p.ssafy.io/api/initializers/3/previews?springType=${initSelectType}&springLanguage=${initSelectLanguage}&springPlatformVersion=${initSelectPlatform}&springPackaging=${initSelectPackaging}&springJvmVersion=${initSelectJvm}&springGroupId=${textGroup}&springArtifactId=${textArtifact}&springName=${textName}&springDescription=${textDescription}&springPackageName=${textPackage}&springDependencyName=${dependenciesData}`,
+    );
+    console.log(ConfirmCode);
+    setConfirmData(ConfirmCode.data);
+  };
+
+  const downloadCode = async () => {
+    await axios({
+      url: `https://k7b203.p.ssafy.io/api/initializers/3?springType=${initSelectType}&springLanguage=${initSelectLanguage}&springPlatformVersion=${initSelectPlatform}&springPackaging=${initSelectPackaging}&springJvmVersion=${initSelectJvm}&springGroupId=${textGroup}&springArtifactId=${textArtifact}&springName=${textName}&springDescription=${textDescription}&springPackageName=${textPackage}&springDependencyName=${dependenciesData}`,
+      method: 'GET',
+      responseType: 'blob', // important
+      data: 'data',
+    }).then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${textName}.zip`);
+      document.body.appendChild(link);
+      link.click();
+    });
+  };
+
+  // useEffect(() => {
+  //   const buildProcess = async () => {
+  //     const BuildSet: any = await getApi(
+  //       `https://k7b203.p.ssafy.io/api/initializers/3?springType=gradle-project&springLanguage=java&springPlatformVersion=2.2.0.RELEASE&springPackaging=jar&springJvmVersion=1.8&springGroupId=com.example&springArtifactId=demo&springName=aaa&springDescription=Demo%20project%20for%20Spring%20Boot&springPackageName=com.example.demo&springDependencyName=web,jpa,lombok,devtools`,
+  //     );
+  //     console.log(BuildSet);
+  //     // setConfirmData(BuildSet.data);
+  //   };
+  //   buildProcess();
+  // }, []);
 
   useEffect(() => {
     const initSettings = async () => {
@@ -265,11 +286,11 @@ export default function Build() {
     },
   ];
 
-  console.log(textGroup, 1);
-  console.log(textArtifact, 2);
-  console.log(textName, 3);
-  console.log(textDescription, 4);
-  console.log(textPackage, 5);
+  // console.log(textGroup, 1);
+  // console.log(textArtifact, 2);
+  // console.log(textName, 3);
+  // console.log(textDescription, 4);
+  // console.log(textPackage, 5);
   return (
     <div className="build-container">
       <h1 className="build-title">API 명세서</h1>
@@ -486,11 +507,22 @@ export default function Build() {
                 {dependencyData}
               </span>
             ))}
+          <button
+            type="submit"
+            className="build-project-button"
+            onClick={getProjectDetail}
+          >
+            Build
+          </button>
         </div>
         <div className="confirm-code">
           <div className="confirmcode-title">CONFIRM CODE</div>
           <Accordion1 items={accordionItems} />
-          <button type="submit" className="build-project-button">
+          <button
+            type="submit"
+            className="build-project-button"
+            onClick={downloadCode}
+          >
             Build Project
           </button>
         </div>
