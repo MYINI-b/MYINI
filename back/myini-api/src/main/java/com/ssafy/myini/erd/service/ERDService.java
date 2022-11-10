@@ -7,6 +7,7 @@ import com.ssafy.myini.erd.request.ErdTableUpdateRequest;
 import com.ssafy.myini.erd.response.ConditionItemListResponse;
 import com.ssafy.myini.erd.response.RelationItemListResponse;
 import com.ssafy.myini.erd.response.ErdTableListResponse;
+import org.json.simple.JSONObject;
 
 import java.util.List;
 
@@ -22,5 +23,6 @@ public interface ERDService {
     void createTableColumn(Long tableId);
     void updateTableColumn(Long tableColumnId,TableColumnUpdateRequest tableColumnUpdateRequest);
     void deleteTableColumn(Long tableColumnId);
+    JSONObject getErdJson(Long projectId);
 
 }
