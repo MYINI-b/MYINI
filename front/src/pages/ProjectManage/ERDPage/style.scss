@@ -35,6 +35,7 @@
   .erd-tool {
     @include STRETCH;
     @include FLEX-COLUMN;
+    position: relative;
     align-items: center;
     margin-top: rem(10);
     overflow-y: hidden;

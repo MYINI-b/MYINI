@@ -9,7 +9,6 @@ import LoginPage from './User/LoginPage';
 import MainPage from './MainPage';
 import ProjectManage from './ProjectManage';
 import Social from './User/Social';
-import TestPage from './TestPage';
 
 function App() {
   const store = configureStore({
@@ -28,7 +27,6 @@ function App() {
           <Route path="/social/redirect" element={<Social />} />
           <Route path="/main" element={<MainPage />} />
           <Route path="/projectmanage/:pid" element={<ProjectManage />} />
-          <Route path="/test1" element={<TestPage />} />
         </Routes>
       </BrowserRouter>
     </Provider>
