@@ -111,19 +111,23 @@ public class ApiDocsServiceImpl implements ApiDocsService {
 
         // request reponse dto 테이블 수정
         request.getUpdateApiDtoRequest()
+                .stream().filter(updateApiDtoRequest -> updateApiDtoRequest.getUpdateDtoRequest() != null)
                 .forEach(updateApiDtoRequest -> updateDto(updateApiDtoRequest.getDtoId(), updateApiDtoRequest.getUpdateDtoRequest()));
 
         // DtoItem 테이블 생성
         request.getUpdateApiDtoRequest()
+                .stream().filter(updateApiDtoRequest -> updateApiDtoRequest.getCreateDtoItemRequests() != null)
                 .forEach(updateApiDtoRequest -> updateApiDtoRequest.getCreateDtoItemRequests()
                         .forEach(createDtoItemRequest -> createDtoItem(updateApiDtoRequest.getDtoId(), createDtoItemRequest)));
 
         // DtoItem 테이블 수정
         request.getUpdateApiDtoRequest()
+                .stream().filter(updateApiDtoRequest -> updateApiDtoRequest.getUpdateApiDtoItemRequests() != null)
                 .forEach(updateApiDtoRequest -> updateApiDtoRequest.getUpdateApiDtoItemRequests()
                         .forEach(updateDtoItemRequest -> updateDtoItem(updateDtoItemRequest.getDtoItemId(), updateDtoItemRequest.getUpdateDtoItemRequest())));
         // DtoItem 테이블 삭제
         request.getUpdateApiDtoRequest()
+                .stream().filter(updateApiDtoRequest -> updateApiDtoRequest.getDeleteDtoItemRequests() != null)
                 .forEach(updateApiDtoRequest -> updateApiDtoRequest.getDeleteDtoItemRequests()
                         .forEach(deleteDtoItemRequest -> deleteDtoItem(deleteDtoItemRequest.getDtoItemId())));
     }
