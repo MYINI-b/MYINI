@@ -20,7 +20,7 @@ function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/social/redirect" element={<Social />} />
           <Route path="/main" element={<MainPage />} />
-          <Route path="/projectmanage" element={<ProjectManage />} />
+          <Route path="/project/:pid" element={<ProjectManage />} />
         </Routes>
       </BrowserRouter>
     </Provider>

@@ -6,9 +6,10 @@ import './style.scss';
 
 interface Props {
   store: any;
+  editProjectInfo: () => Promise<void>;
 }
 
-export default function ProjectPeriod({ store }: Props) {
+export default function ProjectPeriod({ store, editProjectInfo }: Props) {
   const [isStartCalOpen, setIsStartCalOpen] = useState(false);
   const [isEndCalOpen, setIsEndCalOpen] = useState(false);
 
@@ -30,6 +31,8 @@ export default function ProjectPeriod({ store }: Props) {
         store.pjt.endDay = momentVal.format('YYYY-MM-DD');
         setIsEndCalOpen(false);
       }
+
+      editProjectInfo();
     },
     [store],
   );

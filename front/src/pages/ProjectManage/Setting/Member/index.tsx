@@ -7,19 +7,31 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import './style.scss';
 import useInput from 'hooks/useInput';
+import { deleteApi, postApi } from 'api';
 
 interface Props {
   store: any;
+  pid: string;
+  editProjectInfo: () => Promise<void>;
 }
 
-export default function ProjectMember({ store }: Props) {
+export default function ProjectMember({ store, pid, editProjectInfo }: Props) {
   const [isEdit, setIsEdit] = useState(false);
-  const [userMail, onUserMailChange, setUserMail] = useInput('');
+  const [userMail, setUserMail] = useState('');
+  const [searchResult, setSearchResult] = useState([]);
 
-  const onSubmitClick = useCallback(() => {
+  const onSubmitClick = useCallback(async () => {
+    const resp = await postApi(`/projects/${pid}/members/${userMail}`);
     setIsEdit(false);
     setUserMail('');
   }, []);
+
+  const onUserMailChange = useCallback(
+    (e: any) => {
+      setUserMail(e.target.value);
+    },
+    [userMail],
+  );
 
   const addMember = useCallback(
     (e: any) => {
@@ -36,8 +48,9 @@ export default function ProjectMember({ store }: Props) {
   );
 
   const deleteMember = useCallback(
-    (idx: number) => {
+    async (idx: number, mid: number) => {
       store.pjt.members.splice(idx, 1);
+      await deleteApi(`/projects/${pid}/members/${mid}`);
     },
     [store],
   );
@@ -72,6 +85,7 @@ export default function ProjectMember({ store }: Props) {
           />
         )}
         {store.pjt.members &&
+          userMail === '' &&
           store.pjt.members.map((mem: any, i: number) => (
             <div key={i} className="team-member">
               <img className="profile-image" src={mem.img} alt="profile" />
@@ -79,10 +93,11 @@ export default function ProjectMember({ store }: Props) {
               <FontAwesomeIcon
                 icon={faUserSlash}
                 className={`profile-delete-button ${!isEdit && 'hidden'}`}
-                onClick={() => deleteMember(i)}
+                onClick={() => deleteMember(i, mem.id)}
               />
             </div>
           ))}
+        {}
       </form>
     </>
   );
