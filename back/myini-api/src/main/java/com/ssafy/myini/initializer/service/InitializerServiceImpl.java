@@ -235,6 +235,7 @@ public class InitializerServiceImpl implements InitializerService {
         try {
             // start.spring.io에서 얻은 dependendy 기반
             URL url = new URL("https://start.spring.io/metadata/client");
+
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             if (conn.getResponseCode() != 200) {

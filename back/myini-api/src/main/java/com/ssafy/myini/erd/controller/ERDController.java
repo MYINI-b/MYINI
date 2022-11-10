@@ -9,6 +9,7 @@ import com.ssafy.myini.erd.response.RelationItemListResponse;
 import com.ssafy.myini.erd.response.ErdTableListResponse;
 import com.ssafy.myini.erd.service.ERDService;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -98,5 +99,11 @@ public class ERDController {
         erdService.deleteTableColumn(tableColumnId);
 
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/erdjson/{projectid}")
+    public ResponseEntity<JSONObject> getErdJson(@PathVariable("projectid")Long projectId) {
+        JSONObject body = erdService.getErdJson(projectId);
+        return ResponseEntity.ok(body);
     }
 }
