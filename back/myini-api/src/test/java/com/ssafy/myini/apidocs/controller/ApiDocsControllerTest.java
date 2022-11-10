@@ -268,8 +268,28 @@ class ApiDocsControllerTest extends ControllerTest {
                                 fieldWithPath("apiUrl").type(JsonFieldType.STRING).description("Api URL"),
                                 fieldWithPath("apiMethod").type(JsonFieldType.STRING).description("Api Method"),
                                 fieldWithPath("apiCode").type(JsonFieldType.STRING).description("Api Code"),
-                                fieldWithPath("apiMethodName").type(JsonFieldType.STRING).description("Api Method 이름")
-                        )
+                                fieldWithPath("apiMethodName").type(JsonFieldType.STRING).description("Api Method 이름"),
+                                fieldWithPath("updateApiDtoRequest").type(JsonFieldType.ARRAY).description("Api 수정 요청 배열"),
+                                fieldWithPath("updateApiDtoRequest.[].dtoId").type(JsonFieldType.NUMBER).description("Dto ID"),
+                                fieldWithPath("updateApiDtoRequest.[].updateDtoRequest").type(JsonFieldType.OBJECT).description("updateDtoRequest 객체"),
+                                fieldWithPath("updateApiDtoRequest.[].updateDtoRequest.dtoName").type(JsonFieldType.STRING).description("Dto 이름"),
+                                fieldWithPath("updateApiDtoRequest.[].updateDtoRequest.dtoType").type(JsonFieldType.STRING).description("Dto 타입"),
+                                fieldWithPath("updateApiDtoRequest.[].updateDtoRequest.dtoIsList").type(JsonFieldType.STRING).description("Dto 리스트 여부"),
+                                fieldWithPath("updateApiDtoRequest.[].createDtoItemRequests").type(JsonFieldType.ARRAY).description("createDtoItemRequests 요청 배열"),
+                                fieldWithPath("updateApiDtoRequest.[].createDtoItemRequests.[].dtoItemName").type(JsonFieldType.STRING).description("DtoItem 이름"),
+                                fieldWithPath("updateApiDtoRequest.[].createDtoItemRequests.[].dtoClassType").type(JsonFieldType.NUMBER).description("DtoClass Type"),
+                                fieldWithPath("updateApiDtoRequest.[].createDtoItemRequests.[].dtoPrimitiveType").type(JsonFieldType.NUMBER).description("Primitive Type"),
+                                fieldWithPath("updateApiDtoRequest.[].createDtoItemRequests.[].dtoIsList").type(JsonFieldType.STRING).description("Dto 리스트여부"),
+                                fieldWithPath("updateApiDtoRequest.[].updateApiDtoItemRequests").type(JsonFieldType.ARRAY).description("updateApiDtoItemRequests 요청 배열"),
+                                fieldWithPath("updateApiDtoRequest.[].updateApiDtoItemRequests.[].dtoItemId").type(JsonFieldType.NUMBER).description("DtoItem ID"),
+                                fieldWithPath("updateApiDtoRequest.[].updateApiDtoItemRequests.[].updateDtoItemRequest").type(JsonFieldType.OBJECT).description("DtoItem Type"),
+                                fieldWithPath("updateApiDtoRequest.[].updateApiDtoItemRequests.[].updateDtoItemRequest.dtoItemName").type(JsonFieldType.STRING).description("DtoItem 이름"),
+                                fieldWithPath("updateApiDtoRequest.[].updateApiDtoItemRequests.[].updateDtoItemRequest.dtoClassType").type(JsonFieldType.NUMBER).description("DtoClass Type"),
+                                fieldWithPath("updateApiDtoRequest.[].updateApiDtoItemRequests.[].updateDtoItemRequest.dtoPrimitiveType").type(JsonFieldType.NUMBER).description("Primitive Type"),
+                                fieldWithPath("updateApiDtoRequest.[].updateApiDtoItemRequests.[].updateDtoItemRequest.dtoIsList").type(JsonFieldType.STRING).description("Dto 리스트 여부"),
+                                fieldWithPath("updateApiDtoRequest.[].deleteDtoItemRequests").type(JsonFieldType.ARRAY).description("deleteDtoItemRequests 요청 배열"),
+                                fieldWithPath("updateApiDtoRequest.[].deleteDtoItemRequests.[].dtoItemId").type(JsonFieldType.NUMBER).description("deleteDtoItemRequests dtoItem ID")
+                                )
                 ));
 
         // then

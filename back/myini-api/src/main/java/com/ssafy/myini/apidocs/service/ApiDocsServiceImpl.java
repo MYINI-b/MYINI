@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.ssafy.myini.NotFoundException.*;
 
@@ -102,10 +103,29 @@ public class ApiDocsServiceImpl implements ApiDocsService {
     @Transactional
     @Override
     public void updateApi(Long apiId, UpdateApiRequest request) {
+        // Api 테이블 수정
         Api findApi = apiRepository.findById(apiId)
                 .orElseThrow(() -> new NotFoundException(API_NOT_FOUND));
 
         findApi.updateApi(request.getApiName(), request.getApiDescription(), request.getApiUrl(), request.getApiMethod(), request.getApiCode(), request.getApiMethodName());
+
+        // request reponse dto 테이블 수정
+        request.getUpdateApiDtoRequest()
+                .forEach(updateApiDtoRequest -> updateDto(updateApiDtoRequest.getDtoId(), updateApiDtoRequest.getUpdateDtoRequest()));
+
+        // DtoItem 테이블 생성
+        request.getUpdateApiDtoRequest()
+                .forEach(updateApiDtoRequest -> updateApiDtoRequest.getCreateDtoItemRequests()
+                        .forEach(createDtoItemRequest -> createDtoItem(updateApiDtoRequest.getDtoId(), createDtoItemRequest)));
+
+        // DtoItem 테이블 수정
+        request.getUpdateApiDtoRequest()
+                .forEach(updateApiDtoRequest -> updateApiDtoRequest.getUpdateApiDtoItemRequests()
+                        .forEach(updateDtoItemRequest -> updateDtoItem(updateDtoItemRequest.getDtoItemId(), updateDtoItemRequest.getUpdateDtoItemRequest())));
+        // DtoItem 테이블 삭제
+        request.getUpdateApiDtoRequest()
+                .forEach(updateApiDtoRequest -> updateApiDtoRequest.getDeleteDtoItemRequests()
+                        .forEach(deleteDtoItemRequest -> deleteDtoItem(deleteDtoItemRequest.getDtoItemId())));
     }
 
     // API 삭제
