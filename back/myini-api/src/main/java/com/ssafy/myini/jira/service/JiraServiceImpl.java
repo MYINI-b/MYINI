@@ -79,14 +79,12 @@ public class JiraServiceImpl implements JiraService{
 
             return jiraProjectListResponses;
         }catch (Exception e){
-            throw new JiraException(JiraException.JIRA_FAIL);
+            throw new JiraException(JiraException.PROJECT_NOT_FOUND);
         }
-
-
-
     }
 
     @Override
+    @Transactional
     public void jiraCreateIssue(Long projectId) {
         List<Requirement> findRequirements = requirementDocsQueryRepository.findAllRequirement(projectId);
 
