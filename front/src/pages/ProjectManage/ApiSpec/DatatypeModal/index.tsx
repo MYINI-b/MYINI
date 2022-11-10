@@ -4,46 +4,28 @@ import { useParams } from 'react-router-dom';
 import { faClose, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
-import {
-  DTO,
-  ATTRIBUTE,
-  ATTRIBUTE_PLUS,
-  MOUSEPOS,
-  DTO_RESPONSE,
-} from 'types/ApiSpec';
+import { DTO, MOUSEPOS, DTO_RESPONSE } from 'types/ApiSpec';
 
 import './style.scss';
 
 import DataTypeList from 'components/DataTypeList';
 import { getApi, postApi } from 'api';
-import { integretyCheck } from 'yjs/dist/src/internals';
 import DatatypeRow from './DatatypeRow';
 
 interface Props {
   setIsDatatypeModalOpen: Dispatch<React.SetStateAction<boolean>>;
-  objDataType: any[];
-  setObjDataType: Dispatch<React.SetStateAction<any[]>>;
 }
 
-export default function DatatypeModal({
-  setIsDatatypeModalOpen,
-  objDataType,
-  setObjDataType,
-}: Props) {
+export default function DatatypeModal({ setIsDatatypeModalOpen }: Props) {
   const { pid } = useParams();
   const [isDatatypeAddOpen, setIsDatatypeAddOpen] = useState(false);
+  const [dtoId, setDtoId] = useState(-1);
   const [dtoName, setDtoName] = useState('');
   const [attributes, setAttributes] = useState<Array<DTO_RESPONSE>>([]); // 새로 추가하는 dto의 속성들
   const [selectIdx, setSelectIdx] = useState(-1);
   const [isDatatypeListOpen, setIsDatatypeListOpen] = useState(false);
   const [mousePos, setMousePos] = useState<MOUSEPOS>({ x: 0, y: 0 });
   const [dtoRows, setDtoRows] = useState<any[]>([]);
-  const [selectInfo, setSelectInfo] = useState<ATTRIBUTE_PLUS>({
-    name: '',
-    idx: 0,
-    type: 'string',
-    isList: false,
-  });
 
   const closeModal = useCallback(() => {
     setIsDatatypeModalOpen(false);
@@ -53,13 +35,21 @@ export default function DatatypeModal({
     setIsDatatypeAddOpen(true);
   }, []);
 
+  const makeDto = useCallback(async () => {
+    const body = {
+      dtoName,
+      dtoType: 'DTO',
+      dtoIsList: 'N',
+    };
+    const { data }: any = await postApi(`/apidocs/${pid}/customdtos`, body);
+    return data;
+  }, []);
+
   const addNewAttribute = useCallback(() => {
     const copyArr = [...attributes];
     copyArr.push({
       dtoItemId: 0,
       dtoItemName: '',
-      dtoClassTypeId: -1,
-      dtoClassTypeName: '',
       dtoPrimitiveTypeId: 9,
       dtoPrimitiveTypeName: 'String',
       dtoIsList: false,
@@ -89,6 +79,7 @@ export default function DatatypeModal({
     (idx: number, e: any) => {
       e.stopPropagation();
       e.preventDefault();
+
       setSelectIdx(idx);
       setMousePos({ x: e.clientX, y: e.clientY });
       setIsDatatypeListOpen((prev) => !prev);
@@ -100,12 +91,7 @@ export default function DatatypeModal({
     async (e: any) => {
       e.preventDefault();
 
-      const body = {
-        dtoName,
-        dtoType: 'DTO',
-        dtoIsList: 'N',
-      };
-      const { data }: any = await postApi(`/apidocs/${pid}/customdtos`, body);
+      const data: any = makeDto();
 
       attributes.forEach(async (attr: any) => {
         const attrBody = {
@@ -139,7 +125,6 @@ export default function DatatypeModal({
   );
 
   useEffect(() => {
-    // dto만 받는 api로 대체될 것임.
     const getDtoList = async () => {
       const { data }: any = await getApi(`/apidocs/${pid}/dtotype`);
       setDtoRows(data);

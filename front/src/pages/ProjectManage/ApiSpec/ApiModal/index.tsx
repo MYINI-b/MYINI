@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 import './style.scss';
-import { API, CONTROLLER, QUERY, DTO } from 'types/ApiSpec';
+import { API, CONTROLLER, QUERY, DTO, DTO_RESPONSE } from 'types/ApiSpec';
 import { deleteApi, getApi, postApi, putApi } from 'api';
 import ApiContentLeft from './ApiContentLeft';
 import ApiContentRight from './ApiContentRight';
@@ -36,6 +36,8 @@ export default function ApiModal({
   const [queryList, setQueryList] = useState<QUERY[]>([]);
   const [deletedPath, setDeletedPath] = useState<QUERY[]>([]);
   const [deletedQuery, setDeletedQuery] = useState<QUERY[]>([]);
+  const [reqItems, setReqItems] = useState<DTO_RESPONSE[]>([]);
+  const [resItems, setResItems] = useState<DTO_RESPONSE[]>([]);
 
   useEffect(() => {
     const getApiInfo = async () => {
@@ -52,6 +54,28 @@ export default function ApiModal({
       setApiMethod(data.apiResponse.apiMethod);
       setApiCode(data.apiResponse.apiCode === 'OK' ? 200 : 201);
       setDtoResponse(data.dtoResponses);
+
+      dtoResponse.forEach((dtoItem: any) => {
+        if (dtoItem.dtoType === 'RESPONSE') {
+          setResItems(
+            dtoItem.dtoItemResponses.map((item: any) => {
+              return {
+                ...item,
+                dtoIsList: item.dtoIsList === 'Y',
+              };
+            }),
+          );
+        } else {
+          setReqItems(
+            dtoItem.dtoItemResponses.map((item: any) => {
+              return {
+                ...item,
+                dtoIsList: item.dtoIsList === 'Y',
+              };
+            }),
+          );
+        }
+      });
 
       const pvl = [];
       data.pathListResponse.forEach((path: string) => {
@@ -103,6 +127,7 @@ export default function ApiModal({
         apiCode: apiCode === 200 ? 'OK' : 'CREATED',
       };
 
+      console.log(reqItems, resItems);
       if (isEdit) {
         await putApi(`/apidocs/apis/${apiId}`, newApiObj);
 
@@ -206,6 +231,8 @@ export default function ApiModal({
       apiCode,
       deletedPath,
       deletedQuery,
+      resItems,
+      reqItems,
     ],
   );
 
@@ -255,8 +282,10 @@ export default function ApiModal({
             setDeletedQuery={setDeletedQuery}
           />
           <ApiContentRight
-            store={store}
-            objDataType={objDataType}
+            reqItems={reqItems}
+            resItems={resItems}
+            setReqItems={setReqItems}
+            setResItems={setResItems}
             dtoResponse={dtoResponse}
           />
         </article>

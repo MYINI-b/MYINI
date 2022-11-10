@@ -79,7 +79,7 @@
 
       .attr-div {
         @include FLEX-ALIGN-CENTER;
-        margin-left: rem(20);
+        padding-left: rem(20);
 
         .attr-type-button {
           margin-right: rem(10);
@@ -168,7 +168,7 @@
     .attr-div {
       @include FLEX-ALIGN-CENTER;
       margin-bottom: rem(10);
-      margin-left: rem(20);
+      padding-left: rem(20);
 
       &:hover {
         .attr-type-delete {

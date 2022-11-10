@@ -70,8 +70,11 @@ export default function DatatypeRow({
     await putApi(`/apidocs/dtos/${dto.dtoId}`, copyDto);
 
     let cnt = 0;
-    attributes.forEach((attr) => {
-      if (attr.dtoItemName !== '') cnt++;
+    copyDto.dtoItemResponses.forEach(async (attr: any) => {
+      if (attr.dtoItemName !== '') {
+        console.log(attr);
+        cnt++;
+      }
     });
 
     setIsEdit(false);
@@ -144,9 +147,11 @@ export default function DatatypeRow({
   }, [attributes]);
 
   const deleteAttr = useCallback(
-    (idx: number, e: any) => {
+    async (idx: number, e: any) => {
       e.stopPropagation();
       if (!isEdit) return;
+
+      await deleteApi(`/apidocs/dtoitems/${attributes[idx].dtoItemId}`);
       const copyArr = [...attributes];
       copyArr.splice(idx, 1);
       setAttributes(copyArr);
@@ -190,9 +195,9 @@ export default function DatatypeRow({
       console.log(data);
     };
 
-    setTimeout(() => {
-      getDtoInfo();
-    }, 50);
+    // setTimeout(() => {
+    getDtoInfo();
+    // }, 50);
   }, [rowId]);
 
   useEffect(() => {

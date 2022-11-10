@@ -57,8 +57,8 @@ export interface DTO {
 export interface DTO_RESPONSE {
   dtoItemId: number;
   dtoItemName: string;
-  dtoClassTypeId?: number;
-  dtoPrimitiveTypeId?: number;
+  dtoClassTypeId?: number | null;
+  dtoPrimitiveTypeId?: number | null;
   dtoClassTypeName?: string;
   dtoPrimitiveTypeName?: string;
   dtoIsList: boolean;
