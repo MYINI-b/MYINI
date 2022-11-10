@@ -54,6 +54,7 @@ $breakpoints: (
       @include BORDER-PAPER;
       height: 80%;
       width: 48%;
+      overflow-y: scroll;
       @include respond-to('small') {
         height: 70%;
       }
@@ -89,24 +90,41 @@ $breakpoints: (
               .radio-set {
                 display: flex;
                 border: rem(0);
-                .radio-input {
-                  display: none;
-                  margin: rem(10);
+                align-items: center;
+                height: rem(50);
+                .radio-title {
+                  font-family: $eng-content;
+                  width: 15%;
+                  margin-right: rem(10);
                 }
-                .radio-field {
-                  display: inline-block;
-                  margin: rem(-2);
-                  padding: rem(8) rem(19);
-                  background-image: none;
-                  background-color: $primary;
-                  border: rem(1) solid #ccc;
-                  width: 100%;
+                .radio-content {
+                  font-family: $eng-content;
+                  width: 13%;
+                  .radio-input {
+                    display: none;
+                    margin: rem(2);
+                  }
+                  .radio-field {
+                    @include FLEX-CENTER;
+                    text-align: center;
+                    border-radius: rem(10);
+                    font-size: rem(5);
+                    color: $white;
+                    margin: rem(-2);
+                    padding: rem(15) rem(15);
+                    background-image: none;
+                    background-color: $primary;
+                    border: rem(1) solid $white;
+                    width: 98%;
+                    height: rem(30);
+                  }
                 }
               }
             }
           }
         }
         .metadata {
+          padding-top: rem(30);
           padding-bottom: rem(20);
           font-size: rem(20);
         }
@@ -130,7 +148,7 @@ $breakpoints: (
         }
         .dependency {
           font-size: rem(20);
-          padding-top: rem(15);
+          padding-top: rem(23);
         }
       }
     }

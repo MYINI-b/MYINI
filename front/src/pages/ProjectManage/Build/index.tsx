@@ -2,6 +2,7 @@ import './style.scss';
 
 import { useState, useEffect } from 'react';
 import { postApi, getApi } from 'api';
+import { useParams } from 'react-router-dom';
 import Modal from './Modal';
 import Accordion1 from './Accor';
 
@@ -46,8 +47,26 @@ export default function Build() {
     useState<string>('gradle-project');
   const [initSelectTypeList, setInitSelectTypeList] = useState([]);
   const [initDependencies, setInitDependencies] = useState<string>();
-  const [initDependenciesList, setInitDependenciesList] =
-    useState<initDependenciesListType>();
+  const [initDependenciesList, setInitDependenciesList] = useState([]);
+  const [dependenciesData, setDependenciesData] = useState<string[]>([]);
+  const getDependencies = () => {
+    setDependenciesData(dependenciesData);
+  };
+
+  const ConfirmData = {
+    springType: 'gradle-project',
+    springLanguage: 'java',
+    springPlatformVersion: '2.2.0.RELEASE',
+    springPackaging: 'jar',
+    springJvmVersion: '1.8',
+    springGroupId: 'com.example',
+    springArtifactId: 'demo',
+    springName: 'demo',
+    springDescription: 'Demo%20project%20for%20Spring%20Boot',
+    springPackageName: 'com.example.demo',
+    springDependencyName: 'web,jpa,lombok,devtools',
+  };
+
   const radioHandlerSelectJvm = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -80,25 +99,11 @@ export default function Build() {
   };
   useEffect(() => {
     const getProjectDetail = async () => {
-      const ConfirmCode: any = await postApi(
-        `https://k7b203.p.ssafy.io/api/initializers/3/previews`,
-        {
-          spring_base_path: '/initializer/3/',
-          spring_type: 'gradle-project',
-          spring_language: 'java',
-          spring_platform_version: '2.2.0.RELEASE',
-          spring_packaging: 'jar',
-          spring_jvm_version: '1.8',
-          spring_group_id: 'com.example',
-          spring_artifact_id: 'demo',
-          spring_name: 'demo',
-          spring_description: 'Demo%20project%20for%20Spring%20Boot',
-          spring_package_name: 'com.example.demo',
-          spring_dependency_name: 'web,jpa,lombok,devtools',
-        },
+      const ConfirmCode: any = await getApi(
+        `https://k7b203.p.ssafy.io/api/initializers/1/preview/${ConfirmData}`,
       );
-      // console.log(ConfirmCode.data);
-      setConfirmData(ConfirmCode.data);
+      console.log(ConfirmCode);
+      // setConfirmData(ConfirmCode.data);
     };
     getProjectDetail();
   }, []);
@@ -118,20 +123,20 @@ export default function Build() {
       const InitSet: any = await getApi(
         `https://k7b203.p.ssafy.io/api/initializers/settings`,
       );
-      console.log(InitSet);
+      console.log(InitSet.data);
       setInitSelectJvmList(
-        InitSet.data['single-select'].spring_jvm_version.values,
+        InitSet.data['single-select'].springJvmVersion.values,
       );
       setInitSelectLanguageList(
-        InitSet.data['single-select'].spring_language.values,
+        InitSet.data['single-select'].springLanguage.values,
       );
       setInitSelectPackagingList(
-        InitSet.data['single-select'].spring_packaging.values,
+        InitSet.data['single-select'].springPackaging.values,
       );
       setInitSelectPlatformList(
-        InitSet.data['single-select'].spring_platform_version.values,
+        InitSet.data['single-select'].springPlatformVersion.values,
       );
-      setInitSelectTypeList(InitSet.data['single-select'].spring_type.values);
+      setInitSelectTypeList(InitSet.data['single-select'].springType.values);
       setInitDependenciesList(InitSet.data.dependencies);
     };
     initSettings();
@@ -279,8 +284,9 @@ export default function Build() {
                   <div className="container">
                     {initSelectJvmList ? (
                       <div className="radio-set">
+                        <div className="radio-title">Jvm version</div>
                         {initSelectJvmList.map((items: any, index: number) => (
-                          <p key={index}>
+                          <p key={index} className="radio-content">
                             <input
                               className="radio-input"
                               type="radio"
@@ -302,9 +308,10 @@ export default function Build() {
                   <div className="container">
                     {initSelectLanguageList ? (
                       <div className="radio-set">
+                        <div className="radio-title">Language</div>
                         {initSelectLanguageList.map(
                           (items: any, index: number) => (
-                            <p key={index}>
+                            <p key={index} className="radio-content">
                               <input
                                 className="radio-input"
                                 type="radio"
@@ -327,9 +334,10 @@ export default function Build() {
                   <div className="container">
                     {initSelectPackagingList ? (
                       <div className="radio-set">
+                        <div className="radio-title">Packaging</div>
                         {initSelectPackagingList.map(
                           (items: any, index: number) => (
-                            <p key={index}>
+                            <p key={index} className="radio-content">
                               <input
                                 className="radio-input"
                                 type="radio"
@@ -352,9 +360,10 @@ export default function Build() {
                   <div className="container">
                     {initSelectPlatformList ? (
                       <div className="radio-set">
+                        <div className="radio-title">Platform Version</div>
                         {initSelectPlatformList.map(
                           (items: any, index: number) => (
-                            <p key={index}>
+                            <p key={index} className="radio-content">
                               <input
                                 className="radio-input"
                                 type="radio"
@@ -377,8 +386,9 @@ export default function Build() {
                   <div className="container">
                     {initSelectTypeList ? (
                       <div className="radio-set">
+                        <div className="radio-title">Type</div>
                         {initSelectTypeList.map((items: any, index: number) => (
-                          <p key={index}>
+                          <p key={index} className="radio-content">
                             <input
                               className="radio-input"
                               type="radio"
@@ -466,8 +476,16 @@ export default function Build() {
             <Modal
               modalClose={modalClose}
               initDependenciesList={initDependenciesList}
+              dependenciesData={dependenciesData}
+              getDependencies={getDependencies}
             />
           )}
+          {dependenciesData &&
+            dependenciesData.map((dependencyData, idx) => (
+              <span key={idx} className="color">
+                {dependencyData}
+              </span>
+            ))}
         </div>
         <div className="confirm-code">
           <div className="confirmcode-title">CONFIRM CODE</div>
