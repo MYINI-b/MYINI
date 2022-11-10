@@ -11,17 +11,10 @@ import { faSave } from '@fortawesome/free-regular-svg-icons';
 // components
 import GenerateVuerd from './GenerateVuerd';
 
-export default function ERDPage() {
-  // const [erdData, setErdData] = useState({});
-
-  // console.log(erdData);
-
-  // useLayoutEffect(() => {
-  //   setErdData(Store.getState().ErdData.erdData);
-  //   // console.log('DashBoard index - setErdData')
-  //   // console.dir(erdData)
-  // }, [Store.getState().ErdData.erdData]);
-
+interface Props {
+  pid: string;
+}
+export default function ERDPage({ pid }: Props) {
   return (
     <div>
       <div className="erd-container">

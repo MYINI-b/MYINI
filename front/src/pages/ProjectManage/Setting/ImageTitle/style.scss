@@ -41,8 +41,8 @@
 
   .project-info-container{  
     width:100%;
-    @include FLEX-COLUMN;
-    justify-content: space-between;
+    display:flex;
+    align-items: flex-end;
     margin-left: rem(10);
 
     .project-edit-button-wrapper{
