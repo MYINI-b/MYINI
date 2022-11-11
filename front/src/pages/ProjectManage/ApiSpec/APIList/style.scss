@@ -36,12 +36,13 @@
     .api-table-col {
       @include FLEX-CENTER;
       font-weight: initial;
-      font-size: rem(20);
+      font-size: rem(16);
       font-family: $eng-content;
+      word-break: break-all;
 
       &.title {
         font-weight: bold;
-        font-size: rem(26);
+        font-size: rem(20);
         font-family: $eng-title;
       }
 

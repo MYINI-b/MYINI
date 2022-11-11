@@ -45,18 +45,21 @@ class ProjectControllerTest extends ControllerTest {
     @DisplayName("프로젝트를 등록한다.")
     void createProject() throws Exception {
         // given
-        willDoNothing()
-                .given(projectService)
-                .createProject(any());
+        given(projectService.createProject(any()))
+                .willReturn(TEST_PROJECT_CREATE_RESPONSE);
 
         // when
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/projects")
                         .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isCreated())
+                .andExpect(content().json(objectMapper.writeValueAsString(TEST_PROJECT_CREATE_RESPONSE)))
                 .andDo(document("api/projects",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
+                        ),
+                        responseFields(
+                                fieldWithPath("projectId").type(JsonFieldType.NUMBER).description("Project ID")
                         )
                 ));
 
@@ -84,6 +87,7 @@ class ProjectControllerTest extends ControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("[]").type(JsonFieldType.ARRAY).description("결과 배열"),
+                                fieldWithPath("[].projectId").type(JsonFieldType.NUMBER).description("Project ID"),
                                 fieldWithPath("[].projectName").type(JsonFieldType.STRING).description("Project 이름"),
                                 fieldWithPath("[].projectDescription").type(JsonFieldType.STRING).description("Project 설명"),
                                 fieldWithPath("[].projectImg").type(JsonFieldType.STRING).description("Project 이미지"),
@@ -91,7 +95,8 @@ class ProjectControllerTest extends ControllerTest {
                                 fieldWithPath("[].projectMemberResponses.[].memberId").type(JsonFieldType.NUMBER).description("Member ID"),
                                 fieldWithPath("[].projectMemberResponses.[].memberEmail").type(JsonFieldType.STRING).description("Member Email"),
                                 fieldWithPath("[].projectMemberResponses.[].memberProfileImg").type(JsonFieldType.STRING).description("Member 프로필이미지"),
-                                fieldWithPath("[].projectMemberResponses.[].memberName").type(JsonFieldType.STRING).description("Member 이름")
+                                fieldWithPath("[].projectMemberResponses.[].memberName").type(JsonFieldType.STRING).description("Member 이름"),
+                                fieldWithPath("[].projectMemberResponses.[].memberNickName").type(JsonFieldType.STRING).description("Member 닉네임")
                         )));
 
 
@@ -259,7 +264,8 @@ class ProjectControllerTest extends ControllerTest {
                                 fieldWithPath("[].memberId").type(JsonFieldType.NUMBER).description("Member ID"),
                                 fieldWithPath("[].memberEmail").type(JsonFieldType.STRING).description("Member Email"),
                                 fieldWithPath("[].memberProfileImg").type(JsonFieldType.STRING).description("Member 프로필이미지"),
-                                fieldWithPath("[].memberName").type(JsonFieldType.STRING).description("Member 이름")
+                                fieldWithPath("[].memberName").type(JsonFieldType.STRING).description("Member 이름"),
+                                fieldWithPath("[].memberNickName").type(JsonFieldType.STRING).description("Member 닉네임")
                         )));
 
 
@@ -273,7 +279,7 @@ class ProjectControllerTest extends ControllerTest {
     void findByMemberEmail() throws Exception {
         // given
         given(projectService.findByMemberEmail(any()))
-                .willReturn(TEST_PROJECT_MEMBER_RESPONSE);
+                .willReturn(Arrays.asList(TEST_PROJECT_MEMBER_RESPONSE));
 
         // when
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/projects/members", ID)
@@ -281,7 +287,7 @@ class ProjectControllerTest extends ControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(TEST_FIND_MEMBER_EMAIL_REQUEST)))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(TEST_PROJECT_MEMBER_RESPONSE)))
+                .andExpect(content().json(objectMapper.writeValueAsString(Arrays.asList(TEST_PROJECT_MEMBER_RESPONSE))))
                 .andDo(document("api/projects/members",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
@@ -290,10 +296,12 @@ class ProjectControllerTest extends ControllerTest {
                                 fieldWithPath("memberEmail").type(JsonFieldType.STRING).description("Member Email")
                         ),
                         responseFields(
-                                fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("Member ID"),
-                                fieldWithPath("memberEmail").type(JsonFieldType.STRING).description("Member Email"),
-                                fieldWithPath("memberProfileImg").type(JsonFieldType.STRING).description("Member 프로필이미지"),
-                                fieldWithPath("memberName").type(JsonFieldType.STRING).description("Member 이름")
+                                fieldWithPath("[]").type(JsonFieldType.ARRAY).description("결과 배열"),
+                                fieldWithPath("[].memberId").type(JsonFieldType.NUMBER).description("Member ID"),
+                                fieldWithPath("[].memberEmail").type(JsonFieldType.STRING).description("Member Email"),
+                                fieldWithPath("[].memberProfileImg").type(JsonFieldType.STRING).description("Member 프로필이미지"),
+                                fieldWithPath("[].memberName").type(JsonFieldType.STRING).description("Member 이름"),
+                                fieldWithPath("[].memberNickName").type(JsonFieldType.STRING).description("Member 닉네임")
                         )));
 
 

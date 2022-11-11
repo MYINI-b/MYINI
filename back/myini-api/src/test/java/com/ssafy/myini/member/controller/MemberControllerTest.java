@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.multipart.Part;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -27,6 +28,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.ssafy.myini.CommonFixture.TEST_AUTHORIZATION;
+import static com.ssafy.myini.project.ProjectFixture.ID;
+import static com.ssafy.myini.project.ProjectFixture.TEST_UPDATE_PROJECT_REQUEST;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
@@ -135,5 +138,32 @@ class MemberControllerTest extends ControllerTest {
 
         // then
         then(memberService).should(times(1)).updateMemberProfileImg(any(), any());
+    }
+
+    @Test
+    @DisplayName("회원 JIRA 이메일 등록 및 수정한다")
+    void updateMemberJiraEmail() throws Exception {
+        // given
+        willDoNothing()
+                .given(memberService)
+                .updateMemberJiraEmail(any(), any());
+
+        // when
+        mockMvc.perform(RestDocumentationRequestBuilders.patch("/api/members/jiraemail")
+                        .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(TEST_UPDATE_MEMBER_JIRA_EMAIL_REQUEST)))
+                .andExpect(status().isOk())
+                .andDo(document("api/members/jiraemail",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
+                        ),
+                        requestFields(
+                                fieldWithPath("memberJiraEmail").type(JsonFieldType.STRING).description("회원 이메일")
+                        )
+                ));
+
+        // then
+        then(memberService).should(times(1)).updateMemberJiraEmail(any(), any());
     }
 }

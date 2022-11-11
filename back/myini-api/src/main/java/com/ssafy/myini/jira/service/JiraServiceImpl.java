@@ -3,8 +3,8 @@ package com.ssafy.myini.jira.service;
 import com.ssafy.myini.JiraException;
 import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.jira.JiraApi;
-import com.ssafy.myini.jira.request.CreateJiraIssueRequest;
 import com.ssafy.myini.jira.request.UpdateJiraAccountRequest;
+import com.ssafy.myini.jira.request.UpdateJiraDomainRequest;
 import com.ssafy.myini.jira.request.UpdateJiraProjectRequest;
 import com.ssafy.myini.member.domain.Member;
 import com.ssafy.myini.member.domain.MemberProjectRepository;
@@ -13,6 +13,8 @@ import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import com.ssafy.myini.project.query.ProjectQueryRepository;
 import com.ssafy.myini.requirementdocs.domain.Requirement;
+import com.ssafy.myini.requirementdocs.domain.RequirementCategory;
+import com.ssafy.myini.requirementdocs.domain.RequirementCategoryRepository;
 import com.ssafy.myini.requirementdocs.domain.RequirementRepository;
 import com.ssafy.myini.requirementdocs.query.RequirementDocsQueryRepository;
 import com.ssafy.myini.requirementdocs.response.JiraProjectListResponse;
@@ -32,6 +34,7 @@ public class JiraServiceImpl implements JiraService{
     private final ProjectRepository projectRepository;
     private final MemberProjectRepository memberProjectRepository;
     private final RequirementDocsQueryRepository requirementDocsQueryRepository;
+    private final RequirementCategoryRepository requirementCategoryRepository;
 
     @Transactional
     @Override
@@ -46,13 +49,24 @@ public class JiraServiceImpl implements JiraService{
 
     @Transactional
     @Override
+    public void updateJiraDomain(Member member, Long projectId, UpdateJiraDomainRequest request) {
+        Project findProject = projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+        if(!memberProjectRepository.existsByMemberAndProject(member, findProject)){
+            throw new NotFoundException(MEMBER_PROJECT_NOT_FOUND);
+        }
+        findProject.updateJiraDomain(request.getJiraDomain());
+    }
+
+    @Transactional
+    @Override
     public void updateJiraProject(Member member, Long projectId, UpdateJiraProjectRequest request) {
         Project findProject = projectRepository.findById(projectId)
                 .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
         if(!memberProjectRepository.existsByMemberAndProject(member, findProject)){
             throw new NotFoundException(MEMBER_PROJECT_NOT_FOUND);
         }
-        findProject.updateJiraProject(request.getJiraProjectId(), request.getJiraProjectKey(), request.getJiraProjectName());
+        findProject.updateJiraProject(request.getJiraProjectKey(), request.getJiraProjectId());
     }
 
     @Override
@@ -61,31 +75,35 @@ public class JiraServiceImpl implements JiraService{
                 .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
         String jiraId = findProject.getJiraId();
         String jiraApiKey = findProject.getJiraApiKey();
+        String jiraDomain = findProject.getJiraDomain();
 
         try {
-            List<JiraProjectListResponse> jiraProjectListResponses = JiraApi.getProjectList(jiraId, jiraApiKey);
+            List<JiraProjectListResponse> jiraProjectListResponses = JiraApi.getProjectList(jiraId, jiraApiKey, jiraDomain);
 
             return jiraProjectListResponses;
         }catch (Exception e){
-            throw new JiraException(JiraException.JIRA_FAIL);
+            throw new JiraException(JiraException.PROJECT_NOT_FOUND);
         }
-
-
-
     }
 
     @Override
-    public void jiraCreateIssue(Long projectId, CreateJiraIssueRequest createJiraIssueRequest) {
+    @Transactional
+    public void jiraCreateIssue(Long projectId) {
         List<Requirement> findRequirements = requirementDocsQueryRepository.findAllRequirement(projectId);
 
         Project findProject = projectRepository.findById(projectId)
                 .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+
+        List<RequirementCategory> requirementCategories = requirementCategoryRepository.findAllByProject(findProject);
+
         String jiraId = findProject.getJiraId();
         String jiraApiKey = findProject.getJiraApiKey();
+        String jiraDomain = findProject.getJiraDomain();
+        String jiraProjectKey = findProject.getJiraProjectKey();
+        String jiraProjectId = findProject.getJiraProjectId();
 
         try {
-//            JiraApi.getIssue();
-            JiraApi.createIssue(jiraId, jiraApiKey, findRequirements, createJiraIssueRequest);
+            JiraApi.createIssue(jiraId, jiraApiKey, findRequirements,requirementCategories, jiraDomain, jiraProjectKey, jiraProjectId);
         }catch (Exception e){
             throw new JiraException(JiraException.JIRA_FAIL);
         }

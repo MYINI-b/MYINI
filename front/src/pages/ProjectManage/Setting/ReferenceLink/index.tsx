@@ -7,14 +7,16 @@ import LinkRow from './LinkRow';
 
 interface Props {
   store: any;
+  editProjectInfo: () => Promise<void>;
 }
 
-export default function ReferenceLink({ store }: Props) {
+export default function ReferenceLink({ store, editProjectInfo }: Props) {
   // const { gitlink, notionlink, jiralink, figmalink } = props;
   const [isEdit, setIsEdit] = useState(false);
 
   const onSubmitClick = useCallback(() => {
     setIsEdit(false);
+    editProjectInfo();
   }, []);
 
   return (

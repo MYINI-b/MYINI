@@ -466,6 +466,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_응답_3">응답</a></li>
 </ul>
 </li>
+<li><a href="#_회원_jira_이메일_등록_및_수정한다">1.4. 회원 JIRA 이메일 등록 및 수정한다</a>
+<ul class="sectlevel4">
+<li><a href="#_요청_4">요청</a></li>
+<li><a href="#_응답_4">응답</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -656,12 +662,73 @@ Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_회원_jira_이메일_등록_및_수정한다"><a class="anchor" href="#_회원_jira_이메일_등록_및_수정한다"></a><a class="link" href="#_회원_jira_이메일_등록_및_수정한다">1.4. 회원 JIRA 이메일 등록 및 수정한다</a></h4>
+<div class="sect4">
+<h5 id="_요청_4"><a class="anchor" href="#_요청_4"></a><a class="link" href="#_요청_4">요청</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/members/jiraemail HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: Bearer
+Content-Length: 43
+Host: localhost:8080
+
+{
+  "memberJiraEmail" : "test@test.com"
+}</code></pre>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_header_4"><a class="anchor" href="#_header_4"></a><a class="link" href="#_header_4">Header</a></h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AccessToken</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_body"><a class="anchor" href="#_body"></a><a class="link" href="#_body">Body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
+  "memberJiraEmail" : "test@test.com"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_응답_4"><a class="anchor" href="#_응답_4"></a><a class="link" href="#_응답_4">응답</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-11-04 08:49:19 +0900
+Last updated 2022-11-11 11:14:09 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

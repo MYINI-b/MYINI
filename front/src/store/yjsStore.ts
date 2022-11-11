@@ -1,8 +1,11 @@
 import { getYjsValue, syncedStore } from '@syncedstore/core';
 import { WebrtcProvider } from 'y-webrtc';
 import { USER } from 'types/Setting';
-import { ROW } from 'types/Requirement';
+import { ROW, CATEGORY } from 'types/Requirement';
+import { CONTROLLER, API } from 'types/ApiSpec';
+import * as Y from 'yjs';
 
+const ydoc = new Y.Doc();
 export type ProjectInfo = {
   // project info
   img: string;
@@ -18,11 +21,14 @@ export type ProjectInfo = {
 
   // requirement
   rows: ROW[];
-  categories: string[];
-  managers: string[];
+  categories: CATEGORY[];
+
+  // controllers
+  controllers: CONTROLLER[];
+  currentAPI: API;
 };
 
 export const globalStore = syncedStore({
   pjt: {} as ProjectInfo,
 });
-new WebrtcProvider('id', getYjsValue(globalStore) as any); // sync via webrtc
+new WebrtcProvider('id', ydoc, getYjsValue(globalStore) as any); // sync via webrtc

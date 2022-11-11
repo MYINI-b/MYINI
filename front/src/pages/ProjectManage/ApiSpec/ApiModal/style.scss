@@ -16,7 +16,7 @@
   width: 80%;
   height: 95%;
   max-height: rem(700);
-  padding: 12px 12px;
+  padding: 20px;
 
   .closebtn-container {
     @include FLEX-ALIGN-RIGHT;
@@ -35,7 +35,8 @@
 
   .api-add-input {
     width: 100%;
-    padding: rem(18) 0;
+    padding: rem(16) 0;
+    font-weight: bold;
     font-size: rem(24);
     font-family: $eng-content;
     background-color: transparent;

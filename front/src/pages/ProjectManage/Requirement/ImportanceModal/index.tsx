@@ -3,12 +3,14 @@ import { useCallback, Dispatch, useRef, useEffect } from 'react';
 import { IMPORTANCE_LIST, IMPORTANCE_TEXT } from 'constants/index';
 import './style.scss';
 import { ELEMENTPOS, ROW } from 'types/Requirement';
+import { putApi } from 'api';
 
 interface Props {
   setIsImportanceOpen: Dispatch<React.SetStateAction<boolean>>;
   clickElementPos: ELEMENTPOS;
   idx: number;
   store: any;
+  rowId: number;
 }
 
 export default function ImportanceModal({
@@ -16,11 +18,21 @@ export default function ImportanceModal({
   clickElementPos,
   idx,
   store,
+  rowId,
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
 
   const selectImportance = useCallback(
-    (importance: number) => {
+    async (importance: number) => {
+      const body = {
+        requirementPriority: importance,
+      };
+      const { data }: any = await putApi(
+        `/requirementdocs/requirements/${rowId}/priorities`,
+        body,
+      );
+      console.log(data);
+
       store.pjt.rows[idx].importance = importance;
       setIsImportanceOpen(false);
     },

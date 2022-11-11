@@ -3,12 +3,14 @@ import { useCallback, Dispatch, useRef, useEffect } from 'react';
 import { DIVISION_LIST } from 'constants/index';
 import './style.scss';
 import { ELEMENTPOS, ROW } from 'types/Requirement';
+import { putApi } from 'api';
 
 interface Props {
   setIsDivisionOpen: Dispatch<React.SetStateAction<boolean>>;
   clickElementPos: ELEMENTPOS;
   idx: number;
   store: any;
+  rowId: number;
 }
 
 export default function DivisionModal({
@@ -16,15 +18,23 @@ export default function DivisionModal({
   clickElementPos,
   idx,
   store,
+  rowId,
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
 
   const selectdivision = useCallback(
-    (division: string) => {
+    async (division: string) => {
+      const body = {
+        requirementPart: division,
+      };
+      const { data }: any = await putApi(
+        `/requirementdocs/requirements/${rowId}/parts`,
+        body,
+      );
       store.pjt.rows[idx].division = division;
       setIsDivisionOpen(false);
     },
-    [store, idx],
+    [store, idx, rowId],
   );
 
   useEffect(() => {

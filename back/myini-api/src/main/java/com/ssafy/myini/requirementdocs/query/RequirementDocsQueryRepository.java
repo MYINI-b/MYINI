@@ -1,5 +1,6 @@
 package com.ssafy.myini.requirementdocs.query;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.myini.member.domain.QMember;
 import com.ssafy.myini.requirementdocs.domain.QRequirement;
@@ -19,6 +20,12 @@ public class RequirementDocsQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     public List<Requirement> findAllRequirement(Long projectId) {
+//        BooleanBuilder builder = new BooleanBuilder();
+//        if(requirement.requirementCategory != null){
+//            builder.
+//        }
+
+
         return queryFactory
                 .selectFrom(requirement)
                 .leftJoin(requirement.requirementCategory, requirementCategory).fetchJoin()
