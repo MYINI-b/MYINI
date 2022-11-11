@@ -2,7 +2,6 @@ import './style.scss';
 
 import { useState, useEffect } from 'react';
 import { getApi } from 'api';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Modal from './Modal';
 import Accordion1 from './Accor';
@@ -315,6 +314,7 @@ export default function Build() {
                               value={items.name}
                               id={items.id}
                               onChange={radioHandlerSelectJvm}
+                              checked={initSelectJvm === items.id}
                             />
                             <label htmlFor={items.id} className="radio-field">
                               {items.name}
@@ -340,6 +340,7 @@ export default function Build() {
                                 value={items.name}
                                 id={items.id}
                                 onChange={radioHandlerSelectLanguage}
+                                checked={initSelectLanguage === items.id}
                               />
                               <label htmlFor={items.id} className="radio-field">
                                 {items.name}
@@ -366,6 +367,7 @@ export default function Build() {
                                 value={items.name}
                                 id={items.id}
                                 onChange={radioHandlerSelectPackaging}
+                                checked={initSelectPackaging === items.id}
                               />
                               <label htmlFor={items.id} className="radio-field">
                                 {items.name}
@@ -392,6 +394,7 @@ export default function Build() {
                                 value={items.name}
                                 id={items.id}
                                 onChange={radioHandlerSelectPlatform}
+                                checked={initSelectPlatform === items.id}
                               />
                               <label htmlFor={items.id} className="radio-field">
                                 {items.name}
@@ -417,6 +420,7 @@ export default function Build() {
                               value={items.name}
                               id={items.id}
                               onChange={radioHandlerSelectType}
+                              checked={initSelectType === items.id}
                             />
                             <label htmlFor={items.id} className="radio-field">
                               {items.name}
@@ -487,12 +491,17 @@ export default function Build() {
                 />
               </form>
             </div>
-            <div className="dependency">Dependencies</div>
+            <div className="dependency-container">
+              <div className="dependency">Dependencies</div>
+              <button
+                type="button"
+                onClick={modalClose}
+                className="dependency-button"
+              >
+                Add
+              </button>
+            </div>
           </span>
-          <span className="tab-item" title="React" />
-          <button type="button" onClick={modalClose}>
-            Click
-          </button>
           {modalOpen && initDependenciesList && (
             <Modal
               modalClose={modalClose}
@@ -501,12 +510,14 @@ export default function Build() {
               getDependencies={getDependencies}
             />
           )}
-          {dependenciesData &&
-            dependenciesData.map((dependencyData, idx) => (
-              <span key={idx} className="color">
-                {dependencyData}
-              </span>
-            ))}
+          <div className="dependency-items">
+            {dependenciesData &&
+              dependenciesData.map((dependencyData, idx) => (
+                <span key={idx} className="dependencies-data">
+                  {dependencyData}
+                </span>
+              ))}
+          </div>
           <button
             type="submit"
             className="build-project-button"

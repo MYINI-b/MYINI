@@ -95,6 +95,7 @@ $breakpoints: (
                 .radio-title {
                   font-family: $eng-content;
                   width: 15%;
+                  font-size: rem(16);
                   margin-right: rem(10);
                 }
                 .radio-content {
@@ -113,6 +114,7 @@ $breakpoints: (
                     &:hover + label {
                       box-shadow: 0 0 12px rgba($primary, 0.3);
                       transition: box-shadow 100ms ease-in;
+                      cursor: pointer;
                     }
                   }
                   .radio-field {
@@ -156,9 +158,41 @@ $breakpoints: (
             }
           }
         }
-        .dependency {
-          font-size: rem(20);
+        .dependency-container {
+          display: flex;
+          align-items: center;
           padding-top: rem(23);
+          padding-bottom: rem(15);
+          .dependency {
+            font-size: rem(20);
+          }
+          .dependency-button {
+            width: rem(70);
+            height: rem(30);
+            margin-left: rem(30);
+            background-color: $white;
+            border: rem(1) solid $secondary;
+            border-radius: rem(10);
+            font-size: rem(15);
+            font-family: $eng-content;
+            &:hover {
+              background-color: $primary;
+              border: rem(1) solid $light-gray;
+            }
+          }
+        }
+      }
+      .dependency-items {
+        padding-top: rem(15);
+        padding-left: rem(15);
+        font-family: $eng-content;
+        font-size: rem(15);
+        border: rem(1) solid $secondary;
+        height: rem(800);
+        white-space: pre-line;
+        overflow-y: scroll;
+        .dependencies-data {
+          padding-right: rem(15);
         }
       }
     }
@@ -167,7 +201,7 @@ $breakpoints: (
       font-family: $eng-title;
       font-size: rem(25);
       display: flex;
-      justify-content: center;
+      justify-content: center
     }
     
     .confirm-code {
@@ -179,9 +213,7 @@ $breakpoints: (
       @include respond-to('small') {
         height: 70%;
       }
-      .build-project-button {
-        margin-top: rem(30);
-      }
+
     }
     
     .confirmcode-title {
@@ -211,4 +243,36 @@ $breakpoints: (
     font-family: $eng-content;
     padding-top: rem(5);
   }
+}
+
+.build-project-button {
+  border-radius: rem(4);
+  background-color: $primary;
+  border: none;
+  color: $white;
+  text-align: center;
+  font-size: rem(25);
+  font-family: $eng-title;
+  width: 100%;
+  transition: all 0.5s;
+  box-shadow: 0 10px 20px -8px $light-gray;
+  margin-top: rem(30);
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: all 0.2s linear 0s;
+}
+.build-project-button:after {
+  content: '»';
+  display: absolute;
+  opacity: 0;
+  transition: 0.5s;
+}
+.build-project-button:hover{
+  padding-right: rem(50);
+  padding-left: rem(8);
+}
+.build-project-button:hover:after {
+  opacity: 1;
+  right: rem(10);
 }
