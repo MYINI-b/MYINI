@@ -4,11 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSyncedStore } from '@syncedstore/react';
 import { getYjsValue, syncedStore } from '@syncedstore/core';
 import { WebrtcProvider } from 'y-webrtc';
-
+import * as Y from 'yjs';
 import { RootState } from 'modules/Reducers';
-import { globalStore, ProjectInfo } from 'store/yjsStore';
+import { globalStore, ProjectInfo, globalStore2 } from 'store/yjsStore';
 import MainHeader from 'components/MainHeader';
-import { setPid, addSession } from 'modules/project';
+import { setPid, addSession, setProvider, setSessions } from 'modules/project';
+
 import { postApi } from 'api';
 import ApiSpec from './ApiSpec';
 import ERDPage from './ERDPage';
@@ -20,30 +21,17 @@ export default function ProjectManage() {
   const [step, setStep] = useState(1);
   const { pid } = useParams();
   const dispatch = useDispatch();
-  const [store, setStore] = useState<any>(useSyncedStore(globalStore));
-  const { sessions } = useSelector((state: RootState) => state.project);
+
+  const newStore = pid === '3' ? globalStore : globalStore2;
+  const [store, setStore] = useState<any>(useSyncedStore(newStore));
+  new WebrtcProvider(`project${pid}`, getYjsValue(newStore) as any);
 
   useEffect(() => {
     const setReduxPid = async () => {
       if (pid === 'new') {
         const { data }: any = await postApi(`/projects`);
         dispatch(setPid(data.projectId));
-        const newStore = syncedStore({
-          pjt: {} as ProjectInfo,
-        });
-        const obj = {
-          [`project${pid}`]: newStore,
-        };
-
-        new WebrtcProvider(
-          `project${data.projectId}`,
-          getYjsValue(newStore) as any,
-        );
-        dispatch(addSession(obj));
-        setStore(newStore);
       } else {
-        console.log(sessions);
-        setStore(sessions[`project${pid}`]);
         dispatch(setPid(pid || ''));
       }
     };

@@ -105,23 +105,23 @@ export default function MainPage() {
       const getProjectDatas: any = await getApi(`/projects`);
       getMyProject(getProjectDatas.data);
 
-      const obj: any = {};
-      getProjectDatas.data.forEach((pjt: any) => {
-        if (!sessions[`project${pjt.projectId}`]) {
-          const projectStore = syncedStore({
-            pjt: {} as ProjectInfo,
-          });
+      // const obj: any = {};
+      // getProjectDatas.data.forEach((pjt: any) => {
+      //   if (!sessions[`project${pjt.projectId}`]) {
+      //     const projectStore = syncedStore({
+      //       pjt: {} as ProjectInfo,
+      //     });
 
-          obj[`project${pjt.projectId}`] = projectStore;
-          new WebrtcProvider(
-            `project${pjt.projectId}`,
-            ydoc,
-            getYjsValue(projectStore) as any,
-          );
-        }
-      });
+      //     obj[`project${pjt.projectId}`] = projectStore;
+      //     new WebrtcProvider(
+      //       `project${pjt.projectId}`,
+      //       ydoc,
+      //       getYjsValue(projectStore) as any,
+      //     );
+      //   }
+      // });
 
-      dispatch(setSessions(obj));
+      // dispatch(setSessions(obj));
     };
     fetchProject();
     fetchData();

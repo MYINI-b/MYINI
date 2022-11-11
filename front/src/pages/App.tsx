@@ -11,14 +11,6 @@ import ProjectManage from './ProjectManage';
 import Social from './User/Social';
 
 function App() {
-  const store = configureStore({
-    reducer: rootReducer,
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({
-        serializableCheck: false,
-      }),
-  });
-
   return (
     <BrowserRouter>
       <Routes>

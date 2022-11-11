@@ -1,12 +1,15 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState, useCallback } from 'react';
-
-import { RootState } from 'modules/Reducers';
+import { useSyncedStore } from '@syncedstore/react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { getYjsValue, syncedStore } from '@syncedstore/core';
+import { WebrtcProvider } from 'y-webrtc';
 import { useSelector } from 'react-redux';
+import { RootState } from 'modules/Reducers';
+
 import { globalStore, ProjectInfo } from 'store/yjsStore';
-import { getApi, postApi, putApi } from 'api';
+import { getApi, putApi } from 'api';
 import DefaultProfile from 'assets/default-profile.png';
-// import { PROJECT_LIST } from 'types/main';
 import ImageTitle from './ImageTitle';
 import ProjectDesc from './ProjectDesc/index';
 import Period from './Period/index';
@@ -14,7 +17,10 @@ import ReferenceLink from './ReferenceLink';
 import ProjectMember from './Member/index';
 import './style.scss';
 
-export default function SettingPage({ store }: any) {
+interface Props {
+  store: any;
+}
+export default function Setting({ store }: Props) {
   const { pid } = useSelector((state: RootState) => state.project);
 
   const editProjectInfo = useCallback(async () => {
@@ -34,44 +40,39 @@ export default function SettingPage({ store }: any) {
 
   useEffect(() => {
     const getProjectDetail = async () => {
-      if (pid !== '') {
-        const projectResp: any = await getApi(`/projects/${pid}`);
-        console.log(projectResp.data, store);
-        if (projectResp.status === 200) {
-          if (store) {
-            store.pjt.img = projectResp.data.projectImg
-              ? `https://myini.s3.ap-northeast-2.amazonaws.com/projectProfile/${projectResp.data.projectImg}`
-              : DefaultProfile;
-            store.pjt.title = projectResp.data.projectName;
-            store.pjt.desc = projectResp.data.projectDescription;
-            store.pjt.startDay = projectResp.data.projectStartedDate;
-            store.pjt.endDay = projectResp.data.projectFinishedDate;
-            store.pjt.gitLink = projectResp.data.projectGithubUrl;
-            store.pjt.jiraLink = projectResp.data.projectJiraUrl;
-            store.pjt.notionLink = projectResp.data.projectNotionUrl;
-            store.pjt.figmaLink = projectResp.data.projectFigmaUrl;
+      const { data }: any = await getApi(`/projects/${pid}`);
+      console.log(data, store);
 
-            const memberResp: any = await getApi(`/projects/members/${pid}`);
-            console.log(memberResp);
-            const memberData = memberResp.data.map((member: any) => {
-              return {
-                id: member.memberId,
-                name: member.memberNickName,
-                img: member.memberProfileImg
-                  ? `https://myini.s3.ap-northeast-2.amazonaws.com/userProfile/${member.memberProfileImg}`
-                  : DefaultProfile,
-                email: member.memberEmail,
-              };
-            });
-            store.pjt.members = memberData;
-          }
-        } else if (projectResp.response.status === 400) alert('없는 프젝');
-        else if (projectResp.response.status === 500) alert('api 에러');
+      if (store) {
+        store.pjt.img = data.projectImg
+          ? `https://myini.s3.ap-northeast-2.amazonaws.com/projectProfile/${data.projectImg}`
+          : DefaultProfile;
+        store.pjt.title = data.projectName;
+        store.pjt.desc = data.projectDescription;
+        store.pjt.startDay = data.projectStartedDate;
+        store.pjt.endDay = data.projectFinishedDate;
+        store.pjt.gitLink = data.projectGithubUrl;
+        store.pjt.jiraLink = data.projectJiraUrl;
+        store.pjt.notionLink = data.projectNotionUrl;
+        store.pjt.figmaLink = data.projectFigmaUrl;
+
+        const memberResp: any = await getApi(`/projects/members/${pid}`);
+        const memberData = memberResp.data.map((member: any) => {
+          return {
+            id: member.memberId,
+            name: member.memberName,
+            img: member.memberProfileImg
+              ? `https://myini.s3.ap-northeast-2.amazonaws.com/userProfile/${member.memberProfileImg}`
+              : DefaultProfile,
+            email: member.memberEmail,
+          };
+        });
+        store.pjt.members = memberData;
       }
     };
 
     getProjectDetail();
-  }, [pid, store]);
+  }, [store]);
 
   return (
     <div className="setting-page">
