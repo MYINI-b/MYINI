@@ -30,38 +30,7 @@ const myBucket = new AWS.S3({
 
 function GenerateVuerd(props: any) {
   const erdDiv = useRef() as React.MutableRefObject<HTMLDivElement>;
-  // const { erdData } = props;
-  // const { onCurrentErd } = props;
   const { pid } = useParams();
-  const [currentErd, setCurrentErd] = useState<any>({});
-  const [jsonToS3, setJsonToS3] = useState<any>({});
-  const dispatch = useDispatch();
-  // const { erdName } = props;
-  const dummyTable = {
-    TableModel: {
-      name: 'project_id',
-      comment: '',
-      dataType: 'BIGINT',
-      default: '',
-      option: {
-        autoIncrement: false,
-        primaryKey: true,
-        unique: false,
-        notNull: true,
-      },
-      ui: {
-        active: false,
-        pk: true,
-        fk: false,
-        pfk: false,
-        widthName: 60,
-        widthComment: 60,
-        widthDataType: 60,
-        widthDefault: 60,
-      },
-      id: '271a0c33-39bc-4631-a816-b5cddc297315',
-    },
-  };
 
   useLayoutEffect(() => {
     generateVuerd();
@@ -85,48 +54,21 @@ function GenerateVuerd(props: any) {
     const payload: any = {
       editor: editor,
     };
-    // payload.editor.context.store.tableState.tables.push(dummyTable);
 
-    // const obj: any = {
-    //   editor: erdDiv.current.children.item(0),
-    // };
-    // if (obj.editor) {
-    //   // 프로젝트 렌더
-    //   const getJson: any = async () =>
-    //     getApi(`/erds/erdjson/${pid}`)
-    //       .then((res: any) => {
-    //         console.log(res, 'res');
-    //         obj.editor.context.store.canvasState = res.data.canvas;
-    //         obj.editor.context.store.memoState = res.data.memo;
-    //         obj.editor.context.store.tableState = res.data.table;
-    //         obj.editor.context.store.relationshipState = res.data.realationship;
-    //         console.log(obj, 'obj2');
-    //         console.log(res, 'res');
-    //       })
-    //       .catch((err: any) => {
-    //         console.log(err, '새로운 프로젝트입니다.');
-    //       });
-    //   getJson();
-    // }
-
-    // disp
-    // dispatch(assignCurrentErd(payload.editor));
-
-    const getProjectErd = async () => {
-      await getApi(`erds/erdjson/${pid}`)
-        .then((res: any) => {
-          console.log(res.data, 'res');
-          editor.initLoadJson(JSON.stringify(res.data));
-        })
-        .catch((err: any) => {
-          console.log(err, '새로운 프로젝트입니다.');
-        });
-    };
-    getProjectErd();
-
-    // editor.addEventListener('change', (event: any) => {
-    //   console.log(event.target, '');
-    // });
+    // import project erd
+    if (pid) {
+      const getProjectErd = async () => {
+        await getApi(`erds/erdjson/${pid}`)
+          .then((res: any) => {
+            console.log(res.data, 'res');
+            editor.initLoadJson(JSON.stringify(res.data));
+          })
+          .catch((err: any) => {
+            console.log(err, '새로운 프로젝트입니다.');
+          });
+      };
+      getProjectErd();
+    }
 
     // vuerd size
     window.addEventListener('resize', () => {
