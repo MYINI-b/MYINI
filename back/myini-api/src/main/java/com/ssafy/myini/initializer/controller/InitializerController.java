@@ -24,12 +24,14 @@ import java.util.List;
 public class InitializerController {
     private final InitializerService initializerService;
 
+    //이니셜라이저 가능한지 확인
     @GetMapping("/{projectid}/ispossible")
     public ResponseEntity<InitializerPossibleResponse> initializerIsPossible(@PathVariable("projectid") Long projectId) {
         InitializerPossibleResponse body = initializerService.initializerIsPossible(projectId);
 
         return ResponseEntity.ok().body(body);
     }
+
 
     @GetMapping("/{projectid}")
     public ResponseEntity<byte[]> initializerStart(@PathVariable("projectid") Long projectId,
@@ -42,6 +44,7 @@ public class InitializerController {
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
                 .body(resp.getResource());
     }
+
 
     @DeleteMapping("/{projectid}")
     public ResponseEntity<Void> deleteZipfile(@Valid String fileName) {
@@ -58,6 +61,7 @@ public class InitializerController {
         return ResponseEntity.ok().body(body);
     }
 
+    //myini 다운로드
     @GetMapping("/downloads")
     public ResponseEntity<byte[]> myIniDownload() {
         ByteArrayOutputStream byteArrayOutputStream = initializerService.myIniDownload();
@@ -68,6 +72,7 @@ public class InitializerController {
                 .body(byteArrayOutputStream.toByteArray());
     }
 
+    //이니셜라이징 세팅값 조회
     @GetMapping("/settings")
     public ResponseEntity<JSONObject> initializerSettings() {
         JSONObject body = initializerService.initializerSettings();

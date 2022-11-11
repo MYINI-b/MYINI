@@ -32,34 +32,35 @@
       }
 
       .content-right-many-wrapper {
-        width: 100%;
         @include FLEX-ALIGN-CENTER;
 
-        .many-radio-wrapper {
-          @include FLEX-COLUMN;
-          align-items: center;
+        .many-checkbox-wrapper {
+          width: rem(50);
+          height: rem(25);
+          padding-left: 1px;
+          background-color: #92C68D;
+          border-radius: rem(25);
           cursor: pointer;
-          .many-radio-button {
-            width: rem(16);
-            height: rem(16);
-            background-color: $pure-white;
-            border: 1px solid $gray;
-            border-radius: rem(16);
+          transition: 0.3s ease;
+          @include FLEX-ALIGN-CENTER;
 
+          &.list {
+            background-color: $secondary;
+          }
+
+          .many-checker {
+            width: rem(22);
+            height: rem(22);
+            background-color: white;
+            border-radius: rem(22);
+            cursor: pointer;
+            transition: 0.3s ease;
             content: '';
 
-            &.select {
-              background-color: $get;
+            &.list {
+              transform: translateX(26px);
             }
           }
-          .many-radio-text {
-            margin-top: rem(4);
-            font-size: rem(14);
-          }
-        }
-
-        .many-radio-wrapper + .many-radio-wrapper {
-          margin-left: rem(10);
         }
       }
 
@@ -68,29 +69,20 @@
         width: 100%;
         @include FLEX-ALIGN-CENTER;
 
-        .content-right-boxtitle {
-          width: 100%;
-          font-size: rem(20);
-          @include FLEX-CENTER;
-
-          &.static {
-            flex-shrink: 0;
-            width: rem(200);
-            border-right: 1px solid $light-gray;
-          }
-        }
+       
       }
     }
 
     .content-right-boxcontent-wrapper {
       @include STRETCH;
       @include FLEX-COLUMN;
-      padding: rem(14) 0;
+      padding: rem(6) 0;
       overflow: hidden;
 
       .content-right-normal-boxcontent {
         @include FLEX-ALIGN-CENTER;
         width: 100%;
+        margin-bottom: rem(6);
 
         .content-right-boxcontent-input {
           @include STRETCH;
@@ -111,20 +103,25 @@
         overflow: auto;
         @include FLEX-COLUMN;
 
+        &::-webkit-scrollbar {
+          width: 0px;
+          height: 0px;
+        }
+
         .datatype-add-brace {
           font-size: rem(20);
 
           &.second {
-            margin-left: rem(20);
+            padding-left: rem(20);
           }
         }
 
         .attr-div {
           @include FLEX-ALIGN-CENTER;
-          margin-left: rem(20);
+          padding-left: rem(20);
 
           &.second {
-            margin-left: rem(40);
+            padding-left: rem(40);
           }
 
           .attr-type-button {
@@ -137,11 +134,13 @@
           }
 
           .attr-type-name {
+            width:100%;
+            max-width:rem(300);
             height: rem(32);
             font-size: rem(18);
             font-family: $eng-content;
             background-color: transparent;
-            border: none;
+            border-bottom: 1px solid $lightx2-gray;
           }
         }
       }
@@ -150,9 +149,9 @@
 
   .datatype-wrapper {
     flex-shrink: 0;
-    width: rem(200);
-    overflow: hidden;
-    white-space: nowrap;
+    // width: rem(200);
+    // overflow: hidden;
+    // white-space: nowrap;
 
     @include FLEX-CENTER;
   }
@@ -161,8 +160,24 @@
     padding: rem(6);
     font-weight: bold;
     font-size: rem(16);
-    background-color: $fourth;
+    @include BTN-COLOR($fourth);
     border-radius: rem(5);
+    width:fit-content;
     cursor: pointer;
+    svg{
+      cursor:pointer;
+    }
+
   }
+}
+
+.content-right-between{
+  @include FLEX-BETWEEN;
+  width:100%;
+} 
+.content-right-boxtitle {
+  font-size: rem(20);
+  @include FLEX-ALIGN-CENTER;
+
+
 }

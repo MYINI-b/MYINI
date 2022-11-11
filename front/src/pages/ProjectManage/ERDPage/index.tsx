@@ -1,36 +1,24 @@
-// import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import './style.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave } from '@fortawesome/free-regular-svg-icons';
 
-// import Stepper from './Stepper';
+import { RootState } from 'modules/Reducers';
 
 // redux
-// import { Store } from 'Store';
+import { useSelector } from 'react-redux';
 
 // components
 import GenerateVuerd from './GenerateVuerd';
 
-export default function ERDPage() {
-  // const [erdData, setErdData] = useState({});
-
-  // console.log(erdData);
-
-  // useLayoutEffect(() => {
-  //   setErdData(Store.getState().ErdData.erdData);
-  //   // console.log('DashBoard index - setErdData')
-  //   // console.dir(erdData)
-  // }, [Store.getState().ErdData.erdData]);
-
+interface Props {
+  pid: string;
+}
+export default function ERDPage({ pid }: Props) {
   return (
     <div>
       <div className="erd-container">
         <h1 className="erd-title">ERD</h1>
         <section className="erd-info-section">
           <h3 className="erd-project-title">PROJECT NAME</h3>
-          <button className="erd-save-button" type="button">
-            <FontAwesomeIcon icon={faSave} />
-          </button>
         </section>
 
         <section className="erd-tool">

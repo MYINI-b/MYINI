@@ -1248,7 +1248,7 @@ Content-Length: 206
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/apidocs/apis/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer
-Content-Length: 190
+Content-Length: 861
 Host: localhost:8080
 
 {
@@ -1257,7 +1257,33 @@ Host: localhost:8080
   "apiUrl" : "테스트 URL",
   "apiMethod" : "GET",
   "apiCode" : "200",
-  "apiMethodName" : "findById"
+  "apiMethodName" : "findById",
+  "updateApiDtoRequest" : [ {
+    "dtoId" : 1,
+    "updateDtoRequest" : {
+      "dtoName" : "테스트 이름",
+      "dtoType" : "Long",
+      "dtoIsList" : "Y"
+    },
+    "createDtoItemRequests" : [ {
+      "dtoItemName" : "테스트 이름",
+      "dtoClassType" : 1,
+      "dtoPrimitiveType" : 1,
+      "dtoIsList" : "Y"
+    } ],
+    "updateApiDtoItemRequests" : [ {
+      "dtoItemId" : 1,
+      "updateDtoItemRequest" : {
+        "dtoItemName" : "테스트 이름",
+        "dtoClassType" : 1,
+        "dtoPrimitiveType" : 1,
+        "dtoIsList" : "Y"
+      }
+    } ],
+    "deleteDtoItemRequests" : [ {
+      "dtoItemId" : 1
+    } ]
+  } ]
 }</code></pre>
 </div>
 </div>
@@ -1314,7 +1340,33 @@ Host: localhost:8080
   "apiUrl" : "테스트 URL",
   "apiMethod" : "GET",
   "apiCode" : "200",
-  "apiMethodName" : "findById"
+  "apiMethodName" : "findById",
+  "updateApiDtoRequest" : [ {
+    "dtoId" : 1,
+    "updateDtoRequest" : {
+      "dtoName" : "테스트 이름",
+      "dtoType" : "Long",
+      "dtoIsList" : "Y"
+    },
+    "createDtoItemRequests" : [ {
+      "dtoItemName" : "테스트 이름",
+      "dtoClassType" : 1,
+      "dtoPrimitiveType" : 1,
+      "dtoIsList" : "Y"
+    } ],
+    "updateApiDtoItemRequests" : [ {
+      "dtoItemId" : 1,
+      "updateDtoItemRequest" : {
+        "dtoItemName" : "테스트 이름",
+        "dtoClassType" : 1,
+        "dtoPrimitiveType" : 1,
+        "dtoIsList" : "Y"
+      }
+    } ],
+    "deleteDtoItemRequests" : [ {
+      "dtoItemId" : 1
+    } ]
+  } ]
 }</code></pre>
 </div>
 </div>

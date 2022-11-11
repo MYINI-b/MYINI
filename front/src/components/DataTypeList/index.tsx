@@ -9,41 +9,37 @@ import {
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './style.scss';
-import { DATATYPE } from 'constants/';
+import { useParams } from 'react-router-dom';
+import { DTO_RESPONSE } from 'types/ApiSpec';
+import { getApi, putApi } from 'api';
 
 interface MousePos {
   x: number;
   y: number;
 }
-interface ATTRIBUTE {
-  name: string;
-  type: string;
-  isList: boolean;
-  attr?: Array<ATTRIBUTE>;
-}
-
-interface ATTRIBUTE_PLUS extends ATTRIBUTE {
-  idx: number;
-}
 
 interface Props {
   setIsDatatypeListOpen: Dispatch<SetStateAction<boolean>>;
   mousePos: MousePos;
-  objDataType: any[];
-  selectInfo: ATTRIBUTE_PLUS;
-  newObjAttribute: ATTRIBUTE[];
-  setNewObjAttribute: Dispatch<React.SetStateAction<ATTRIBUTE[]>>;
+  selectIdx: number;
+  isAll: boolean;
+  attribute: DTO_RESPONSE[];
+  setAttribute: Dispatch<React.SetStateAction<DTO_RESPONSE[]>>;
 }
 
 export default function DataTypeList({
   setIsDatatypeListOpen,
   mousePos,
-  objDataType,
-  selectInfo,
-  newObjAttribute,
-  setNewObjAttribute,
+  selectIdx,
+  isAll,
+  attribute,
+  setAttribute,
 }: Props) {
-  const [isListCheck, setIsListCheck] = useState(selectInfo.isList);
+  const { pid } = useParams();
+  const [types, setTypes] = useState<any[]>([]);
+  const [isListCheck, setIsListCheck] = useState(
+    attribute[selectIdx] ? attribute[selectIdx].dtoIsList : false,
+  );
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
 
   useEffect(() => {
@@ -56,28 +52,69 @@ export default function DataTypeList({
   };
 
   const selectDataType = useCallback(
-    (idx: number, isNormal: boolean) => {
-      const copyArr = [...newObjAttribute];
+    async (type: any) => {
+      const copyArr = [...attribute];
 
-      copyArr[selectInfo.idx].type = isNormal
-        ? DATATYPE[idx]
-        : objDataType[idx].name;
-      copyArr[selectInfo.idx].isList = isListCheck;
-      if (!isNormal) copyArr[selectInfo.idx].attr = objDataType[idx].attr;
-      else copyArr[selectInfo.idx].attr = [];
-      setNewObjAttribute(copyArr);
-      console.log(copyArr);
+      if (type.dtoId && type.dtoId >= 0) {
+        copyArr[selectIdx].dtoPrimitiveTypeId = null;
+        copyArr[selectIdx].dtoPrimitiveTypeName = '';
+        copyArr[selectIdx].dtoClassTypeId = type.dtoId;
+        copyArr[selectIdx].dtoClassTypeName = type.dtoName;
+      } else {
+        copyArr[selectIdx].dtoClassTypeId = null;
+        copyArr[selectIdx].dtoClassTypeName = '';
+        copyArr[selectIdx].dtoPrimitiveTypeId = type.primitiveId;
+        copyArr[selectIdx].dtoPrimitiveTypeName = type.primitiveName;
+      }
+      copyArr[selectIdx].dtoIsList = isListCheck;
+
+      const body = {
+        dtoItemName: copyArr[selectIdx].dtoItemName,
+        dtoClassType: copyArr[selectIdx].dtoClassTypeId
+          ? copyArr[selectIdx].dtoClassTypeId
+          : null,
+        dtoPrimitiveType: copyArr[selectIdx].dtoPrimitiveTypeId
+          ? copyArr[selectIdx].dtoPrimitiveTypeId
+          : null,
+        dtoIsList: copyArr[selectIdx].dtoIsList ? 'Y' : 'N',
+      };
+      await putApi(`/apidocs/dtoitems/${attribute[selectIdx].dtoItemId}`, body);
+      setAttribute(copyArr);
       closeModal();
     },
-    [isListCheck],
+    [isListCheck, attribute],
   );
 
-  const changeListCheck = useCallback(() => {
-    const copyArr = [...newObjAttribute];
-    copyArr[selectInfo.idx].isList = !isListCheck;
+  const changeListCheck = useCallback(async () => {
+    const copyArr = [...attribute];
+    copyArr[selectIdx].dtoIsList = !isListCheck;
+
+    const body = {
+      dtoItemName: copyArr[selectIdx].dtoItemName,
+      dtoClassType: copyArr[selectIdx].dtoClassTypeId
+        ? copyArr[selectIdx].dtoClassTypeId
+        : null,
+      dtoPrimitiveType: copyArr[selectIdx].dtoPrimitiveTypeId
+        ? copyArr[selectIdx].dtoPrimitiveTypeId
+        : null,
+      dtoIsList: copyArr[selectIdx].dtoIsList ? 'Y' : 'N',
+    };
+    await putApi(`/apidocs/dtoitems/${attribute[selectIdx].dtoItemId}`, body);
     setIsListCheck((prev) => !prev);
-    setNewObjAttribute(copyArr);
-  }, [newObjAttribute]);
+    setAttribute(copyArr);
+  }, [attribute, isListCheck]);
+
+  useEffect(() => {
+    const getTypes = async () => {
+      const primitiveResp: any = await getApi(`/apidocs/primitive`);
+      const dtoResp: any = await getApi(`/apidocs/${pid}/dtotype`);
+      const totalArr = [...primitiveResp.data];
+      if (isAll) setTypes(totalArr.concat([...dtoResp.data]));
+      else setTypes(totalArr);
+    };
+
+    getTypes();
+  }, []);
 
   return (
     <div className="dtlist-container" onClick={closeModal}>
@@ -86,35 +123,33 @@ export default function DataTypeList({
         ref={modalContainer}
         onClick={(e: any) => e.stopPropagation()}
       >
-        <div className="dtlist-button-container">
-          <span
-            className={`checkbox-span ${isListCheck}`}
-            onClick={changeListCheck}
-          >
-            {isListCheck && <FontAwesomeIcon icon={faCheck} />}
-          </span>
-          <label onClick={changeListCheck}>&nbsp;List</label>
-        </div>
-        {DATATYPE.map((dt, i) => (
-          <p
-            className={`dtlist-menu ${dt === selectInfo.type ? 'select' : ''}`}
-            key={i}
-            onClick={() => selectDataType(i, true)}
-          >
-            {dt}
-          </p>
-        ))}
-        {objDataType.map((dt, i) => (
-          <p
-            className={`dtlist-menu ${
-              dt.name === selectInfo.type ? 'select' : ''
-            }`}
-            key={i}
-            onClick={() => selectDataType(i, false)}
-          >
-            {dt.name}
-          </p>
-        ))}
+        {' '}
+        {types.length > 0 && (
+          <>
+            <div className="dtlist-button-container">
+              <span
+                className={`checkbox-span ${isListCheck}`}
+                onClick={changeListCheck}
+              >
+                {isListCheck && <FontAwesomeIcon icon={faCheck} />}
+              </span>
+              <label onClick={changeListCheck}>&nbsp;List</label>
+            </div>
+            {types.map((type: any, i: number) => (
+              <p
+                className={`dtlist-menu ${
+                  (type.primitiveName || type.dtoName) ===
+                    (attribute[selectIdx].dtoClassTypeName ||
+                      attribute[selectIdx].dtoPrimitiveTypeName) && 'select'
+                }`}
+                key={i}
+                onClick={() => selectDataType(type)}
+              >
+                {type.primitiveName || type.dtoName}
+              </p>
+            ))}
+          </>
+        )}
       </div>
     </div>
   );
