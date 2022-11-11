@@ -19,7 +19,11 @@ export type initDependenciesListType = {
   id: string;
 };
 
-export default function Build() {
+interface Props {
+  pid: string;
+}
+
+export default function Build({ pid }: Props) {
   const [modalOpen, setModalOpen] = useState(false);
   const modalClose = () => {
     setModalOpen(!modalOpen);
@@ -105,7 +109,7 @@ export default function Build() {
   };
   const getProjectDetail = async () => {
     const ConfirmCode: any = await getApi(
-      `https://k7b203.p.ssafy.io/api/initializers/3/previews?springType=${initSelectType}&springLanguage=${initSelectLanguage}&springPlatformVersion=${initSelectPlatform}&springPackaging=${initSelectPackaging}&springJvmVersion=${initSelectJvm}&springGroupId=${textGroup}&springArtifactId=${textArtifact}&springName=${textName}&springDescription=${textDescription}&springPackageName=${textPackage}&springDependencyName=${dependenciesData}`,
+      `https://k7b203.p.ssafy.io/api/initializers/${pid}/previews?springType=${initSelectType}&springLanguage=${initSelectLanguage}&springPlatformVersion=${initSelectPlatform}&springPackaging=${initSelectPackaging}&springJvmVersion=${initSelectJvm}&springGroupId=${textGroup}&springArtifactId=${textArtifact}&springName=${textName}&springDescription=${textDescription}&springPackageName=${textPackage}&springDependencyName=${dependenciesData}`,
     );
     console.log(ConfirmCode);
     setConfirmData(ConfirmCode.data);
@@ -113,7 +117,7 @@ export default function Build() {
 
   const downloadCode = async () => {
     await axios({
-      url: `https://k7b203.p.ssafy.io/api/initializers/3?springType=${initSelectType}&springLanguage=${initSelectLanguage}&springPlatformVersion=${initSelectPlatform}&springPackaging=${initSelectPackaging}&springJvmVersion=${initSelectJvm}&springGroupId=${textGroup}&springArtifactId=${textArtifact}&springName=${textName}&springDescription=${textDescription}&springPackageName=${textPackage}&springDependencyName=${dependenciesData}`,
+      url: `https://k7b203.p.ssafy.io/api/initializers/${pid}?springType=${initSelectType}&springLanguage=${initSelectLanguage}&springPlatformVersion=${initSelectPlatform}&springPackaging=${initSelectPackaging}&springJvmVersion=${initSelectJvm}&springGroupId=${textGroup}&springArtifactId=${textArtifact}&springName=${textName}&springDescription=${textDescription}&springPackageName=${textPackage}&springDependencyName=${dependenciesData}`,
       method: 'GET',
       responseType: 'blob', // important
       data: 'data',
