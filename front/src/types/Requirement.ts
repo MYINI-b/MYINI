@@ -5,11 +5,18 @@ export interface ELEMENTPOS {
 }
 
 export interface ROW {
-  category: string;
+  id: number;
+  category?: CATEGORY;
   requirement: string;
   description: string;
   division: string;
   manager: string;
   importance: number;
   point: number;
+}
+
+export interface CATEGORY {
+  name: string;
+  color: string;
+  id?: number;
 }

@@ -1,0 +1,122 @@
+@import 'variables.scss';
+.datatype-content {
+  width: 100%;
+  padding: rem(6) 0;
+  border-bottom: 2px solid $secondary;
+  @include FLEX-COLUMN;
+
+  .datatype-title-wrapper {
+    @include FLEX-BETWEEN;
+    width: 100%;
+    padding: rem(10);
+    cursor: pointer;
+
+    .datatype-content-title {
+      font-size: rem(20);
+      cursor: pointer;
+
+      &.edit {
+        cursor: initial;
+      }
+    }
+
+    .datatype-content-openbtn {
+      padding: rem(4);
+      color: $primary;
+      font-size: rem(20);
+      background-color: $white;
+      border-radius: 20px;
+      @include FLEX-CENTER;
+    }
+  }
+  .datatype-attr-list {
+    margin-top: rem(10);
+
+    .datatype-add-brace {
+      font-size: rem(20);
+
+      &.second {
+        padding-left: rem(20);
+      }
+    }
+  }
+
+  .content-right-many-wrapper {
+    width: 100%;
+    margin-bottom: rem(10);
+    @include FLEX-ALIGN-CENTER;
+
+    .many-checkbox-wrapper {
+      width: rem(50);
+      height: rem(25);
+      padding-left: 1px;
+      background-color: green;
+      border-radius: rem(25);
+      cursor: pointer;
+      transition: 0.3s ease;
+      @include FLEX-ALIGN-CENTER;
+
+      &.list {
+        background-color: red;
+      }
+
+      .many-checker {
+        width: rem(22);
+        height: rem(22);
+        background-color: white;
+        border-radius: rem(22);
+        cursor: pointer;
+        transition: 0.3s ease;
+        content: '';
+
+        &.list {
+          transform: translateX(26px);
+        }
+      }
+    }
+  }
+}
+
+.datatype-content + .datatype-content {
+  margin-top: rem(6);
+}
+.attr-div {
+  @include FLEX-ALIGN-CENTER;
+  padding-left: rem(20);
+
+  &.edit {
+    &:hover {
+      .attr-type-delete {
+        opacity: 1;
+      }
+    }
+  }
+
+  &.second {
+    padding-left: rem(40) !important;
+  }
+
+  .attr-type-button {
+    margin-right: rem(10);
+    padding: rem(6);
+    font-weight: bold;
+    font-size: rem(16);
+    background-color: $fourth;
+    border-radius: rem(5);
+  }
+
+  .attr-type-name {
+    height: rem(32);
+    font-size: rem(18);
+    font-family: $eng-content;
+    background-color: transparent;
+    border: none;
+  }
+
+  .attr-type-delete {
+    opacity: 0;
+    &:hover {
+      color: $delete;
+    }
+  }
+}

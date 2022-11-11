@@ -40,10 +40,10 @@ public class RepositoryWrite {
 
             pkType = dataTypeChange(pkType);
 
-            repositoryImportContents.append("import " + initializerRequest.getSpring_package_name() + ".entity."+tableName+";\n"+
+            repositoryImportContents.append("import " + initializerRequest.getSpringPackageName() + ".entity."+tableName+";\n"+
                     "import org.springframework.data.jpa.repository.JpaRepository;\n");
 
-            contents.append("package " + initializerRequest.getSpring_package_name() + ".repository;\n" +
+            contents.append("package " + initializerRequest.getSpringPackageName() + ".repository;\n" +
                     "\n"+
                     repositoryImportContents+
                     "\n"+

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 const accessToken =
-  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiUk9MRSI6IlJPTEVfVVNFUiIsImlhdCI6MTY2NzI2NTcyMywiZXhwIjoxNjY3ODcwNTIzfQ.WSa3oFZmJtaXSdsMM0V46FgRFY53zP5E1sydiorQwgI';
+  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiUk9MRSI6IlJPTEVfVVNFUiIsImlhdCI6MTY2Nzg3MTY1OCwiZXhwIjoxNjY4NDc2NDU4fQ.A4x1dag6Zh_yqjbhuYDTwLkKFVuM7AwvCtn0hBzpsx8';
 
 const headers = {
   headers: {

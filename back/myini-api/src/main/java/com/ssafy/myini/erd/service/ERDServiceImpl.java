@@ -13,9 +13,15 @@ import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.FileReader;
+import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -129,5 +135,32 @@ public class ERDServiceImpl implements ERDService{
     public void deleteTableColumn( Long tableColumnId) {
         TableColumn findTableColumn = tableColumnRepository.findById(tableColumnId).orElseThrow(() -> new NotFoundException(TABLE_COLUMN_NOT_FOUND));
           tableColumnRepository.delete(findTableColumn);
+    }
+
+    @Override
+    public JSONObject getErdJson(Long projectId) {
+        try {
+            URL url = new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/"+projectId+".myini.json");
+            
+            File file = new File(projectId+"_vuerd");
+            FileUtils.copyURLToFile(url,file);
+            
+            FileReader fileReader = new FileReader(file);
+
+            JSONParser parser = new JSONParser();
+            Object parse = parser.parse(fileReader);
+            JSONObject jsonObject = (JSONObject) parse;
+
+            fileReader.close();
+
+            if(file.exists()){
+                file.delete();
+            }
+
+            return jsonObject;
+
+        }catch (Exception e){
+            throw new RuntimeException("erd Json을 다운로드하는데 실패하였습니다.");
+        }
     }
 }
