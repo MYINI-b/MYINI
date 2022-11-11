@@ -4,6 +4,7 @@ WORKDIR /usr/src/app
 
 COPY ./package.json ./
 
+RUN npm cache clean --force
 RUN npm install
 RUN npm install node-sass
 RUN npm install sass-loader sass webpack --save-dev
