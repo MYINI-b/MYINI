@@ -7,26 +7,27 @@ import { PATHVARIABLE_TYPE, DATATYPE } from 'constants/index';
 interface Props {
   setIsPathTypeOpen: Dispatch<React.SetStateAction<boolean>>;
   clickElementPos: ELEMENTPOS;
-  list: QUERY[];
-  setList: Dispatch<React.SetStateAction<QUERY[]>>;
   selectIdx: number;
   isPathVar: boolean;
+  store: any;
+  list: QUERY[];
+  setList: Dispatch<React.SetStateAction<QUERY[]>>;
 }
 
 export default function PathTypeModal({
   setIsPathTypeOpen,
   clickElementPos,
-  list,
-  setList,
   selectIdx,
   isPathVar,
+  store,
+  list,
+  setList,
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
 
   useEffect(() => {
     modalContainer.current.style.left = `${clickElementPos.x}px`;
     modalContainer.current.style.top = `${clickElementPos.y}px`;
-    // modalContainer.current.style.width = `${clickElementPos.width}px`;
   }, [clickElementPos]);
 
   const onPathTypeClick = useCallback(
@@ -34,6 +35,7 @@ export default function PathTypeModal({
       const copyArr = [...list];
       copyArr[selectIdx].type = type;
       setList(copyArr);
+
       setIsPathTypeOpen(false);
     },
     [list],

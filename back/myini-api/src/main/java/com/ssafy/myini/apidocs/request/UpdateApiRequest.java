@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,4 +16,6 @@ public class UpdateApiRequest {
     private String apiMethod;
     private String apiCode;
     private String apiMethodName;
+
+    private List<UpdateApiDtoRequest> updateApiDtoRequest;
 }

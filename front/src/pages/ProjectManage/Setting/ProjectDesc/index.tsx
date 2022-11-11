@@ -5,12 +5,14 @@ import './style.scss';
 
 interface Props {
   store: any;
+  editProjectInfo: () => Promise<void>;
 }
-export default function DetailInfo({ store }: Props) {
+export default function DetailInfo({ store, editProjectInfo }: Props) {
   const [isEdit, setIsEdit] = useState(false);
 
   const onSubmitClick = useCallback(() => {
     setIsEdit(false);
+    editProjectInfo();
   }, []);
 
   const onDescChange = useCallback(
