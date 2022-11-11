@@ -1,0 +1,58 @@
+@import 'variables.scss';
+@import '../style.scss';
+
+.accordion {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.accordion-item {
+  border: 1px solid #ccc;
+}
+
+.accordion-item:not(:first-of-type) {
+  border-top: 0;
+}
+
+.accordion-item-title {
+  width: 100%;
+  margin: 0;
+}
+
+.accordion-item-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: #fff;
+  border: 0;
+  padding: 15px 20px;
+  font-size: 18px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.accordion-item-btn::after {
+  content: '';
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-left: auto;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  transition: transform 0.2s ease-in-out;
+}
+
+.accordion-item.active .accordion-item-btn::after {
+  transform: rotate(-180deg);
+}
+
+.accordion-item-container {
+  transition: height 0.2s ease-in-out;
+  overflow: hidden;
+}
+
+.accordion-item-content {
+  border-top: 1px solid #cccccc;
+  padding: 15px 20px;
+}
