@@ -5,7 +5,9 @@ WORKDIR /usr/src/app
 COPY ./package.json ./
 
 RUN npm cache clean --force
-RUN npm install
+RUN rm -rf node_modules package-lock.json
+
+RUN npm install --save
 RUN npm install node-sass
 RUN npm install sass-loader sass webpack --save-dev
 RUN npm install -D postcss-flexbugs-fixes
