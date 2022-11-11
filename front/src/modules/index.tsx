@@ -1,12 +1,8 @@
-import { combineReducers } from 'redux';
-import auth from './Auth';
-import member from './member';
+import { createStore } from 'redux';
+import { persistStore } from 'redux-persist';
+import Reducers from './Reducers';
 
-const rootReducer = combineReducers({
-  auth,
-  member,
-});
+export const Store = createStore(Reducers);
+export const Persistor = persistStore(Store);
 
-export default rootReducer;
-
-export type RootState = ReturnType<typeof rootReducer>;
+export default { Store, Persistor };
