@@ -9,7 +9,7 @@ import {
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { RootState } from 'modules';
+import { RootState } from 'modules/Reducers';
 import { useSelector } from 'react-redux';
 import './style.scss';
 import { useParams } from 'react-router-dom';

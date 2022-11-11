@@ -26,6 +26,7 @@ module.exports = {
     'no-shadow': 0,
     'react/prop-types': 0,
     'no-param-reassign': 0,
+    'no-case-declarations':0,
     'no-plusplus': 0,
     'react/no-array-index-key':0,
     'react/destructuring-assignment':0,

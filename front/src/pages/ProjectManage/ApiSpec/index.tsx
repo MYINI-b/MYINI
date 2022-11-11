@@ -9,7 +9,7 @@ import {
 
 import { useSyncedStore } from '@syncedstore/react';
 
-import { RootState } from 'modules';
+import { RootState } from 'modules/Reducers';
 import { useSelector } from 'react-redux';
 import { globalStore } from 'store/yjsStore';
 import './style.scss';

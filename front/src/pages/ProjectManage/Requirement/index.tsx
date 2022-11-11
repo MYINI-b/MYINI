@@ -4,7 +4,7 @@ import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { useSyncedStore } from '@syncedstore/react';
 import { useEffect } from 'react';
 
-import { RootState } from 'modules';
+import { RootState } from 'modules/Reducers';
 import { useSelector } from 'react-redux';
 import { globalStore } from 'store/yjsStore';
 import { getApi } from 'api';

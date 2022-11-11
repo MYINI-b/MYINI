@@ -6,7 +6,7 @@ import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
 import { MOUSEPOS, DTO_RESPONSE, DTO } from 'types/ApiSpec';
 import './style.scss';
-import { RootState } from 'modules';
+import { RootState } from 'modules/Reducers';
 import { useSelector } from 'react-redux';
 import DataTypeList from 'components/DataTypeList';
 import { getApi, postApi } from 'api';

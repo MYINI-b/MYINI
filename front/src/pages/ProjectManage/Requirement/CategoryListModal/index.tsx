@@ -3,7 +3,7 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom';
 import { useCallback, Dispatch, useRef, useEffect, useState } from 'react';
 
-import { RootState } from 'modules';
+import { RootState } from 'modules/Reducers';
 import { useSelector } from 'react-redux';
 import './style.scss';
 import { deleteApi, postApi, putApi } from 'api';

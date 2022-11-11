@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dispatch, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { RootState } from 'modules';
+import { RootState } from 'modules/Reducers';
 import { useSelector } from 'react-redux';
 import useInput from 'hooks/useInput';
 import useNoSpaceInput from 'hooks/useNoSpaceInput';

@@ -1,6 +1,6 @@
 import './style.scss';
 
-import { RootState } from 'modules';
+import { RootState } from 'modules/Reducers';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import Accordion from './Accordion';

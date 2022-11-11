@@ -32,8 +32,9 @@
   @include FLEX-CENTER;
   @include FLEX-COLUMN;
   padding: 0.5rem;
-  padding-right: 10rem;
-  padding-left: 10rem;
+  padding-right: 5rem;
+  padding-left: 5rem;
+  margin-right: 1rem;
   border: solid;
   border-color: $gray;
   border-top: none;
@@ -44,13 +45,42 @@
   @include FLEX-CENTER;
   @include FLEX-COLUMN;
   padding: 0.5rem;
-  padding-right: 10rem;
-  padding-left: 10rem;
+  padding-right: 7rem;
+  padding-left: 7rem;
   border: solid;
   border-color: $gray;
   border-top: none;
   border-bottom: none;
   border-left: none;
+}
+
+.project-jira-div {
+  @include FLEX-CENTER;
+  @include FLEX-COLUMN;
+  padding: 0.5rem;
+  padding-right: 8rem;
+  padding-left: 8rem;
+  padding-bottom: 1.5rem;
+  border: solid;
+  border-color: $gray;
+  border-top: none;
+  border-bottom: none;
+  border-left: none;
+
+  .jira-info-title-container {
+    display: flex;
+
+    .jira-edit-button {
+      color: $primary;
+      cursor: pointer;
+      padding: 0.5rem
+    }
+
+    .project-jira-info-title {
+      padding-bottom: 1.5rem;
+      color: $primary;
+    }
+  }
 }
 
 .card-container {
@@ -71,11 +101,8 @@
 .project-start-container {
   width: rem(300);
   height: rem(300);
+  flex-shrink: 0;
   margin-right: 4rem;
-
-  .main-link-style {
-    color: black
-  }
 
   .project-start {
     @include FLEX-CENTER;
@@ -135,14 +162,15 @@
 }
 
 .card:hover .card-header {
+  cursor: pointer;
 	opacity: 0.8;
 	height: 100px;
 }
 
 .card-body-header{
-	line-height: 25px;
   padding-top: 20px;
 	margin: 0px 20px 10px 20px;
+  @include ELLIPSIS-LINE(1)
 }
 
 .card-body-context {
@@ -170,23 +198,47 @@
   -ms-transition: .5s ease-in-out;
   -o-transition: .5s ease-in-out;
   transition : .5s ease-in-out;
+  cursor: pointer;
   // overflow: scroll;
 }
 
 .project-info-title {
-  padding-bottom: 1rem;
+  padding-bottom: 0.5rem;
   color: $primary;
 }
 
-.members {
+.main-members-container {
   display: flex;
+
+  
+  .main-member-container {
+    display: flex;
+    width: rem(50);
+    height: rem(50);
+    margin-left: 0.5rem;
+
+    .main-member-img {
+      @include FLEX-CENTER;
+      border-radius: 50%;
+      background-color: $fourth;
+      // border: 1px solid $secondary;
+      color: $primary;
+      width: rem(40);
+      height: rem(40);
+      margin-bottom: 0.25rem;
+    }
+
+    .member-default-img {
+      font-size: rem(20);
+    }
+
+    .main-member-name {
+      font-size: rem(14);
+    }
+  }
 }
 
-.member {
-  width: rem(40);
-  height: rem(40);
-  background-color: gray;
-  border-radius: 50px;
-  margin-left: 0.5rem;
+.main-link-style {
+  color: black
 }
 
