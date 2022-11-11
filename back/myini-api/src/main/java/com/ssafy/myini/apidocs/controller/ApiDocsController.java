@@ -19,10 +19,10 @@ public class ApiDocsController {
 
     // API컨트롤러 생성
     @PostMapping("/{projectid}/controllers")
-    public ResponseEntity<Void> createApiController(@PathVariable("projectid")Long projectId,
+    public ResponseEntity<ApiControllerCreateResponse> createApiController(@PathVariable("projectid")Long projectId,
                                                     @RequestBody @Valid CreateApiControllerRequest request){
-        apiDocsService.createApiController(projectId, request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        ApiControllerCreateResponse body = apiDocsService.createApiController(projectId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
     // API컨트롤러 리스트 조회
@@ -56,11 +56,10 @@ public class ApiDocsController {
 
     // API 생성
     @PostMapping("/{apicontrollerid}/apis")
-    public ResponseEntity<Void> createApi(@PathVariable("apicontrollerid")Long apiControllerId,
+    public ResponseEntity<ApiResponse> createApi(@PathVariable("apicontrollerid")Long apiControllerId,
                                           @RequestBody @Valid CreateApiRequest request){
-        System.out.println("fghfghfghfghfdghfghdfghfdgh");
-        apiDocsService.createApi(apiControllerId, request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        ApiResponse body = apiDocsService.createApi(apiControllerId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
     // API 수정
@@ -87,10 +86,10 @@ public class ApiDocsController {
 
     // PathVariable 생성
     @PostMapping("/{apiid}/pathvariables")
-    public ResponseEntity<Void> createPathVariable(@PathVariable("apiid")Long apiId,
+    public ResponseEntity<PathVariableResponse> createPathVariable(@PathVariable("apiid")Long apiId,
                                                    @RequestBody @Valid CreatePathVariableRequest request) {
-        apiDocsService.createPathVariable(apiId, request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        PathVariableResponse body = apiDocsService.createPathVariable(apiId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
     // PathVariable 수정
@@ -110,10 +109,10 @@ public class ApiDocsController {
 
     // QueryString 생성
     @PostMapping("/{apiid}/querystrings")
-    public ResponseEntity<Void> createQueryString(@PathVariable("apiid")Long apiId,
+    public ResponseEntity<QueryStringResponse> createQueryString(@PathVariable("apiid")Long apiId,
                                                    @RequestBody @Valid CreateQueryStringRequest request) {
-        apiDocsService.createQueryString(apiId, request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        QueryStringResponse body = apiDocsService.createQueryString(apiId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
     // QueryString 수정
@@ -133,19 +132,18 @@ public class ApiDocsController {
 
     // Dto 생성
     @PostMapping("/{projectid}/customdtos")
-    public ResponseEntity<Void> createCustomDto(@PathVariable("projectid")Long projectId,
+    public ResponseEntity<DtoCreateResponse> createCustomDto(@PathVariable("projectid")Long projectId,
                                                @RequestBody @Valid CreateDtoRequest request){
-        apiDocsService.createCustomDto(projectId, request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        DtoCreateResponse body = apiDocsService.createCustomDto(projectId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
     // Response Request 생성
     @PostMapping("/{apiid}/dtos")
-    public ResponseEntity<Void> createDto(@PathVariable("apiid")Long apiId,
+    public ResponseEntity<DtoCreateResponse> createDto(@PathVariable("apiid")Long apiId,
                                                   @RequestBody @Valid CreateDtoRequest request) {
-        System.out.println("request = " + request.getDtoName());
-        apiDocsService.createDto(apiId, request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        DtoCreateResponse body = apiDocsService.createDto(apiId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
     // Dto 수정
@@ -172,10 +170,10 @@ public class ApiDocsController {
 
     // Dto변수 생성
     @PostMapping("/{dtoid}/dtoitems")
-    public ResponseEntity<Void> createDtoItem(@PathVariable("dtoid")Long dtoId,
+    public ResponseEntity<DtoItemResponse> createDtoItem(@PathVariable("dtoid")Long dtoId,
                                               @RequestBody @Valid CreateDtoItemRequest request){
-        apiDocsService.createDtoItem(dtoId, request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        DtoItemResponse body = apiDocsService.createDtoItem(dtoId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
     // Dto변수 수정
@@ -198,6 +196,20 @@ public class ApiDocsController {
     @GetMapping("/{projectid}/types")
     public ResponseEntity<TypeListResponse> findTypeList(@PathVariable("projectid")Long projectId){
         TypeListResponse body = apiDocsService.findTypeList(projectId);
+        return ResponseEntity.ok().body(body);
+    }
+
+    // primitive 자료형 조회
+    @GetMapping("/primitive")
+    public ResponseEntity<List<PrimitiveTypeResponse>> findPrimitiveType(){
+        List<PrimitiveTypeResponse> body = apiDocsService.findPrimitiveType();
+        return ResponseEntity.ok().body(body);
+    }
+
+    // Dto type 자료형 조회
+    @GetMapping("/{projectid}/dtotype")
+    public ResponseEntity<List<ClassTypeResponse>> findDtoClassType(@PathVariable("projectid")Long projectId){
+        List<ClassTypeResponse> body = apiDocsService.findDtoClassType(projectId);
         return ResponseEntity.ok().body(body);
     }
 

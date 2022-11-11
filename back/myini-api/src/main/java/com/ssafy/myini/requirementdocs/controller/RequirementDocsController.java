@@ -2,6 +2,7 @@ package com.ssafy.myini.requirementdocs.controller;
 
 import com.ssafy.myini.requirementdocs.request.*;
 import com.ssafy.myini.requirementdocs.response.JiraProjectListResponse;
+import com.ssafy.myini.requirementdocs.response.RequirementCategoryCreateResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementCategoryListResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementListResponse;
 import com.ssafy.myini.requirementdocs.service.RequirementDocsService;
@@ -18,6 +19,7 @@ import java.util.List;
 public class RequirementDocsController {
     private final RequirementDocsService requirementDocsService;
 
+    //요구사항 전체 조회
     @GetMapping("/{projectid}")
     public ResponseEntity<List<RequirementListResponse>> findAllRequirement(@PathVariable("projectid") Long projectId){
         List<RequirementListResponse> body = requirementDocsService.findAllRequirement(projectId);
@@ -25,6 +27,7 @@ public class RequirementDocsController {
         return ResponseEntity.ok().body(body);
     }
 
+    //요구사항 생성
     @PostMapping("/{projectid}/requirements")
     public ResponseEntity<Void> createRequirement(@PathVariable("projectid") Long projectId){
         requirementDocsService.createRequirement(projectId);
@@ -32,6 +35,7 @@ public class RequirementDocsController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    //요구사항 카테고리 수정
     @PutMapping("/requirements/{requirementid}/categories")
     public ResponseEntity<Void> updateRequirementCategory(@PathVariable("requirementid") Long requirementId,
                                                           @RequestBody RequirementCategoryUpdateRequest requirementCategoryUpdateRequest){
@@ -40,6 +44,7 @@ public class RequirementDocsController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    //요구사항 이름 수정
     @PutMapping("/requirements/{requirementid}/names")
     public ResponseEntity<Void> updateRequirementName(@PathVariable("requirementid") Long requirementId,
                                                       @RequestBody RequirementNameUpdateRequest requirementNameUpdateRequest){
@@ -48,6 +53,7 @@ public class RequirementDocsController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    //요구사항 내용 수정
     @PutMapping("/requirements/{requirementid}/contents")
     public ResponseEntity<Void> updateRequirementContent(@PathVariable("requirementid") Long requirementId,
                                                          @RequestBody RequirementContentUpdateRequest requirementContentUpdateRequest){
@@ -56,6 +62,7 @@ public class RequirementDocsController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    //요구사항 파트 수정
     @PutMapping("/requirements/{requirementid}/parts")
     public ResponseEntity<Void> updateRequirementPart(@PathVariable("requirementid") Long requirementId,
                                                       @RequestBody RequirementPartUpdateRequest requirementPartUpdateRequest){
@@ -64,6 +71,7 @@ public class RequirementDocsController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    //요구사항 멤버 수정
     @PutMapping("/requirements/{requirementid}/members")
     public ResponseEntity<Void> updateRequirementMember(@PathVariable("requirementid") Long requirementId,
                                                         @RequestBody RequirementMemberUpdateRequest requirementMemberUpdateRequest){
@@ -72,6 +80,7 @@ public class RequirementDocsController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    //요구사항 우선순위 수정
     @PutMapping("/requirements/{requirementid}/priorities")
     public ResponseEntity<Void> updateRequirementPriority(@PathVariable("requirementid") Long requirementId,
                                                           @RequestBody RequirementPriorityUpdateRequest requirementPriorityUpdateRequest){
@@ -80,6 +89,7 @@ public class RequirementDocsController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    //요구사항 스토리포인트 수정
     @PutMapping("/requirements/{requirementid}/storypoints")
     public ResponseEntity<Void> updateRequirementStoryPoint(@PathVariable("requirementid") Long requirementId,
                                                             @RequestBody RequirementStoryPointUpdateRequest requirementStoryPointUpdateRequest){
@@ -88,6 +98,7 @@ public class RequirementDocsController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    //요구사항 삭제
     @DeleteMapping("/requirements/{requirementid}")
     public ResponseEntity<Void> deleteRequirement(@PathVariable("requirementid") Long requirementId){
         requirementDocsService.deleteRequirement(requirementId);
@@ -95,6 +106,7 @@ public class RequirementDocsController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    //요구사항 카테고리 조회
     @GetMapping("/{projectid}/categories")
     public ResponseEntity<List<RequirementCategoryListResponse>> findAllRequirementsCategory(@PathVariable("projectid") Long projectId){
         List<RequirementCategoryListResponse> body = requirementDocsService.findAllRequirementsCategory(projectId);
@@ -102,14 +114,16 @@ public class RequirementDocsController {
         return ResponseEntity.ok().body(body);
     }
 
+    //요구사항 카테고리 추가
     @PostMapping("/{projectid}/categories")
-    public ResponseEntity<Void> createRequirementCategory(@PathVariable("projectid") Long projectId,
+    public ResponseEntity<RequirementCategoryCreateResponse> createRequirementCategory(@PathVariable("projectid") Long projectId,
                                                           @RequestBody RequirementCategoryCreateRequest requirementCategoryCreateRequest){
-        requirementDocsService.createRequirementCategory(projectId,requirementCategoryCreateRequest);
+        RequirementCategoryCreateResponse body = requirementDocsService.createRequirementCategory(projectId,requirementCategoryCreateRequest);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
+    //요구사항 카테고리 삭제
     @DeleteMapping("/categories/{requirementcategoryid}")
     public ResponseEntity<Void> deleteRequirementCategory(@PathVariable("requirementcategoryid") Long requirementCategoryId){
         requirementDocsService.deleteRequirementCategory(requirementCategoryId);

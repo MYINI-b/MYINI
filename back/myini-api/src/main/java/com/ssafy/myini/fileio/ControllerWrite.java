@@ -30,7 +30,7 @@ public class ControllerWrite {
                 .append("import org.springframework.http.HttpStatus;\n")
                 .append("import org.springframework.http.ResponseEntity;\n")
                 .append("import org.springframework.web.bind.annotation.*;\n")
-                .append("import ").append(initializerRequest.getSpring_package_name()).append(".service.*;\n\n");
+                .append("import ").append(initializerRequest.getSpringPackageName()).append(".service.*;\n\n");
 
 
         service = FileUtil.firstIndexToLowerCase(projectInfoListResponse.getApiControllerName());
@@ -45,16 +45,16 @@ public class ControllerWrite {
         }
         // request, response import 추가하기
         for (String requestImport : requestImportContents) {
-            controllerImportContents.append("import ").append(initializerRequest.getSpring_package_name()).append(".request.").append(requestImport).append(";\n");
+            controllerImportContents.append("import ").append(initializerRequest.getSpringPackageName()).append(".request.").append(requestImport).append(";\n");
         }
         for (String responseImport : responseImportContents) {
-            controllerImportContents.append("import ").append(initializerRequest.getSpring_package_name()).append(".response.").append(responseImport).append(";\n");
+            controllerImportContents.append("import ").append(initializerRequest.getSpringPackageName()).append(".response.").append(responseImport).append(";\n");
         }
         controllerImportContents.append("\n");
 
 
         // class 생성 및 service 선언
-        contents.append("package " + initializerRequest.getSpring_package_name() + ".controller;\n")
+        contents.append("package " + initializerRequest.getSpringPackageName() + ".controller;\n")
                 .append("\n")
                 .append(controllerImportContents)
                 .append("\n")

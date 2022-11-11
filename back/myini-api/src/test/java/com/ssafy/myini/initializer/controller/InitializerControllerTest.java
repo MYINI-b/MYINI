@@ -3,15 +3,25 @@ package com.ssafy.myini.initializer.controller;
 import com.ssafy.myini.ControllerTest;
 import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.initializer.service.InitializerService;
+import com.ssafy.myini.project.ProjectFixture;
+import net.lingala.zip4j.ZipFile;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.rules.TemporaryFolder;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 
+import static com.ssafy.myini.apidocs.ApiDocsFixture.TEST_CREATE_API_CONTROLLER_REQUEST;
+import static com.ssafy.myini.project.ProjectFixture.TEST_PROJECT_INFO_RESPONSE;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -21,7 +31,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
+import java.io.*;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 
 import static com.ssafy.myini.CommonFixture.TEST_AUTHORIZATION;
@@ -50,6 +63,7 @@ class InitializerControllerTest extends ControllerTest {
     private S3Uploader s3Uploader;
 
     @Test
+    @DisplayName("이니셜라이징 가능한지 확인한다.")
     void initializerIsPossible() throws Exception {
         //given
         given(initializerService.initializerIsPossible(any()))
@@ -78,39 +92,120 @@ class InitializerControllerTest extends ControllerTest {
     }
 
 //    @Test
+//    @DisplayName("이니셜라이징을 시작한다.")
 //    void initializerStart() throws Exception {
-//        willDoNothing().given(initializerService).initializerStart(any(), any());
+//        given(initializerService.initializerStart(any(),any())).willReturn(new ZipFile(file));
 //
-//        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/initializers/{projectid}", ID)
+//        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/initializers/{projectid}", ID)
 //                        .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
 //                        .contentType(MediaType.APPLICATION_JSON_VALUE)
 //                        .content(objectMapper.writeValueAsString(TEST_INITIALIZER_REQUEST)))
 //                .andExpect(status().isOk())
 //                .andDo(document("api/initializers/{projectid}",
-//                        requestParameters(
-//                                parameterWithName("spring_base_path").description("스프링 기본경로"),
-//                                parameterWithName("spring_type").description("스프링 타입"),
-//                                parameterWithName("spring_language").description("스프링 언어"),
-//                                parameterWithName("spring_platform_version").description("스프링 버전"),
-//                                parameterWithName("spring_packaging").description("스프링 패키지"),
-//                                parameterWithName("spring_jvm_version").description("스프링 자바버전"),
-//                                parameterWithName("spring_group_id").description("스프링 그룹 ID"),
-//                                parameterWithName("spring_artifact_id").description("스프링 아티팩트 ID"),
-//                                parameterWithName("spring_name").description("스프링 이름"),
-//                                parameterWithName("spring_description").description("스프링 설명"),
-//                                parameterWithName("spring_package_name").description("스프링 패키지이름"),
-//                                parameterWithName("spring_dependency_name").description("스프링 디펜던시 리스트")
+//                        requestHeaders(
+//                                headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
 //                        ),
-//                        requestHeaders(headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")),
-//                        pathParameters(parameterWithName("projectid").description("프로젝트 ID"))
-//                ));
+//                        pathParameters(
+//                                parameterWithName("projectid").description("프로젝트 ID")
+//                        ),
+//                        requestFields(
+//                                fieldWithPath("springType").type(JsonFieldType.STRING).description("스프링 타입"),
+//                                fieldWithPath("springLanguage").type(JsonFieldType.STRING).description("스프링 언어"),
+//                                fieldWithPath("springPlatformVersion").type(JsonFieldType.STRING).description("스프링 버전"),
+//                                fieldWithPath("springPackaging").type(JsonFieldType.STRING).description("스프링 패키지"),
+//                                fieldWithPath("springJvmVersion").type(JsonFieldType.STRING).description("스프링 자바버전"),
+//                                fieldWithPath("springGroupId").type(JsonFieldType.STRING).description("스프링 그룹 ID"),
+//                                fieldWithPath("springArtifactId").type(JsonFieldType.STRING).description("스프링 아티팩트 ID"),
+//                                fieldWithPath("springName").type(JsonFieldType.STRING).description("스프링 이름"),
+//                                fieldWithPath("springDescription").type(JsonFieldType.STRING).description("스프링 설명"),
+//                                fieldWithPath("springPackageName").type(JsonFieldType.STRING).description("스프링 패키지이름"),
+//                                fieldWithPath("springDependencyName").type(JsonFieldType.STRING).description("스프링 디펜던시 리스트")
+//                        )));
 //
 //        then(initializerService).should(times(1)).initializerStart(any(), any());
-//
 //    }
 
     @Test
-    void myIniDownload() throws Exception {
+    @DisplayName("이니셜라이징 미리보기를 시작한다.")
+    void initializerPreview() throws Exception {
+        given(initializerService.initializerPreview(any(), any())).willReturn(Arrays.asList(TEST_PREVIEW_RESPONSE));
+
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/initializers/{projectid}/previews", ID)
+                        .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(TEST_INITIALIZER_REQUEST)))
+                .andExpect(status().isOk())
+                .andDo(document("api/initializers/{projectid}/previews",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
+                        ),
+                        pathParameters(
+                                parameterWithName("projectid").description("프로젝트 ID")
+                        ),
+                        requestFields(
+                                fieldWithPath("springType").type(JsonFieldType.STRING).description("스프링 타입"),
+                                fieldWithPath("springLanguage").type(JsonFieldType.STRING).description("스프링 언어"),
+                                fieldWithPath("springPlatformVersion").type(JsonFieldType.STRING).description("스프링 버전"),
+                                fieldWithPath("springPackaging").type(JsonFieldType.STRING).description("스프링 패키지"),
+                                fieldWithPath("springJvmVersion").type(JsonFieldType.STRING).description("스프링 자바버전"),
+                                fieldWithPath("springGroupId").type(JsonFieldType.STRING).description("스프링 그룹 ID"),
+                                fieldWithPath("springArtifactId").type(JsonFieldType.STRING).description("스프링 아티팩트 ID"),
+                                fieldWithPath("springName").type(JsonFieldType.STRING).description("스프링 이름"),
+                                fieldWithPath("springDescription").type(JsonFieldType.STRING).description("스프링 설명"),
+                                fieldWithPath("springPackageName").type(JsonFieldType.STRING).description("스프링 패키지이름"),
+                                fieldWithPath("springDependencyName").type(JsonFieldType.STRING).description("스프링 디펜던시 리스트")
+                        ),
+                        responseFields(
+                                fieldWithPath("[]").type(JsonFieldType.ARRAY).description("결과 배열"),
+                                fieldWithPath("[].fileCategory").type(JsonFieldType.STRING).description("파일 MVC 종류"),
+                                fieldWithPath("[].fileName").type(JsonFieldType.STRING).description("파일 이름"),
+                                fieldWithPath("[].contents").type(JsonFieldType.STRING).description("파일 내용")
+                        )
+                ));
+
+        then(initializerService).should(times(1)).initializerPreview(any(), any());
 
     }
+
+    @Test
+    @DisplayName("myini를 다운받는다.")
+    void myIniDownload() throws Exception {
+        // given
+        given(initializerService.myIniDownload())
+                .willReturn(BYTES);
+
+        // when
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/initializers/downloads")
+                        .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andDo(document("api/initializers/downloads"));
+
+        // then
+        then(initializerService).should(times(1)).myIniDownload();
+    }
+
+    @Test
+    @DisplayName("이니셜라이저 설정 정보를 확인한다.")
+    void initializerDependencies() throws Exception {
+        JSONParser p = new JSONParser();
+        JSONObject obj = (JSONObject) p.parse(
+                "{\"single-select\":{\"쿼리스트링 key\":{\"default\":\"디폴트 값 id\",\"values\":[{\"name\":\"화면에 표시될 이름\",\"id\":\"쿼리스트링 value\"}]}}" +
+                        ", \"text\":[{\"name\":\"화면에 표시될 이름\", \"id\":\"쿼리스트링 key\"}]" +
+                        ", \"dependencies\":[{\"name\":\"화면에 표시될 이름\",\"description\":\"해당 dependency에 대한 설명\",\"id\":\"쿼리스트링 value\"}]}"
+        );
+
+        // given
+        given(initializerService.initializerSettings())
+                .willReturn(obj);
+
+        // when
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/initializers/settings"))
+                .andExpect(status().isOk())
+                .andDo(document("api/initializers/settings"));
+
+        // then
+        then(initializerService).should(times(1)).initializerSettings();
+
+    }
+
 }

@@ -6,6 +6,7 @@ import com.ssafy.myini.project.request.FindByMemberEmailRequest;
 import com.ssafy.myini.jira.request.UpdateJiraAccountRequest;
 import com.ssafy.myini.jira.request.UpdateJiraProjectRequest;
 import com.ssafy.myini.project.request.UpdateProjectRequest;
+import com.ssafy.myini.project.response.ProjectCreateResponse;
 import com.ssafy.myini.project.response.ProjectInfoResponse;
 import com.ssafy.myini.project.response.ProjectListResponse;
 import com.ssafy.myini.project.response.ProjectMemberResponse;
@@ -27,9 +28,9 @@ public class ProjectController {
 
     // 프로젝트 등록
     @PostMapping
-    public ResponseEntity<Void> createProject(@LoginMember Member member){
-        projectService.createProject(member);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<ProjectCreateResponse> createProject(@LoginMember Member member){
+        ProjectCreateResponse body = projectService.createProject(member);
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
     // 회원의 프로젝트 전체 리스트
@@ -78,10 +79,18 @@ public class ProjectController {
         return ResponseEntity.ok().body(body);
     }
 
+    // 프로젝트 팀원 중 지라이메일 일치하는 리스트 조회
+    @GetMapping("/members/{projectid}/jiras")
+    public ResponseEntity<List<ProjectMemberResponse>> findProjectMemberJiraList(@PathVariable("projectid")Long projectId){
+        List<ProjectMemberResponse> body = projectService.findProjectMemberJiraList(projectId);
+        return ResponseEntity.ok().body(body);
+    }
+
     // 프로젝트 팀원 검색
     @PostMapping("/members")
-    public ResponseEntity<ProjectMemberResponse> findByMemberEmail(@RequestBody @Valid FindByMemberEmailRequest request){
-        ProjectMemberResponse body = projectService.findByMemberEmail(request);
+    public ResponseEntity<List<ProjectMemberResponse>> findByMemberEmail(@RequestBody @Valid FindByMemberEmailRequest request){
+        System.out.println("request.getMemberEmail() = " + request.getMemberEmail());
+        List<ProjectMemberResponse> body = projectService.findByMemberEmail(request);
         return ResponseEntity.ok().body(body);
     }
 

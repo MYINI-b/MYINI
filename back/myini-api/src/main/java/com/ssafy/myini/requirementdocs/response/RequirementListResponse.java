@@ -16,17 +16,23 @@ public class RequirementListResponse {
     private String requirementContent;
     private RequirementPart requirementPart;
     private String memberNickName;
+    private String memberJiraEmail;
     private Integer requirementPriority;
     private Double requirementStoryPoint;
 
     public static RequirementListResponse from(Requirement requirement){
         RequirementListResponse requirementListResponse = new RequirementListResponse();
         requirementListResponse.requirementId = requirement.getRequirementId();
-        requirementListResponse.requirementCategoryDto = RequirementCategoryDto.from(requirement.getRequirementCategory());
+        if(requirement.getRequirementCategory() != null) {
+            requirementListResponse.requirementCategoryDto = RequirementCategoryDto.from(requirement.getRequirementCategory());
+        }
         requirementListResponse.requirementName = requirement.getRequirementName();
         requirementListResponse.requirementContent = requirement.getRequirementContent();
         requirementListResponse.requirementPart = requirement.getRequirementPart();
-        requirementListResponse.memberNickName = requirement.getMember().getMemberNickname();
+        if(requirement.getMember() != null) {
+            requirementListResponse.memberNickName = requirement.getMember().getMemberNickname();
+            requirementListResponse.memberJiraEmail = requirement.getMember().getMemberJiraEmail();
+        }
         requirementListResponse.requirementPriority = requirement.getRequirementPriority();
         requirementListResponse.requirementStoryPoint = requirement.getRequirementStoryPoint();
 
