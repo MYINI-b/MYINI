@@ -140,10 +140,11 @@ public class ERDServiceImpl implements ERDService{
     @Override
     public JSONObject getErdJson(Long projectId) {
         try {
-            URL url = new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/"+projectId+".vuerd.json");
+            URL url = new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/"+projectId+".myini.json");
+            
             File file = new File(projectId+"_vuerd");
             FileUtils.copyURLToFile(url,file);
-
+            
             FileReader fileReader = new FileReader(file);
 
             JSONParser parser = new JSONParser();
