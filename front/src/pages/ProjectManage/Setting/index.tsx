@@ -8,6 +8,7 @@ import { WebrtcProvider } from 'y-webrtc';
 import { globalStore, ProjectInfo } from 'store/yjsStore';
 import { getApi, postApi, putApi } from 'api';
 import DefaultProfile from 'assets/default-profile.png';
+// import { PROJECT_LIST } from 'types/main';
 import ImageTitle from './ImageTitle';
 import ProjectDesc from './ProjectDesc/index';
 import Period from './Period/index';
