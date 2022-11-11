@@ -14,7 +14,7 @@ public class FileUtil {
     public static void fileWrite(InitializerRequest initializerRequest, String contents, String folderPath, String fileName) {
         try {
             //폴더 찾아가기
-            String path = basePath + "/" + initializerRequest.getSpringName() + "/src/main/java/";
+            String path = basePath + initializerRequest.getSpringName() + (folderPath.isEmpty() ? "/src/test/java/" : "/src/main/java/");
 
             String[] packagePath = initializerRequest.getSpringPackageName().split("[.]");
             for (String s : packagePath) {
@@ -22,6 +22,8 @@ public class FileUtil {
             }
 
             path += folderPath + "/";
+
+            System.out.println("path = " + path);
 
             // 폴더 만들기
             File folder = new File(path);
@@ -112,7 +114,7 @@ public class FileUtil {
         }
     }
 
-    public static void addImportContents(boolean containList, boolean containRequest, boolean containResponse, StringBuilder sb, String packageName) {
+    public static void addImportContents(boolean containList, boolean containRequest, boolean containResponse, boolean containDate, StringBuilder sb, String packageName) {
         // list, valid, request, response import 추가하기
         if (containList) {
             sb.append("import java.util.List;\n\n");
@@ -122,6 +124,9 @@ public class FileUtil {
         }
         if (containResponse) {
             sb.append("import ").append(packageName).append(".response.*;\n");
+        }
+        if (containDate) {
+            sb.append("import java.util.LocalDateTime;\n");
         }
         sb.append("\n");
     }

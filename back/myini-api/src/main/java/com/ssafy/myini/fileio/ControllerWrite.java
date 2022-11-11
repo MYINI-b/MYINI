@@ -15,11 +15,18 @@ public class ControllerWrite {
     private static boolean containValid;
     private static boolean containRequest;
     private static boolean containResponse;
+    private static boolean containDate;
 
     public static String controllerPreview(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
         controllerImportContents = new StringBuilder();
         containList = false;
+        containValid = false;
+        containRequest = false;
+        containResponse = false;
+        containDate = false;
         depth = 0;
+        service = "";
+
 
         // 필수 import 선언
         controllerImportContents.append("import lombok.RequiredArgsConstructor;\n")
@@ -39,7 +46,7 @@ public class ControllerWrite {
             controllerImportContents.append("import javax.validation.Valid;\n\n");
         }
         // list, valid, request, response import 추가하기
-        FileUtil.addImportContents(containList, containRequest, containResponse, controllerImportContents, initializerRequest.getSpringPackageName());
+        FileUtil.addImportContents(containList, containRequest, containResponse, containDate, controllerImportContents, initializerRequest.getSpringPackageName());
 
         // class 생성 및 service 선언
         contents.append("package " + initializerRequest.getSpringPackageName() + ".controller;\n")
@@ -174,6 +181,9 @@ public class ControllerWrite {
                 methodContents.append("build();\n");
             } else {
                 containResponse = true;
+                if (response.contains("LocalDateTime")) {
+                    containDate = true;
+                }
                 methodContents.append("body(body);\n");
             }
 

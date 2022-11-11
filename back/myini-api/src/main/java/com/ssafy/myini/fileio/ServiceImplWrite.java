@@ -9,15 +9,20 @@ import java.util.Set;
 
 public class ServiceImplWrite {
     static StringBuilder serviceImplImportContents;
-    private static int depth = 0;
+    private static int depth;
 
     private static boolean containList;
     private static boolean containRequest;
     private static boolean containResponse;
+    private static boolean containDate;
 
     public static String serviceImplPreview(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
         serviceImplImportContents = new StringBuilder();
+        depth = 0;
         containList = false;
+        containRequest = false;
+        containResponse = false;
+        containDate = false;
 
         // 필수 import 선언
         serviceImplImportContents
@@ -31,8 +36,7 @@ public class ServiceImplWrite {
         depth--;
 
         // list, request, response import 추가하기
-        FileUtil.addImportContents(containList, containRequest, containResponse, serviceImplImportContents, initializerRequest.getSpringPackageName());
-
+        FileUtil.addImportContents(containList, containRequest, containResponse, containDate, serviceImplImportContents, initializerRequest.getSpringPackageName());
 
         contents.append("package " + initializerRequest.getSpringPackageName() + ".service;\n")
                 .append("\n")
@@ -101,6 +105,9 @@ public class ServiceImplWrite {
             methodContents.append("// TODO : ").append(apiInfoResponse.getApiResponse().getApiMethodName()).append(" 코드를 작성하세요.\n");
             if (!response.equals("void")) {
                 containResponse = true;
+                if (response.contains("LocalDateTime")) {
+                    containDate = true;
+                }
                 FileUtil.appendTab(methodContents, depth);
                 methodContents.append("return null;\n");
             }

@@ -7,14 +7,19 @@ import java.util.List;
 
 public class ServiceWrite {
     static StringBuilder serviceImportContents;
-    private static int depth = 0;
+    private static int depth;
     private static boolean containList;
     private static boolean containRequest;
     private static boolean containResponse;
+    private static boolean containDate;
 
     public static String servicePreview(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
         serviceImportContents = new StringBuilder();
+        depth = 0;
         containList = false;
+        containRequest = false;
+        containResponse = false;
+        containDate = false;
 
         StringBuilder contents = new StringBuilder();
         depth++;
@@ -22,8 +27,7 @@ public class ServiceWrite {
         depth--;
 
         // list, request, response import 추가하기
-        FileUtil.addImportContents(containList, containRequest, containResponse, serviceImportContents, initializerRequest.getSpringPackageName());
-
+        FileUtil.addImportContents(containList, containRequest, containResponse, containDate, serviceImportContents, initializerRequest.getSpringPackageName());
 
         contents.append("package " + initializerRequest.getSpringPackageName() + ".service;\n")
                 .append("\n")
@@ -56,8 +60,11 @@ public class ServiceWrite {
             methodContents.append(response).append(" "). // return type
                     append(apiInfoResponse.getApiResponse().getApiMethodName()); // 메서드 이름
 
-            if(!response.equals("void")){
+            if (!response.equals("void")) {
                 containResponse = true;
+                if (response.contains("LocalDateTime")) {
+                    containDate = true;
+                }
             }
             if (response.contains("List")) {
                 containList = true;
