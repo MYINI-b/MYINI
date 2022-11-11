@@ -7,7 +7,6 @@ type Props = {
 };
 const Button: React.FC<Props> = ({ children }) => {
   const [selectedButton, setSelectedButton] = useState(0);
-  console.log(selectedButton);
   return (
     <div className="button-container">
       <ul className="ul">

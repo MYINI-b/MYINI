@@ -35,7 +35,7 @@ class JiraControllerTest extends ControllerTest {
     private JiraService jiraService;
 
     @Test
-    @DisplayName("프로젝트 지라 연동 수정한다.")
+    @DisplayName("프로젝트 지라 계정을 수정한다.")
     void updateJiraAccount() throws Exception {
         // given
         willDoNothing()
@@ -63,6 +63,37 @@ class JiraControllerTest extends ControllerTest {
 
         // then
         then(jiraService).should(times(1)).updateJiraAccount(any(), any(), any());
+
+    }
+
+    @Test
+    @DisplayName("연동된 지라 도메인을 수정한다.")
+    void updateJiraDomain() throws Exception {
+        // given
+        willDoNothing()
+                .given(jiraService)
+                .updateJiraDomain(any(), any(), any());
+
+        // when
+        mockMvc.perform(RestDocumentationRequestBuilders.put("/api/jiras/{projectid}/jiradomain", ID)
+                        .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(TEST_UPDATE_JIRA_DOMAIN_REQUEST)))
+                .andExpect(status().isOk())
+                .andDo(document("api/jiras/{projectid}/jiradomain",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
+                        ),
+                        pathParameters(
+                                parameterWithName("projectid").description("Project ID")
+                        ),
+                        requestFields(
+                                fieldWithPath("jiraDomain").type(JsonFieldType.STRING).description("JIRA DOMAIN")
+                        )
+                ));
+
+        // then
+        then(jiraService).should(times(1)).updateJiraDomain(any(), any(), any());
 
     }
 
@@ -131,38 +162,29 @@ class JiraControllerTest extends ControllerTest {
 
     }
 
-//    @Test
-//    @DisplayName("지라 이슈를 등록한다.")
-//    void jiraCreateIssue() throws Exception {
-//        // given
-//        willDoNothing()
-//                .given(jiraService)
-//                .jiraCreateIssue(any(), any());
-//
-//        // when
-//        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/jiras/{projectid}/createissue", ID)
-//                        .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
-//                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-//                        .content(objectMapper.writeValueAsString(TEST_CREATE_JIRA_ISSUE_REQUEST)))
-//                .andExpect(status().isCreated())
-//                .andDo(document("api/jiras/{projectid}/createissue",
-//                        requestHeaders(
-//                                headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
-//                        ),
-//                        pathParameters(
-//                                parameterWithName("projectid").description("Project ID")
-//                        ),
-//                        requestFields(
-//                                fieldWithPath("jiraProjectId").type(JsonFieldType.STRING).description("JIRA Project ID"),
-//                                fieldWithPath("jiraProjectKey").type(JsonFieldType.STRING).description("JIRA Project KEY"),
-//                                fieldWithPath("jiraProjectName").type(JsonFieldType.STRING).description("JIRA Project 이름")
-//
-//                        )
-//                ));
-//
-//
-//        // then
-//        then(jiraService).should(times(1)).jiraCreateIssue(any(), any());
-//
-//    }
+    @Test
+    @DisplayName("지라 이슈를 등록한다.")
+    void jiraCreateIssue() throws Exception {
+        // given
+        willDoNothing()
+                .given(jiraService)
+                .jiraCreateIssue(any());
+
+        // when
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/jiras/{projectid}/createissue", ID)
+                        .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION))
+                .andExpect(status().isCreated())
+                .andDo(document("api/jiras/{projectid}/createissue",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
+                        ),
+                        pathParameters(
+                                parameterWithName("projectid").description("Project ID")
+                        )
+                ));
+
+        // then
+        then(jiraService).should(times(1)).jiraCreateIssue(any());
+
+    }
 }
