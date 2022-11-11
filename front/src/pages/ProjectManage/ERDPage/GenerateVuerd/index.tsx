@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable object-shorthand */
 import { useEffect, useLayoutEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
@@ -38,11 +39,6 @@ function GenerateVuerd(props: any) {
 
   useLayoutEffect(() => {
     generateVuerd();
-    // console.log(currentErd, '변경감지????');
-
-    // if () {
-    //   console.log('hi')
-    // }
   }, []);
 
   useEffect(() => {
@@ -76,21 +72,73 @@ function GenerateVuerd(props: any) {
     const container: any = document.querySelector('#app-erd');
     let editor: any;
 
+    // const obj: any = {
+    //   editor: erdDiv.current.children.item(0),
+    // };
+    // if (obj.editor) {
+    //   // 프로젝트 렌더
+    //   const getJson: any = async () =>
+    //     getApi(`/erds/erdjson/${pid}`)
+    //       .then((res: any) => {
+    //         console.log(res, 'res');
+    //         obj.editor.context.store.canvasState = res.data.canvas;
+    //         obj.editor.context.store.memoState = res.data.memo;
+    //         obj.editor.context.store.tableState = res.data.table;
+    //         obj.editor.context.store.relationshipState = res.data.realationship;
+    //         console.log(obj, 'obj2');
+    //         console.log(res, 'res');
+    //       })
+    //       .catch((err: any) => {
+    //         console.log(err, '새로운 프로젝트입니다.');
+    //       });
+    //   getJson();
+    // }
+
     if (container?.children.item(0)) {
       container.removeChild(container.children.item(0));
       editor = document.createElement('erd-editor');
     } else editor = document.createElement('erd-editor');
 
     container?.appendChild(editor);
-    console.log(container.children.item(0), '?');
     const payload = {
       editor: editor,
     };
-    console.log(payload, 'pay');
-    // console.log(payload.editor.context.store, 'payload');
     setCurrentErd(payload);
 
-    // editor.initLoadJson(erdData);
+    const dummyTable = {
+      name: 'project',
+      comment: '',
+      columns: [
+        {
+          name: 'project_id',
+          comment: '',
+          dataType: 'BIGINT',
+          default: '',
+          option: {
+            autoIncrement: false,
+            primaryKey: true,
+            unique: false,
+            notNull: true,
+          },
+          ui: {
+            active: false,
+            pk: true,
+            fk: false,
+            pfk: false,
+            widthName: 60,
+            widthComment: 60,
+            widthDataType: 60,
+            widthDefault: 60,
+          },
+          id: '271a0c33-39bc-4631-a816-b5cddc297315',
+        },
+      ],
+    };
+    console.log(dummyTable, 'dummy');
+    // payload.editor.context.store.tableState = dummyTable;
+    console.log(payload.editor.context.store.tableState.tables, 'pay');
+    payload.editor.context.store.tableState.tables = dummyTable;
+    console.log(payload.editor.context.store.tableState.tables, 'after');
 
     window.addEventListener('resize', () => {
       editor.width = window.innerWidth * 0.96;
@@ -99,33 +147,11 @@ function GenerateVuerd(props: any) {
     window.dispatchEvent(new Event('resize'));
   };
 
-  // 프로젝트 렌더
-  const getJson: any = async () =>
-    getApi(`/erds/erdjson/${pid}`).then((res: any) => {
-      console.log(res, 'res');
-    });
-  //   const obj: any = {
-  //     editor: erdDiv.current.children.item(0),
-  //   };
-  //   console.log(obj, 'obj1');
-  //   obj.editor.context.store.canvasState = res.data.canvas;
-  //   obj.editor.context.store.memoState = res.data.memo;
-  //   obj.editor.context.store.tableState = res.data.table;
-  //   obj.editor.context.store.relationshipState = res.data.realationship;
-  //   console.log(obj, 'obj2');
-  //   console.log(res, 'res');
-  // })
-  // .catch((err: any) => {
-  //   console.log(err, '새로운 프로젝트입니다.');
-  // });
-  getJson();
-
   const saveBtn = () => {
     const obj: any = {
       editor: erdDiv.current.children.item(0),
     };
     // const saveCurrentErd = obj.editor.context.store;
-    // console.log(saveCurrentErd);
 
     // canvas, tabel, memo, relationship
     const isCanvasState = obj.editor.context.store.canvasState;
@@ -139,7 +165,7 @@ function GenerateVuerd(props: any) {
       relationship: isRelationshipState,
     };
     const stateToJson = JSON.stringify(combinedState);
-
+    console.log(isTableState, 'istable');
     // fileName
     const fileName = `${pid}.myini.json`;
 
