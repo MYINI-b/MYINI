@@ -21,7 +21,7 @@ import { faPen, faCheck, faOtter } from '@fortawesome/free-solid-svg-icons';
 // api
 import { getApi, patchApi } from 'api';
 import { PROJECT_LIST } from 'types/main';
-import { setSessions } from 'modules/Project';
+import { setSessions } from 'modules/project';
 import { authAxios } from '../../api/common';
 
 import { Profile } from '../../modules/member';

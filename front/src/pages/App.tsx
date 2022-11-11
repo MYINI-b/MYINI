@@ -20,16 +20,14 @@ function App() {
   });
 
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/social/redirect" element={<Social />} />
-          <Route path="/main" element={<MainPage />} />
-          <Route path="/project/:pid" element={<ProjectManage />} />
-        </Routes>
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/social/redirect" element={<Social />} />
+        <Route path="/main" element={<MainPage />} />
+        <Route path="/project/:pid" element={<ProjectManage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

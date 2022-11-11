@@ -8,7 +8,7 @@ import { WebrtcProvider } from 'y-webrtc';
 import { RootState } from 'modules/Reducers';
 import { globalStore, ProjectInfo } from 'store/yjsStore';
 import MainHeader from 'components/MainHeader';
-import { setPid, addSession } from 'modules/Project';
+import { setPid, addSession } from 'modules/project';
 import { postApi } from 'api';
 import ApiSpec from './ApiSpec';
 import ERDPage from './ERDPage';
