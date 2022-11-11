@@ -18,9 +18,6 @@ import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +39,6 @@ public class InitializerServiceImpl implements InitializerService {
     private final ProjectRepository projectRepository;
     private final S3Uploader s3Uploader;
     private final ApiDocsQueryRepository apiDocsQueryRepository;
-
-    private final ApplicationEventPublisher publisher; // 1
 
     @Override
     public InitializerPossibleResponse initializerIsPossible(Long projectId) {
@@ -92,7 +86,11 @@ public class InitializerServiceImpl implements InitializerService {
             projectInfoListResponses.forEach(projectInfoListResponse -> ServiceImplWrite.serviceImplWrite(projectInfoListResponse, initializerRequest));
 
             // dto 생성
-            projectInfoListResponses.forEach(projectInfoListResponse -> DtoWrite.dtoWrite(projectInfoListResponse, initializerRequest));
+            projectInfoListResponses.forEach(projectInfoListResponse -> DtoWrite.dtoWrite(project, initializerRequest));
+
+            // test 코드 수정
+            FileUtil.deletefolder(FileUtil.basePath + "/" + initializerRequest.getSpringName() + "/src/test");
+            TestWrite.testWrite(initializerRequest);
 
             ZipFile zipFile = new ZipFile(initializerRequest.getSpringName() + ".zip");
             zipFile.addFolder(new File(FileUtil.basePath + initializerRequest.getSpringName() + "/"));
@@ -203,19 +201,12 @@ public class InitializerServiceImpl implements InitializerService {
             });
 
             // dto
-            projectInfoListResponses.forEach(projectInfoListResponse -> {
-                projectInfoListResponse.getApiInfoResponses().forEach(
-                        apiInfoResponse -> {
-                            apiInfoResponse.getDtoResponses().forEach(
-                                    dtoResponse -> {
-                                        previewResponses.add(
-                                                new PreviewResponse("dto",
-                                                        dtoResponse.getDtoName() + ".java",
-                                                        DtoWrite.dtoPreview(dtoResponse, initializerRequest)));
-                                    });
-                        });
+            project.getDtos().forEach(dto -> {
+                previewResponses.add(
+                        new PreviewResponse("dto",
+                                dto.getDtoName() + ".java",
+                                DtoWrite.dtoPreview(dto, initializerRequest)));
             });
-
         } catch (Exception e) {
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
