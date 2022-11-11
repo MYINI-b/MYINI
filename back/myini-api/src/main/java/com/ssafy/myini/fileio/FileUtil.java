@@ -7,7 +7,6 @@ import com.ssafy.myini.initializer.request.InitializerRequest;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.Set;
 
 public class FileUtil {
     public static String basePath = "/myini/initializer/";
@@ -15,7 +14,7 @@ public class FileUtil {
     public static void fileWrite(InitializerRequest initializerRequest, String contents, String folderPath, String fileName) {
         try {
             //폴더 찾아가기
-            String path = basePath + "/" + initializerRequest.getSpringName() + "/src/main/java/";
+            String path = basePath + initializerRequest.getSpringName() + (folderPath.isEmpty() ? "/src/test/java/" : "/src/main/java/");
 
             String[] packagePath = initializerRequest.getSpringPackageName().split("[.]");
             for (String s : packagePath) {
@@ -23,6 +22,8 @@ public class FileUtil {
             }
 
             path += folderPath + "/";
+
+            System.out.println("path = " + path);
 
             // 폴더 만들기
             File folder = new File(path);
@@ -78,11 +79,10 @@ public class FileUtil {
         return firstIndexToUpperCase(method.toLowerCase());
     }
 
-    public static String responseWrite(ApiInfoResponse apiInfoResponse, Set<String> responseImportContents) {
+    public static String responseWrite(ApiInfoResponse apiInfoResponse) {
         for (DtoResponse dtoResponse : apiInfoResponse.getDtoResponses()) {
             if (dtoResponse.getDtoType().equals("RESPONSE")) {
                 String type = FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName().trim());
-                responseImportContents.add(type);
                 if (dtoResponse.getDtoIsList().equals("Y")) {
                     return "List<" + type + ">";
                 } else {
@@ -112,6 +112,23 @@ public class FileUtil {
         } catch (Exception e) {
             e.getStackTrace();
         }
+    }
+
+    public static void addImportContents(boolean containList, boolean containRequest, boolean containResponse, boolean containDate, StringBuilder sb, String packageName) {
+        // list, valid, request, response import 추가하기
+        if (containList) {
+            sb.append("import java.util.List;\n\n");
+        }
+        if (containRequest) {
+            sb.append("import ").append(packageName).append(".request.*;\n");
+        }
+        if (containResponse) {
+            sb.append("import ").append(packageName).append(".response.*;\n");
+        }
+        if (containDate) {
+            sb.append("import java.util.LocalDateTime;\n");
+        }
+        sb.append("\n");
     }
 
 
