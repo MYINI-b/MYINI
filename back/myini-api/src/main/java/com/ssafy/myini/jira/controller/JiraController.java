@@ -1,8 +1,8 @@
 package com.ssafy.myini.jira.controller;
 
 import com.ssafy.myini.config.LoginMember;
-import com.ssafy.myini.jira.request.CreateJiraIssueRequest;
 import com.ssafy.myini.jira.request.UpdateJiraAccountRequest;
+import com.ssafy.myini.jira.request.UpdateJiraDomainRequest;
 import com.ssafy.myini.jira.request.UpdateJiraProjectRequest;
 import com.ssafy.myini.jira.service.JiraService;
 import com.ssafy.myini.member.domain.Member;
@@ -30,6 +30,15 @@ public class JiraController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    // 프로젝트 지라 도메인 수정
+    @PutMapping("/{projectid}/jiradomain")
+    public ResponseEntity<Void> updateJiraDomain(@LoginMember Member member,
+                                                 @PathVariable("projectid")Long projectId,
+                                                 @RequestBody @Valid UpdateJiraDomainRequest request){
+        jiraService.updateJiraDomain(member,projectId,request);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
     // 프로젝트 지라 프로젝트 수정
     @PutMapping("/{projectid}/jiraproject")
     public ResponseEntity<Void> updateJiraProject(@LoginMember Member member,
@@ -49,10 +58,9 @@ public class JiraController {
 
     //지라 이슈 등록
     @PostMapping("/{projectid}/createissue")
-    public ResponseEntity<Void> jiraCreateIssue(@PathVariable("projectid")Long projectId,
-                                                @RequestBody CreateJiraIssueRequest createJiraIssueRequest){
-        jiraService.jiraCreateIssue(projectId, createJiraIssueRequest);
+    public ResponseEntity<Void> jiraCreateIssue(@PathVariable("projectid")Long projectId){
+        jiraService.jiraCreateIssue(projectId);
 
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

@@ -13,6 +13,11 @@
   border-top-right-radius: 0;
   box-shadow: $shadow;
 
+  &::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
+
   .category-list-overflow {
     @include STRETCH;
     @include FLEX-COLUMN;

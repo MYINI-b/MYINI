@@ -14,11 +14,11 @@ $FE:#D3E5EF;
 $BE:#FBC9C9;
 $COMMON:#ECD8F2;
 
-$get:#22B24D;
-$post:#17C7FF;
-$put:#FDA032;
-$delete:#FD5E48;
-$patch:#F499F1;
+$get:#92C68D;
+$post:#B6CBFF;
+$put:#FCAF92;
+$delete:#FF6E6E;
+$patch:#FFC5C5;
 $code : #DFF7FF;
 
 $kor: "AppleNeoB"; //한글 포함 폰트
@@ -27,7 +27,7 @@ $eng-title: "Multicolore"; //영어 제목 (오직 대문자)
 $eng-content: "Gmarket"; //영어 본문
 
 // 그림자
-$shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+$shadow: 0 4px 4px rgba(131, 131, 131, 0.2);
 
 //px을 파라미터로 넘기면 rem으로 변환
 @function rem($px) {
@@ -140,4 +140,24 @@ $shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
   border-radius: 20px;
   background-color: $white;
   border: 2px solid $third;
+}
+
+@mixin ADD-BUTTON() {
+  @include FLEX-CENTER;
+  width: rem(30);
+  height: rem(30);
+  margin-top: rem(10);
+  padding: rem(10);
+  color: $white;
+  font-size: rem(18);
+  background-color: $secondary;
+  border: 2px solid $secondary;
+  border-radius: 30px;
+  transition: 0.3s ease;
+
+  &:hover {
+    color: $black;
+    font-weight: bold;
+    background-color: $pure-white;
+  }
 }

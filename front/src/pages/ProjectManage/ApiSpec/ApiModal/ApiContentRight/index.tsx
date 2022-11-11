@@ -1,62 +1,114 @@
-import { useState, useCallback, Dispatch } from 'react';
-import DataTypeList from 'components/DataTypeList';
+import { useState, useCallback, Dispatch, useEffect } from 'react';
 import './style.scss';
-import { MOUSEPOS, ATTRIBUTE } from 'types/ApiSpec';
+import { MOUSEPOS, ATTRIBUTE, DTO, DTO_RESPONSE } from 'types/ApiSpec';
 import Tooltip from 'components/Tooltip';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import AddDataTypeList from 'components/AddDataTypeList';
 
 interface Props {
-  objDataType: any[];
-  apiMethod: string;
-  resVarName: string;
-  setResVarName: Dispatch<React.SetStateAction<string>>;
-  reqVarName: string;
-  setReqVarName: Dispatch<React.SetStateAction<string>>;
-  resMany: boolean;
-  setResMany: Dispatch<React.SetStateAction<boolean>>;
+  dtoResponse: DTO[];
+  setDtoResponse: Dispatch<React.SetStateAction<DTO[]>>;
+  reqItems: DTO_RESPONSE[];
+  resItems: DTO_RESPONSE[];
+  setReqItems: Dispatch<React.SetStateAction<DTO_RESPONSE[]>>;
+  setResItems: Dispatch<React.SetStateAction<DTO_RESPONSE[]>>;
+  deletedDtoItems: number[];
+  setDeletedDtoItems: Dispatch<React.SetStateAction<number[]>>;
 }
 
 export default function ApiContentRight({
-  objDataType,
-  apiMethod,
-  resVarName,
-  setResVarName,
-  reqVarName,
-  setReqVarName,
-  resMany,
-  setResMany,
+  dtoResponse,
+  setDtoResponse,
+  reqItems,
+  setReqItems,
+  resItems,
+  setResItems,
+  deletedDtoItems,
+  setDeletedDtoItems,
 }: Props) {
   const [isReq, setIsReq] = useState(false);
   const [isDatatypeListOpen, setIsDatatypeListOpen] = useState(false);
   const [mousePos, setMousePos] = useState<MOUSEPOS>({ x: 0, y: 0 });
-  const [reqObjAttribute, setReqObjAttribute] = useState<Array<ATTRIBUTE>>([
-    {
-      name: 'string',
-      type: 'string',
-      isList: false,
-    },
-  ]);
-  const [resObjAttribute, setResObjAttribute] = useState<Array<ATTRIBUTE>>([
-    {
-      name: 'string',
-      type: 'string',
-      isList: false,
-    },
-  ]);
+  const [request, setRequest] = useState<DTO>({
+    dtoId: 0,
+    dtoIsList: false,
+    dtoItemResponses: [],
+    dtoName: '',
+    dtoType: '',
+  });
 
-  const openDataTypeList = useCallback(
-    (e: any, isReq: boolean) => {
-      e.stopPropagation();
-      e.preventDefault();
+  const [response, setResponse] = useState<DTO>({
+    dtoId: 0,
+    dtoIsList: false,
+    dtoItemResponses: [],
+    dtoName: '',
+    dtoType: '',
+  });
 
-      // if (isReq && (apiMethod === 'GET' || apiMethod === 'DELETE')) return;
-      // if (!isReq && apiMethod !== 'GET') return;
+  const openDataTypeList = useCallback((e: any, isReq: boolean) => {
+    e.stopPropagation();
+    e.preventDefault();
 
-      setIsReq(isReq);
-      setMousePos({ x: e.clientX, y: e.clientY });
-      setIsDatatypeListOpen((prev) => !prev);
+    setIsReq(isReq);
+    setMousePos({ x: e.clientX, y: e.clientY });
+    setIsDatatypeListOpen((prev) => !prev);
+  }, []);
+
+  const onManyClick = useCallback(
+    (isReq: boolean) => {
+      const copyObj = isReq ? { ...request } : { ...response };
+      const copyDtoResponse = [...dtoResponse];
+      copyObj.dtoIsList = !copyObj.dtoIsList;
+
+      if (isReq) {
+        setRequest(copyObj);
+        copyDtoResponse[0] = { ...copyObj };
+      } else {
+        setResponse(copyObj);
+        copyDtoResponse[1] = { ...copyObj };
+      }
+
+      setDtoResponse(copyDtoResponse);
     },
-    [apiMethod],
+    [response, request, dtoResponse],
   );
+
+  const deleteDtoItem = useCallback(
+    (idx: number, isReq: boolean) => {
+      const copyArr = isReq ? [...reqItems] : [...resItems];
+      const copyDeleted = [...deletedDtoItems];
+      copyDeleted.push(copyArr[idx].dtoItemId);
+      copyArr.splice(idx, 1);
+      if (isReq) setReqItems(copyArr);
+      else setResItems(copyArr);
+      setDeletedDtoItems(copyDeleted);
+    },
+    [reqItems, resItems, deletedDtoItems],
+  );
+
+  const onDtoItemNameChange = useCallback(
+    (e: any, idx: number, isReq: boolean) => {
+      const copyArr = isReq ? [...reqItems] : [...resItems];
+      const copyDto = { ...copyArr[idx] };
+      copyDto.dtoItemName = e.target.value.trim();
+      copyArr[idx] = copyDto;
+      if (isReq) setReqItems(copyArr);
+      else setResItems(copyArr);
+    },
+    [reqItems, resItems],
+  );
+
+  useEffect(() => {
+    dtoResponse.forEach((dtoItem: any) => {
+      console.log(dtoItem);
+      if (dtoItem.dtoType === 'RESPONSE') {
+        setResponse(dtoItem);
+      } else {
+        setRequest(dtoItem);
+      }
+    });
+  }, [dtoResponse]);
 
   return (
     <div className="api-add-content-right">
@@ -66,71 +118,81 @@ export default function ApiContentRight({
         </Tooltip>
 
         <div className="content-right-box">
-          <div className="content-right-boxtitle-wrapper">
-            <h3 className="content-right-boxtitle static">자료형</h3>
-            <h3 className="content-right-boxtitle">변수명</h3>
-          </div>
           <div className="content-right-boxcontent-wrapper">
-            <div className="content-right-normal-boxcontent">
-              <div className="datatype-wrapper">
+            <div className="content-right-between">
+              <h3 className="content-right-boxtitle">
+                자료형 &nbsp;
                 <div
                   className="datatype-block"
                   onClick={(e) => openDataTypeList(e, true)}
                 >
-                  {reqObjAttribute[0].isList
-                    ? `List<${reqObjAttribute[0].type}>`
-                    : reqObjAttribute[0].type}
+                  <FontAwesomeIcon icon={faPlus} />
                 </div>
+              </h3>
+
+              <div className="content-right-many-wrapper">
+                단건 &nbsp;
+                <div
+                  className={`many-checkbox-wrapper  ${
+                    request.dtoIsList && 'list'
+                  }`}
+                  onClick={() => onManyClick(true)}
+                >
+                  <span
+                    className={`many-checker ${request.dtoIsList && 'list'}`}
+                  />
+                </div>
+                &nbsp; 다건
               </div>
-              <input
-                type="text"
-                className="content-right-boxcontent-input"
-                placeholder="변수명을 입력해주세요"
-                value={reqVarName}
-                onChange={(e) => setReqVarName(e.target.value.trim())}
-              />
             </div>
             <div className="content-right-detail-boxcontent">
-              {reqObjAttribute[0].attr && reqObjAttribute[0].attr.length > 0 && (
+              {reqItems.length > 0 && (
                 <>
-                  {reqObjAttribute[0].isList && (
+                  {request.dtoIsList && (
                     <p className="datatype-add-brace">&#91;</p>
                   )}
                   <p
                     className={`datatype-add-brace ${
-                      reqObjAttribute[0].isList && 'second'
+                      request.dtoIsList && 'second'
                     }`}
                   >
                     &#123;
                   </p>
-                  {reqObjAttribute[0].attr.map((atr, i) => {
+                  {reqItems.map((req: any, i: number) => {
                     return (
                       <div
-                        className={`attr-div ${
-                          reqObjAttribute[0].isList && 'second'
-                        }`}
+                        className={`attr-div ${request.dtoIsList && 'second'}`}
                         key={i}
                       >
-                        <button type="button" className="attr-type-button">
-                          {atr.isList ? `List<${atr.type}>` : atr.type}
+                        <button
+                          type="button"
+                          className="attr-type-button"
+                          onClick={() => deleteDtoItem(i, true)}
+                        >
+                          {req.dtoIsList
+                            ? `List<${
+                                req.dtoClassTypeName || req.dtoPrimitiveTypeName
+                              }>`
+                            : req.dtoClassTypeName || req.dtoPrimitiveTypeName}
                         </button>
                         <input
                           type="text"
-                          value={atr.name}
+                          value={req.dtoItemName}
                           className="attr-type-name"
-                          readOnly
+                          onChange={(e) => onDtoItemNameChange(e, i, true)}
+                          required
                         />
                       </div>
                     );
                   })}
                   <p
                     className={`datatype-add-brace ${
-                      reqObjAttribute[0].isList && 'second'
+                      request.dtoIsList && 'second'
                     }`}
                   >
                     &#123;
                   </p>
-                  {reqObjAttribute[0].isList && (
+                  {request.dtoIsList && (
                     <p className="datatype-add-brace"> &#93;</p>
                   )}
                 </>
@@ -143,87 +205,82 @@ export default function ApiContentRight({
       <section className="content-section">
         <h1 className="content-right-title">RESPONSE BODY</h1>
         <div className="content-right-box">
-          <div className="content-right-many-wrapper">
-            <div
-              className="many-radio-wrapper"
-              onClick={() => setResMany(false)}
-            >
-              <div className={`many-radio-button ${!resMany && 'select'}`} />
-              <p className="many-radio-text">단건</p>
-            </div>
-            <div
-              className="many-radio-wrapper"
-              onClick={() => setResMany(true)}
-            >
-              <div className={`many-radio-button ${resMany && 'select'}`} />
-              <p className="many-radio-text">다건</p>
-            </div>
-          </div>
-          <div className="content-right-boxtitle-wrapper">
-            <h3 className="content-right-boxtitle static">자료형</h3>
-            <h3 className="content-right-boxtitle">변수명</h3>
-          </div>
-          <div className="content-right-boxcontent-wrapper">
-            <div className="content-right-normal-boxcontent">
-              <div className="datatype-wrapper">
-                <div
-                  className="datatype-block"
-                  onClick={(e) => openDataTypeList(e, false)}
-                >
-                  {resObjAttribute[0].isList
-                    ? `List<${resObjAttribute[0].type}>`
-                    : resObjAttribute[0].type}
-                </div>
+          <div className="content-right-between">
+            <h3 className="content-right-boxtitle">
+              자료형 &nbsp;
+              <div
+                className="datatype-block"
+                onClick={(e) => openDataTypeList(e, false)}
+              >
+                <FontAwesomeIcon icon={faPlus} />
               </div>
-              <input
-                type="text"
-                className="content-right-boxcontent-input"
-                placeholder="변수명을 입력해주세요"
-                value={resVarName}
-                onChange={(e) => setResVarName(e.target.value.trim())}
-              />
+            </h3>
+
+            <div className="content-right-many-wrapper">
+              단건 &nbsp;
+              <div
+                className={`many-checkbox-wrapper  ${
+                  response.dtoIsList && 'list'
+                }`}
+                onClick={() => onManyClick(false)}
+              >
+                <span
+                  className={`many-checker ${response.dtoIsList && 'list'}`}
+                />
+              </div>
+              &nbsp; 다건
             </div>
+          </div>
+
+          <div className="content-right-boxcontent-wrapper">
             <div className="content-right-detail-boxcontent">
-              {resObjAttribute[0].attr && resObjAttribute[0].attr.length > 0 && (
+              {resItems.length > 0 && (
                 <>
-                  {resObjAttribute[0].isList && (
+                  {response.dtoIsList && (
                     <p className="datatype-add-brace">&#91;</p>
                   )}
                   <p
                     className={`datatype-add-brace ${
-                      resObjAttribute[0].isList && 'second'
+                      response.dtoIsList && 'second'
                     }`}
                   >
                     &#123;
                   </p>
-                  {resObjAttribute[0].attr.map((atr, i) => {
+                  {resItems.map((res: any, i: number) => {
                     return (
                       <div
-                        className={`attr-div ${
-                          resObjAttribute[0].isList && 'second'
-                        }`}
                         key={i}
+                        className={`attr-div ${response.dtoIsList && 'second'}`}
                       >
-                        <button type="button" className="attr-type-button">
-                          {atr.isList ? `List<${atr.type}>` : atr.type}
+                        <button
+                          type="button"
+                          className="attr-type-button"
+                          onClick={() => deleteDtoItem(i, false)}
+                        >
+                          {res.dtoIsList
+                            ? `List<${
+                                res.dtoPrimitiveTypeName || res.dtoClassTypeName
+                              }>`
+                            : res.dtoPrimitiveTypeName || res.dtoClassTypeName}
                         </button>
                         <input
                           type="text"
-                          value={atr.name}
+                          value={res.dtoItemName}
                           className="attr-type-name"
-                          readOnly
+                          onChange={(e) => onDtoItemNameChange(e, i, false)}
+                          required
                         />
                       </div>
                     );
                   })}
                   <p
                     className={`datatype-add-brace ${
-                      resObjAttribute[0].isList && 'second'
+                      response.dtoIsList && 'second'
                     }`}
                   >
                     &#123;
                   </p>
-                  {resObjAttribute[0].isList && (
+                  {response.dtoIsList && (
                     <p className="datatype-add-brace"> &#93;</p>
                   )}
                 </>
@@ -234,17 +291,12 @@ export default function ApiContentRight({
       </section>
 
       {isDatatypeListOpen && (
-        <DataTypeList
+        <AddDataTypeList
           setIsDatatypeListOpen={setIsDatatypeListOpen}
           mousePos={mousePos}
-          objDataType={objDataType}
-          selectInfo={
-            isReq
-              ? { ...reqObjAttribute[0], idx: 0 }
-              : { ...resObjAttribute[0], idx: 0 }
-          }
-          newObjAttribute={isReq ? reqObjAttribute : resObjAttribute}
-          setNewObjAttribute={isReq ? setReqObjAttribute : setResObjAttribute}
+          selectIdx={0}
+          attribute={isReq ? reqItems : resItems}
+          setAttribute={isReq ? setReqItems : setResItems}
         />
       )}
     </div>

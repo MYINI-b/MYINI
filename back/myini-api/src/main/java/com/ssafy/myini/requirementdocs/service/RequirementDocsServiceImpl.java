@@ -1,5 +1,6 @@
 package com.ssafy.myini.requirementdocs.service;
 
+import com.ssafy.myini.ExistException;
 import com.ssafy.myini.JiraException;
 import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.jira.JiraApi;
@@ -13,6 +14,7 @@ import com.ssafy.myini.requirementdocs.domain.RequirementCategoryRepository;
 import com.ssafy.myini.requirementdocs.domain.RequirementRepository;
 import com.ssafy.myini.requirementdocs.query.RequirementDocsQueryRepository;
 import com.ssafy.myini.requirementdocs.request.*;
+import com.ssafy.myini.requirementdocs.response.RequirementCategoryCreateResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementCategoryListResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementListResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.ssafy.myini.ExistException.REQUIREMENT_CATEGORY_EXIST;
 
 @Service
 @RequiredArgsConstructor
@@ -120,17 +124,22 @@ public class RequirementDocsServiceImpl implements RequirementDocsService{
 
     @Override
     @Transactional
-    public void createRequirementCategory(Long projectId, RequirementCategoryCreateRequest requirementCategoryCreateRequest) {
+    public RequirementCategoryCreateResponse createRequirementCategory(Long projectId, RequirementCategoryCreateRequest requirementCategoryCreateRequest) {
         Project findProject = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(NotFoundException.PROJECT_NOT_FOUND));
 
         RequirementCategory requirementCategory = RequirementCategory.createRequirementCategory(requirementCategoryCreateRequest.getCategoryName(), requirementCategoryCreateRequest.getCategoryColor(), findProject);
         requirementCategoryRepository.save(requirementCategory);
+
+        return RequirementCategoryCreateResponse.from(requirementCategory);
     }
 
     @Override
     @Transactional
     public void deleteRequirementCategory(Long requirementCategoryId) {
         RequirementCategory findRequirementCategory = requirementCategoryRepository.findById(requirementCategoryId).orElseThrow(() -> new NotFoundException(NotFoundException.REQUIREMENT_CATEGORY_NOT_FOUND));
+        if (requirementRepository.existsByRequirementCategory(findRequirementCategory)){
+            throw new ExistException(REQUIREMENT_CATEGORY_EXIST);
+        }
         requirementCategoryRepository.delete(findRequirementCategory);
     }
 }

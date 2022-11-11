@@ -26,6 +26,8 @@ public class RequirementCategory {
     @Column(nullable = false)
     private String categoryColor;
 
+    private String jiraEpicId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
@@ -39,5 +41,9 @@ public class RequirementCategory {
         requirementCategory.categoryColor = categoryColor;
         requirementCategory.project = project;
         return requirementCategory;
+    }
+
+    public void updateJiraEpicId(String jiraEpicId){
+        this.jiraEpicId = jiraEpicId;
     }
 }

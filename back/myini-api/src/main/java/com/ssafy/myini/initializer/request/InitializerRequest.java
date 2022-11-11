@@ -10,16 +10,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InitializerRequest {
-    private String spring_base_path;
-    private String spring_type;
-    private String spring_language;
-    private String spring_platform_version;
-    private String spring_packaging;
-    private String spring_jvm_version;
-    private String spring_group_id;
-    private String spring_artifact_id;
-    private String spring_name;
-    private String spring_description;
-    private String spring_package_name;
-    private String spring_dependency_name;
+    private String springType;
+    private String springLanguage;
+    private String springPlatformVersion;
+    private String springPackaging;
+    private String springJvmVersion;
+    private String springGroupId;
+    private String springArtifactId;
+    private String springName;
+    private String springDescription;
+    private String springPackageName;
+    private String springDependencyName;
 }

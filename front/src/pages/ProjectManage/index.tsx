@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+
 import MainHeader from 'components/MainHeader';
 import ApiSpec from './ApiSpec';
 import ERDPage from './ERDPage';
@@ -8,20 +10,21 @@ import Build from './Build';
 
 export default function ProjectManage() {
   const [step, setStep] = useState(1);
+  const { pid } = useParams();
 
   return (
     <div className="projectmanage-highest-container">
       <MainHeader needStepper step={step} setStep={setStep} />
       {step === 1 ? (
-        <Setting />
+        <Setting pid={pid || ''} />
       ) : step === 2 ? (
-        <Requirement />
+        <Requirement pid={pid || ''} />
       ) : step === 3 ? (
-        <ERDPage />
+        <ERDPage pid={pid || ''} />
       ) : step === 4 ? (
-        <ApiSpec />
+        <ApiSpec pid={pid || ''} />
       ) : (
-        <Build />
+        <Build pid={pid || ''} />
       )}
     </div>
   );
