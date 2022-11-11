@@ -179,7 +179,7 @@ export default function MainPage() {
         <section className="card-container">
           <div className="card-scroll">
             <div className="project-start-container">
-              <Link to="/projectmanage/new" className="main-link-style">
+              <Link to="/project/new" className="main-link-style">
                 <div className="project-start">
                   <img src={CardLogo} alt="" className="card-logo" />
                   <span>새 프로젝트</span>
