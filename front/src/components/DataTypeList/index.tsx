@@ -8,8 +8,10 @@ import {
 } from 'react';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { RootState } from 'modules';
+import { useSelector } from 'react-redux';
 import './style.scss';
-import { useParams } from 'react-router-dom';
 import { DTO_RESPONSE } from 'types/ApiSpec';
 import { getApi, putApi } from 'api';
 
@@ -35,7 +37,7 @@ export default function DataTypeList({
   attribute,
   setAttribute,
 }: Props) {
-  const { pid } = useParams();
+  const { pid } = useSelector((state: RootState) => state.project);
   const [types, setTypes] = useState<any[]>([]);
   const [isListCheck, setIsListCheck] = useState(
     attribute[selectIdx] ? attribute[selectIdx].dtoIsList : false,

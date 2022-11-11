@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dispatch, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { RootState } from 'modules';
+import { useSelector } from 'react-redux';
 import useInput from 'hooks/useInput';
 import useNoSpaceInput from 'hooks/useNoSpaceInput';
 import Tooltip from 'components/Tooltip';
@@ -23,7 +25,7 @@ export default function ControllerAddModal({
   setControllerIdx,
   store,
 }: Props) {
-  const { pid } = useParams();
+  const { pid } = useSelector((state: RootState) => state.project);
   const [controllerName, onControllerNameChange, setControllerName] =
     useNoSpaceInput('');
   const [controllerDesc, onControllerDescChange, setControllerDesc] =

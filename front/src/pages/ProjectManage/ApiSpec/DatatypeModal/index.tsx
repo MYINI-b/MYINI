@@ -3,9 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useParams } from 'react-router-dom';
 import { faClose, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
+
 import { MOUSEPOS, DTO_RESPONSE, DTO } from 'types/ApiSpec';
 import './style.scss';
-
+import { RootState } from 'modules';
+import { useSelector } from 'react-redux';
 import DataTypeList from 'components/DataTypeList';
 import { getApi, postApi } from 'api';
 import DatatypeRow from './DatatypeRow';
@@ -15,7 +17,7 @@ interface Props {
 }
 
 export default function DatatypeModal({ setIsDatatypeModalOpen }: Props) {
-  const { pid } = useParams();
+  const { pid } = useSelector((state: RootState) => state.project);
   const [isDatatypeAddOpen, setIsDatatypeAddOpen] = useState(false);
   const [dto, setDto] = useState<DTO>({
     dtoId: -1,

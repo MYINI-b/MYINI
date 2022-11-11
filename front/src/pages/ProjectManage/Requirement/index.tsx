@@ -4,14 +4,14 @@ import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { useSyncedStore } from '@syncedstore/react';
 import { useEffect } from 'react';
 
+import { RootState } from 'modules';
+import { useSelector } from 'react-redux';
 import { globalStore } from 'store/yjsStore';
 import { getApi } from 'api';
 import RowList from './RowList';
 
-interface Props {
-  pid: string;
-}
-export default function Requirement({ pid }: Props) {
+export default function Requirement() {
+  const { pid } = useSelector((state: RootState) => state.project);
   const store = useSyncedStore(globalStore);
 
   useEffect(() => {

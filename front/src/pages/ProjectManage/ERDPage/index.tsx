@@ -2,7 +2,8 @@
 import './style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
-
+import { RootState } from 'modules';
+import { useSelector } from 'react-redux';
 // import Stepper from './Stepper';
 
 // redux
@@ -11,10 +12,9 @@ import { faSave } from '@fortawesome/free-regular-svg-icons';
 // components
 import GenerateVuerd from './GenerateVuerd';
 
-interface Props {
-  pid: string;
-}
-export default function ERDPage({ pid }: Props) {
+export default function ERDPage() {
+  const { pid } = useSelector((state: RootState) => state.project);
+
   return (
     <div>
       <div className="erd-container">

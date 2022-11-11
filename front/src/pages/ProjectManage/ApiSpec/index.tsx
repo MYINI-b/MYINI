@@ -9,6 +9,8 @@ import {
 
 import { useSyncedStore } from '@syncedstore/react';
 
+import { RootState } from 'modules';
+import { useSelector } from 'react-redux';
 import { globalStore } from 'store/yjsStore';
 import './style.scss';
 import { getApi } from 'api';
@@ -17,11 +19,8 @@ import APIList from './APIList';
 import ControllerAddModal from './ControllerAddModal';
 import DatatypeModal from './DatatypeModal';
 
-interface Props {
-  pid: string;
-}
-
-export default function ApiSpec({ pid }: Props) {
+export default function ApiSpec() {
+  const { pid } = useSelector((state: RootState) => state.project);
   const store = useSyncedStore(globalStore);
 
   const [objDataType, setObjDataType] = useState<Array<DTO>>([]);

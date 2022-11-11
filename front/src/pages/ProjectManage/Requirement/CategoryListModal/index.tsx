@@ -3,6 +3,8 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom';
 import { useCallback, Dispatch, useRef, useEffect, useState } from 'react';
 
+import { RootState } from 'modules';
+import { useSelector } from 'react-redux';
 import './style.scss';
 import { deleteApi, postApi, putApi } from 'api';
 import { ELEMENTPOS, ROW, CATEGORY } from 'types/Requirement';
@@ -24,7 +26,7 @@ export default function CategoryListModal({
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
   const [categoryInput, setCategoryInput] = useState('');
-  const { pid } = useParams();
+  const { pid } = useSelector((state: RootState) => state.project);
 
   const deleteCategory = useCallback(
     async (e: any, idx: number, cat: CATEGORY) => {

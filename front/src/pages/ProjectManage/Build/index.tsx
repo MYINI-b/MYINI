@@ -1,14 +1,15 @@
 import './style.scss';
 
+import { RootState } from 'modules';
+import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import Accordion from './Accordion';
 import Buttons from './SelectButton';
 import Tabs from './Tabs';
 
-interface Props {
-  pid: string;
-}
-export default function Build({ pid }: Props) {
+export default function Build() {
+  const { pid } = useSelector((state: RootState) => state.project);
+
   const [text, setText] = useState('');
   const [isChecked, setChecked] = useState(false);
   const handleTextArea = (e: any) => {
