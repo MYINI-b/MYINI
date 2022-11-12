@@ -10,10 +10,11 @@ import { globalStore } from 'store/yjsStore';
 import { getApi } from 'api';
 import RowList from './RowList';
 
-export default function Requirement() {
-  const { pid } = useSelector((state: RootState) => state.project);
-  const store = useSyncedStore(globalStore);
-
+interface Props {
+  pid: string;
+  store: any;
+}
+export default function Requirement({ pid, store }: Props) {
   useEffect(() => {
     const getRequirements = async () => {
       const { data }: any = await getApi(`/requirementdocs/${pid}`);

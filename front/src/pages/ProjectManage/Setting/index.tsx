@@ -44,7 +44,7 @@ export default function Setting({ store, pid }: Props) {
       const { data }: any = await getApi(`/projects/${pid}`);
       console.log(data, store, pid);
 
-      if (store) {
+      if (store && pid !== '') {
         store.pjt.img = data.projectImg
           ? `https://myini.s3.ap-northeast-2.amazonaws.com/projectProfile/${data.projectImg}`
           : DefaultProfile;
@@ -61,7 +61,7 @@ export default function Setting({ store, pid }: Props) {
         const memberData = memberResp.data.map((member: any) => {
           return {
             id: member.memberId,
-            name: member.memberName,
+            name: member.memberNickName,
             img: member.memberProfileImg
               ? `https://myini.s3.ap-northeast-2.amazonaws.com/userProfile/${member.memberProfileImg}`
               : DefaultProfile,
@@ -73,7 +73,7 @@ export default function Setting({ store, pid }: Props) {
     };
 
     getProjectDetail();
-  }, [store]);
+  }, [store, pid]);
 
   return (
     <div className="setting-page">

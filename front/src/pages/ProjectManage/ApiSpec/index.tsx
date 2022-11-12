@@ -19,10 +19,12 @@ import APIList from './APIList';
 import ControllerAddModal from './ControllerAddModal';
 import DatatypeModal from './DatatypeModal';
 
-export default function ApiSpec() {
-  const { pid } = useSelector((state: RootState) => state.project);
-  const store = useSyncedStore(globalStore);
+interface Props {
+  pid: string;
+  store: any;
+}
 
+export default function ApiSpec({ store, pid }: Props) {
   const [objDataType, setObjDataType] = useState<Array<DTO>>([]);
   const [controllerIdx, setControllerIdx] = useState(-1); // 현재 선택된 컨트롤러 인덱스
   const [clickControllerIdx, setClickControllerIdx] = useState(0); // 현재 선택된 컨트롤러 인덱스
@@ -104,7 +106,7 @@ export default function ApiSpec() {
         <article className="controller-list">
           <div className="controller-list-overflow">
             {store.pjt.controllers &&
-              store.pjt.controllers.map((controller, i) => {
+              store.pjt.controllers.map((controller: any, i: number) => {
                 return (
                   <div
                     className={`controller-block ${

@@ -13,9 +13,11 @@ import { useSelector } from 'react-redux';
 // components
 import GenerateVuerd from './GenerateVuerd';
 
-export default function ERDPage() {
-  const { pid } = useSelector((state: RootState) => state.project);
-
+interface Props {
+  pid: string;
+  store: any;
+}
+export default function ERDPage({ pid, store }: Props) {
   return (
     <div>
       <div className="erd-container">

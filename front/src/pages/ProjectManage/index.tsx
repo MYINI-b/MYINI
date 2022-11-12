@@ -29,7 +29,6 @@ export default function ProjectManage() {
         pjt: {} as ProjectInfo,
       });
   const [store, setStore] = useState<any>(useSyncedStore(newStore));
-  new WebrtcProvider(`project${pid}`, getYjsValue(newStore) as any);
 
   useEffect(() => {
     const setReduxPid = async () => {
@@ -56,11 +55,11 @@ export default function ProjectManage() {
       {step === 1 ? (
         <Setting store={store} pid={pid === 'new' ? newPid : pid || ''} />
       ) : step === 2 ? (
-        <Requirement />
+        <Requirement store={store} pid={pid === 'new' ? newPid : pid || ''} />
       ) : step === 3 ? (
-        <ERDPage />
+        <ERDPage store={store} pid={pid === 'new' ? newPid : pid || ''} />
       ) : step === 4 ? (
-        <ApiSpec />
+        <ApiSpec store={store} pid={pid === 'new' ? newPid : pid || ''} />
       ) : (
         <Build />
       )}

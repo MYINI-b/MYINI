@@ -31,7 +31,6 @@ export default function CategoryListModal({
         `/requirementdocs/requirements/${rowId}/members`,
         body,
       );
-      console.log(data);
 
       store.pjt.rows[idx].manager = manager;
       closeManagerModal();
@@ -43,6 +42,7 @@ export default function CategoryListModal({
     modalContainer.current.style.left = `${clickElementPos.x}px`;
     modalContainer.current.style.top = `${clickElementPos.y}px`;
     modalContainer.current.style.width = `${clickElementPos.width}px`;
+    console.log(store.pjt.members);
   }, [clickElementPos]);
 
   return (
