@@ -104,28 +104,14 @@ export default function MainPage() {
     const fetchProject = async () => {
       const getProjectDatas: any = await getApi(`/projects`);
       getMyProject(getProjectDatas.data);
-
-      // const obj: any = {};
-      // getProjectDatas.data.forEach((pjt: any) => {
-      //   if (!sessions[`project${pjt.projectId}`]) {
-      //     const projectStore = syncedStore({
-      //       pjt: {} as ProjectInfo,
-      //     });
-
-      //     obj[`project${pjt.projectId}`] = projectStore;
-      //     new WebrtcProvider(
-      //       `project${pjt.projectId}`,
-      //       ydoc,
-      //       getYjsValue(projectStore) as any,
-      //     );
-      //   }
-      // });
-
-      // dispatch(setSessions(obj));
     };
     fetchProject();
     fetchData();
     getMembers();
+  }, []);
+
+  const addNewProject = useCallback(() => {
+    window.location.href = '/project/new';
   }, []);
 
   return (
@@ -213,12 +199,12 @@ export default function MainPage() {
         <section className="card-container">
           <div className="card-scroll">
             <div className="project-start-container">
-              <Link to="/project/new" className="main-link-style">
+              <div className="main-link-style" onClick={addNewProject}>
                 <div className="project-start">
                   <img src={CardLogo} alt="" className="card-logo" />
                   <span>새 프로젝트</span>
                 </div>
-              </Link>
+              </div>
             </div>
             {myProjectList.length > 0 &&
               myProjectList.map((content, idx: number) => (

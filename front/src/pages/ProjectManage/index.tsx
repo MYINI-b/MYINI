@@ -21,8 +21,13 @@ export default function ProjectManage() {
   const [step, setStep] = useState(1);
   const { pid } = useParams();
   const dispatch = useDispatch();
-
-  const newStore = pid === '3' ? globalStore : globalStore2;
+  const [newPid, setNewPid] = useState('');
+  const { sessions } = useSelector((state: RootState) => state.project);
+  const newStore = sessions[`pjt${pid}`]
+    ? sessions[`pjt${pid}`]
+    : syncedStore({
+        pjt: {} as ProjectInfo,
+      });
   const [store, setStore] = useState<any>(useSyncedStore(newStore));
   new WebrtcProvider(`project${pid}`, getYjsValue(newStore) as any);
 
@@ -30,20 +35,26 @@ export default function ProjectManage() {
     const setReduxPid = async () => {
       if (pid === 'new') {
         const { data }: any = await postApi(`/projects`);
-        dispatch(setPid(data.projectId));
+        setNewPid(data.projectId);
+        // dispatch(setPid(data.projectId));
+        new WebrtcProvider(
+          `pjt${data.projectId}`,
+          getYjsValue(newStore) as any,
+        );
       } else {
         dispatch(setPid(pid || ''));
+        new WebrtcProvider(`pjt${pid}`, getYjsValue(newStore) as any);
       }
     };
 
     setReduxPid();
-  }, [pid]);
+  }, [pid, store]);
 
   return (
     <div className="projectmanage-highest-container">
       <MainHeader needStepper step={step} setStep={setStep} />
       {step === 1 ? (
-        <Setting store={store} />
+        <Setting store={store} pid={pid === 'new' ? newPid : pid || ''} />
       ) : step === 2 ? (
         <Requirement />
       ) : step === 3 ? (

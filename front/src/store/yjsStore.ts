@@ -33,5 +33,5 @@ export const globalStore2 = syncedStore({
   pjt: {} as ProjectInfo,
 });
 
-export const id = new WebrtcProvider('id', getYjsValue(globalStore) as any); // sync via webrtc
-export const id2 = new WebrtcProvider('id2', getYjsValue(globalStore2) as any); // sync via webrtc
+// export const id = new WebrtcProvider('id', getYjsValue(globalStore) as any); // sync via webrtc
+// export const id2 = new WebrtcProvider('id2', getYjsValue(globalStore2) as any); // sync via webrtc

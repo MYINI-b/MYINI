@@ -19,9 +19,10 @@ import './style.scss';
 
 interface Props {
   store: any;
+  pid: string;
 }
-export default function Setting({ store }: Props) {
-  const { pid } = useSelector((state: RootState) => state.project);
+export default function Setting({ store, pid }: Props) {
+  // const { pid } = useSelector((state: RootState) => state.project);
 
   const editProjectInfo = useCallback(async () => {
     const body = {
@@ -41,7 +42,7 @@ export default function Setting({ store }: Props) {
   useEffect(() => {
     const getProjectDetail = async () => {
       const { data }: any = await getApi(`/projects/${pid}`);
-      console.log(data, store);
+      console.log(data, store, pid);
 
       if (store) {
         store.pjt.img = data.projectImg
