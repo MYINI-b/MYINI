@@ -62,7 +62,9 @@ export default function Requirement({ pid, store }: Props) {
       <h1 className="requirement-title">요구사항명세서</h1>
 
       <section className="requirement-info-section">
-        <h3 className="requirement-project-title">PROJECT NAME</h3>
+        <h3 className="requirement-project-title">
+          {store && store.pjt.title}
+        </h3>
         <button className="requirement-save-button" type="button">
           <FontAwesomeIcon icon={faSave} />
         </button>

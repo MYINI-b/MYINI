@@ -92,7 +92,7 @@ export default function ApiSpec({ store, pid }: Props) {
       <h1 className="apispec-title">API 명세서</h1>
 
       <section className="apispec-info-section">
-        <h2 className="apispec-project-title">project name</h2>
+        <h2 className="apispec-project-title">{store && store.pjt.title}</h2>
         <span className="apispec-status-span">
           <FontAwesomeIcon
             icon={faCircle}

@@ -23,7 +23,7 @@ export default function ERDPage({ pid, store }: Props) {
       <div className="erd-container">
         <h1 className="erd-title">ERD</h1>
         <section className="erd-info-section">
-          <h3 className="erd-project-title">PROJECT NAME</h3>
+          <h3 className="erd-project-title">{store && store.pjt.title}</h3>
         </section>
 
         <section className="erd-tool">
