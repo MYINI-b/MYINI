@@ -24,6 +24,9 @@ export type ProjectInfo = {
   // controllers
   controllers: CONTROLLER[];
   currentAPI: API;
+
+  // erd
+  erd: any;
 };
 
 export const globalStore = syncedStore({

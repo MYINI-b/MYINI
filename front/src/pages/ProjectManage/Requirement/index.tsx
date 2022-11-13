@@ -23,16 +23,18 @@ export default function Requirement({ pid, store }: Props) {
         const requirementsArray = data.map((req: any) => {
           return {
             id: req.requirementId,
-            category: {
-              name: req.requirementCategoryDto.categoryName,
-              color: req.requirementCategoryDto.categoryColor,
-              id: req.requirementCategoryId,
-            },
+            category: req.requirementCategoryDto
+              ? {
+                  name: req.requirementCategoryDto.categoryName,
+                  color: req.requirementCategoryDto.categoryColor,
+                  id: req.requirementCategoryId,
+                }
+              : { name: '', color: '', id: 0 },
             requirement: req.requirementName ? req.requirementName : '',
             description: req.requirementContent ? req.requirementContent : '',
             division: req.requirementPart ? req.requirementPart : '',
             manager: req.memberNickName ? req.memberNickName : '',
-            importance: req.requirementPriority ? req.requirementPriority : 1,
+            importance: req.requirementPriority ? req.requirementPriority : 3,
             point: req.requirementStoryPoint ? req.requirementStoryPoint : 0,
           };
         });
@@ -80,7 +82,7 @@ export default function Requirement({ pid, store }: Props) {
           <h5 className="table-col title one">포인트</h5>
         </article>
 
-        <RowList store={store} />
+        <RowList store={store} pid={pid} />
       </section>
     </div>
   );

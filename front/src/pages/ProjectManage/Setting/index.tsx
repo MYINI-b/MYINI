@@ -22,8 +22,6 @@ interface Props {
   pid: string;
 }
 export default function Setting({ store, pid }: Props) {
-  // const { pid } = useSelector((state: RootState) => state.project);
-
   const editProjectInfo = useCallback(async () => {
     const body = {
       projectName: store.pjt.title,

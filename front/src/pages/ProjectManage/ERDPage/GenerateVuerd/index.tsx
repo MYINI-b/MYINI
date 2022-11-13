@@ -3,7 +3,8 @@
 import { useEffect, useLayoutEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import AWS from 'aws-sdk';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
+
 import './style.scss';
 import { getApi } from 'api';
 
@@ -14,6 +15,7 @@ import { faSave } from '@fortawesome/free-regular-svg-icons';
 
 import { assignCurrentErd } from 'modules/vuerd';
 import { ERD } from 'modules/erd';
+import { RootState } from 'modules/Reducers';
 
 const S3_BUCKET = 'myini/ERD';
 const REGION = 'ap-northeast-2';
@@ -28,19 +30,21 @@ const myBucket = new AWS.S3({
   region: REGION,
 });
 
-function GenerateVuerd(props: any) {
+interface Props {
+  store: any;
+  pid: string;
+}
+
+function GenerateVuerd({ pid, store }: Props) {
+  const { editor } = useSelector((state: RootState) => state.vuerd);
   const erdDiv = useRef() as React.MutableRefObject<HTMLDivElement>;
-  const { pid } = useParams();
 
   useLayoutEffect(() => {
     generateVuerd();
-  }, []);
-
-  useEffect(() => {
     console.log(erdDiv.current, 'erddiv');
   }, []);
 
-  const generateVuerd = () => {
+  const generateVuerd = async () => {
     // vuerd import
     const container: any = document.querySelector('#app-erd');
     let editor: any;
@@ -52,24 +56,23 @@ function GenerateVuerd(props: any) {
 
     container?.appendChild(editor);
     const payload: any = {
-      editor: editor,
+      editor,
     };
 
     // import project erd
     if (pid) {
-      const getProjectErd = async () => {
-        await getApi(`erds/erdjson/${pid}`)
-          .then((res: any) => {
-            console.log(res.data, 'res');
-            editor.initLoadJson(JSON.stringify(res.data));
-          })
-          .catch((err: any) => {
-            console.log(err, '새로운 프로젝트입니다.');
-          });
-      };
-      getProjectErd();
+      await getApi(`erds/erdjson/${pid}`)
+        .then((res: any) => {
+          console.log(res.data, 'res');
+          editor.initLoadJson(JSON.stringify(res.data));
+        })
+        .catch((err: any) => {
+          console.log(err, '새로운 프로젝트입니다.');
+        });
     }
 
+    console.log(payload);
+    store.pjt.erd = payload;
     // vuerd size
     window.addEventListener('resize', () => {
       editor.width = window.innerWidth * 0.96;
@@ -107,7 +110,6 @@ function GenerateVuerd(props: any) {
         Bucket: S3_BUCKET,
         Key: fileName,
       };
-
       myBucket.putObject(params).send((err) => {
         if (err) console.log(err, 's3 error');
       });

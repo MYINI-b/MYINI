@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useEffect, useState } from 'react';
 import './style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
@@ -27,7 +27,7 @@ export default function ERDPage({ pid, store }: Props) {
         </section>
 
         <section className="erd-tool">
-          <GenerateVuerd />
+          <GenerateVuerd pid={pid} store={store} />
         </section>
       </div>
     </div>
