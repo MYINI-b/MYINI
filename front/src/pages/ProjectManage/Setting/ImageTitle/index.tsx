@@ -10,9 +10,15 @@ interface Props {
   store: any;
   pid: string;
   editProjectInfo: () => Promise<void>;
+  users: string[];
 }
 
-export default function ProjectImage({ store, pid, editProjectInfo }: Props) {
+export default function ProjectImage({
+  store,
+  pid,
+  editProjectInfo,
+  users,
+}: Props) {
   const fileInput = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [isEdit, setIsEdit] = useState(false);
 
@@ -89,6 +95,9 @@ export default function ProjectImage({ store, pid, editProjectInfo }: Props) {
 
       <div className="project-info-container">
         <div className="project-detail-container">
+          {users.map((user: string, i: number) => (
+            <li key={i}>{user}</li>
+          ))}
           <div className="project-detail-info-title">
             프로젝트 명 &nbsp;
             {isEdit ? (

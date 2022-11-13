@@ -29,6 +29,7 @@ export default function ProjectManage() {
         pjt: {} as ProjectInfo,
       });
   const [store, setStore] = useState<any>(useSyncedStore(newStore));
+  const [users, setUsers] = useState<string[]>([]);
 
   useEffect(() => {
     const setReduxPid = async () => {
@@ -42,7 +43,20 @@ export default function ProjectManage() {
         );
       } else {
         dispatch(setPid(pid || ''));
-        new WebrtcProvider(`pjt${pid}`, getYjsValue(newStore) as any);
+        const rtcProvider = new WebrtcProvider(
+          `pjt${pid}`,
+          getYjsValue(newStore) as any,
+        );
+
+        const { awareness } = rtcProvider;
+        awareness.setLocalStateField('user', { name: 'yoonseok' });
+        awareness.on('change', () => {
+          const userList: any[] = [];
+          awareness.getStates().forEach((state: any) => {
+            userList.push(state.user.name);
+          });
+          setUsers(userList);
+        });
       }
     };
 
@@ -53,7 +67,11 @@ export default function ProjectManage() {
     <div className="projectmanage-highest-container">
       <MainHeader needStepper step={step} setStep={setStep} />
       {step === 1 ? (
-        <Setting store={store} pid={pid === 'new' ? newPid : pid || ''} />
+        <Setting
+          store={store}
+          pid={pid === 'new' ? newPid : pid || ''}
+          users={users}
+        />
       ) : step === 2 ? (
         <Requirement store={store} pid={pid === 'new' ? newPid : pid || ''} />
       ) : step === 3 ? (

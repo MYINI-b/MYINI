@@ -20,8 +20,9 @@ import './style.scss';
 interface Props {
   store: any;
   pid: string;
+  users: string[];
 }
-export default function Setting({ store, pid }: Props) {
+export default function Setting({ store, pid, users }: Props) {
   const editProjectInfo = useCallback(async () => {
     const body = {
       projectName: store.pjt.title,
@@ -81,6 +82,7 @@ export default function Setting({ store, pid }: Props) {
             store={store}
             pid={pid}
             editProjectInfo={editProjectInfo}
+            users={users}
           />
           <div className="bottom-side">
             <div className="left-side">
