@@ -12,10 +12,12 @@ const headers = {
 
 export const getApi = async (url: string) => {
   try {
+    console.log('여기까지 들어옴.');
     const data = await axios.get(`${url}`, headers);
     return data;
   } catch (err) {
-    console.log(err);
+    console.log(err, '에러입니다.');
+    console.log(axios.defaults.baseURL, 'baseurl');
     // alert('문제가 발생했습니다');
     return err;
   }

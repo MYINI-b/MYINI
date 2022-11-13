@@ -14,12 +14,12 @@
 .user-name {
   color: $primary;
   font-size: rem(60);
-  font-family: $eng-title;
+  font-family: $kor;
 }
 
 .user-ini {
   font-size: rem(60);
-  font-family: $eng-title;
+  font-family: $kor;
 }
 
 .project-info {
@@ -103,6 +103,11 @@
   height: rem(300);
   flex-shrink: 0;
   margin-right: 4rem;
+
+  .card-logo {
+    width: rem(120);
+    height: rem(100);
+  }
 
   .project-start {
     @include FLEX-CENTER;

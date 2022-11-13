@@ -25,10 +25,9 @@ export default function ProjectCard() {
       {myProjectList.map((content, idx) => {
         return (
           <div key={idx} className="card">
-            <Link to={`/project/${content.projectId}`}>
+            <Link to={`/project/${content.projectId}`} className="card-link">
               <div className="card-header">
                 <div className="card-header-title">{content.projectName}</div>
-                <div>{content.projectId}</div>
               </div>
               <div className="card-body">
                 <div className="card-body-header">
