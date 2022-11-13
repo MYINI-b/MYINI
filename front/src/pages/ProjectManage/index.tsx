@@ -61,7 +61,7 @@ export default function ProjectManage() {
       ) : step === 4 ? (
         <ApiSpec store={store} pid={pid === 'new' ? newPid : pid || ''} />
       ) : (
-        <Build />
+        <Build pid={pid === 'new' ? newPid : pid || ''} />
       )}
     </div>
   );
