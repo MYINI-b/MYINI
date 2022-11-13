@@ -33,6 +33,11 @@ public class GoogleOAuth2UserInfo extends OAuth2UserInfo {
     }
 
     @Override
+    public String getUserProfileImg() {
+        return (String) attributes.get("picture");
+    }
+
+    @Override
     public String getUserProviderId() {
         return (String) attributes.get("sub");
     }
