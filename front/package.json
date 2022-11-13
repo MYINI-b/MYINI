@@ -37,7 +37,7 @@
     "redux-toolkit": "^1.1.2",
     "sass-loader": "^13.1.0",
     "typescript": "^4.8.4",
-    "vuerd": "1.3.7",
+    "vuerd": "^2.2.11",
     "web-vitals": "^2.1.4",
     "y-webrtc": "^10.2.3",
     "yjs": "^13.5.42"
