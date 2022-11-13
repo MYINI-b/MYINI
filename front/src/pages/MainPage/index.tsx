@@ -186,7 +186,9 @@ export default function MainPage() {
                 </div>
               </Link>
             </div>
-            <ProjectCard />
+            <div className="main-project-cards">
+              <ProjectCard />
+            </div>
           </div>
         </section>
       </div>
