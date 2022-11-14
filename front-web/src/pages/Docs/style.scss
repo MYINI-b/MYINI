@@ -60,15 +60,27 @@
   }
 
   .docs-content-item {
-    margin: 10px 0 10px 7px;
+    margin: 20px 0 20px 7px;
   }
   .docs-content-item > ul > li > span {
     display: block;
     margin-top: 7px;
   }
   .docs-content-item > img {
-    width: 70%;
-    height: 70%;
+    width: 60%;
+    height: 60%;
     margin: 10px 0 10px 7px;
+  }
+  .docs-content-item-code {
+    // display: inline;
+    font-weight: bold;
+    background-color: rgb(237, 233, 233);
+    border-radius: 3px;
+    margin: 7px;
+    padding: 10px;
+    width: 60%;
+  }
+  a {
+    color: $secondary;
   }
 }

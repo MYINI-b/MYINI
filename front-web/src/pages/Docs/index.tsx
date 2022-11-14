@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import Header from 'component/Header';
 import fork from 'assets/fork.png';
+import clone from 'assets/clone.png';
+import pullrequest from 'assets/pullrequest.png';
+import pullrequest2 from 'assets/pullrequest2.png';
+import comment from 'assets/comment.png';
 import './style.scss';
 
 export default function Docs() {
@@ -42,7 +46,11 @@ export default function Docs() {
               <h1>MYINI에 기여해보세요.</h1>
               <span>
                 더 자세한 내용은
-                <a href="https://lab.ssafy.com/s07-final/S07P31B203">
+                <a
+                  href="https://github.com/wooobinkim/myini/blob/main/docs/ContributorGuide.md"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   &nbsp;이곳
                 </a>
                 에서 확인해주세요.
@@ -55,7 +63,11 @@ export default function Docs() {
                     <span>
                       ● MYINI는 올바른 오픈소스 문화를 토대로 컨트리부트를
                       진행하고 있습니다.&nbsp;&nbsp;
-                      <a href="https://www.contributor-covenant.org/ko/version/1/4/code-of-conduct/">
+                      <a
+                        href="https://www.contributor-covenant.org/ko/version/1/4/code-of-conduct/"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
                         컨트리부트 행동강령
                       </a>
                       을 읽고 진행해주세요!
@@ -98,6 +110,79 @@ export default function Docs() {
               <div className="docs-content-item">
                 <h4>1. 우측 상단의 Fork를 눌러 Git Repository를 복제하세요.</h4>
                 <img src={fork} alt="fork" />
+              </div>
+              <div className="docs-content-item">
+                <h4>2. 복제된 Repository에서 Git Clone을 진행하세요.</h4>
+                <div className="docs-content-item-code">
+                  git clone &quot;Git Clone URL&quot;
+                </div>
+                <img src={clone} alt="clone" />
+              </div>
+              <div className="docs-content-item">
+                <h4>
+                  3. 새로운 브랜치를 생성하여 작업해주세요 브랜치
+                  생성규칙은&nbsp;
+                  <a
+                    href="https://github.com/wooobinkim/myini/blob/main/docs/ContributorConvention.md"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    컨트리뷰트 컨벤션
+                  </a>
+                  을 확인해주세요.
+                </h4>
+                <div className="docs-content-item-code">
+                  git branch &quot;새로운 브랜치 &quot; &quot;분기시작 브랜치
+                  &quot;
+                </div>
+              </div>
+              <div className="docs-content-item">
+                <h4>
+                  4.
+                  <a
+                    href="https://github.com/wooobinkim/myini/blob/main/docs/CodeConvention.md"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    개발컨벤션
+                  </a>
+                  을 토대로 코드를 수정한 후 Fork한 Repository로 Push해주세요.
+                  커밋메세지는&nbsp;
+                  <a
+                    href="https://github.com/wooobinkim/myini/blob/main/docs/ContributorConvention.md"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    컨트리뷰트 컨벤션
+                  </a>
+                  을 확인해주세요.
+                </h4>
+                <div className="docs-content-item-code">
+                  # 코드수정 후 <br /> git add <br /> git commit <br /> git push
+                </div>
+              </div>
+              <div className="docs-content-item">
+                <h4>
+                  5. 원본 오픈소스 Repository로 이동하여 Pull Request를
+                  보내주세요. Pull Request 메세지는&nbsp;
+                  <a
+                    href="https://github.com/wooobinkim/myini/blob/main/docs/ContributorConvention.md"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    컨트리뷰트 컨벤션
+                  </a>
+                  을 확인해주세요.
+                </h4>
+                <img src={pullrequest} alt="pullrequest" />
+                <img src={pullrequest2} alt="pullrequest2" />
+              </div>
+              <div className="docs-content-item">
+                <h4>
+                  6. 개발진이 확인 후 작성하는 Comment를 확인해 주세요. 며칠
+                  시간이 소요될 수 있습니다.
+                </h4>
+                <img src={comment} alt="comment" />
               </div>
               {/* <span>여기로 연락주세용~~~~</span> */}
             </div>
