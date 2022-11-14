@@ -4,10 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSyncedStore } from '@syncedstore/react';
 import { getYjsValue, syncedStore } from '@syncedstore/core';
 import { WebrtcProvider } from 'y-webrtc';
+import { RoomProvider } from '@y-presence/react';
 import * as Y from 'yjs';
 import { RootState } from 'modules/Reducers';
 import { globalStore, ProjectInfo, globalStore2 } from 'store/yjsStore';
+
+import { UserPresence } from 'types/main';
 import MainHeader from 'components/MainHeader';
+
 import { setPid, addSession, setProvider, setSessions } from 'modules/project';
 
 import { postApi } from 'api';
@@ -29,7 +33,8 @@ export default function ProjectManage() {
         pjt: {} as ProjectInfo,
       });
   const [store, setStore] = useState<any>(useSyncedStore(newStore));
-  const [users, setUsers] = useState<string[]>([]);
+  const [Awareness, setAwareness] = useState<any>(null);
+  const { memberNickname } = useSelector((state: RootState) => state.member);
 
   useEffect(() => {
     const setReduxPid = async () => {
@@ -49,14 +54,7 @@ export default function ProjectManage() {
         );
 
         const { awareness } = rtcProvider;
-        awareness.setLocalStateField('user', { name: 'yoonseok' });
-        awareness.on('change', () => {
-          const userList: any[] = [];
-          awareness.getStates().forEach((state: any) => {
-            userList.push(state.user.name);
-          });
-          setUsers(userList);
-        });
+        setAwareness(awareness);
       }
     };
 
@@ -66,20 +64,29 @@ export default function ProjectManage() {
   return (
     <div className="projectmanage-highest-container">
       <MainHeader needStepper step={step} setStep={setStep} />
-      {step === 1 ? (
-        <Setting
-          store={store}
-          pid={pid === 'new' ? newPid : pid || ''}
-          users={users}
-        />
-      ) : step === 2 ? (
-        <Requirement store={store} pid={pid === 'new' ? newPid : pid || ''} />
-      ) : step === 3 ? (
-        <ERDPage store={store} pid={pid === 'new' ? newPid : pid || ''} />
-      ) : step === 4 ? (
-        <ApiSpec store={store} pid={pid === 'new' ? newPid : pid || ''} />
-      ) : (
-        <Build store={store} pid={pid === 'new' ? newPid : pid || ''} />
+      {Awareness && (
+        <RoomProvider<UserPresence>
+          awareness={Awareness}
+          initialPresence={{
+            name: memberNickname,
+            color: `#${Math.round(Math.random() * 0xffffff).toString(16)}`,
+          }}
+        >
+          {step === 1 ? (
+            <Setting store={store} pid={pid === 'new' ? newPid : pid || ''} />
+          ) : step === 2 ? (
+            <Requirement
+              store={store}
+              pid={pid === 'new' ? newPid : pid || ''}
+            />
+          ) : step === 3 ? (
+            <ERDPage store={store} pid={pid === 'new' ? newPid : pid || ''} />
+          ) : step === 4 ? (
+            <ApiSpec store={store} pid={pid === 'new' ? newPid : pid || ''} />
+          ) : (
+            <Build store={store} pid={pid === 'new' ? newPid : pid || ''} />
+          )}
+        </RoomProvider>
       )}
     </div>
   );

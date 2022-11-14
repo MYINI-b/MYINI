@@ -3,6 +3,7 @@
 .setting-page {
   @include FLEX-COLUMN;
   @include STRETCH;
+  position: relative;
   min-height: 100vh;
   padding: rem(80) 15% 10% 15%;
   font-family: $eng-content;
@@ -16,6 +17,7 @@
   .setting-components {
     @include STRETCH;
     @include FLEX-COLUMN;
+    position: relative;
   }
 
   .bottom-side {
@@ -53,5 +55,28 @@
 
   &.normal {
     justify-content: initial;
+  }
+}
+
+.others-container {
+  position: absolute;
+  top: 0;
+  right: -100px;
+  @include FLEX-COLUMN;
+
+  .other-card {
+    @include FLEX-ALIGN-CENTER;
+
+    .other-color {
+      width: rem(10);
+      height: rem(10);
+      border-radius: rem(10);
+      content: '';
+    }
+
+    .other-name {
+      font-weight: bold;
+      font-size: rem(14);
+    }
   }
 }

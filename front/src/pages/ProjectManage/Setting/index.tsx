@@ -1,15 +1,11 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState, useCallback } from 'react';
-import { useSyncedStore } from '@syncedstore/react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getYjsValue, syncedStore } from '@syncedstore/core';
-import { WebrtcProvider } from 'y-webrtc';
-import { useSelector } from 'react-redux';
-import { RootState } from 'modules/Reducers';
+import { useOthers, useUpdatePresence } from '@y-presence/react';
+import { UserPresence } from 'types/main';
 
-import { globalStore, ProjectInfo } from 'store/yjsStore';
 import { getApi, putApi } from 'api';
 import DefaultProfile from 'assets/default-profile.png';
+import { Cursor } from 'components/Cursor';
 import ImageTitle from './ImageTitle';
 import ProjectDesc from './ProjectDesc/index';
 import Period from './Period/index';
@@ -20,9 +16,11 @@ import './style.scss';
 interface Props {
   store: any;
   pid: string;
-  users: string[];
 }
-export default function Setting({ store, pid, users }: Props) {
+export default function Setting({ store, pid }: Props) {
+  const others = useOthers<UserPresence>();
+  const updatePresence = useUpdatePresence<UserPresence>();
+
   const editProjectInfo = useCallback(async () => {
     const body = {
       projectName: store.pjt.title,
@@ -37,6 +35,18 @@ export default function Setting({ store, pid, users }: Props) {
     const resp = await putApi(`/projects/${pid}`, body);
     console.log(resp);
   }, [store]);
+
+  const handlePointMove = React.useCallback(
+    (e: React.PointerEvent) => {
+      updatePresence({
+        cursor: {
+          x: e.clientX,
+          y: e.clientY,
+        },
+      });
+    },
+    [updatePresence],
+  );
 
   useEffect(() => {
     const getProjectDetail = async () => {
@@ -62,7 +72,7 @@ export default function Setting({ store, pid, users }: Props) {
             id: member.memberId,
             name: member.memberNickName,
             img: member.memberProfileImg
-              ? `https://myini.s3.ap-northeast-2.amazonaws.com/userProfile/${member.memberProfileImg}`
+              ? `${member.memberProfileImg}`
               : DefaultProfile,
             email: member.memberEmail,
           };
@@ -75,14 +85,13 @@ export default function Setting({ store, pid, users }: Props) {
   }, [store, pid]);
 
   return (
-    <div className="setting-page">
+    <div className="setting-page" onPointerMove={handlePointMove}>
       {!!pid && store && (
         <div className="setting-components">
           <ImageTitle
             store={store}
             pid={pid}
             editProjectInfo={editProjectInfo}
-            users={users}
           />
           <div className="bottom-side">
             <div className="left-side">
@@ -98,8 +107,25 @@ export default function Setting({ store, pid, users }: Props) {
               />
             </div>
           </div>
+
+          <div className="others-container">
+            {others.map((user: any, i: number) => {
+              return (
+                <div className="other-card" key={i}>
+                  <span
+                    className="other-color"
+                    style={{ backgroundColor: user.presence.color }}
+                  />
+                  <label>&nbsp;{user.presence.name}</label>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
+      {others.map((user) => (
+        <Cursor key={user.id} {...user.presence} />
+      ))}
     </div>
   );
 }

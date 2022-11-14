@@ -1,13 +1,12 @@
 import './style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
-import { useSyncedStore } from '@syncedstore/react';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
+import { useOthers, useUpdatePresence } from '@y-presence/react';
+import { UserPresence } from 'types/main';
 
-import { RootState } from 'modules/Reducers';
-import { useSelector } from 'react-redux';
-import { globalStore } from 'store/yjsStore';
 import { getApi } from 'api';
+import { Cursor } from 'components/Cursor';
 import RowList from './RowList';
 
 interface Props {
@@ -15,6 +14,21 @@ interface Props {
   store: any;
 }
 export default function Requirement({ pid, store }: Props) {
+  const others = useOthers<UserPresence>();
+  const updatePresence = useUpdatePresence<UserPresence>();
+
+  const handlePointMove = useCallback(
+    (e: React.PointerEvent) => {
+      updatePresence({
+        cursor: {
+          x: e.clientX,
+          y: e.clientY,
+        },
+      });
+    },
+    [updatePresence],
+  );
+
   useEffect(() => {
     const getRequirements = async () => {
       const { data }: any = await getApi(`/requirementdocs/${pid}`);
@@ -58,7 +72,7 @@ export default function Requirement({ pid, store }: Props) {
     if (pid !== 'new') getRequirements();
   }, []);
   return (
-    <div className="requirement-container">
+    <div className="requirement-container" onPointerMove={handlePointMove}>
       <h1 className="requirement-title">요구사항명세서</h1>
 
       <section className="requirement-info-section">
@@ -86,6 +100,9 @@ export default function Requirement({ pid, store }: Props) {
 
         <RowList store={store} pid={pid} />
       </section>
+      {others.map((user) => (
+        <Cursor key={user.id} {...user.presence} />
+      ))}
     </div>
   );
 }

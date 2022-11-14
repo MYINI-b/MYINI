@@ -29,6 +29,8 @@ module.exports = {
     'no-case-declarations':0,
     'no-plusplus': 0,
     'react/no-array-index-key':0,
+    'react/jsx-props-no-spreading':0,
+    'react/display-name':0,
     'react/destructuring-assignment':0,
     "@typescript-eslint/no-empty-function":0,
     "jsx-a11y/no-static-element-interactions":0,
