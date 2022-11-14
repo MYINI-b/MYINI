@@ -43,7 +43,7 @@ export default function ControllerAddModal({
 
   const closeModal = useCallback(() => {
     setIsControllerAddModalOpen(false);
-    store.pjt.canEdit = true;
+    store.pjt.editor = null;
   }, [setIsControllerAddModalOpen]);
 
   const onControllerBaseURLChange = useCallback(
@@ -95,6 +95,7 @@ export default function ControllerAddModal({
         setControllerIdx(0);
       }
       setIsControllerAddModalOpen(false);
+      store.pjt.editor = null;
     },
     [
       controllerName,
@@ -115,6 +116,7 @@ export default function ControllerAddModal({
     console.log(data);
 
     store.pjt.controllers.splice(clickControllerIdx, 1);
+    store.pjt.editor = null;
     setIsControllerAddModalOpen(false);
   }, [store, clickControllerIdx]);
 

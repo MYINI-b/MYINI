@@ -63,3 +63,10 @@ export interface DTO_RESPONSE {
   dtoPrimitiveTypeName?: string;
   dtoIsList: boolean;
 }
+
+export interface EDITOR {
+  id: number;
+  space: string;
+  img: string;
+  name: string;
+}

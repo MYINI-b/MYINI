@@ -66,7 +66,11 @@ export default function Setting({ store, pid }: Props) {
         store.pjt.jiraLink = data.projectJiraUrl;
         store.pjt.notionLink = data.projectNotionUrl;
         store.pjt.figmaLink = data.projectFigmaUrl;
-        store.pjt.canEdit = store.pjt.canEdit ? store.pjt.canEdit : true;
+        store.pjt.editor = store.pjt.editor ? store.pjt.editor : null;
+        store.pjt.editController = store.pjt.editController
+          ? store.pjt.editController
+          : 0;
+        store.pjt.editApi = store.pjt.editApi ? store.pjt.editApi : 0;
 
         const memberResp: any = await getApi(`/projects/members/${pid}`);
         const memberData = memberResp.data.map((member: any) => {

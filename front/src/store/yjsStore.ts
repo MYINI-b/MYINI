@@ -22,7 +22,9 @@ export type ProjectInfo = {
   categories: CATEGORY[];
 
   // controllers
-  canEdit: boolean;
+  editor: any;
+  editController: number;
+  editApi: number;
   controllers: CONTROLLER[];
   currentAPI: API;
 

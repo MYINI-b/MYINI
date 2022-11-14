@@ -37,7 +37,7 @@ export default function DatatypeModal({
 
   const closeModal = useCallback(() => {
     setIsDatatypeModalOpen(false);
-    store.pjt.canEdit = true;
+    store.pjt.editor = null;
   }, [setIsDatatypeModalOpen]);
 
   const onDatatypeAddClick = useCallback(() => {

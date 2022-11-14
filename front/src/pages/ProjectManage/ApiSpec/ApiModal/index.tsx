@@ -165,7 +165,7 @@ export default function ApiModal({
 
   const closeModal = useCallback(() => {
     setIsApiModalOpen(false);
-    store.pjt.canEdit = true;
+    store.pjt.editor = null;
   }, []);
 
   const submitApi = useCallback(
@@ -384,7 +384,7 @@ export default function ApiModal({
         await deleteApi(`/apidocs/querystrings/${path.id}`);
       });
 
-      store.pjt.canEdit = true;
+      store.pjt.editor = null;
       setIsApiModalOpen(false);
     },
     [
@@ -410,7 +410,7 @@ export default function ApiModal({
     await deleteApi(`/apidocs/apis/${apiId}`);
     store.pjt.controllers[controllerIdx].responses.splice(apiRowIdx, 1);
     setIsApiModalOpen(false);
-    store.pjt.canEdit = true;
+    store.pjt.editor = null;
   }, [apiRowIdx, apiId]);
 
   return (

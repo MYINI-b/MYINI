@@ -11,9 +11,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import './style.scss';
+import DefaultProfile from 'assets/default-profile.png';
 import { getApi } from 'api';
 import { DTO } from 'types/ApiSpec';
 import { Cursor } from 'components/Cursor';
+import TimerModal from 'components/TimerModal';
+import { RootState } from 'modules/Reducers';
 import APIList from './APIList';
 import ControllerAddModal from './ControllerAddModal';
 import DatatypeModal from './DatatypeModal';
@@ -26,12 +29,15 @@ interface Props {
 export default function ApiSpec({ store, pid }: Props) {
   const others = useOthers<UserPresence>();
   const updatePresence = useUpdatePresence<UserPresence>();
+  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [controllerIdx, setControllerIdx] = useState(-1); // 현재 선택된 컨트롤러 인덱스
   const [clickControllerIdx, setClickControllerIdx] = useState(0); // 현재 선택된 컨트롤러 인덱스
-
   const [isControllerAddModalOpen, setIsControllerAddModalOpen] =
     useState(false);
   const [isDatatypeModalOpen, setIsDatatypeModalOpen] = useState(false);
+  const { memberId, memberProfileImg, memberNickname } = useSelector(
+    (state: RootState) => state.member,
+  );
 
   const handlePointMove = useCallback(
     (e: React.PointerEvent) => {
@@ -50,16 +56,38 @@ export default function ApiSpec({ store, pid }: Props) {
     setControllerIdx(idx);
   }, []);
 
-  const onHandleControllerClick = useCallback((idx: number) => {
-    setClickControllerIdx(idx);
-    setIsControllerAddModalOpen(true);
-    store.pjt.canEdit = false;
-  }, []);
+  const onHandleControllerClick = useCallback(
+    (idx: number, cid: number) => {
+      if (store.pjt.editor) {
+        setIsAlertModalOpen(true);
+        return;
+      }
+      setClickControllerIdx(idx);
+      setIsControllerAddModalOpen(true);
+      store.pjt.editor = {
+        id: memberId,
+        space: 'CONTROLLER',
+        img: memberProfileImg,
+        name: memberNickname,
+      };
+      store.pjt.editController = cid;
+    },
+    [store],
+  );
 
   const onDatatypeClick = useCallback(() => {
+    if (store.pjt.editor) {
+      setIsAlertModalOpen(true);
+      return;
+    }
     setIsDatatypeModalOpen(true);
-    store.pjt.canEdit = false;
-  }, []);
+    store.pjt.editor = {
+      id: memberId,
+      space: 'DATATYPE',
+      img: memberProfileImg,
+      name: memberNickname,
+    };
+  }, [store]);
 
   useEffect(() => {
     const getControllers = async () => {
@@ -121,11 +149,9 @@ export default function ApiSpec({ store, pid }: Props) {
         <span className="apispec-status-span">
           <FontAwesomeIcon
             icon={faCircle}
-            className={`apispec-status-icon ${
-              store.pjt.canEdit ? 'on' : 'off'
-            }`}
+            className={`apispec-status-icon ${store.pjt.editor ? 'off' : 'on'}`}
           />
-          &nbsp;{store.pjt.canEdit ? '편집가능' : '편집불가'}
+          &nbsp;{store.pjt.editor ? '편집불가' : '편집가능'}
         </span>
       </section>
 
@@ -143,9 +169,23 @@ export default function ApiSpec({ store, pid }: Props) {
                     key={i}
                   >
                     {controller.name} &nbsp;{' '}
+                    {store.pjt.editor &&
+                      store.pjt.editor.space === 'CONTROLLER' &&
+                      store.pjt.editController === controller.id && (
+                        <div className="editor-color-container" key={i}>
+                          <img
+                            src={store.pjt.editor.img || DefaultProfile}
+                            className="editor-color"
+                            alt="편집자 프로필 이미지"
+                          />
+                          <label className="editor-hover-name">
+                            {store.pjt.editor.name}
+                          </label>
+                        </div>
+                      )}
                     <FontAwesomeIcon
                       icon={faPen}
-                      onClick={() => onHandleControllerClick(i)}
+                      onClick={() => onHandleControllerClick(i, controller.id)}
                       className="controller-block-edit"
                     />
                   </div>
@@ -153,15 +193,43 @@ export default function ApiSpec({ store, pid }: Props) {
               })}
             <div
               className="controller-block plus"
-              onClick={() => onHandleControllerClick(-1)}
+              onClick={() => onHandleControllerClick(-1, 0)}
             >
               <FontAwesomeIcon icon={faPlus} />
+              {store.pjt.editor &&
+                store.pjt.editor.space === 'CONTROLLER' &&
+                store.pjt.editController === 0 && (
+                  <div className="editor-color-container">
+                    <img
+                      src={store.pjt.editor.img || DefaultProfile}
+                      className="editor-color"
+                      alt="편집자 프로필 이미지"
+                    />
+                    <label className="editor-hover-name">
+                      {store.pjt.editor.name}
+                    </label>
+                  </div>
+                )}
             </div>
           </div>
         </article>
         <article className="datatype-container" onClick={onDatatypeClick}>
           <FontAwesomeIcon icon={faPenToSquare} />
           &nbsp; 자료형 관리
+          {store.pjt.editor && store.pjt.editor.space === 'DATATYPE' && (
+            <div className="editor-abs-container">
+              <div className="editor-rel-container">
+                <img
+                  src={store.pjt.editor.img || DefaultProfile}
+                  className="editor-color"
+                  alt="편집자 프로필 이미지"
+                />
+                <label className="editor-hover-name">
+                  {store.pjt.editor.name}
+                </label>
+              </div>
+            </div>
+          )}
         </article>
       </section>
 
@@ -180,6 +248,13 @@ export default function ApiSpec({ store, pid }: Props) {
         <DatatypeModal
           setIsDatatypeModalOpen={setIsDatatypeModalOpen}
           store={store}
+        />
+      )}
+
+      {isAlertModalOpen && (
+        <TimerModal
+          text="한 번에 한 명의 유저만이 편집할 수 있는 설정입니다."
+          setIsOpen={setIsAlertModalOpen}
         />
       )}
 

@@ -2,10 +2,14 @@
 import { useCallback, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from 'react-redux';
 
+import { RootState } from 'modules/Reducers';
 import './style.scss';
 import ICON from 'assets/icon.png';
 import { RESPONSE } from 'types/ApiSpec';
+import DefaultProfile from 'assets/default-profile.png';
+import TimerModal from 'components/TimerModal';
 import ApiModal from '../ApiModal';
 
 interface Props {
@@ -15,12 +19,26 @@ interface Props {
 
 export default function APIList({ store, controllerIdx }: Props) {
   const [isApiModalOpen, setIsApiModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [apiRowIdx, setApiRowIdx] = useState(-1);
+  const { memberId, memberProfileImg, memberNickname } = useSelector(
+    (state: RootState) => state.member,
+  );
 
-  const onApiRowClick = useCallback((idx: number) => {
+  const onApiRowClick = useCallback((idx: number, aid: number) => {
+    if (store.pjt.editor) {
+      setIsModalOpen(true);
+      return;
+    }
     setApiRowIdx(idx);
     setIsApiModalOpen(true);
-    store.pjt.canEdit = false;
+    store.pjt.editor = {
+      id: memberId,
+      space: 'API',
+      img: memberProfileImg,
+      name: memberNickname,
+    };
+    store.pjt.editApi = aid;
   }, []);
 
   return (
@@ -54,10 +72,28 @@ export default function APIList({ store, controllerIdx }: Props) {
                           <div
                             className="api-table-row content"
                             key={i}
-                            onClick={() => onApiRowClick(i)}
+                            onClick={() => onApiRowClick(i, api.id)}
                           >
                             <div className="api-table-col one">
-                              <img src={ICON} alt="" className="active-img" />
+                              {store.pjt.editor &&
+                                store.pjt.editor.space === 'API' &&
+                                store.pjt.editApi === api.id && (
+                                  <div
+                                    className="editor-color-container"
+                                    key={i}
+                                  >
+                                    <img
+                                      src={
+                                        store.pjt.editor.img || DefaultProfile
+                                      }
+                                      className="editor-color"
+                                      alt="편집자 프로필 이미지"
+                                    />
+                                    <label className="editor-hover-name">
+                                      {store.pjt.editor.name}
+                                    </label>
+                                  </div>
+                                )}
                             </div>
                             <h3 className="api-table-col two">{`${
                               store.pjt.controllers[controllerIdx].name
@@ -82,7 +118,7 @@ export default function APIList({ store, controllerIdx }: Props) {
                   <button
                     type="button"
                     className="api-add-button"
-                    onClick={() => onApiRowClick(-1)}
+                    onClick={() => onApiRowClick(-1, 0)}
                   >
                     <FontAwesomeIcon icon={faPlus} />
                   </button>
@@ -98,6 +134,13 @@ export default function APIList({ store, controllerIdx }: Props) {
           controllerIdx={controllerIdx}
           apiRowIdx={apiRowIdx}
           store={store}
+        />
+      )}
+
+      {isModalOpen && (
+        <TimerModal
+          text="한 번에 한 명의 유저만이 편집할 수 있는 설정입니다."
+          setIsOpen={setIsModalOpen}
         />
       )}
     </section>
