@@ -4,7 +4,7 @@
 
 # SpringBoot
 
-**MYINI Backend는 Spring의 멀티모듈설계에 기반을 둔 코드입니다. 관련 내용은** [**우아한형제들 멀티모듈](https://techblog.woowahan.com/2637/) 문서를 참고해주세요.**
+**MYINI Backend는 Spring의 멀티모듈설계에 기반을 둔 코드입니다. 관련 내용은 [우아한형제들 멀티모듈](https://techblog.woowahan.com/2637/) 문서를 참고해주세요.**
 
 ### 패키지명
 
@@ -71,7 +71,7 @@
 
 - 이외의 컨벤션은 해당 상황과 로직에 맞는 적절한 용어를 사용해주세요
 - 특이사항이 있다면 PR에 해당 내용을 작성하여 개발진에게 검토를 받아주세요
-- 기본적인 JAVA관련 컨벤션은 **[Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)**를 참고해주세요
+- 기본적인 JAVA관련 컨벤션은 [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)를 참고해주세요
 
 # Data
 
