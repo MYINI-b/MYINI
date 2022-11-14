@@ -44,6 +44,11 @@
   .project-title-div {
     display: flex;
 
+    .project-info-title {
+      padding-bottom: 0.5rem;
+      color: $primary;
+    }  
+
     .projects-detail-btn {
       color: $primary;
       cursor: pointer;
@@ -64,16 +69,31 @@
   border-top: none;
   border-bottom: none;
   border-left: none;
-  width: 33%
+  width: 33%;
+
+  .project-div1-title {
+    display: flex;
+
+    .project-info-title {
+      padding-bottom: 0.5rem;
+      color: $primary;
+    }
+  
+    .projects-detail-btn {
+      color: $primary;
+      cursor: pointer;
+      padding: 0.5rem;
+      padding-bottom: 1.5rem;
+    }
+  }
 }
 
 .project-jira-div {
   @include FLEX-CENTER;
   @include FLEX-COLUMN;
   padding: 0.5rem;
-  padding-right: 8rem;
-  padding-left: 8rem;
-  padding-bottom: 1.25rem;
+  padding-right: 7rem;
+  padding-left: 7rem;
   border: solid;
   border-color: $gray;
   border-top: none;
@@ -84,7 +104,6 @@
   .jira-info-title-container {
     @include FLEX-CENTER;
     display: flex;
-    width: rem(300);
 
     .jira-edit-button {
       color: $primary;
@@ -97,6 +116,10 @@
       padding-bottom: 1rem;
       color: $primary;
     }
+  }
+
+  .project-jira-info-content {
+    padding: 1rem;
   }
 }
 
@@ -242,18 +265,8 @@
 }
 
 
-
-.project-info-title {
-  padding-bottom: 0.5rem;
-  color: $primary;
-}
-
 .main-members-container {
   display: flex;
-
-  .nothing-div {
-    display: none;
-  }
 
   .main-member-container {
     display: flex;

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import MainHeader from 'components/MainHeader';
 import ProjectCard from 'components/ProjectCard';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,13 +14,16 @@ import { MEMBER } from 'types/main';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faPen,
-  faCheck,
   faOtter,
   faFolderOpen,
+  faAddressBook,
 } from '@fortawesome/free-solid-svg-icons';
 
 // api
-import { getApi, patchApi } from 'api';
+import { getApi } from 'api';
+import Modal from './Modal';
+import MemberModal from './MemberModal';
+import JiraModal from './JiraModal';
 import { authAxios } from '../../api/common';
 
 import { Profile } from '../../modules/member';
@@ -29,37 +32,39 @@ import './style.scss';
 
 export default function MainPage() {
   const [step, setStep] = useState(0);
-  const [jiraEdit, setJiraEdit] = useState(false);
   const [myMember, setMyMember] = useState<MEMBER[]>([]);
-  const [jiraMail, setJiraMail] = useState('');
   const [myInfo, setMyInfo] = useState<{
     memberEmail: string;
     memberId: number;
     memberNickname: string;
     memberProfileImg: string;
     projectCount: number;
+    memberJiraEmail: string;
   }>({
     memberEmail: '',
     memberId: -1,
     memberNickname: '',
     memberProfileImg: '',
     projectCount: 0,
+    memberJiraEmail: '',
   });
 
-  const onJiraSubmit = useCallback(() => {
-    const fetchJiraMail = async () => {
-      const myJiraMail = jiraMail;
-      await patchApi(`/members/jiraemail`, myJiraMail);
-    };
-    fetchJiraMail();
-    setJiraEdit(false);
-  }, []);
+  // <=== modal open function
+  const [pjtModalOpen, setPjtModalOpen] = useState(false);
+  const modalClose = () => {
+    setPjtModalOpen(!pjtModalOpen);
+  };
 
-  const inputJiraMail = useCallback((e: any) => {
-    console.log(e.target.value, '???');
-    setJiraMail(e.target.value);
-  }, []);
+  const [memberModalOpen, setMemberModalOpen] = useState(false);
+  const modalMemberClose = () => {
+    setMemberModalOpen(!memberModalOpen);
+  };
 
+  const [jiraModalOpen, setJiraModalOpen] = useState(false);
+  const modalJiraClose = () => {
+    setJiraModalOpen(!jiraModalOpen);
+  };
+  // ===> modal open function
   const dispatch = useDispatch();
 
   // redux 사용
@@ -75,6 +80,7 @@ export default function MainPage() {
             memberNickname: res.data.memberNickname,
             memberProfileImg: res.data.memberProfileImg,
             projectCount: res.data.projectCount,
+            memberJiraEmail: res.data.memberJiraEmail,
           };
           setMyInfo(data);
           dispatch(
@@ -84,6 +90,7 @@ export default function MainPage() {
               data.memberNickname,
               data.memberProfileImg,
               data.projectCount,
+              data.memberJiraEmail,
             ),
           );
         })
@@ -117,12 +124,24 @@ export default function MainPage() {
               <FontAwesomeIcon
                 icon={faFolderOpen}
                 className="projects-detail-btn"
+                onClick={modalClose}
               />
+              {pjtModalOpen && <Modal modalClose={modalClose} />}
             </div>
             <h2>{getMyInfo.projectCount} 개</h2>
           </div>
           <div className="project-div1">
-            <h2 className="project-info-title">함께 했던 팀원</h2>
+            <div className="project-div1-title">
+              <h2 className="project-info-title">함께 했던 팀원</h2>
+              <FontAwesomeIcon
+                icon={faAddressBook}
+                className="projects-detail-btn"
+                onClick={modalMemberClose}
+              />
+              {memberModalOpen && (
+                <MemberModal modalMemberClose={modalMemberClose} />
+              )}
+            </div>
             <div className="main-members-container">
               {myMember.map((content: any, idx: number) => {
                 return (
@@ -152,29 +171,19 @@ export default function MainPage() {
           <div className="project-jira-div">
             <div className="jira-info-title-container">
               <h2 className="project-jira-info-title">내 Jira 정보</h2>
-              {jiraEdit ? (
-                <FontAwesomeIcon
-                  icon={faCheck}
-                  className="jira-edit-button"
-                  onClick={onJiraSubmit}
-                />
-              ) : (
-                <FontAwesomeIcon
-                  icon={faPen}
-                  className="jira-edit-button"
-                  onClick={() => setJiraEdit(true)}
-                />
-              )}
-            </div>
-            <div className="members">
-              <input
-                type="email"
-                onChange={inputJiraMail}
-                placeholder="jira 이메일을 입력해주세요."
-                readOnly={!jiraEdit}
-                disabled={!jiraEdit}
-                required
+              <FontAwesomeIcon
+                icon={faPen}
+                className="jira-edit-button"
+                onClick={modalJiraClose}
               />
+              {jiraModalOpen && <JiraModal modalJiraClose={modalJiraClose} />}
+            </div>
+            <div className="project-jira-info-content">
+              {myInfo.memberJiraEmail === '' ? (
+                <h4>jira 이메일을 입력해주세요.</h4>
+              ) : (
+                <h4>{myInfo.memberJiraEmail}</h4>
+              )}
             </div>
           </div>
         </div>

@@ -4,12 +4,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import './style.scss';
 import Stepper from 'components/Stepper';
 
-// types
-import { MY_INFO } from 'types/main';
+// redux
+import { useSelector } from 'react-redux';
 
 // 3rd party
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faOtter } from '@fortawesome/free-solid-svg-icons';
+import { RootState } from 'modules/Reducers';
 
 interface Props {
   needStepper: boolean;
@@ -18,6 +19,10 @@ interface Props {
 }
 export default function MainHeader({ needStepper, step, setStep }: Props) {
   const navigate = useNavigate();
+
+  const myProfile: any = useSelector(
+    (state: RootState) => state.member.memberProfileImg,
+  );
 
   // logout func
   const getLogout = () => {
@@ -49,7 +54,15 @@ export default function MainHeader({ needStepper, step, setStep }: Props) {
       )}
       <div className="dropdown">
         <div>
-          <div className="profile-img" />
+          {myProfile === null ? (
+            <div className="profile-default-img">
+              <FontAwesomeIcon icon={faOtter} />
+            </div>
+          ) : (
+            <div className="profile-google-img">
+              <img src={myProfile} alt="" className="profile-google-img-url" />
+            </div>
+          )}
         </div>
         <div className="dropdown-content">
           <Link to="/main">
