@@ -36,7 +36,6 @@ interface Props {
 }
 
 function GenerateVuerd({ pid, store }: Props) {
-  const { editor } = useSelector((state: RootState) => state.vuerd);
   const erdDiv = useRef() as React.MutableRefObject<HTMLDivElement>;
 
   useLayoutEffect(() => {
@@ -64,15 +63,27 @@ function GenerateVuerd({ pid, store }: Props) {
       await getApi(`erds/erdjson/${pid}`)
         .then((res: any) => {
           console.log(res.data, 'res');
-          editor.initLoadJson(JSON.stringify(res.data));
+          console.log(editor.value);
+          store.pjt.erdData = JSON.stringify(res.data);
+          editor.initLoadJson(store.pjt.erdData);
         })
         .catch((err: any) => {
           console.log(err, '새로운 프로젝트입니다.');
         });
     }
 
-    console.log(payload);
-    store.pjt.erd = payload;
+    editor.addEventListener('change', (event: any) => {
+      const targetValue = JSON.parse(event.target.value);
+      console.log(targetValue);
+      const totalValue = {
+        canvas: targetValue.canvas,
+        table: targetValue.table,
+        memo: targetValue.memo,
+        relationship: targetValue.relationship,
+      };
+      store.pjt.erdData = JSON.stringify(totalValue);
+    });
+
     // vuerd size
     window.addEventListener('resize', () => {
       editor.width = window.innerWidth * 0.96;

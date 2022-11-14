@@ -26,7 +26,7 @@ export type ProjectInfo = {
   currentAPI: API;
 
   // erd
-  erd: any;
+  erdData: string;
 };
 
 export const globalStore = syncedStore({
