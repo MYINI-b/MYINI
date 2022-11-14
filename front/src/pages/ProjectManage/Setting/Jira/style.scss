@@ -1,0 +1,16 @@
+@import 'variables.scss';
+
+.project-detail-jira {
+  display: flex;
+  align-items: center;
+  .project-detail-jira-title {
+    color: $primary;
+    font-weight: bold;
+    font-size: rem(24);
+    font-family: $eng-content;
+  }
+  .project-detail-jira-image-icon {
+    margin-left: rem(2);
+    width: rem(24);
+  }
+}

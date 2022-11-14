@@ -1,6 +1,6 @@
 import { getYjsValue, syncedStore } from '@syncedstore/core';
 import { WebrtcProvider } from 'y-webrtc';
-import { USER } from 'types/Setting';
+import { USER, JIRA } from 'types/Setting';
 import { ROW, CATEGORY } from 'types/Requirement';
 import { CONTROLLER, API } from 'types/ApiSpec';
 import * as Y from 'yjs';
@@ -26,6 +26,15 @@ export type ProjectInfo = {
   // controllers
   controllers: CONTROLLER[];
   currentAPI: API;
+
+  // jira
+  jiraId: string;
+  jiraApiKey: string;
+  jiraDomain: string;
+  JiraProject: JIRA[];
+  JiraProjectId: string;
+  JiraProjectKey: string;
+  JiraProjectName: string;
 };
 
 export const globalStore = syncedStore({
