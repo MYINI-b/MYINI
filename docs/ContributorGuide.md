@@ -19,7 +19,7 @@
 
 ### 1. 우측 상단의 Fork를 눌러 Git Repository를 복제하세요.
 
-![fork.png](ContributorGuide%202020f7241064472eb0d7e3bf0e19a963/fork.png)
+![fork.png](asset/fork.png)
 
 ### 2. 복제된 Repository에서 Git Clone을 진행하세요.
 
@@ -27,15 +27,15 @@
 git clone "Git Clone URL"
 ```
 
-![clone.png](ContributorGuide%202020f7241064472eb0d7e3bf0e19a963/clone.png)
+![clone.png](asset/clone.png)
 
-### 3. 새로운 브랜치를 생성하여 작업해주세요 브랜치 생성규칙은 [컨트리뷰트 컨벤션](https://www.notion.so/1b3b3cecbd1f45759c6fde6b2353934b) 을 확인해주세요.
+### 3. 새로운 브랜치를 생성하여 작업해주세요 브랜치 생성규칙은 [컨트리뷰트 컨벤션](ContributorConvention.md) 을 확인해주세요.
 
 ```bash
 git branch "새로운 브랜치" "분기시작 브랜치"
 ```
 
-### 4. [개발컨벤션](https://www.notion.so/6c25b0352dba4812bac811f5789f4e82) 를 토대로 코드를 수정한 후 Fork한 Repository로 Push해주세요. 커밋메세지는 [컨트리뷰트 컨벤션](https://www.notion.so/1b3b3cecbd1f45759c6fde6b2353934b) 을 확인해주세요.
+### 4. [개발컨벤션](CodeConvention.md) 를 토대로 코드를 수정한 후 Fork한 Repository로 Push해주세요. 커밋메세지는 [컨트리뷰트 컨벤션](ContributorConvention.md) 을 확인해주세요.
 
 ```bash
 # 코드수정 후
@@ -44,11 +44,11 @@ git commit
 git push
 ```
 
-### 5. 원본 오픈소스 Repository로 이동하여 Pull Request를 보내주세요. Pull Request 메세지는 [컨트리뷰트 컨벤션](https://www.notion.so/1b3b3cecbd1f45759c6fde6b2353934b) 을 확인해주세요.
+### 5. 원본 오픈소스 Repository로 이동하여 Pull Request를 보내주세요. Pull Request 메세지는 [컨트리뷰트 컨벤션](ContributorConvention.md) 을 확인해주세요.
 
-![pullrequest.png](ContributorGuide%202020f7241064472eb0d7e3bf0e19a963/pullrequest.png)
+![pullrequest.png](asset/pullrequest.png)
 
-![pullrequest2.png](ContributorGuide%202020f7241064472eb0d7e3bf0e19a963/pullrequest2.png)
+![pullrequest2.png](asset/pullrequest2.png)
 
 ### 6. 개발진이 확인 후 작성하는 Comment를 확인해 주세요. 며칠 시간이 소요될 수 있습니다.
 
