@@ -13,7 +13,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 
 import { assignCurrentErd } from 'modules/vuerd';
-import { ERD } from 'modules/erd';
 
 const S3_BUCKET = 'myini/ERD';
 const REGION = 'ap-northeast-2';
@@ -36,9 +35,8 @@ function GenerateVuerd(props: any) {
     generateVuerd();
   }, []);
 
-  useEffect(() => {
-    console.log(erdDiv.current, 'erddiv');
-  }, []);
+  // useEffect(() => {
+  // }, []);
 
   const generateVuerd = () => {
     // vuerd import
@@ -54,6 +52,29 @@ function GenerateVuerd(props: any) {
     const payload: any = {
       editor: editor,
     };
+
+    editor.setTheme({
+      canvas: '#f4f4f4',
+      table: '#fff',
+      tableActive: '#ed4e3b',
+      focus: '#ed4e3b',
+      keyPK: '#3e6ae1',
+      keyFK: '#fbb01b',
+      keyPFK: '#393c41',
+      font: '#171a20',
+      fontActive: '#171a20',
+      fontPlaceholder: '#a2a3a5',
+      contextmenu: '#fff',
+      contextmenuActive: '#fff',
+      edit: '#fbb01b',
+      columnSelect: '#f4f4f4',
+      columnActive: '#f4f4f4',
+      minimapShadow: '#a2a3a5',
+      scrollbarThumb: '#6D6D6D',
+      scrollbarThumbActive: '#a2a2a2',
+      menubar: '#FCAF92',
+      visualization: '#f4f4f4',
+    });
 
     // import project erd
     if (pid) {
