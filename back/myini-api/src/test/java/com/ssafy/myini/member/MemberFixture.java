@@ -15,7 +15,7 @@ public class MemberFixture {
     public static final Integer COUNT = 1;
 
     public static final MemberInfoResponse TEST_MEMBER_INFO_RESPONSE
-            = new MemberInfoResponse(ID, NICKNAME, EMAIL, PROFILE_IMG, COUNT);
+            = new MemberInfoResponse(ID, NICKNAME, EMAIL, PROFILE_IMG, EMAIL,COUNT);
 
     public static final CrewResponse TEST_CREW_RESPONSE
             = new CrewResponse(2L, "이싸피", "profile");
