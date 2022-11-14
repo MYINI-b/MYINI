@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { getApi, patchApi } from 'api';
+import { patchApi } from 'api';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import './style.scss';
 

@@ -11,10 +11,16 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { PROJECT_LIST } from 'types/main';
 
 // api
-import { getApi } from 'api';
+import { getApi, deleteApi } from 'api';
 
 export default function ProjectCard() {
   const [myProjectList, getMyProject] = useState<PROJECT_LIST[]>([]);
+
+  const deletePjt = async (pid: any) => {
+    console.log(pid, 'pid');
+    const deletePjtData: any = await deleteApi(`projects/${pid}`);
+    deletePjtData();
+  };
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -22,7 +28,7 @@ export default function ProjectCard() {
       getMyProject(getProjectDatas.data);
     };
     fetchProject();
-  }, []);
+  }, [deletePjt]);
 
   return (
     <>
@@ -31,6 +37,20 @@ export default function ProjectCard() {
           <div key={idx} className="card">
             <Link to={`/project/${content.projectId}`} className="card-link">
               <div className="card-header">
+                {content.projectImg === null ? (
+                  <img
+                    src="https://picsum.photos/id/522/300"
+                    alt=""
+                    className="card-background-img"
+                  />
+                ) : (
+                  <img
+                    src={content.projectImg}
+                    alt=""
+                    className="card-background-img"
+                  />
+                )}
+
                 <div className="card-header-title">{content.projectName}</div>
               </div>
               <div className="card-body">
@@ -39,9 +59,12 @@ export default function ProjectCard() {
                 </div>
                 <div className="card-body-context">
                   {content.projectDescription}
-                  <div className="card-body-footer">
-                    <FontAwesomeIcon icon={faTrash} />
-                  </div>
+                </div>
+                <div className="card-body-footer">
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    onClick={() => deletePjt(content.projectId)}
+                  />
                 </div>
               </div>
             </Link>
