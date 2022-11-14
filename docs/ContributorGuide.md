@@ -52,4 +52,4 @@ git push
 
 ### 6. 개발진이 확인 후 작성하는 Comment를 확인해 주세요. 며칠 시간이 소요될 수 있습니다.
 
-![comment.png](ContributorGuide%202020f7241064472eb0d7e3bf0e19a963/comment.png)
+![comment.png](asset/comment.png)
