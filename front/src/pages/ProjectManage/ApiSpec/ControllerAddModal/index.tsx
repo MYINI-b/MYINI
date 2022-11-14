@@ -43,6 +43,7 @@ export default function ControllerAddModal({
 
   const closeModal = useCallback(() => {
     setIsControllerAddModalOpen(false);
+    store.pjt.canEdit = true;
   }, [setIsControllerAddModalOpen]);
 
   const onControllerBaseURLChange = useCallback(

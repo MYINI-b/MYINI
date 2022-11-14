@@ -14,9 +14,13 @@ import DatatypeRow from './DatatypeRow';
 
 interface Props {
   setIsDatatypeModalOpen: Dispatch<React.SetStateAction<boolean>>;
+  store: any;
 }
 
-export default function DatatypeModal({ setIsDatatypeModalOpen }: Props) {
+export default function DatatypeModal({
+  setIsDatatypeModalOpen,
+  store,
+}: Props) {
   const { pid } = useSelector((state: RootState) => state.project);
   const [isDatatypeAddOpen, setIsDatatypeAddOpen] = useState(false);
   const [dto, setDto] = useState<DTO>({
@@ -33,6 +37,7 @@ export default function DatatypeModal({ setIsDatatypeModalOpen }: Props) {
 
   const closeModal = useCallback(() => {
     setIsDatatypeModalOpen(false);
+    store.pjt.canEdit = true;
   }, [setIsDatatypeModalOpen]);
 
   const onDatatypeAddClick = useCallback(() => {

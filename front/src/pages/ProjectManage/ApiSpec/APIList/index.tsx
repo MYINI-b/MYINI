@@ -20,6 +20,7 @@ export default function APIList({ store, controllerIdx }: Props) {
   const onApiRowClick = useCallback((idx: number) => {
     setApiRowIdx(idx);
     setIsApiModalOpen(true);
+    store.pjt.canEdit = false;
   }, []);
 
   return (

@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useOthers, useUpdatePresence } from '@y-presence/react';
 import { UserPresence } from 'types/main';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSelector } from 'react-redux';
 import {
   faCircle,
   faPenToSquare,
@@ -31,7 +32,6 @@ export default function ApiSpec({ store, pid }: Props) {
   const [isControllerAddModalOpen, setIsControllerAddModalOpen] =
     useState(false);
   const [isDatatypeModalOpen, setIsDatatypeModalOpen] = useState(false);
-  const canEdit = false;
 
   const handlePointMove = useCallback(
     (e: React.PointerEvent) => {
@@ -53,10 +53,12 @@ export default function ApiSpec({ store, pid }: Props) {
   const onHandleControllerClick = useCallback((idx: number) => {
     setClickControllerIdx(idx);
     setIsControllerAddModalOpen(true);
+    store.pjt.canEdit = false;
   }, []);
 
   const onDatatypeClick = useCallback(() => {
     setIsDatatypeModalOpen(true);
+    store.pjt.canEdit = false;
   }, []);
 
   useEffect(() => {
@@ -119,9 +121,11 @@ export default function ApiSpec({ store, pid }: Props) {
         <span className="apispec-status-span">
           <FontAwesomeIcon
             icon={faCircle}
-            className={`apispec-status-icon ${canEdit ? 'on' : 'off'}`}
+            className={`apispec-status-icon ${
+              store.pjt.canEdit ? 'on' : 'off'
+            }`}
           />
-          &nbsp;{canEdit ? '편집가능' : '편집불가'}
+          &nbsp;{store.pjt.canEdit ? '편집가능' : '편집불가'}
         </span>
       </section>
 
@@ -173,7 +177,10 @@ export default function ApiSpec({ store, pid }: Props) {
       )}
 
       {isDatatypeModalOpen && (
-        <DatatypeModal setIsDatatypeModalOpen={setIsDatatypeModalOpen} />
+        <DatatypeModal
+          setIsDatatypeModalOpen={setIsDatatypeModalOpen}
+          store={store}
+        />
       )}
 
       {others

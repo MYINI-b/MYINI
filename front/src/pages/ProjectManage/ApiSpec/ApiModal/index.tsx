@@ -163,6 +163,11 @@ export default function ApiModal({
     }
   }, []);
 
+  const closeModal = useCallback(() => {
+    setIsApiModalOpen(false);
+    store.pjt.canEdit = true;
+  }, []);
+
   const submitApi = useCallback(
     async (e: any) => {
       e.preventDefault();
@@ -379,6 +384,7 @@ export default function ApiModal({
         await deleteApi(`/apidocs/querystrings/${path.id}`);
       });
 
+      store.pjt.canEdit = true;
       setIsApiModalOpen(false);
     },
     [
@@ -404,10 +410,11 @@ export default function ApiModal({
     await deleteApi(`/apidocs/apis/${apiId}`);
     store.pjt.controllers[controllerIdx].responses.splice(apiRowIdx, 1);
     setIsApiModalOpen(false);
+    store.pjt.canEdit = true;
   }, [apiRowIdx, apiId]);
 
   return (
-    <section className="modal-empty" onClick={() => setIsApiModalOpen(false)}>
+    <section className="modal-empty" onClick={closeModal}>
       <form
         className="api-add-modal-content"
         onClick={(e) => e.stopPropagation()}

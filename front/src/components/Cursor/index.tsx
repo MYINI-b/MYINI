@@ -16,7 +16,7 @@ export const Cursor = React.memo(({ cursor, color, name }: CursorProps) => {
         top: 0,
         transition: 'transform 0.5s cubic-bezier(.17,.93,.38,1)',
         transform: `translateX(${x}px) translateY(${y}px)`,
-        zIndex: 99999999999,
+        zIndex: 99999,
       }}
     >
       <svg
