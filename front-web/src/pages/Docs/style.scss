@@ -55,10 +55,14 @@
   .docs-content > h1 {
     margin: 10px 0px 7px 5px;
   }
+  .docs-content > span {
+    margin: 10px 0px 7px 5px;
+  }
+
   .docs-content-item {
     margin: 10px 0 10px 7px;
   }
-  .docs-content-item > span {
+  .docs-content-item > ul > li > span {
     display: block;
     margin-top: 7px;
   }
