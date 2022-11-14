@@ -24,6 +24,7 @@ export default function Requirement({ pid, store }: Props) {
           x: e.clientX,
           y: e.clientY,
         },
+        step: 2,
       });
     },
     [updatePresence],
@@ -100,9 +101,11 @@ export default function Requirement({ pid, store }: Props) {
 
         <RowList store={store} pid={pid} />
       </section>
-      {others.map((user) => (
-        <Cursor key={user.id} {...user.presence} />
-      ))}
+      {others
+        .filter((user) => user.presence.step === 2)
+        .map((user) => (
+          <Cursor key={user.id} {...user.presence} />
+        ))}
     </div>
   );
 }

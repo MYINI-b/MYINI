@@ -1,4 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
+import { useOthers, useUpdatePresence } from '@y-presence/react';
+import { UserPresence } from 'types/main';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCircle,
@@ -7,14 +9,10 @@ import {
   faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 
-import { useSyncedStore } from '@syncedstore/react';
-
-import { RootState } from 'modules/Reducers';
-import { useSelector } from 'react-redux';
-import { globalStore } from 'store/yjsStore';
 import './style.scss';
 import { getApi } from 'api';
 import { DTO } from 'types/ApiSpec';
+import { Cursor } from 'components/Cursor';
 import APIList from './APIList';
 import ControllerAddModal from './ControllerAddModal';
 import DatatypeModal from './DatatypeModal';
@@ -25,7 +23,8 @@ interface Props {
 }
 
 export default function ApiSpec({ store, pid }: Props) {
-  const [objDataType, setObjDataType] = useState<Array<DTO>>([]);
+  const others = useOthers<UserPresence>();
+  const updatePresence = useUpdatePresence<UserPresence>();
   const [controllerIdx, setControllerIdx] = useState(-1); // 현재 선택된 컨트롤러 인덱스
   const [clickControllerIdx, setClickControllerIdx] = useState(0); // 현재 선택된 컨트롤러 인덱스
 
@@ -33,6 +32,19 @@ export default function ApiSpec({ store, pid }: Props) {
     useState(false);
   const [isDatatypeModalOpen, setIsDatatypeModalOpen] = useState(false);
   const canEdit = false;
+
+  const handlePointMove = useCallback(
+    (e: React.PointerEvent) => {
+      updatePresence({
+        cursor: {
+          x: e.clientX,
+          y: e.clientY,
+        },
+        step: 4,
+      });
+    },
+    [updatePresence],
+  );
 
   const onControllerBlockClick = useCallback((idx: number) => {
     setControllerIdx(idx);
@@ -79,16 +91,11 @@ export default function ApiSpec({ store, pid }: Props) {
       });
     };
 
-    if (pid !== 'new') getControllers();
-    else {
-      // 프로젝트 생성 -> pid 받음
-      // 받은 pid를 전역 store에 저장
-      // 현재 새로 만든 프로젝트에서 pid 필요하면 전역 store에서 가져다 쓸것.
-    }
+    getControllers();
   }, []);
 
   return (
-    <div className="apispec-container">
+    <div className="apispec-container" onPointerMove={handlePointMove}>
       <h1 className="apispec-title">API 명세서</h1>
 
       <section className="apispec-info-section">
@@ -152,6 +159,12 @@ export default function ApiSpec({ store, pid }: Props) {
       {isDatatypeModalOpen && (
         <DatatypeModal setIsDatatypeModalOpen={setIsDatatypeModalOpen} />
       )}
+
+      {others
+        .filter((user) => user.presence.step === 4)
+        .map((user) => (
+          <Cursor key={user.id} {...user.presence} />
+        ))}
     </div>
   );
 }

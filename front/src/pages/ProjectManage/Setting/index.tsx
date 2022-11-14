@@ -43,6 +43,7 @@ export default function Setting({ store, pid }: Props) {
           x: e.clientX,
           y: e.clientY,
         },
+        step: 1,
       });
     },
     [updatePresence],
@@ -123,9 +124,11 @@ export default function Setting({ store, pid }: Props) {
           </div>
         </div>
       )}
-      {others.map((user) => (
-        <Cursor key={user.id} {...user.presence} />
-      ))}
+      {others
+        .filter((user) => user.presence.step === 1)
+        .map((user) => (
+          <Cursor key={user.id} {...user.presence} />
+        ))}
     </div>
   );
 }

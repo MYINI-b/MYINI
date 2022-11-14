@@ -70,6 +70,7 @@ export default function ProjectManage() {
           initialPresence={{
             name: memberNickname,
             color: `#${Math.round(Math.random() * 0xffffff).toString(16)}`,
+            step: 1,
           }}
         >
           {step === 1 ? (
