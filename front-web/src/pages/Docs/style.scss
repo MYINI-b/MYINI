@@ -51,4 +51,12 @@
       box-shadow: $shadow;
     }
   }
+
+  .docs-content > h1 {
+    margin-top: 8px;
+    margin-left: 5px;
+  }
+  .docs-content-item {
+    margin: 7px 0 7px 5px;
+  }
 }
