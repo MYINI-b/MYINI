@@ -78,36 +78,31 @@ ERD tool 출처 : [https://github.com/vuerd/vuerd](https://github.com/vuerd/vuer
 
 ---
 
-### API 명세서
+## API 명세서
 
 API 문서에 따라 프로젝트의 기본적인 MVC 패턴 코드를 이니셜라이징 해드립니다.
 
-1. API Controller 생성
+### 1. API Controller 생성
 
 각 기능별로 API가 생성될 수 있도록 API Controller를 생성합니다. 이를 토대로 Controller.java가 생성됩니다.
 
 (화면 캡쳐)
 
-<aside>
-💡 **API Controller의 이름이 Controller.java의 이름으로 생성됩니다.**
+💡 **API Controller의 이름이 Controller.java의 이름으로 생성됩니다.**    
 (예시) userController.java
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/12138a0f-a5fd-4d41-aeaa-d5f8b30a3f02/Untitled.png)
+(유저컨트롤러 이미지)
 
-</aside>
+📌 `MethodName`을 바탕으로 메소드가 생성되니, `MethodName`은 **Camel Case** 형식으로 작성해주세요
 
-<aside>
-📌 `MethodName`을 바탕으로 메소드가 생성되니, **`MethodName`**은 **Camel Case** 형식으로 작성해주세요
 
-</aside>
-
-1. API 생성
+### 2. API 생성
 
 기능에 필요한 API를 생성합니다. API별로 각각의 method가 생성됩니다.
 
 (API 정보 입력 화면 캡쳐)
 
-1. API에 요구되는 Pathvariable, Querystring, Request / ResponseDTO들을 생성합니다.
+### 3. API에 요구되는 Pathvariable, Querystring, Request / ResponseDTO들을 생성합니다.
 
 - Pathvariable과 Querystring은 API URL에 적용됩니다.
 
@@ -117,10 +112,18 @@ API 문서에 따라 프로젝트의 기본적인 MVC 패턴 코드를 이니셜
 
 (RequestBody ResponseBody 생성화면 캡쳐)
 
-> ResponseDTO에서 변수로 쓰일 객체형 DTO는 자료형 관리에서 생성할 수 있습니다.
->
+Response/Request DTO의 이름은 해당 `API 메서드 명 + Request/Response` 로 자동으로 생성됩니다.
 
-(자료형 관리 화면 캡쳐)
+### 4. 사용자 정의 클래스 타입이 필요하다면 DTO를 생성할 수 있습니다.
+
+ResponseDTO에서 변수로 쓰일 객체형 DTO는 자료형 관리에서 생성할 수 있습니다.
+
+(화면 캡쳐)
+
+
+
+📌 **주의사항**    
+DTO 명을 타 DTO와 동일하게 생성하거나, DTO 내부의 변수를 등록하지 않으면 빌드 시 에러가 날 수 있습니다.
 
 ---
 
