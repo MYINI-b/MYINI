@@ -14,6 +14,7 @@ import ProjectDesc from './ProjectDesc/index';
 import Period from './Period/index';
 import ReferenceLink from './ReferenceLink';
 import ProjectMember from './Member/index';
+import ProjectJira from './Jira';
 import './style.scss';
 
 interface Props {
@@ -21,6 +22,10 @@ interface Props {
 }
 export default function SettingPage({ pid }: Props) {
   const [store, setStore] = useState<any>(useSyncedStore(globalStore));
+  const [modalOpen, setModalOpen] = useState(false);
+  const modalClose = () => {
+    setModalOpen(!modalOpen);
+  };
 
   const editProjectInfo = useCallback(async () => {
     const body = {
@@ -34,7 +39,30 @@ export default function SettingPage({ pid }: Props) {
       projectFigmaUrl: store.pjt.figmaLink,
     };
     const resp = await putApi(`/projects/${pid}`, body);
-    console.log(resp);
+    // console.log(resp);
+  }, [store]);
+
+  const editJiraInfo = useCallback(async () => {
+    const body = {
+      jiraId: store.pjt.jiraId,
+      jiraApiKey: store.pjt.jiraApiKey,
+    };
+    const body1 = {
+      jiraDomain: store.pjt.jiraDomain,
+    };
+
+    const resp = await putApi(
+      `https://k7b203.p.ssafy.io/api/jiras/${pid}/jiraaccount`,
+      body,
+    );
+    const resp1 = await putApi(
+      `https://k7b203.p.ssafy.io/api/jiras/${pid}/jiradomain`,
+      body1,
+    );
+    const jiraResp: any = await getApi(
+      `https://k7b203.p.ssafy.io/api/jiras/${pid}/projects`,
+    );
+    store.pjt.jiraProject = jiraResp.data;
   }, [store]);
 
   useEffect(() => {
@@ -53,7 +81,7 @@ export default function SettingPage({ pid }: Props) {
         store.pjt.figmaLink = projectResp.data.projectFigmaUrl;
 
         const memberResp: any = await getApi(`/projects/members/${pid}`);
-        console.log(memberResp);
+        // console.log(memberResp);
         const memberData = memberResp.data.map((member: any) => {
           return {
             id: member.memberId,
@@ -68,7 +96,6 @@ export default function SettingPage({ pid }: Props) {
       } else if (projectResp.response.status === 400) alert('없는 프젝');
       else if (projectResp.response.status === 500) alert('api 에러');
     };
-
     const initNewProject = async () => {
       const { data }: any = await postApi(`/projects`);
       const newStore = syncedStore({
@@ -77,7 +104,6 @@ export default function SettingPage({ pid }: Props) {
       new WebrtcProvider(`id${data.projectId}`, getYjsValue(newStore) as any);
       setStore(newStore);
     };
-
     if (pid === 'new') initNewProject();
     else getProjectDetail();
   }, []);
@@ -98,6 +124,11 @@ export default function SettingPage({ pid }: Props) {
               <ReferenceLink store={store} editProjectInfo={editProjectInfo} />
             </div>
             <div className="right-side">
+              <ProjectJira
+                store={store}
+                pid={pid}
+                editJiraInfo={editJiraInfo}
+              />
               <ProjectMember
                 store={store}
                 pid={pid}
