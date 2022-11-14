@@ -68,9 +68,9 @@
     @include FLEX-ALIGN-CENTER;
 
     .other-color {
-      width: rem(10);
-      height: rem(10);
-      border-radius: rem(10);
+      width: rem(20);
+      height: rem(20);
+      border-radius: rem(20);
       content: '';
     }
 
@@ -78,5 +78,9 @@
       font-weight: bold;
       font-size: rem(14);
     }
+  }
+
+  .other-card {
+    margin-top: rem(6);
   }
 }

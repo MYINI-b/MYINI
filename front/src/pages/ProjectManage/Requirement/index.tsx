@@ -74,7 +74,23 @@ export default function Requirement({ pid, store }: Props) {
   }, []);
   return (
     <div className="requirement-container" onPointerMove={handlePointMove}>
-      <h1 className="requirement-title">요구사항명세서</h1>
+      <h1 className="requirement-title">
+        요구사항명세서 &nbsp;
+        <div className="other-list-container">
+          {others
+            .filter((user) => user.presence.step === 2)
+            .map((user: any, i: number) => {
+              return (
+                <div className="other-color-container" key={i}>
+                  <img src={user.presence.img} className="other-color" alt="" />
+                  <label className="other-hover-name">
+                    {user.presence.name}
+                  </label>
+                </div>
+              );
+            })}
+        </div>
+      </h1>
 
       <section className="requirement-info-section">
         <h3 className="requirement-project-title">

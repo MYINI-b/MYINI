@@ -96,7 +96,23 @@ export default function ApiSpec({ store, pid }: Props) {
 
   return (
     <div className="apispec-container" onPointerMove={handlePointMove}>
-      <h1 className="apispec-title">API 명세서</h1>
+      <h1 className="apispec-title">
+        API 명세서 &nbsp;
+        <div className="other-list-container">
+          {others
+            .filter((user) => user.presence.step === 4)
+            .map((user: any, i: number) => {
+              return (
+                <div className="other-color-container" key={i}>
+                  <img src={user.presence.img} className="other-color" alt="" />
+                  <label className="other-hover-name">
+                    {user.presence.name}
+                  </label>
+                </div>
+              );
+            })}
+        </div>
+      </h1>
 
       <section className="apispec-info-section">
         <h2 className="apispec-project-title">{store && store.pjt.title}</h2>

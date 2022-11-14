@@ -28,4 +28,5 @@ export interface UserPresence {
   name: string;
   color: string;
   step?: number;
+  img?: string;
 }

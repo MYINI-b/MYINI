@@ -30,7 +30,23 @@ export default function ERDPage({ pid, store }: Props) {
 
   return (
     <div className="erd-container" onPointerMove={handlePointMove}>
-      <h1 className="erd-title">ERD</h1>
+      <h1 className="erd-title">
+        ERD &nbsp;
+        <div className="other-list-container">
+          {others
+            .filter((user) => user.presence.step === 3)
+            .map((user: any, i: number) => {
+              return (
+                <div className="other-color-container" key={i}>
+                  <img src={user.presence.img} className="other-color" alt="" />
+                  <label className="other-hover-name">
+                    {user.presence.name}
+                  </label>
+                </div>
+              );
+            })}
+        </div>
+      </h1>
       <section className="erd-info-section">
         <h3 className="erd-project-title">{store && store.pjt.title}</h3>
       </section>

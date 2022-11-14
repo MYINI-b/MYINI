@@ -10,6 +10,7 @@ import { RootState } from 'modules/Reducers';
 import { globalStore, ProjectInfo, globalStore2 } from 'store/yjsStore';
 
 import { UserPresence } from 'types/main';
+import DefaultProfile from 'assets/default-profile.png';
 import MainHeader from 'components/MainHeader';
 
 import { setPid, addSession, setProvider, setSessions } from 'modules/project';
@@ -34,7 +35,9 @@ export default function ProjectManage() {
       });
   const [store, setStore] = useState<any>(useSyncedStore(newStore));
   const [Awareness, setAwareness] = useState<any>(null);
-  const { memberNickname } = useSelector((state: RootState) => state.member);
+  const { memberNickname, memberProfileImg } = useSelector(
+    (state: RootState) => state.member,
+  );
 
   useEffect(() => {
     const setReduxPid = async () => {
@@ -71,6 +74,7 @@ export default function ProjectManage() {
             name: memberNickname,
             color: `#${Math.round(Math.random() * 0xffffff).toString(16)}`,
             step: 1,
+            img: memberProfileImg || DefaultProfile,
           }}
         >
           {step === 1 ? (

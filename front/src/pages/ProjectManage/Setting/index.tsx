@@ -110,17 +110,20 @@ export default function Setting({ store, pid }: Props) {
           </div>
 
           <div className="others-container">
-            {others.map((user: any, i: number) => {
-              return (
-                <div className="other-card" key={i}>
-                  <span
-                    className="other-color"
-                    style={{ backgroundColor: user.presence.color }}
-                  />
-                  <label>&nbsp;{user.presence.name}</label>
-                </div>
-              );
-            })}
+            {others
+              .filter((user) => user.presence.step === 1)
+              .map((user: any, i: number) => {
+                return (
+                  <div className="other-card" key={i}>
+                    <img
+                      src={user.presence.img}
+                      alt=""
+                      className="other-color"
+                    />
+                    <label>&nbsp;{user.presence.name}</label>
+                  </div>
+                );
+              })}
           </div>
         </div>
       )}
