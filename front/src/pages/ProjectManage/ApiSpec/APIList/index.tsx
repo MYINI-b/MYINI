@@ -26,19 +26,23 @@ export default function APIList({ store, controllerIdx }: Props) {
   );
 
   const onApiRowClick = useCallback((idx: number, aid: number) => {
-    if (store.pjt.editor) {
+    const findIdx = store.pjt.editors.findIndex(
+      (x: any) => x.space === 'API' && x.sid === aid,
+    );
+    if (aid !== 0 && findIdx >= 0) {
       setIsModalOpen(true);
       return;
     }
     setApiRowIdx(idx);
     setIsApiModalOpen(true);
-    store.pjt.editor = {
-      id: memberId,
-      space: 'API',
-      img: memberProfileImg,
-      name: memberNickname,
-    };
-    store.pjt.editApi = aid;
+    if (idx !== -1)
+      store.pjt.editors.push({
+        id: memberId,
+        space: 'API',
+        sid: aid,
+        img: memberProfileImg,
+        name: memberNickname,
+      });
   }, []);
 
   return (
@@ -75,22 +79,34 @@ export default function APIList({ store, controllerIdx }: Props) {
                             onClick={() => onApiRowClick(i, api.id)}
                           >
                             <div className="api-table-col one">
-                              {store.pjt.editor &&
-                                store.pjt.editor.space === 'API' &&
-                                store.pjt.editApi === api.id && (
+                              {store.pjt.editors &&
+                                store.pjt.editors.find(
+                                  (edt: any) =>
+                                    edt.space === 'API' && edt.sid === api.id,
+                                ) && (
                                   <div
                                     className="editor-color-container"
                                     key={i}
                                   >
                                     <img
                                       src={
-                                        store.pjt.editor.img || DefaultProfile
+                                        store.pjt.editors.find(
+                                          (edt: any) =>
+                                            edt.space === 'API' &&
+                                            edt.sid === api.id,
+                                        ).img || DefaultProfile
                                       }
                                       className="editor-color"
                                       alt="편집자 프로필 이미지"
                                     />
                                     <label className="editor-hover-name">
-                                      {store.pjt.editor.name}
+                                      {
+                                        store.pjt.editors.find(
+                                          (edt: any) =>
+                                            edt.space === 'API' &&
+                                            edt.sid === api.id,
+                                        ).name
+                                      }
                                     </label>
                                   </div>
                                 )}

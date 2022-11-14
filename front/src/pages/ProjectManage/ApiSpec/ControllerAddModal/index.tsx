@@ -1,7 +1,6 @@
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dispatch, useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 
 import { RootState } from 'modules/Reducers';
 import { useSelector } from 'react-redux';
@@ -10,7 +9,6 @@ import useNoSpaceInput from 'hooks/useNoSpaceInput';
 import Tooltip from 'components/Tooltip';
 import { deleteApi, postApi, putApi } from 'api';
 import './style.scss';
-import { CONTROLLER, API } from 'types/ApiSpec';
 
 interface Props {
   setIsControllerAddModalOpen: Dispatch<React.SetStateAction<boolean>>;
@@ -42,8 +40,16 @@ export default function ControllerAddModal({
   }, []);
 
   const closeModal = useCallback(() => {
+    const cid =
+      clickControllerIdx >= 0
+        ? store.pjt.controllers[clickControllerIdx].id
+        : 0;
+
+    const findIdx = store.pjt.editors.findIndex(
+      (x: any) => x.space === 'CONTROLLER' && x.sid === cid,
+    );
+    store.pjt.editors.splice(findIdx, 1);
     setIsControllerAddModalOpen(false);
-    store.pjt.editor = null;
   }, [setIsControllerAddModalOpen]);
 
   const onControllerBaseURLChange = useCallback(

@@ -17,6 +17,7 @@ import { DTO } from 'types/ApiSpec';
 import { Cursor } from 'components/Cursor';
 import TimerModal from 'components/TimerModal';
 import { RootState } from 'modules/Reducers';
+import { stderr } from 'process';
 import APIList from './APIList';
 import ControllerAddModal from './ControllerAddModal';
 import DatatypeModal from './DatatypeModal';
@@ -58,35 +59,43 @@ export default function ApiSpec({ store, pid }: Props) {
 
   const onHandleControllerClick = useCallback(
     (idx: number, cid: number) => {
-      if (store.pjt.editor) {
+      const find = store.pjt.editors.find(
+        (edt: any) => edt.space === 'CONTROLLER' && edt.sid === cid,
+      );
+
+      console.log(find);
+      if (find) {
         setIsAlertModalOpen(true);
         return;
       }
+
       setClickControllerIdx(idx);
       setIsControllerAddModalOpen(true);
-      store.pjt.editor = {
+      store.pjt.editors.push({
         id: memberId,
         space: 'CONTROLLER',
+        sid: cid,
         img: memberProfileImg,
         name: memberNickname,
-      };
-      store.pjt.editController = cid;
+      });
     },
     [store],
   );
 
   const onDatatypeClick = useCallback(() => {
-    if (store.pjt.editor) {
+    const find = store.pjt.editors.find((edt: any) => edt.space === 'DATATYPE');
+    if (find) {
       setIsAlertModalOpen(true);
       return;
     }
     setIsDatatypeModalOpen(true);
-    store.pjt.editor = {
+    store.pjt.editors.push({
       id: memberId,
       space: 'DATATYPE',
+      sid: 0,
       img: memberProfileImg,
       name: memberNickname,
-    };
+    });
   }, [store]);
 
   useEffect(() => {
@@ -146,13 +155,6 @@ export default function ApiSpec({ store, pid }: Props) {
 
       <section className="apispec-info-section">
         <h2 className="apispec-project-title">{store && store.pjt.title}</h2>
-        <span className="apispec-status-span">
-          <FontAwesomeIcon
-            icon={faCircle}
-            className={`apispec-status-icon ${store.pjt.editor ? 'off' : 'on'}`}
-          />
-          &nbsp;{store.pjt.editor ? '편집불가' : '편집가능'}
-        </span>
       </section>
 
       <section className="apispec-controller-container">
@@ -168,18 +170,33 @@ export default function ApiSpec({ store, pid }: Props) {
                     onClick={() => onControllerBlockClick(i)}
                     key={i}
                   >
-                    {controller.name} &nbsp;{' '}
-                    {store.pjt.editor &&
-                      store.pjt.editor.space === 'CONTROLLER' &&
-                      store.pjt.editController === controller.id && (
+                    {controller.name} &nbsp;
+                    {store.pjt.editors &&
+                      store.pjt.editors.find(
+                        (edt: any) =>
+                          edt.space === 'CONTROLLER' &&
+                          edt.sid === controller.id,
+                      ) && (
                         <div className="editor-color-container" key={i}>
                           <img
-                            src={store.pjt.editor.img || DefaultProfile}
+                            src={
+                              store.pjt.editors.find(
+                                (edt: any) =>
+                                  edt.space === 'CONTROLLER' &&
+                                  edt.sid === controller.id,
+                              ).img || DefaultProfile
+                            }
                             className="editor-color"
                             alt="편집자 프로필 이미지"
                           />
                           <label className="editor-hover-name">
-                            {store.pjt.editor.name}
+                            {
+                              store.pjt.editors.find(
+                                (edt: any) =>
+                                  edt.space === 'CONTROLLER' &&
+                                  edt.sid === controller.id,
+                              ).name
+                            }
                           </label>
                         </div>
                       )}
@@ -196,17 +213,28 @@ export default function ApiSpec({ store, pid }: Props) {
               onClick={() => onHandleControllerClick(-1, 0)}
             >
               <FontAwesomeIcon icon={faPlus} />
-              {store.pjt.editor &&
-                store.pjt.editor.space === 'CONTROLLER' &&
-                store.pjt.editController === 0 && (
+              {store.pjt.editors &&
+                store.pjt.editors.find(
+                  (edt: any) => edt.space === 'CONTROLLER' && edt.sid === 0,
+                ) && (
                   <div className="editor-color-container">
                     <img
-                      src={store.pjt.editor.img || DefaultProfile}
+                      src={
+                        store.pjt.editors.find(
+                          (edt: any) =>
+                            edt.space === 'CONTROLLER' && edt.sid === 0,
+                        ).img || DefaultProfile
+                      }
                       className="editor-color"
                       alt="편집자 프로필 이미지"
                     />
                     <label className="editor-hover-name">
-                      {store.pjt.editor.name}
+                      {
+                        store.pjt.editors.find(
+                          (edt: any) =>
+                            edt.space === 'CONTROLLER' && edt.sid === 0,
+                        ).name
+                      }
                     </label>
                   </div>
                 )}
@@ -216,20 +244,29 @@ export default function ApiSpec({ store, pid }: Props) {
         <article className="datatype-container" onClick={onDatatypeClick}>
           <FontAwesomeIcon icon={faPenToSquare} />
           &nbsp; 자료형 관리
-          {store.pjt.editor && store.pjt.editor.space === 'DATATYPE' && (
-            <div className="editor-abs-container">
-              <div className="editor-rel-container">
-                <img
-                  src={store.pjt.editor.img || DefaultProfile}
-                  className="editor-color"
-                  alt="편집자 프로필 이미지"
-                />
-                <label className="editor-hover-name">
-                  {store.pjt.editor.name}
-                </label>
+          {store.pjt.editors &&
+            store.pjt.editors.find((edt: any) => edt.space === 'DATATYPE') && (
+              <div className="editor-abs-container">
+                <div className="editor-rel-container">
+                  <img
+                    src={
+                      store.pjt.editors.find(
+                        (edt: any) => edt.space === 'DATATYPE',
+                      ).img || DefaultProfile
+                    }
+                    className="editor-color"
+                    alt="편집자 프로필 이미지"
+                  />
+                  <label className="editor-hover-name">
+                    {
+                      store.pjt.editors.find(
+                        (edt: any) => edt.space === 'DATATYPE',
+                      ).name
+                    }
+                  </label>
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </article>
       </section>
 

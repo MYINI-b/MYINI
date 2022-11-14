@@ -41,17 +41,20 @@ export default function ProjectManage() {
 
   useEffect(() => {
     const setReduxPid = async () => {
+      let rtcProvider;
       if (pid === 'new') {
         const { data }: any = await postApi(`/projects`);
         setNewPid(data.projectId);
         // dispatch(setPid(data.projectId));
-        new WebrtcProvider(
+        rtcProvider = new WebrtcProvider(
           `pjt${data.projectId}`,
           getYjsValue(newStore) as any,
         );
+        const { awareness } = rtcProvider;
+        setAwareness(awareness);
       } else {
         dispatch(setPid(pid || ''));
-        const rtcProvider = new WebrtcProvider(
+        rtcProvider = new WebrtcProvider(
           `pjt${pid}`,
           getYjsValue(newStore) as any,
         );

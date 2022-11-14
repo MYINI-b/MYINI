@@ -59,7 +59,8 @@
         white-space: nowrap;
         @include FLEX-ALIGN-CENTER;
         &::-webkit-scrollbar {
-          display: none;
+          // display: none;
+          width:8px;
         }
       }
 

@@ -2,7 +2,7 @@ import { getYjsValue, syncedStore } from '@syncedstore/core';
 import { WebrtcProvider } from 'y-webrtc';
 import { USER } from 'types/Setting';
 import { ROW, CATEGORY } from 'types/Requirement';
-import { CONTROLLER, API } from 'types/ApiSpec';
+import { CONTROLLER, API, EDITOR } from 'types/ApiSpec';
 
 export type ProjectInfo = {
   // project info
@@ -22,9 +22,8 @@ export type ProjectInfo = {
   categories: CATEGORY[];
 
   // controllers
-  editor: any;
-  editController: number;
-  editApi: number;
+  editors: EDITOR[];
+
   controllers: CONTROLLER[];
   currentAPI: API;
 

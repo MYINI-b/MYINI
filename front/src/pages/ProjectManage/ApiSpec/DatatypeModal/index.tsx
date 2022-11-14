@@ -36,8 +36,11 @@ export default function DatatypeModal({
   const [dtoRows, setDtoRows] = useState<any[]>([]);
 
   const closeModal = useCallback(() => {
+    const findIdx = store.pjt.editors.findIndex(
+      (x: any) => x.space === 'DATATYPE',
+    );
+    store.pjt.editors.splice(findIdx, 1);
     setIsDatatypeModalOpen(false);
-    store.pjt.editor = null;
   }, [setIsDatatypeModalOpen]);
 
   const onDatatypeAddClick = useCallback(() => {

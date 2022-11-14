@@ -16,6 +16,7 @@ import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { assignCurrentErd } from 'modules/vuerd';
 import { ERD } from 'modules/erd';
 import { RootState } from 'modules/Reducers';
+import { setInterval } from 'timers/promises';
 
 const S3_BUCKET = 'myini/ERD';
 const REGION = 'ap-northeast-2';
@@ -42,6 +43,8 @@ function GenerateVuerd({ pid, store }: Props) {
     generateVuerd();
     console.log(erdDiv.current, 'erddiv');
   }, []);
+
+  useEffect(() => {}, []);
 
   const generateVuerd = async () => {
     // vuerd import
