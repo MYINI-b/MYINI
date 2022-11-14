@@ -22,20 +22,20 @@ export default function MainHeader({ needStepper, step, setStep }: Props) {
   // logout func
   const getLogout = () => {
     window.localStorage.removeItem('accessToken');
+    alert('정상적으로 로그아웃되었습니다.');
     navigate('/');
-    console.log(localStorage, 'local');
   };
 
   // TODO: tokencheck
-  const checkToken = () => {
-    if (
-      localStorage.getItem('accessToken') === null ||
-      localStorage.getItem('accessToken') === undefined
-    ) {
-      navigate('/');
-    }
-  };
-  checkToken();
+  // const checkToken = () => {
+  //   if (
+  //     localStorage.getItem('accessToken') === null ||
+  //     localStorage.getItem('accessToken') === undefined
+  //   ) {
+  //     navigate('/');
+  //   }
+  // };
+  // checkToken();
 
   useEffect(() => {}, []);
 

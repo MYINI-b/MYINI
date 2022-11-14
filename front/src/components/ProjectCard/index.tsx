@@ -3,6 +3,10 @@ import './style.scss';
 
 import { Link } from 'react-router-dom';
 
+// 3rd party
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+
 // types
 import { PROJECT_LIST } from 'types/main';
 
@@ -25,10 +29,9 @@ export default function ProjectCard() {
       {myProjectList.map((content, idx) => {
         return (
           <div key={idx} className="card">
-            <Link to={`/project/${content.projectId}`}>
+            <Link to={`/project/${content.projectId}`} className="card-link">
               <div className="card-header">
                 <div className="card-header-title">{content.projectName}</div>
-                <div>{content.projectId}</div>
               </div>
               <div className="card-body">
                 <div className="card-body-header">
@@ -36,10 +39,8 @@ export default function ProjectCard() {
                 </div>
                 <div className="card-body-context">
                   {content.projectDescription}
-                  <div className="members">
-                    <div className="member" />
-                    <div className="member" />
-                    <div className="member" />
+                  <div className="card-body-footer">
+                    <FontAwesomeIcon icon={faTrash} />
                   </div>
                 </div>
               </div>
