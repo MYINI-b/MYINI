@@ -25,14 +25,14 @@ export default function CategoryListModal({
   const selectManager = useCallback(
     async (manager: USER) => {
       const body = {
-        memberName: manager,
+        memberName: manager.name,
       };
       const { data }: any = await putApi(
         `/requirementdocs/requirements/${rowId}/members`,
         body,
       );
 
-      store.pjt.rows[idx].manager = manager;
+      store.pjt.rows[idx].manager = manager.nickname;
       closeManagerModal();
     },
     [store, idx],
@@ -58,12 +58,12 @@ export default function CategoryListModal({
               return (
                 <span
                   className={`category-row ${
-                    store.pjt.rows[idx].manager === user.name && 'select'
+                    store.pjt.rows[idx].manager === user.nickname && 'select'
                   }`}
                   key={i}
                   onClick={() => selectManager(user)}
                 >
-                  {user.name}
+                  {user.nickname}
                 </span>
               );
             })}

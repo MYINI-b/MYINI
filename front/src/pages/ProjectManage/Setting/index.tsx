@@ -115,7 +115,7 @@ export default function Setting({ store, pid }: Props) {
               ? `${member.memberProfileImg}`
               : DefaultProfile,
             email: member.memberEmail,
-            nickname: member.memberNickname,
+            nickname: member.memberNickName,
           };
         });
         store.pjt.jiraMembers = jiraData;
