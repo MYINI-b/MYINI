@@ -11,6 +11,7 @@
     margin-top: rem(40);
     font-weight: bold;
     font-size: rem(36);
+    @include FLEX-ALIGN-CENTER;
   }
 
   .apispec-info-section {
@@ -58,11 +59,14 @@
         white-space: nowrap;
         @include FLEX-ALIGN-CENTER;
         &::-webkit-scrollbar {
-          display: none;
+          // display: none;
+          width:4px;
+          height:4px;
         }
       }
 
       .controller-block {
+        position: relative;
         height: rem(40);
         margin-right: rem(12);
         padding: 0 rem(8);
@@ -101,6 +105,7 @@
     }
 
     .datatype-container {
+      position: relative;
       flex-shrink: 0;
       margin-left: rem(10);
       font-weight: bold;
@@ -113,6 +118,85 @@
         color: $secondary;
         transform: scale(1.03);
       }
+    }
+  }
+}
+
+.editor-color-container {
+  @include FLEX-COLUMN;
+  position: relative;
+  align-items: center;
+  margin: 0 rem(5);
+
+  .editor-color {
+    width: rem(30);
+    height: rem(30);
+    border-radius: rem(30);
+  }
+
+  &:hover {
+    .editor-hover-name {
+      opacity: 1;
+    }
+  }
+
+  .editor-hover-name {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: rem(4);
+    padding: rem(6);
+    color: $black;
+    font-weight: bold;
+    font-size: rem(6);
+    font-family: $eng-content;
+    white-space: nowrap;
+    background-color: transparent;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: 0.3s ease;
+    @include FLEX-CENTER;
+  }
+}
+
+.editor-abs-container {
+  @include FLEX-COLUMN;
+  position: absolute;
+  top: -30px;
+  right: 0;
+  align-items: center;
+
+  .editor-rel-container {
+    position: relative;
+
+    .editor-color {
+      width: rem(30);
+      height: rem(30);
+      border-radius: rem(30);
+    }
+
+    &:hover {
+      .editor-hover-name {
+        opacity: 1;
+      }
+    }
+
+    .editor-hover-name {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: rem(4);
+      padding: rem(6);
+      color: $black;
+      font-weight: bold;
+      font-size: rem(6);
+      font-family: $eng-content;
+      white-space: nowrap;
+      background-color: transparent;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: 0.3s ease;
+      @include FLEX-CENTER;
     }
   }
 }

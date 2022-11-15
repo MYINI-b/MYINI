@@ -163,6 +163,19 @@ export default function ApiModal({
     }
   }, []);
 
+  const closeModal = useCallback(() => {
+    if (apiRowIdx >= 0) {
+      const findIdx = store.pjt.editors.findIndex(
+        (x: any) =>
+          x.space === 'API' &&
+          x.sid ===
+            store.pjt.controllers[controllerIdx].responses[apiRowIdx].id,
+      );
+      store.pjt.editors.splice(findIdx, 1);
+    }
+    setIsApiModalOpen(false);
+  }, []);
+
   const submitApi = useCallback(
     async (e: any) => {
       e.preventDefault();
@@ -401,23 +414,50 @@ export default function ApiModal({
   );
 
   const onDeleteClick = useCallback(async () => {
+    const findIdx = store.pjt.editors.findIndex(
+      (x: any) =>
+        x.space === 'API' &&
+        x.sid === store.pjt.controllers[controllerIdx].responses[apiRowIdx].id,
+    );
+    store.pjt.editors.splice(findIdx, 1);
+
     await deleteApi(`/apidocs/apis/${apiId}`);
     store.pjt.controllers[controllerIdx].responses.splice(apiRowIdx, 1);
     setIsApiModalOpen(false);
   }, [apiRowIdx, apiId]);
 
+  const onDuplicateClick = useCallback(async () => {
+    const copyObj = {
+      ...store.pjt.controllers[controllerIdx].responses[apiRowIdx],
+    };
+    const dupApiObj = {
+      apiName: copyObj.apiName,
+      apiDescription: copyObj.desc,
+      apiUrl: copyObj.url,
+      apiMethod: copyObj.method,
+      apiCode: copyObj.code,
+      apiMethodName: copyObj.methodName,
+    };
+    const { data }: any = await postApi(
+      `/apidocs/${store.pjt.controllers[controllerIdx].id}/apis`,
+      { ...dupApiObj, apiCode: dupApiObj.apiCode === 200 ? 'OK' : 'CREATED' },
+    );
+
+    copyObj.id = data.apiId;
+    store.pjt.controllers[controllerIdx].responses.push(copyObj);
+
+    closeModal();
+  }, [apiRowIdx]);
+
   return (
-    <section className="modal-empty" onClick={() => setIsApiModalOpen(false)}>
+    <section className="modal-empty" onClick={closeModal}>
       <form
         className="api-add-modal-content"
         onClick={(e) => e.stopPropagation()}
         onSubmit={submitApi}
       >
         <article className="closebtn-container">
-          <FontAwesomeIcon
-            icon={faClose}
-            onClick={() => setIsApiModalOpen(false)}
-          />
+          <FontAwesomeIcon icon={faClose} onClick={closeModal} />
         </article>
 
         <article className="api-add-content-container">
@@ -462,13 +502,22 @@ export default function ApiModal({
             {isEdit ? '수정' : '등록'}
           </button>
           {isEdit && (
-            <button
-              type="button"
-              className="api-add-button"
-              onClick={onDeleteClick}
-            >
-              삭제
-            </button>
+            <>
+              <button
+                type="button"
+                className="api-add-button"
+                onClick={onDuplicateClick}
+              >
+                복제
+              </button>
+              <button
+                type="button"
+                className="api-add-button"
+                onClick={onDeleteClick}
+              >
+                삭제
+              </button>
+            </>
           )}
         </article>
       </form>

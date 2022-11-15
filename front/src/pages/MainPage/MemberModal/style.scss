@@ -1,0 +1,60 @@
+@import 'variables.scss';
+
+.modal-pjt-container {
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.4);
+  z-index: 1001;
+  position: fixed;
+  top: 0;
+  left: 0;
+  .modal-pjt-detail {
+    width: 30%;
+    height: 40%;
+    border-radius: 3%;
+    overflow-y: scroll;
+    background-color: #fff;
+    // Modal 창 브라우저 가운데로 조정
+    position: absolute;
+    left: 50%;
+    top:50%;
+    transform: translate(-50%, -50%);
+    z-index:100;
+    padding-left: rem(10);
+    padding-right: rem(10);
+    .modal-pjt-title {
+      @include FLEX-BETWEEN;
+      padding-top: rem(10);
+      font-size: rem(30);
+      padding-bottom: rem(10);
+      color: $primary;
+
+      .modal-pjt-button-close {
+        padding-right: rem(10);
+        cursor: pointer;
+      }
+    }
+    .modal-pjt-content {
+      @include FLEX-COLUMN;
+      padding: 1rem;
+
+      .modal-pjt-content span {
+        padding: 1rem;
+      }
+
+      .modal-pjt-content-detail {
+        @include FLEX-BETWEEN;
+        padding: 0.75rem;
+
+        .modal-pjt-content-detail-delete-btn {
+          color: $light-gray;
+        }
+
+        .modal-pjt-content-detail-delete-btn:hover {
+          color: $primary;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

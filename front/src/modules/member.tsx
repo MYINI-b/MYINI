@@ -9,6 +9,7 @@ export const Profile = (
   memberNickname: string,
   memberProfileImg: string,
   projectCount: number,
+  memberJiraEmail: string,
 ) => ({
   type: GET_PROFILE,
   payload: {
@@ -17,6 +18,7 @@ export const Profile = (
     memberNickname,
     memberProfileImg,
     projectCount,
+    memberJiraEmail,
   },
 });
 
@@ -29,6 +31,7 @@ type ProfileState = {
   memberNickname: string;
   memberProfileImg: string;
   projectCount: number;
+  memberJiraEmail: string;
 };
 
 // 초기상태선언
@@ -38,6 +41,7 @@ const initialState: ProfileState = {
   memberNickname: '',
   memberProfileImg: '',
   projectCount: 0,
+  memberJiraEmail: '',
 };
 
 // 리듀서 작성
@@ -53,6 +57,7 @@ function getProfile(
         memberNickname: action.payload.memberNickname,
         memberProfileImg: action.payload.memberProfileImg,
         projectCount: action.payload.projectCount,
+        memberJiraEmail: action.payload.memberJiraEmail,
       };
     default:
       return state;

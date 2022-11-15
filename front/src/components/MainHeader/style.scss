@@ -4,7 +4,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000000;
+  z-index: 99999;
   width: 100%;
   height: rem(70);
   background-color: $white;
@@ -22,11 +22,30 @@
   margin-right: rem(10);
 }
 
-.profile-img {
+.profile-default-img {
+  @include FLEX-CENTER;
   width: rem(50);
   height: rem(50);
-  background-color: gray;
+  color: $primary;
+  font-size: rem(20);
+  background-color: $fourth;
   border-radius: 50%;
+}
+
+.profile-google-img {
+  @include FLEX-CENTER;
+  width: rem(50);
+  height: rem(50);
+  overflow: hidden;
+  color: $primary;
+  font-size: rem(20);
+  background-color: $fourth;
+  border-radius: 50%;
+
+  .profile-google-img-url {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .dropdown-content {
