@@ -1,7 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-const accessToken =
-  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsIlJPTEUiOiJST0xFX1VTRVIiLCJpYXQiOjE2Njg0ODQxODYsImV4cCI6MTY2OTA4ODk4Nn0.zsn9X8sEPXyLVO19N1BL0qdOy9KNbGbZusRFa7Syh6U'; // localStorage.getItem('accessToken');
+const accessToken = localStorage.getItem('accessToken');
 
 // const accessToken =
 //   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4IiwiUk9MRSI6IlJPTEVfVVNFUiIsImlhdCI6MTY2ODQ4NTAyMSwiZXhwIjoxNjY5MDg5ODIxfQ.rfrS89tGfsBwCiKqN9IBx451tGORmSYOw_Y2arNaDdU';
