@@ -60,7 +60,8 @@
         @include FLEX-ALIGN-CENTER;
         &::-webkit-scrollbar {
           // display: none;
-          width:8px;
+          width:4px;
+          height:4px;
         }
       }
 

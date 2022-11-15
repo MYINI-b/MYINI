@@ -9,7 +9,7 @@ export const Cursor = React.memo(({ cursor, color, name }: CursorProps) => {
   return (
     <div
       style={{
-        position: 'absolute',
+        position: 'fixed',
         pointerEvents: 'none',
         userSelect: 'none',
         left: 0,
