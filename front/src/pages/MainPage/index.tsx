@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import MainHeader from 'components/MainHeader';
 import ProjectCard from 'components/ProjectCard';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +20,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 // api
-import { getApi } from 'api';
+import { getApi, deleteApi } from 'api';
 import Modal from './Modal';
 import MemberModal from './MemberModal';
 import JiraModal from './JiraModal';

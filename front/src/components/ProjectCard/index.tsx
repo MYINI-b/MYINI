@@ -17,7 +17,6 @@ export default function ProjectCard() {
   const [myProjectList, getMyProject] = useState<PROJECT_LIST[]>([]);
 
   const deletePjt = async (pid: any) => {
-    console.log(pid, 'pid');
     const deletePjtData: any = await deleteApi(`projects/${pid}`);
     deletePjtData();
   };
@@ -45,7 +44,7 @@ export default function ProjectCard() {
                   />
                 ) : (
                   <img
-                    src={content.projectImg}
+                    src={`https://myini.s3.ap-northeast-2.amazonaws.com/projectProfile/${content.projectImg}`}
                     alt=""
                     className="card-background-img"
                   />
@@ -53,21 +52,23 @@ export default function ProjectCard() {
 
                 <div className="card-header-title">{content.projectName}</div>
               </div>
-              <div className="card-body">
+            </Link>
+            <div className="card-body">
+              <Link to={`/project/${content.projectId}`} className="card-link">
                 <div className="card-body-header">
                   <h1>{content.projectName}</h1>
                 </div>
-                <div className="card-body-context">
-                  {content.projectDescription}
-                </div>
-                <div className="card-body-footer">
-                  <FontAwesomeIcon
-                    icon={faTrash}
-                    onClick={() => deletePjt(content.projectId)}
-                  />
-                </div>
+              </Link>
+              <div className="card-body-context">
+                {content.projectDescription}
               </div>
-            </Link>
+              <div className="card-body-footer">
+                <FontAwesomeIcon
+                  icon={faTrash}
+                  onClick={() => deletePjt(content.projectId)}
+                />
+              </div>
+            </div>
           </div>
         );
       })}
