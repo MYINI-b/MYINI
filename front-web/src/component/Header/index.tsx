@@ -29,9 +29,15 @@ export default function Header() {
             Docs
           </button>
         </Link>
-        <button type="button" className="nav-button">
-          Repository
-        </button>
+        <a
+          href="https://github.com/wooobinkim/myini/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <button type="button" className="nav-button">
+            Repository
+          </button>
+        </a>
       </div>
     </div>
   );
