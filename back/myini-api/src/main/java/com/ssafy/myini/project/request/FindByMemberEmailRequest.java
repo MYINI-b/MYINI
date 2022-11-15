@@ -11,7 +11,5 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FindByMemberEmailRequest {
-    @NotBlank(message = "이메일값은 필수값입니다.")
-    @Email(message = "이메일 형식에 맞춰주세요.")
     private String memberEmail;
 }

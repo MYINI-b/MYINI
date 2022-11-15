@@ -158,7 +158,9 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional
     public List<ProjectMemberResponse> findByMemberEmail(FindByMemberEmailRequest request) {
+        System.out.println("request.getMemberEmail() = " + request.getMemberEmail());
         List<Member> findMember = memberRepository.findByMemberEmailContains(request.getMemberEmail());
 
         return findMember.stream().map(member -> ProjectMemberResponse.from(member)).collect(Collectors.toList());
