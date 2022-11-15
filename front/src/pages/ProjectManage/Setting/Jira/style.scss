@@ -1,0 +1,22 @@
+@import 'variables.scss';
+
+.project-detail-jira {
+  display: flex;
+  align-items: center;
+  padding-bottom: rem(10);
+  .project-detail-jira-title {
+    color: $primary;
+    font-weight: bold;
+    font-size: rem(24);
+    font-family: $eng-content;
+  }
+  .project-detail-jira-image-icon {
+    margin-left: rem(2);
+    width: rem(24);
+  }
+}
+.project-select-jira {
+  padding-bottom: rem(30);
+  font-family: $eng-content;
+  font-size: rem(20);
+}

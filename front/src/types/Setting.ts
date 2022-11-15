@@ -4,3 +4,9 @@ export interface USER {
   name: string;
   email: string;
 }
+
+export interface JIRA {
+  jiraProjectId: string;
+  jiraProjectKey: string;
+  jiraProjectName: string;
+}
