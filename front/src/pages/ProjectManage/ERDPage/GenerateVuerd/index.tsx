@@ -17,6 +17,7 @@ import { assignCurrentErd } from 'modules/vuerd';
 import { ERD } from 'modules/erd';
 import { RootState } from 'modules/Reducers';
 import { setInterval } from 'timers/promises';
+import { toEditorSettings } from 'typescript';
 
 const S3_BUCKET = 'myini/ERD';
 const REGION = 'ap-northeast-2';
@@ -38,6 +39,7 @@ interface Props {
 
 function GenerateVuerd({ pid, store }: Props) {
   const erdDiv = useRef() as React.MutableRefObject<HTMLDivElement>;
+  const [saveErdValue, setErdValue] = useState('');
 
   useLayoutEffect(() => {
     generateVuerd();
@@ -57,7 +59,6 @@ function GenerateVuerd({ pid, store }: Props) {
     const payload: any = {
       editor,
     };
-
     editor.setTheme({
       canvas: '#f4f4f4',
       table: '#fff',
@@ -120,26 +121,33 @@ function GenerateVuerd({ pid, store }: Props) {
     const obj: any = {
       editor: erdDiv.current.children.item(0),
     };
+    console.log(obj.editor.value, 'asd');
+    // setErdValue(obj.editor.value);
     // canvas, tabel, memo, relationship
-    const isCanvasState = obj.editor.context.store.canvasState;
-    const isMemoState = obj.editor.context.store.memoState;
-    const isTableState = obj.editor.context.store.tableState;
-    const isRelationshipState = obj.editor.context.store.relationshipState;
-    const combinedState = {
-      canvas: isCanvasState,
-      table: isTableState,
-      memo: isMemoState,
-      relationship: isRelationshipState,
-    };
-    const stateToJson = JSON.stringify(combinedState);
-    console.log(isTableState, 'istable');
-    console.log(obj.editor.context, 'editor');
+
+    // for vuerd version 1.2.2
+    // const isCanvasState = obj.editor.context.store.canvasState;
+    // const isMemoState = obj.editor.context.store.memoState;
+    // const isTableState = obj.editor.context.store.tableState;
+    // const isRelationshipState = obj.editor.context.store.relationshipState;
+    // const combinedState = {
+    //   canvas: isCanvasState,
+    //   table: isTableState,
+    //   memo: isMemoState,
+    //   relationship: isRelationshipState,
+    // };
+
+    // for vuerd version 2.2.2
+    const combinedState = obj.editor.value;
+    console.log(combinedState, '???');
+    // const stateToJson = JSON.parse(combinedState);
+    // console.log(combinedState, '?');
     // fileName
     const fileName = `${pid}.myini.json`;
     const uploadFile = () => {
       const params = {
         ACL: 'public-read',
-        Body: stateToJson,
+        Body: combinedState,
         Bucket: S3_BUCKET,
         Key: fileName,
       };
