@@ -36,12 +36,31 @@ interface Props {
   pid: string;
 }
 
+function useInterval(callback: any, delay: number) {
+  const savedCallback = useRef<any>();
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    if (delay !== null) {
+      const interval = window.setInterval(() => savedCallback.current(), delay);
+      return () => clearInterval(interval);
+    }
+  }, [delay]);
+}
+
 function GenerateVuerd({ pid, store }: Props) {
   const erdDiv = useRef() as React.MutableRefObject<HTMLDivElement>;
 
   useLayoutEffect(() => {
     generateVuerd();
   }, []);
+
+  useInterval(() => {
+    // saveBtn();
+    // generateVuerd();
+  }, 5000);
 
   const generateVuerd = async () => {
     // vuerd import
@@ -95,18 +114,6 @@ function GenerateVuerd({ pid, store }: Props) {
         });
     }
 
-    editor.addEventListener('change', (event: any) => {
-      const targetValue = JSON.parse(event.target.value);
-      console.log(targetValue);
-      const totalValue = {
-        canvas: targetValue.canvas,
-        table: targetValue.table,
-        memo: targetValue.memo,
-        relationship: targetValue.relationship,
-      };
-      store.pjt.erdData = JSON.stringify(totalValue);
-    });
-
     // vuerd size
     window.addEventListener('resize', () => {
       editor.width = window.innerWidth * 0.96;
@@ -120,6 +127,7 @@ function GenerateVuerd({ pid, store }: Props) {
     const obj: any = {
       editor: erdDiv.current.children.item(0),
     };
+    console.log(obj.editor);
     // canvas, tabel, memo, relationship
     const isCanvasState = obj.editor.context.store.canvasState;
     const isMemoState = obj.editor.context.store.memoState;

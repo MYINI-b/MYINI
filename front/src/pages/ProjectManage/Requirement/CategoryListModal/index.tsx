@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import './style.scss';
 import { deleteApi, postApi, putApi } from 'api';
 import { ELEMENTPOS, ROW, CATEGORY } from 'types/Requirement';
+import TimerModal from 'components/TimerModal';
 
 interface Props {
   closeCategoryList: () => void;
@@ -26,6 +27,7 @@ export default function CategoryListModal({
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
   const [categoryInput, setCategoryInput] = useState('');
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const { pid } = useSelector((state: RootState) => state.project);
 
   const deleteCategory = useCallback(
@@ -46,7 +48,8 @@ export default function CategoryListModal({
         });
         store.pjt.categories.splice(idx, 1);
       } else {
-        alert(deleteResp.response.data.message);
+        setIsAlertOpen(true);
+        return;
       }
 
       closeCategoryList();
@@ -154,6 +157,13 @@ export default function CategoryListModal({
             })}
         </div>
       </div>
+
+      {isAlertOpen && (
+        <TimerModal
+          text="이미 요구사항에서 사용하는 카테고리입니다."
+          setIsOpen={setIsAlertOpen}
+        />
+      )}
     </div>
   );
 }
