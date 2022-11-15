@@ -5,7 +5,7 @@ import { useEffect, useCallback } from 'react';
 import { useOthers, useUpdatePresence } from '@y-presence/react';
 import { UserPresence } from 'types/main';
 
-import { getApi } from 'api';
+import { getApi, postApi } from 'api';
 import { Cursor } from 'components/Cursor';
 import RowList from './RowList';
 
@@ -72,6 +72,12 @@ export default function Requirement({ pid, store }: Props) {
 
     if (pid !== 'new') getRequirements();
   }, []);
+
+  const requireJira = async () => {
+    const reJira: any = await postApi(`/jiras/${pid}/createissue`);
+    console.log('!!!');
+  };
+
   return (
     <div className="requirement-container" onPointerMove={handlePointMove}>
       <h1 className="requirement-title">
@@ -96,7 +102,11 @@ export default function Requirement({ pid, store }: Props) {
         <h3 className="requirement-project-title">
           {store && store.pjt.title}
         </h3>
-        <button className="requirement-save-button" type="button">
+        <button
+          className="requirement-save-button"
+          type="button"
+          onClick={requireJira}
+        >
           <FontAwesomeIcon icon={faSave} />
         </button>
       </section>
