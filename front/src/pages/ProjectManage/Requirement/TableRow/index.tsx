@@ -20,9 +20,10 @@ interface Props {
   row: ROW;
   idx: number;
   store: any;
+  pid: string;
 }
 
-export default function TableRow({ row, idx, store }: Props) {
+export default function TableRow({ row, idx, store, pid }: Props) {
   const requireContainer =
     useRef() as React.MutableRefObject<HTMLTextAreaElement>;
   const descContainer = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
@@ -299,6 +300,7 @@ export default function TableRow({ row, idx, store }: Props) {
           clickMousePos={clickMousePos}
           idx={idx}
           store={store}
+          pid={pid}
         />
       )}
 

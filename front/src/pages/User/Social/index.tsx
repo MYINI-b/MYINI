@@ -7,7 +7,8 @@ export default function Social() {
   const token = useLocation().search.split('=')[1];
   useEffect(() => {
     localStorage.setItem('accessToken', token);
-    window.location.href = '/main';
+    console.log(token);
+    // window.location.href = '/main';
   }, []);
 
   return <div />;

@@ -1,14 +1,14 @@
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dispatch, useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 
+import { RootState } from 'modules/Reducers';
+import { useSelector } from 'react-redux';
 import useInput from 'hooks/useInput';
 import useNoSpaceInput from 'hooks/useNoSpaceInput';
 import Tooltip from 'components/Tooltip';
 import { deleteApi, postApi, putApi } from 'api';
 import './style.scss';
-import { CONTROLLER, API } from 'types/ApiSpec';
 
 interface Props {
   setIsControllerAddModalOpen: Dispatch<React.SetStateAction<boolean>>;
@@ -23,7 +23,7 @@ export default function ControllerAddModal({
   setControllerIdx,
   store,
 }: Props) {
-  const { pid } = useParams();
+  const { pid } = useSelector((state: RootState) => state.project);
   const [controllerName, onControllerNameChange, setControllerName] =
     useNoSpaceInput('');
   const [controllerDesc, onControllerDescChange, setControllerDesc] =
@@ -40,6 +40,15 @@ export default function ControllerAddModal({
   }, []);
 
   const closeModal = useCallback(() => {
+    const cid =
+      clickControllerIdx >= 0
+        ? store.pjt.controllers[clickControllerIdx].id
+        : 0;
+
+    const findIdx = store.pjt.editors.findIndex(
+      (x: any) => x.space === 'CONTROLLER' && x.sid === cid,
+    );
+    store.pjt.editors.splice(findIdx, 1);
     setIsControllerAddModalOpen(false);
   }, [setIsControllerAddModalOpen]);
 
@@ -91,7 +100,7 @@ export default function ControllerAddModal({
         });
         setControllerIdx(0);
       }
-      setIsControllerAddModalOpen(false);
+      closeModal();
     },
     [
       controllerName,
@@ -112,7 +121,7 @@ export default function ControllerAddModal({
     console.log(data);
 
     store.pjt.controllers.splice(clickControllerIdx, 1);
-    setIsControllerAddModalOpen(false);
+    closeModal();
   }, [store, clickControllerIdx]);
 
   return (
