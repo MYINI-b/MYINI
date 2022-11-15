@@ -85,8 +85,8 @@ export default function TableRow({ row, idx, store, pid }: Props) {
     setIsCategoryListOpen(true);
     setClickElementPos({
       y: isBlock
-        ? e.target.parentElement.getBoundingClientRect().top + 40
-        : e.target.getBoundingClientRect().top + 40,
+        ? e.target.parentElement.getBoundingClientRect().top + 35
+        : e.target.getBoundingClientRect().top + 35,
       x: isBlock
         ? e.target.parentElement.getBoundingClientRect().left
         : e.target.getBoundingClientRect().left,
@@ -99,7 +99,7 @@ export default function TableRow({ row, idx, store, pid }: Props) {
   const openManagerList = useCallback((e: any) => {
     setIsManagerOpen(true);
     setClickElementPos({
-      y: e.target.getBoundingClientRect().top + 40,
+      y: e.target.getBoundingClientRect().top + 35,
       x: e.target.getBoundingClientRect().left,
       width: e.target.offsetWidth,
     });
@@ -110,8 +110,8 @@ export default function TableRow({ row, idx, store, pid }: Props) {
     setIsDivisionOpen(true);
     setClickElementPos({
       y: isBlock
-        ? e.target.parentElement.getBoundingClientRect().top + 40
-        : e.target.getBoundingClientRect().top + 40,
+        ? e.target.parentElement.getBoundingClientRect().top + 35
+        : e.target.getBoundingClientRect().top + 35,
       x: isBlock
         ? e.target.parentElement.getBoundingClientRect().left
         : e.target.getBoundingClientRect().left,
@@ -124,7 +124,7 @@ export default function TableRow({ row, idx, store, pid }: Props) {
   const openImportanceList = useCallback((e: any) => {
     setIsImportanceOpen(true);
     setClickElementPos({
-      y: e.target.getBoundingClientRect().top + 40,
+      y: e.target.getBoundingClientRect().top + 35,
       x: e.target.getBoundingClientRect().left,
       width: e.target.offsetWidth,
     });

@@ -81,6 +81,7 @@
       word-break: break-all;
       border-radius: 20px;
       @include FLEX-CENTER;
+      position:relative;
 
       &.title {
         // height: rem(40);
@@ -88,7 +89,21 @@
         font-size: rem(16);
         font-family: $eng-title;
         // white-space: nowrap;
-        background-color: $third;
+        // background-color: $third;
+        border-radius: 0px;
+        border-bottom: 2px solid $secondary;
+
+        &::after{
+          content: "";
+          height: 50%;
+          display: block;
+          border-right: 1px solid rgba(128, 128, 128, 0.199);
+          position: absolute;
+          right: 0;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+     
       }
 
       &.content {
