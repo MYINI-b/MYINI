@@ -5,7 +5,6 @@
 }
 .main-page {
   width: 100%;
-  height: 100%;
   padding: rem(75);
   z-index: 5;
   position: relative;
@@ -14,48 +13,117 @@
 .user-name {
   color: $primary;
   font-size: rem(60);
-  font-family: $eng-title;
+  font-family: $kor;
 }
 
 .user-ini {
   font-size: rem(60);
-  font-family: $eng-title;
+  font-family: $kor;
 }
 
 .project-info {
   display: flex;
   margin-top: 2rem;
   margin-bottom: 2rem;
+  width: 100%
 }
 
-.project-div {
+.main-project-div {
   @include FLEX-CENTER;
   @include FLEX-COLUMN;
   padding: 0.5rem;
-  padding-right: 10rem;
-  padding-left: 10rem;
+  padding-right: 5rem;
+  padding-left: 5rem;
+  margin-right: 1rem;
   border: solid;
   border-color: $gray;
   border-top: none;
   border-bottom: none;
+  width: 33%;
+
+  .project-title-div {
+    display: flex;
+
+    .project-info-title {
+      padding-bottom: 0.5rem;
+      color: $primary;
+    }  
+
+    .projects-detail-btn {
+      color: $primary;
+      cursor: pointer;
+      padding: 0.5rem;
+      padding-bottom: 1.5rem;
+    }
+  }
 }
 
 .project-div1 {
   @include FLEX-CENTER;
   @include FLEX-COLUMN;
   padding: 0.5rem;
-  padding-right: 10rem;
-  padding-left: 10rem;
+  padding-right: 7rem;
+  padding-left: 7rem;
   border: solid;
   border-color: $gray;
   border-top: none;
   border-bottom: none;
   border-left: none;
+  width: 33%;
+
+  .project-div1-title {
+    display: flex;
+
+    .project-info-title {
+      padding-bottom: 0.5rem;
+      color: $primary;
+    }
+  
+    .projects-detail-btn {
+      color: $primary;
+      cursor: pointer;
+      padding: 0.5rem;
+      padding-bottom: 1.5rem;
+    }
+  }
+}
+
+.project-jira-div {
+  @include FLEX-CENTER;
+  @include FLEX-COLUMN;
+  padding: 0.5rem;
+  padding-right: 7rem;
+  padding-left: 7rem;
+  border: solid;
+  border-color: $gray;
+  border-top: none;
+  border-bottom: none;
+  border-left: none;
+  width: 33%;
+
+  .jira-info-title-container {
+    @include FLEX-CENTER;
+    display: flex;
+
+    .jira-edit-button {
+      color: $primary;
+      cursor: pointer;
+      padding: 0.5rem;
+      padding-bottom: 1.5rem;
+    }
+
+    .project-jira-info-title {
+      padding-bottom: 1rem;
+      color: $primary;
+    }
+  }
+
+  .project-jira-info-content {
+    padding: 1rem;
+  }
 }
 
 .card-container {
-  overflow-x: scroll;
-  overflow-y: hidden;
   padding-bottom: 0.5rem;
   z-index: 100;
   padding-top: 2rem;
@@ -66,15 +134,123 @@
   display: flex;
   z-index: 100;
   @include STRETCH;
+
+  .main-project-cards {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    display: flex;
+    padding-bottom: 1rem;
+    @include STRETCH;
+
+    .card {
+      flex-shrink: 0;
+      width: rem(300);
+      height: rem(300);
+      border-radius: 30px;
+      margin-right: 3.5rem;
+      box-shadow: $shadow;
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+
+      .card-header {
+        -webkit-transition: 0.5s; /*사파리 & 크롬*/
+        -moz-transition: 0.5s; /*파이어폭스*/
+        -ms-transition: 0.5s;	/*인터넷 익스플로러*/
+        -o-transition: 0.5s; /*오페라*/
+        transition: 0.5s;
+        width: 100%;
+        height: 100%;
+        border-radius: 15px 15px 0 0;
+        // background-image: url("https://picsum.photos/300");
+        background-size: 100% 300px;
+        background-repeat: no-repeat;	
+  
+        .card-background-img {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          z-index: -1;
+        }
+  
+        .card-header-title {
+          bottom: 0;
+          padding: 2rem;
+          font-size: 2rem;
+          color: white;
+        }
+      }
+    }
+    
+    .card:hover .card-header {
+      cursor: pointer;
+      opacity: 0.8;
+      height: 100px;
+    }
+    
+    .card-body {
+      background-color: $white;
+      position: absolute;
+      z-index: 100;
+      width: 100%;
+    
+      .card-body-header{
+        padding-top: 20px;
+        margin: 0px 20px 10px 20px;
+        @include ELLIPSIS-LINE(1);
+      }
+    
+      .card-body-context {
+        opacity: 0;
+        color: #757B82;
+        line-height: 25px;
+        -webkit-transition: .2s ease-in-out; /*사파리&크롬*/
+        -moz-transition: .2s ease-in-out; /*파이어폭스*/
+        -ms-transition: .2s ease-in-out; /*익스플로러*/
+        -o-transition: .2s ease-in-out; /*오페라*/
+        transition : .2s ease-in-out;
+        overflow: hidden;
+        height: 180px;
+        margin: 5px 20px;
+        position: relative;
+      }
+    
+      .card-body-footer {
+        color: #757B82;
+        position: absolute;
+        bottom: 25%;
+        right: 0;
+        padding: 1rem;
+      }
+      
+      .card-body-footer:hover {
+        color: $primary;
+      }
+    
+
+    }
+    
+    .card:hover .card-body-context {
+      opacity: 1;
+      -webkit-transition: .5s ease-in-out;
+      -moz-transition: .5s ease-in-out;
+      -ms-transition: .5s ease-in-out;
+      -o-transition: .5s ease-in-out;
+      transition : .5s ease-in-out;
+      // overflow: scroll;
+    }
+  }
 }
 
 .project-start-container {
   width: rem(300);
   height: rem(300);
+  flex-shrink: 0;
   margin-right: 4rem;
 
-  .main-link-style {
-    color: black
+  .card-logo {
+    width: rem(120);
+    height: rem(100);
   }
 
   .project-start {
@@ -87,6 +263,7 @@
     border-radius: 30px;
     box-shadow: $shadow;
     background-color: $white;
+    transition:0.3s ease;
   }
   
   .project-start:hover {
@@ -96,97 +273,46 @@
   }
 }
 
-.card {
-  flex-shrink: 0;
-  width: rem(300);
-  height: rem(300);
-  border-radius: 30px;
-  margin-right: 4rem;
-  box-shadow: $shadow;
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-}
 
-.card-img {
-  border-radius: 30px;
-
-}
-
-.card-header {
-	-webkit-transition: 0.5s; /*사파리 & 크롬*/
-  -moz-transition: 0.5s; /*파이어폭스*/
-  -ms-transition: 0.5s;	/*인터넷 익스플로러*/
-  -o-transition: 0.5s; /*오페라*/
-  transition: 0.5s;
-	width: 100%;
-	height: 100%;
-	border-radius: 15px 15px 0 0;
-	background-image: url("https://picsum.photos/300");
-	background-size: 100% 300px;
-	background-repeat: no-repeat;	
-}
-
-.card-header-title {
-  bottom: 0;
-  padding: 2rem;
-  font-size: 2rem;
-  color: white;
-}
-
-.card:hover .card-header {
-	opacity: 0.8;
-	height: 100px;
-}
-
-.card-body-header{
-	line-height: 25px;
-  padding-top: 20px;
-	margin: 0px 20px 10px 20px;
-}
-
-.card-body-context {
-  opacity: 0;
-  color: #757B82;
-  line-height: 25px;
-  -webkit-transition: .2s ease-in-out; /*사파리&크롬*/
-  -moz-transition: .2s ease-in-out; /*파이어폭스*/
-  -ms-transition: .2s ease-in-out; /*익스플로러*/
-  -o-transition: .2s ease-in-out; /*오페라*/
-  transition : .2s ease-in-out;
-  overflow: hidden;
-	height: 180px;
-	margin: 5px 20px;
-}
-
-.card-body {
-  background-color: $white;
-}
-
-.card:hover .card-body-context {
-  opacity: 1;
-  -webkit-transition: .5s ease-in-out;
-  -moz-transition: .5s ease-in-out;
-  -ms-transition: .5s ease-in-out;
-  -o-transition: .5s ease-in-out;
-  transition : .5s ease-in-out;
-  // overflow: scroll;
-}
-
-.project-info-title {
-  padding-bottom: 1rem;
-  color: $primary;
-}
-
-.members {
+.main-members-container {
   display: flex;
+
+  .main-member-container {
+    display: flex;
+    width: rem(50);
+    height: rem(50);
+    margin-left: 0.5rem;
+
+    .main-member-img {
+      @include FLEX-CENTER;
+      border-radius: 50%;
+      background-color: $fourth;
+      // border: 1px solid $secondary;
+      color: $primary;
+      width: rem(40);
+      height: rem(40);
+      margin-bottom: 0.25rem;
+    }
+
+    .member-default-img {
+      font-size: rem(20);
+    }
+
+    .main-member-name {
+      font-size: rem(14);
+    }
+  }
 }
 
-.member {
-  width: rem(40);
-  height: rem(40);
-  background-color: gray;
-  border-radius: 50px;
-  margin-left: 0.5rem;
+.main-link-style {
+  color: black;
+  @include STRETCH;
 }
 
+.card-body-delete{
+  transition: 0.3s ease;
+  cursor:pointer;
+  &:hover{
+    color:$delete;
+  }
+}

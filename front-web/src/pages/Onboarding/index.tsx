@@ -27,7 +27,9 @@ export default function Onboarding() {
         <section className="first-section">
           <img src={Background} alt="" className="bg-img" />
           <div className="head-title">
-            <h1 className="head-line">프로젝트 시작의 모든것</h1>
+            <h1 className="head-line">
+              <b>프로젝트 시작</b>의 모든것
+            </h1>
             <h1 className="head-line"> MYINI로 쉽고 간편하게</h1>
           </div>
           <button type="button" className="download-btn">
@@ -55,7 +57,9 @@ export default function Onboarding() {
                 <h1 className="second-content">똑똑하게</h1>
               </div>
               <div>
-                <h1 className="second-content">MYINI에서</h1>
+                <h1 className="second-content">
+                  <b>MYINI</b>에서
+                </h1>
                 <h1 className="second-content">
                   새로운 프로젝트를 시작해보세요.
                 </h1>
@@ -124,11 +128,11 @@ export default function Onboarding() {
           <h4>그 밖에 문의사항 또는 개선사항은 아래 주소로 연락바랍니다.</h4>
           <div className="footer-header-content">
             <div className="footer-content">
-              <FontAwesomeIcon icon={faEnvelope} /> dkwlrdjqtdjdy@gmail.com
+              <FontAwesomeIcon icon={faEnvelope} /> rladnqls98@gmail.com
             </div>
             <div className="footer-content">
               <FontAwesomeIcon icon={faGithub} />{' '}
-              https://lab.ssafy.com/s07-final/S07P31B203
+              https://github.com/wooobinkim/myini/
             </div>
           </div>
         </div>

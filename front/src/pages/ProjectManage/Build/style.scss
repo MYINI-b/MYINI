@@ -31,11 +31,17 @@ $breakpoints: (
     font-size: rem(36);
   }
   .build-project-title {
-      margin-right: rem(20);
-      color: $primary;
-      font-size: rem(20);
-      font-family: $eng-title;
-      @include FLEX-ALIGN-CENTER;
+    margin-right: rem(20);
+    color: $primary;
+    font-size: rem(20);
+    font-family: $eng-title;
+    @include FLEX-ALIGN-CENTER;
+  }
+  .build-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    
   }
   .build-main {
     width: 100%;
@@ -48,6 +54,7 @@ $breakpoints: (
       @include BORDER-PAPER;
       height: 80%;
       width: 48%;
+      overflow-y: scroll;
       @include respond-to('small') {
         height: 70%;
       }
@@ -77,11 +84,115 @@ $breakpoints: (
             padding-bottom: rem(35);
             width: 40%;
           }
+          .single-select {
+            @include FLEX-COLUMN;
+            .container {
+              .radio-set {
+                display: flex;
+                border: rem(0);
+                align-items: center;
+                height: rem(50);
+                .radio-title {
+                  font-family: $eng-content;
+                  width: 15%;
+                  font-size: rem(16);
+                  margin-right: rem(10);
+                }
+                .radio-content {
+                  font-family: $eng-content;
+                  width: 13%;
+                  padding-left: rem(5);
+                  .radio-input {
+                    position: absolute;
+                    visibility: hidden;
+                    margin: rem(2);
+                    &:checked + label {
+                      background: $primary;
+                      border-right: 1px solid $primary;
+                      color: $white;
+                    }
+                    &:hover + label {
+                      box-shadow: 0 0 12px rgba($primary, 0.3);
+                      transition: box-shadow 100ms ease-in;
+                      cursor: pointer;
+                    }
+                  }
+                  .radio-field {
+                    @include FLEX-CENTER;
+                    text-align: center;
+                    border-radius: rem(10);
+                    font-size: rem(5);
+                    margin: rem(-2);
+                    padding: rem(15) rem(20);
+                    background-image: none;
+                    background-color: $white;
+                    border: rem(1) solid $secondary;
+                    width: 98%;
+                    height: rem(30);
+                  }
+                }
+              }
+            }
+          }
         }
-        .text-box {
-          @include FLEX-CENTER;
-          width: 100%;
-          margin-bottom: rem(35);
+        .metadata {
+          padding-top: rem(30);
+          padding-bottom: rem(20);
+          font-size: rem(20);
+        }
+        .project-metadata {
+          padding-left: rem(10);
+          display: flex;
+          height: rem(40);
+          .metadata-name {
+            width: rem(150);
+          }
+          .submit-box {
+            padding-left: rem(25);
+            width: 75%;
+            .text-box {
+              @include FLEX-CENTER;
+              width: 100%;
+              height: rem(30);
+              margin-bottom: rem(35);
+            }
+          }
+        }
+        .dependency-container {
+          display: flex;
+          align-items: center;
+          padding-top: rem(23);
+          padding-bottom: rem(15);
+          .dependency {
+            font-size: rem(20);
+          }
+          .dependency-button {
+            width: rem(70);
+            height: rem(30);
+            margin-left: rem(30);
+            background-color: $white;
+            border: rem(1) solid $secondary;
+            border-radius: rem(10);
+            font-size: rem(15);
+            font-family: $eng-content;
+            &:hover {
+              background-color: $primary;
+              border: rem(1) solid $light-gray;
+            }
+          }
+        }
+      }
+      .dependency-items {
+        padding-top: rem(15);
+        padding-left: rem(15);
+        font-family: $eng-content;
+        font-size: rem(15);
+        border: rem(1) solid $secondary;
+        height: rem(800);
+        white-space: pre-line;
+        overflow-y: scroll;
+        .dependencies-data {
+          padding-right: rem(15);
         }
       }
     }
@@ -90,7 +201,7 @@ $breakpoints: (
       font-family: $eng-title;
       font-size: rem(25);
       display: flex;
-      justify-content: center;
+      justify-content: center
     }
     
     .confirm-code {
@@ -102,9 +213,10 @@ $breakpoints: (
       @include respond-to('small') {
         height: 70%;
       }
+
     }
     
-    .confirm-title {
+    .confirmcode-title {
       font-family: $eng-title;
       font-size: rem(25);
       display: flex;
@@ -113,3 +225,54 @@ $breakpoints: (
     }
   }
 } 
+
+.confirm-total {
+  height: rem(250);
+  @include respond-to('small') {
+    height: rem(240);
+  }
+  overflow-y: scroll;
+  margin-bottom: rem(10);
+  .confirm-title {
+    font-size: rem(20);
+    font-family: $eng-content;
+    padding-top: rem(15 );
+  }
+  .confirm-content {
+    font-size: rem(15);
+    font-family: $eng-content;
+    padding-top: rem(5);
+  }
+}
+
+.build-project-button {
+  border-radius: rem(4);
+  background-color: $primary;
+  border: none;
+  color: $white;
+  text-align: center;
+  font-size: rem(25);
+  font-family: $eng-title;
+  width: 100%;
+  transition: all 0.5s;
+  box-shadow: 0 10px 20px -8px $light-gray;
+  margin-top: rem(30);
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: all 0.2s linear 0s;
+}
+.build-project-button:after {
+  content: '»';
+  display: absolute;
+  opacity: 0;
+  transition: 0.5s;
+}
+.build-project-button:hover{
+  padding-right: rem(50);
+  padding-left: rem(8);
+}
+.build-project-button:hover:after {
+  opacity: 1;
+  right: rem(10);
+}

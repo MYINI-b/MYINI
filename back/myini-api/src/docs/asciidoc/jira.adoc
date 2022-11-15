@@ -13,7 +13,7 @@
 
 [[API]]
 === Jira
-==== 프로젝트 지라 연동 수정한다.
+==== 프로젝트 지라 계정을 수정한다.
 ===== 요청
 include::{snippets}/api/jiras/{projectid}/jiraaccount/http-request.adoc[]
 ====== Header
@@ -22,6 +22,16 @@ include::{snippets}/api/jiras/{projectid}/jiraaccount/request-headers.adoc[]
 include::{snippets}/api/jiras/{projectid}/jiraaccount/path-parameters.adoc[]
 ===== 응답
 include::{snippets}/api/jiras/{projectid}/jiraaccount/http-response.adoc[]
+
+==== 연동된 지라 도메인을 수정한다.
+===== 요청
+include::{snippets}/api/jiras/{projectid}/jiradomain/http-request.adoc[]
+====== Header
+include::{snippets}/api/jiras/{projectid}/jiradomain/request-headers.adoc[]
+====== Path
+include::{snippets}/api/jiras/{projectid}/jiradomain/path-parameters.adoc[]
+===== 응답
+include::{snippets}/api/jiras/{projectid}/jiradomain/http-response.adoc[]
 
 ==== 연동된 지라 프로젝트를 수정한다.
 ===== 요청

@@ -1,23 +1,30 @@
 package com.ssafy.myini.fileio;
 
-import com.ssafy.myini.apidocs.response.DtoItemResponse;
-import com.ssafy.myini.apidocs.response.DtoResponse;
-import com.ssafy.myini.apidocs.response.ProjectInfoListResponse;
+import com.ssafy.myini.apidocs.domain.Dto;
+import com.ssafy.myini.apidocs.domain.DtoItem;
+import com.ssafy.myini.apidocs.domain.type.DtoType;
+import com.ssafy.myini.common.type.YN;
 import com.ssafy.myini.initializer.request.InitializerRequest;
+import com.ssafy.myini.project.domain.Project;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class DtoWrite {
     static StringBuilder dtoImportContents;
-    private static int depth = 0;
-    private static Set<String> importDtos;
+    private static int depth;
     private static boolean containList;
+    private static boolean containRequest;
+    private static boolean containResponse;
+    private static boolean containDto;
+    private static boolean containDate;
 
-    public static String dtoPreview(DtoResponse dtoResponse, InitializerRequest initializerRequest) {
+    public static String dtoPreview(Dto dto, InitializerRequest initializerRequest) {
         dtoImportContents = new StringBuilder();
-        importDtos = new HashSet<>();
+        depth = 0;
+        containRequest = false;
+        containResponse = false;
+        containDto = false;
+        containDate = false;
         containList = false;
 
         // 필수 import 선언
@@ -26,27 +33,38 @@ public class DtoWrite {
                 .append("import lombok.NoArgsConstructor;\n");
 
         depth++;
-        String body = methodWrite(dtoResponse.getDtoItemResponses());
+        String body = methodWrite(dto.getDtoItemChildren());
         depth--;
 
         // list import 추가하기
         if (containList) {
-            dtoImportContents.append("import java.util.List;\n\n");
+            dtoImportContents.append("import java.util.List;\n");
         }
+        if (containDate) {
+            dtoImportContents.append("import java.time.LocalDateTime;\n");
+        }
+        dtoImportContents.append("\n");
 
-        for (String importDto : importDtos) {
-            dtoImportContents.append("import ").append(initializerRequest.getSpringPackageName()).append(".dto.").append(importDto).append(";\n");
+        if (containRequest && !dto.getDtoType().equals(DtoType.REQUEST)) {
+            dtoImportContents.append("import ").append(initializerRequest.getSpringPackageName()).append(".request.*;\n");
         }
+        if (containResponse && !dto.getDtoType().equals(DtoType.RESPONSE)) {
+            dtoImportContents.append("import ").append(initializerRequest.getSpringPackageName()).append(".response.*;\n");
+        }
+        if (containDto && !dto.getDtoType().equals(DtoType.DTO)) {
+            dtoImportContents.append("import ").append(initializerRequest.getSpringPackageName()).append(".dto.*;\n");
+        }
+        dtoImportContents.append("\n");
 
         StringBuilder contents = new StringBuilder();
-        contents.append("package " + initializerRequest.getSpringPackageName() + "." + dtoResponse.getDtoType().toLowerCase() + ";\n")
+        contents.append("package " + initializerRequest.getSpringPackageName() + "." + String.valueOf(dto.getDtoType()).toLowerCase() + ";\n")
                 .append("\n")
                 .append(dtoImportContents)
                 .append("\n")
                 .append("@Data\n")
                 .append("@NoArgsConstructor\n")
                 .append("@AllArgsConstructor\n")
-                .append("public class ").append(dtoResponse.getDtoName()).append(" {\n");
+                .append("public class ").append(dto.getDtoName()).append(" {\n");
 
         contents.append(body);
         FileUtil.appendTab(contents, depth);
@@ -55,54 +73,65 @@ public class DtoWrite {
         return contents.toString();
     }
 
-    public static void dtoWrite(ProjectInfoListResponse projectInfoListResponse, InitializerRequest initializerRequest) {
-        projectInfoListResponse.getApiInfoResponses().forEach(
-                apiInfoResponse -> {
-                    apiInfoResponse.getDtoResponses().forEach(
-                            dtoResponse -> {
-                                String type = dtoResponse.getDtoType();
-                                String path = "dto";
-                                if (type.equals("REQUEST")) {
-                                    path = "request";
-                                } else if (type.equals("RESPONSE")) {
-                                    path = "response";
-                                }
+    public static void dtoWrite(Project project, InitializerRequest initializerRequest) {
+        project.getDtos().forEach(
+                dto -> {
+                    String path = "dto";
+                    FileUtil.fileWrite(initializerRequest, dtoPreview(dto, initializerRequest), path, FileUtil.firstIndexToUpperCase(dto.getDtoName().trim()));
+                }
+        );
 
-                                FileUtil.fileWrite(initializerRequest, dtoPreview(dtoResponse, initializerRequest), path, FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName().trim()));
-
+        project.getApiControllers().forEach(
+                apiController -> {
+                    apiController.getApis().forEach(
+                            api -> {
+                                api.getDtos().forEach(
+                                        dto -> {
+                                            String type = String.valueOf(dto.getDtoType());
+                                            String path = (type.equals("REQUEST")) ? "request" : "response";
+                                            FileUtil.fileWrite(initializerRequest, dtoPreview(dto, initializerRequest), path, FileUtil.firstIndexToUpperCase(dto.getDtoName().trim()));
+                                        }
+                                );
                             }
                     );
                 }
         );
     }
 
-    public static String methodWrite(List<DtoItemResponse> dtoItemResponses) {
+    public static String methodWrite(List<DtoItem> dtoItems) {
         StringBuilder methodContents = new StringBuilder();
 
-        for (DtoItemResponse dtoItemResponse : dtoItemResponses) {
+        for (DtoItem dtoItem : dtoItems) {
+            FileUtil.appendTab(methodContents, depth);
             methodContents.append("private ");
 
             String type = "";
 
-            if (dtoItemResponse.getDtoClassTypeName() != null) {
+            if (dtoItem.getDtoClassType() != null) {
                 // Dto 클래스 타입을 갖는 경우
-                importDtos.add(dtoItemResponse.getDtoItemName());
-                type = dtoItemResponse.getDtoClassTypeName();
-            } else if (dtoItemResponse.getDtoPrimitiveTypeName() != null) {
-                // 기본 타입을 갖는 경우
-                if (dtoItemResponse.getDtoPrimitiveTypeId() == 10) {
-                    // LocalDateTime인 경우
-                    dtoImportContents.append("import java.time.LocalDateTime;\n");
+                type = dtoItem.getDtoClassType().getDtoName();
+                DtoType dtoType = dtoItem.getDtoClassType().getDtoType();
+                if (dtoType.equals(DtoType.RESPONSE)) {
+                    containResponse = true;
+                } else if (dtoType.equals(DtoType.REQUEST)) {
+                    containRequest = true;
+                } else if (dtoType.equals(DtoType.DTO)) {
+                    containDto = true;
                 }
-                type = dtoItemResponse.getDtoPrimitiveTypeName();
-            } else {
-                // 둘 다 null이면 error
+            } else if (dtoItem.getPrimitive() != null) {
+                // 기본 타입을 갖는 경우
+                if (dtoItem.getPrimitive().getPrimitiveId() == 10) {
+                    // LocalDateTime인 경우
+                    containDate = true;
+                }
+                type = dtoItem.getPrimitive().getPrimitiveName();
             }
-            if (dtoItemResponse.getDtoIsList().equals("Y")) {
+
+            if (dtoItem.getDtoIsList().equals(YN.Y)) {
                 containList = true;
                 type = "List<" + type + ">";
             }
-            methodContents.append(type).append(" ").append(dtoItemResponse.getDtoItemName()).append(";\n");
+            methodContents.append(type).append(" ").append(dtoItem.getDtoItemName()).append(";\n");
         }
 
         return methodContents.toString();

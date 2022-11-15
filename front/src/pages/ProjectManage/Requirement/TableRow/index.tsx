@@ -8,6 +8,7 @@ import {
 import { ROW, ELEMENTPOS } from 'types/Requirement';
 import { MOUSEPOS } from 'types/ApiSpec';
 import { IMPORTANCE_TEXT } from 'constants/index';
+import { putApi } from 'api';
 
 import CategoryListModal from '../CategoryListModal';
 import RowModal from '../RowModal';
@@ -19,9 +20,10 @@ interface Props {
   row: ROW;
   idx: number;
   store: any;
+  pid: string;
 }
 
-export default function TableRow({ row, idx, store }: Props) {
+export default function TableRow({ row, idx, store, pid }: Props) {
   const requireContainer =
     useRef() as React.MutableRefObject<HTMLTextAreaElement>;
   const descContainer = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
@@ -128,20 +130,29 @@ export default function TableRow({ row, idx, store }: Props) {
     });
   }, []);
 
-  const focusOutDesc = useCallback(() => {
-    // store.pjt.rows[idx].description = desc;
-    setIsDescEdit(false);
-  }, [store]);
-
-  const focusOutRequirement = useCallback(() => {
-    // store.pjt.rows[idx].requirement = requirement;
+  const focusOutRequirement = useCallback(async () => {
+    const body = {
+      requirementName: store.pjt.rows[idx].requirement,
+    };
+    await putApi(`/requirementdocs/requirements/${row.id}/names`, body);
     setIsRequireEdit(false);
-  }, [store]);
+  }, [store, row]);
 
-  const focusOutPoint = useCallback(() => {
-    // store.pjt.rows[idx].point = point;
+  const focusOutDesc = useCallback(async () => {
+    const body = {
+      requirementContent: store.pjt.rows[idx].description,
+    };
+    await putApi(`/requirementdocs/requirements/${row.id}/contents`, body);
+    setIsDescEdit(false);
+  }, [store, row]);
+
+  const focusOutPoint = useCallback(async () => {
+    const body = {
+      requirementStoryPoint: store.pjt.rows[idx].point,
+    };
+    await putApi(`/requirementdocs/requirements/${row.id}/storypoints`, body);
     setIsPointEdit(false);
-  }, [store]);
+  }, [store, row]);
 
   useEffect(() => {
     if (requireContainer.current)
@@ -149,9 +160,6 @@ export default function TableRow({ row, idx, store }: Props) {
         'focusout',
         focusOutRequirement,
       );
-
-    // if (store.pjt.rows !== undefined)
-    // store.pjt.rows[idx].requirement = requirement;
 
     return () => {
       if (requireContainer.current)
@@ -166,8 +174,6 @@ export default function TableRow({ row, idx, store }: Props) {
     if (pointContainer.current)
       pointContainer.current.addEventListener('focusout', focusOutPoint);
 
-    // if (store.pjt.rows !== undefined) store.pjt.rows[idx].point = point;
-
     return () => {
       if (pointContainer.current)
         pointContainer.current.removeEventListener('focusout', focusOutPoint);
@@ -177,8 +183,6 @@ export default function TableRow({ row, idx, store }: Props) {
   useEffect(() => {
     if (descContainer.current)
       descContainer.current.addEventListener('focusout', focusOutDesc);
-
-    // if (store.pjt.rows !== undefined) store.pjt.rows[idx].description = desc;
 
     return () => {
       if (descContainer.current)
@@ -193,8 +197,15 @@ export default function TableRow({ row, idx, store }: Props) {
         className="table-col content one-half"
         onClick={(e) => openCategoryList(e, false)}
       >
-        <div className="desc-block" onClick={(e) => openCategoryList(e, true)}>
-          {row.category}
+        <div
+          className="desc-block"
+          style={{
+            backgroundColor:
+              row.category === undefined ? '' : row.category.color,
+          }}
+          onClick={(e) => openCategoryList(e, true)}
+        >
+          {row.category === undefined ? '' : row.category.name}
         </div>
       </span>
       {isRequireEdit ? (
@@ -263,7 +274,7 @@ export default function TableRow({ row, idx, store }: Props) {
         ) : (
           ''
         )}
-        &nbsp;&nbsp;{IMPORTANCE_TEXT[row.importance]}
+        {/* &nbsp;&nbsp;{IMPORTANCE_TEXT[row.importance]} */}
       </span>
       <span
         className="table-col content one"
@@ -289,6 +300,7 @@ export default function TableRow({ row, idx, store }: Props) {
           clickMousePos={clickMousePos}
           idx={idx}
           store={store}
+          pid={pid}
         />
       )}
 
@@ -298,6 +310,7 @@ export default function TableRow({ row, idx, store }: Props) {
           clickElementPos={clickElementPos}
           idx={idx}
           store={store}
+          row={row}
         />
       )}
 
@@ -307,6 +320,7 @@ export default function TableRow({ row, idx, store }: Props) {
           clickElementPos={clickElementPos}
           idx={idx}
           store={store}
+          rowId={row.id}
         />
       )}
 
@@ -316,6 +330,7 @@ export default function TableRow({ row, idx, store }: Props) {
           clickElementPos={clickElementPos}
           idx={idx}
           store={store}
+          rowId={row.id}
         />
       )}
 
@@ -325,6 +340,7 @@ export default function TableRow({ row, idx, store }: Props) {
           clickElementPos={clickElementPos}
           idx={idx}
           store={store}
+          rowId={row.id}
         />
       )}
     </div>

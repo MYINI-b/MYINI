@@ -7,7 +7,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 10;
+    z-index: 100000;
     background-color: rgba(131, 131, 131, 0.5);
     @include STRETCH;
   }
@@ -35,16 +35,16 @@
     position: absolute;
     top: rem(-56);
     left: rem(-16);
+    display: none;
     max-width: 500px;
     font-weight: bold;
     font-size: rem(14);
     background-color: $white;
     border-radius: rem(6);
-    opacity: 0;
     transition: 0.3s ease;
 
     &.open {
-      opacity: 1;
+      display: block;
     }
 
     .tooltip-balloon {

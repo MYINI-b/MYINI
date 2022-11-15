@@ -275,6 +275,41 @@ class ProjectControllerTest extends ControllerTest {
     }
 
     @Test
+    @DisplayName("프로젝트의 팀원리스트중 지라이메일과 일치하는 팀원을 조회한다.")
+    void findProjectMemberJiraList() throws Exception {
+        // given
+        given(projectService.findProjectMemberJiraList(any()))
+                .willReturn(Arrays.asList(TEST_PROJECT_MEMBER_RESPONSE));
+
+        // when
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/projects/members/{projectid}/jiras", ID)
+                        .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
+                        .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(Arrays.asList(TEST_PROJECT_MEMBER_RESPONSE))))
+                .andDo(document("api/projects/members/{projectid}/jiras",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
+                        ),
+                        pathParameters(
+                                parameterWithName("projectid").description("Project ID")
+                        ),
+                        responseFields(
+                                fieldWithPath("[]").type(JsonFieldType.ARRAY).description("결과 배열"),
+                                fieldWithPath("[].memberId").type(JsonFieldType.NUMBER).description("Member ID"),
+                                fieldWithPath("[].memberEmail").type(JsonFieldType.STRING).description("Member Email"),
+                                fieldWithPath("[].memberProfileImg").type(JsonFieldType.STRING).description("Member 프로필이미지"),
+                                fieldWithPath("[].memberName").type(JsonFieldType.STRING).description("Member 이름"),
+                                fieldWithPath("[].memberNickName").type(JsonFieldType.STRING).description("Member 닉네임")
+                        )));
+
+
+        // then
+        then(projectService).should(times(1)).findProjectMemberJiraList(any());
+
+    }
+
+    @Test
     @DisplayName("팀원을 검색한다.")
     void findByMemberEmail() throws Exception {
         // given

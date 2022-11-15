@@ -8,6 +8,7 @@ import com.ssafy.myini.fileio.*;
 import com.ssafy.myini.NotFoundException;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
+import com.ssafy.myini.initializer.response.InitializerStartResponse;
 import com.ssafy.myini.initializer.response.PreviewResponse;
 import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
@@ -17,12 +18,14 @@ import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,7 +49,7 @@ public class InitializerServiceImpl implements InitializerService {
 
     @Override
     @Transactional
-    public ZipFile initializerStart(Long projectId, InitializerRequest initializerRequest) {
+    public InitializerStartResponse initializerStart(Long projectId, InitializerRequest initializerRequest) {
         //프로젝트 init
         InitProjectDownload.initProject(initializerRequest);
 
@@ -57,9 +60,8 @@ public class InitializerServiceImpl implements InitializerService {
         //ERD json 받아오기
         try {
             JSONParser jsonParser = new JSONParser();
-            File file = new File("erd");
-            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/" + projectId + ".vuerd.json"), file);
-
+            File file = new File(projectId + "_erd");
+            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/" + projectId + ".myini.json"), file);
 
             Reader reader = new FileReader(file);
             JSONObject erd = (JSONObject) jsonParser.parse(reader);
@@ -84,18 +86,59 @@ public class InitializerServiceImpl implements InitializerService {
             projectInfoListResponses.forEach(projectInfoListResponse -> ServiceImplWrite.serviceImplWrite(projectInfoListResponse, initializerRequest));
 
             // dto 생성
-            projectInfoListResponses.forEach(projectInfoListResponse -> DtoWrite.dtoWrite(projectInfoListResponse, initializerRequest));
+            projectInfoListResponses.forEach(projectInfoListResponse -> DtoWrite.dtoWrite(project, initializerRequest));
+
+            // test 코드 수정
+            FileUtil.deletefolder(FileUtil.basePath + "/" + initializerRequest.getSpringName() + "/src/test");
+            TestWrite.testWrite(initializerRequest);
 
             ZipFile zipFile = new ZipFile(initializerRequest.getSpringName() + ".zip");
             zipFile.addFolder(new File(FileUtil.basePath + initializerRequest.getSpringName() + "/"));
 
-            FileUtil.deletefolder(FileUtil.basePath + initializerRequest.getSpringName() + "/");
-            return zipFile;
+            FileUtil.deletefolder(FileUtil.basePath);
+
+            HttpHeaders header = new HttpHeaders();
+
+            header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + zipFile.getFile().getName());
+            header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+            header.add("Pragma", "no-cache");
+            header.add("Expires", "0");
+
+            byte[] bytes = Files.readAllBytes(zipFile.getFile().toPath());
+            InitializerStartResponse response = new InitializerStartResponse(header, zipFile.getFile().length(), bytes);
+
+            // zipFile 삭제
+            if (zipFile.getFile().exists()) {
+                if (zipFile.getFile().delete()) {
+                    System.out.println("zip 파일 삭제 성공");
+                } else {
+                    System.out.println("zip 파일 삭제 실패");
+                }
+            }
+            // erd 파일 삭제
+            reader.close();
+            if (file.exists()) {
+                if (file.delete()) {
+                    System.out.println("erd 파일 삭제 성공");
+                } else {
+                    System.out.println("erd 파일 삭제 실패");
+                }
+            }
+
+            return response;
         } catch (Exception e) {
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
     }
 
+    @Override
+    public void deleteZipfile(String fileName) {
+        File deleteFile = new File(fileName + ".zip");
+
+        if (deleteFile.exists()) {
+            deleteFile.delete();
+        }
+    }
 
     @Override
     @Transactional
@@ -108,16 +151,14 @@ public class InitializerServiceImpl implements InitializerService {
         //ERD json 받아오기
         try {
             JSONParser jsonParser = new JSONParser();
-            File file = new File("erd");
-            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/" + projectId + ".vuerd.json"), file);
-
+            File file = new File(projectId + "_erd");
+            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/" + projectId + ".myini.json"), file);
 
             Reader reader = new FileReader(file);
             JSONObject erd = (JSONObject) jsonParser.parse(reader);
             JSONObject table = (JSONObject) erd.get("table");
             JSONArray tables = (JSONArray) table.get("tables");
             JSONObject relationship = (JSONObject) erd.get("relationship");
-
             //entity 작성
             EntityWrite.setTableAndColumn(erd);
             for (int i = 0; i < tables.size(); i++) {
@@ -132,7 +173,6 @@ public class InitializerServiceImpl implements InitializerService {
                         (String) ((JSONObject) tables.get(i)).get("name") + "Repository.java",
                         RepositoryWrite.repositoryPreview((JSONObject) tables.get(i), initializerRequest)));
             }
-
             // controller
             projectInfoListResponses.forEach(projectInfoListResponse -> {
                 previewResponses.add(
@@ -140,7 +180,6 @@ public class InitializerServiceImpl implements InitializerService {
                                 projectInfoListResponse.getApiControllerName() + "Controller.java",
                                 ControllerWrite.controllerPreview(projectInfoListResponse, initializerRequest)));
             });
-
             // service
             projectInfoListResponses.forEach(projectInfoListResponse -> {
                 previewResponses.add(
@@ -148,7 +187,6 @@ public class InitializerServiceImpl implements InitializerService {
                                 projectInfoListResponse.getApiControllerName() + "Service.java",
                                 ServiceWrite.servicePreview(projectInfoListResponse, initializerRequest)));
             });
-
             // serviceImpl
             projectInfoListResponses.forEach(projectInfoListResponse -> {
                 previewResponses.add(
@@ -156,21 +194,23 @@ public class InitializerServiceImpl implements InitializerService {
                                 projectInfoListResponse.getApiControllerName() + "ServiceImpl.java",
                                 ServiceWrite.servicePreview(projectInfoListResponse, initializerRequest)));
             });
-
             // dto
-            projectInfoListResponses.forEach(projectInfoListResponse -> {
-                projectInfoListResponse.getApiInfoResponses().forEach(
-                        apiInfoResponse -> {
-                            apiInfoResponse.getDtoResponses().forEach(
-                                    dtoResponse -> {
-                                        previewResponses.add(
-                                                new PreviewResponse("dto",
-                                                        dtoResponse.getDtoName() + ".java",
-                                                        DtoWrite.dtoPreview(dtoResponse, initializerRequest)));
-                                    });
-                        });
+            project.getDtos().forEach(dto -> {
+                previewResponses.add(
+                        new PreviewResponse("dto",
+                                dto.getDtoName() + ".java",
+                                DtoWrite.dtoPreview(dto, initializerRequest)));
             });
 
+            // erd 파일 삭제
+            reader.close();
+            if (file.exists()) {
+                if (file.delete()) {
+                    System.out.println("erd 파일 삭제 성공");
+                } else {
+                    System.out.println("erd 파일 삭제 실패");
+                }
+            }
         } catch (Exception e) {
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
@@ -190,6 +230,7 @@ public class InitializerServiceImpl implements InitializerService {
         try {
             // start.spring.io에서 얻은 dependendy 기반
             URL url = new URL("https://start.spring.io/metadata/client");
+
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             if (conn.getResponseCode() != 200) {
@@ -243,6 +284,7 @@ public class InitializerServiceImpl implements InitializerService {
             throw new RuntimeException("JSON Parsing 에 실패하였습니다.");
         }
     }
+
 
     private JSONObject addDependencies(JSONObject dependency) {
         JSONObject jsonObject = new JSONObject();

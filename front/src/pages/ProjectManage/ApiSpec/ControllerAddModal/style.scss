@@ -4,6 +4,7 @@
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 100000;
   background-color: rgba(131, 131, 131, 0.3);
   @include STRETCH;
   @include FLEX-CENTER;
@@ -12,6 +13,10 @@
 .controller-add-modal-content {
   @include BORDER-PAPER;
   @include FLEX-COLUMN;
+  justify-content: space-between;
+  width: rem(370);
+  height: rem(420);
+  box-shadow: $shadow;
 
   .closebtn-container {
     @include FLEX-ALIGN-RIGHT;
@@ -42,6 +47,7 @@
     .controller-add-submit {
       @include SUBMIT-BTN;
       margin-top: rem(18);
+      font-size: rem(18);
     }
 
     .controller-add-submit + .controller-add-submit {

@@ -3,14 +3,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { ROW } from 'types/Requirement';
+import { postApi } from 'api';
 import TableRow from '../TableRow';
 
 interface Props {
   store: any;
+  pid: string;
 }
 
-export default function RowList({ store }: Props) {
-  const addTableRow = useCallback(() => {
+export default function RowList({ store, pid }: Props) {
+  const addTableRow = useCallback(async () => {
+    const { data }: any = await postApi(`/requirementdocs/${pid}/requirements`);
     store.pjt.rows.push({
       category: '',
       requirement: '',
@@ -19,6 +22,7 @@ export default function RowList({ store }: Props) {
       manager: '',
       importance: 3,
       point: 0,
+      id: data.requirementId,
     });
   }, [store]);
 
@@ -30,7 +34,7 @@ export default function RowList({ store }: Props) {
     <article className="table-content-article">
       {store.pjt.rows &&
         store.pjt.rows.map((e: ROW, i: number) => {
-          return <TableRow row={e} key={i} idx={i} store={store} />;
+          return <TableRow row={e} key={i} idx={i} store={store} pid={pid} />;
         })}
       <button className="table-more-button" type="button" onClick={addTableRow}>
         <FontAwesomeIcon icon={faPlus} />

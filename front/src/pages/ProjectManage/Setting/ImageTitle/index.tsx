@@ -8,19 +8,23 @@ import DefaultProfile from 'assets/default-profile.png';
 
 interface Props {
   store: any;
+  pid: string;
+  editProjectInfo: () => Promise<void>;
 }
 
-export default function ProjectImage({ store }: Props) {
+export default function ProjectImage({ store, pid, editProjectInfo }: Props) {
   const fileInput = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [isEdit, setIsEdit] = useState(false);
 
   const onSubmitClick = useCallback(() => {
     setIsEdit(false);
-  }, []);
+    editProjectInfo();
+  }, [editProjectInfo]);
 
   const onTitleChange = useCallback(
     (e: any) => {
       store.pjt.title = e.target.value;
+      console.log(store.pjt.title);
     },
     [store],
   );
@@ -50,7 +54,7 @@ export default function ProjectImage({ store }: Props) {
           },
         };
 
-        await axios.patch('/projects/3/images', formData, headers);
+        await axios.patch(`/projects/${pid}/images`, formData, headers);
         if (reader.result && typeof reader.result === 'string')
           store.pjt.img = reader.result;
         // 유저 이미지 변경 api 전송
@@ -84,23 +88,23 @@ export default function ProjectImage({ store }: Props) {
       </div>
 
       <div className="project-info-container">
-        <div className="project-edit-button-wrapper">
-          {isEdit ? (
-            <FontAwesomeIcon
-              icon={faCheck}
-              className="project-edit-button"
-              onClick={onSubmitClick}
-            />
-          ) : (
-            <FontAwesomeIcon
-              icon={faPen}
-              className="project-edit-button"
-              onClick={() => setIsEdit(true)}
-            />
-          )}
-        </div>
         <div className="project-detail-container">
-          <div className="project-detail-info-title">프로젝트 명</div>
+          <div className="project-detail-info-title">
+            프로젝트 명 &nbsp;
+            {isEdit ? (
+              <FontAwesomeIcon
+                icon={faCheck}
+                className="project-edit-button"
+                onClick={onSubmitClick}
+              />
+            ) : (
+              <FontAwesomeIcon
+                icon={faPen}
+                className="project-edit-button"
+                onClick={() => setIsEdit(true)}
+              />
+            )}
+          </div>
           <input
             type="text"
             value={store.pjt.title || ''}

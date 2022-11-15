@@ -1,126 +1,177 @@
-import { Dispatch, useCallback, useState } from 'react';
+import { Dispatch, useCallback, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faClose,
-  faChevronDown,
-  faChevronUp,
-  faPlus,
-} from '@fortawesome/free-solid-svg-icons';
-
+import { useParams } from 'react-router-dom';
+import { faClose, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
+import { MOUSEPOS, DTO_RESPONSE, DTO } from 'types/ApiSpec';
 import './style.scss';
-import { ATTRIBUTE, ATTRIBUTE_PLUS, MOUSEPOS } from 'types/ApiSpec';
+import { RootState } from 'modules/Reducers';
+import { useSelector } from 'react-redux';
 import DataTypeList from 'components/DataTypeList';
+import { getApi, postApi } from 'api';
+import DatatypeRow from './DatatypeRow';
 
 interface Props {
   setIsDatatypeModalOpen: Dispatch<React.SetStateAction<boolean>>;
-  objDataType: any[];
-  setObjDataType: Dispatch<React.SetStateAction<any[]>>;
+  store: any;
 }
 
 export default function DatatypeModal({
   setIsDatatypeModalOpen,
-  objDataType,
-  setObjDataType,
+  store,
 }: Props) {
+  const { pid } = useSelector((state: RootState) => state.project);
   const [isDatatypeAddOpen, setIsDatatypeAddOpen] = useState(false);
-  const [dtoName, setDtoName] = useState('');
-  const [newObjAttribute, setNewObjAttribute] = useState<Array<ATTRIBUTE>>([]);
+  const [dto, setDto] = useState<DTO>({
+    dtoId: -1,
+    dtoName: '',
+    dtoType: '',
+    dtoItemResponses: [],
+  });
+  const [attributes, setAttributes] = useState<Array<DTO_RESPONSE>>([]); // 새로 추가하는 dto의 속성들
+  const [selectIdx, setSelectIdx] = useState(-1);
   const [isDatatypeListOpen, setIsDatatypeListOpen] = useState(false);
   const [mousePos, setMousePos] = useState<MOUSEPOS>({ x: 0, y: 0 });
-  const [selectInfo, setSelectInfo] = useState<ATTRIBUTE_PLUS>({
-    name: '',
-    idx: 0,
-    type: 'string',
-    isList: false,
-  });
+  const [dtoRows, setDtoRows] = useState<any[]>([]);
 
   const closeModal = useCallback(() => {
+    const findIdx = store.pjt.editors.findIndex(
+      (x: any) => x.space === 'DATATYPE',
+    );
+    store.pjt.editors.splice(findIdx, 1);
     setIsDatatypeModalOpen(false);
   }, [setIsDatatypeModalOpen]);
-
-  const toggleObjDatatype = useCallback(
-    (idx: number) => {
-      const copyArr = [...objDataType];
-      copyArr[idx].isOpen = !copyArr[idx].isOpen;
-      setObjDataType(copyArr);
-    },
-    [objDataType],
-  );
 
   const onDatatypeAddClick = useCallback(() => {
     setIsDatatypeAddOpen(true);
   }, []);
 
-  const addNewAttribute = useCallback(() => {
-    const copyArr = [...newObjAttribute];
-    copyArr.push({ name: '', type: 'string', isList: false });
-    setNewObjAttribute(copyArr);
-  }, [newObjAttribute]);
+  const onCancleClick = useCallback(() => {
+    setIsDatatypeAddOpen(false);
+    setDto({
+      dtoId: -1,
+      dtoName: '',
+      dtoType: '',
+      dtoItemResponses: [],
+    });
+  }, []);
+
+  const addNewAttribute = useCallback(async () => {
+    if (dto.dtoId === -1) {
+      const body = {
+        dtoName: dto.dtoName || 'UNTITLED',
+        dtoType: 'DTO',
+        dtoIsList: 'N',
+      };
+      const { data }: any = await postApi(`/apidocs/${pid}/customdtos`, body);
+      const copyDto = { ...dto };
+      copyDto.dtoId = data.dtoId;
+      console.log(copyDto, data);
+      setDto(copyDto);
+    }
+    const copyArr = [...attributes];
+    copyArr.push({
+      dtoItemId: 0,
+      dtoItemName: '',
+      dtoPrimitiveTypeId: 9,
+      dtoPrimitiveTypeName: 'String',
+      dtoIsList: false,
+    });
+    setAttributes(copyArr);
+  }, [attributes, dto]);
 
   const changeAttrName = useCallback(
     (idx: number, e: any) => {
-      const copyArr = [...newObjAttribute];
-      copyArr[idx].name = e.target.value;
-      setNewObjAttribute(copyArr);
+      const copyArr = [...attributes];
+      copyArr[idx].dtoItemName = e.target.value.trim();
+      setAttributes(copyArr);
     },
-    [newObjAttribute],
+    [attributes],
   );
 
   const deleteAttr = useCallback(
     (idx: number, e: any) => {
       e.stopPropagation();
-      const copyArr = [...newObjAttribute].filter((attr, i) => i !== idx);
-      setNewObjAttribute(copyArr);
+      const copyArr = [...attributes].filter((attr, i) => i !== idx);
+      setAttributes(copyArr);
     },
-    [newObjAttribute],
+    [attributes],
   );
 
   const openDataTypeList = useCallback(
     (idx: number, e: any) => {
       e.stopPropagation();
       e.preventDefault();
+
+      setSelectIdx(idx);
       setMousePos({ x: e.clientX, y: e.clientY });
-      setSelectInfo({ ...newObjAttribute[idx], idx });
       setIsDatatypeListOpen((prev) => !prev);
     },
-    [newObjAttribute],
+    [attributes],
+  );
+
+  const onNameChange = useCallback(
+    (e: any) => {
+      const copyDto = { ...dto };
+      copyDto.dtoName = e.target.value;
+      setDto(copyDto);
+    },
+    [dto],
   );
 
   const addDataType = useCallback(
-    (e: any) => {
+    async (e: any) => {
       e.preventDefault();
 
-      const validAttr = [...newObjAttribute].filter((attr) => attr.name !== '');
+      attributes.forEach(async (attr: any) => {
+        const attrBody = {
+          dtoItemName: attr.dtoItemName,
+          dtoClassType:
+            attr.dtoClassTypeId < 0 || !attr.dtoClassTypeId
+              ? null
+              : attr.dtoClassTypeId,
+          dtoPrimitiveType:
+            attr.dtoPrimitiveTypeId < 0 || !attr.dtoPrimitiveTypeId
+              ? null
+              : attr.dtoPrimitiveTypeId,
+          dtoIsList: attr.dtoIsList ? 'Y' : 'N',
+        };
+        if (attrBody.dtoItemName !== '') {
+          await postApi(`/apidocs/${dto.dtoId}/dtoitems`, attrBody);
+        }
+      });
 
-      if (validAttr.length === 0) {
-        alert('한 개 이상의 유효한 자료형이 필요합니다.');
-        return;
-      }
+      const copyDtoArr = [...dtoRows];
 
-      const newDataTypeObj = {
-        name: dtoName,
-        type: dtoName,
-        attr: validAttr,
-        isOpen: false,
+      const newDto = {
+        dtoId: dto.dtoId,
+        dtoName: dto.dtoName,
+        dtoItemResponses: [...attributes],
       };
-      setNewObjAttribute([]);
-      setDtoName('');
-      setObjDataType([...objDataType, newDataTypeObj]);
+      copyDtoArr.push(newDto);
+      console.log(copyDtoArr);
+      setAttributes([]);
+      setDto({
+        dtoId: -1,
+        dtoName: '',
+        dtoType: '',
+        dtoItemResponses: [],
+      });
       setIsDatatypeAddOpen(false);
-      console.log(newObjAttribute);
+      setDtoRows(copyDtoArr);
     },
-    [newObjAttribute],
+    [attributes, dtoRows, dto],
   );
 
-  const deleteDatatype = useCallback(
-    (idx: number) => {
-      const copyArr = [...objDataType];
-      setObjDataType(copyArr.filter((e, i) => i !== idx));
-    },
-    [objDataType],
-  );
+  useEffect(() => {
+    const getDtoList = async () => {
+      const { data }: any = await getApi(`/apidocs/${pid}/dtotype`);
+      setDtoRows(data);
+    };
+
+    getDtoList();
+  }, []);
 
   return (
     <section className="modal-empty" onClick={closeModal}>
@@ -139,13 +190,13 @@ export default function DatatypeModal({
                 type="text"
                 className="datatype-add-input"
                 placeholder="Dto 명"
-                value={dtoName}
-                onChange={(e) => setDtoName(e.target.value)}
+                value={dto.dtoName}
+                onChange={onNameChange}
                 required
               />
               <div className="datatype-add-body">
                 <p className="datatype-add-brace">&#123;</p>
-                {newObjAttribute.map((attr, i) => {
+                {attributes.map((attr, i) => {
                   return (
                     <div className="attr-div" key={i}>
                       <button
@@ -153,13 +204,18 @@ export default function DatatypeModal({
                         className="attr-type-button"
                         onClick={(e) => openDataTypeList(i, e)}
                       >
-                        {attr.isList ? `List<${attr.type}>` : attr.type}
+                        {attr.dtoIsList
+                          ? `List<${
+                              attr.dtoClassTypeName || attr.dtoPrimitiveTypeName
+                            }>`
+                          : attr.dtoClassTypeName || attr.dtoPrimitiveTypeName}
                       </button>
                       <input
                         type="text"
                         onChange={(e) => changeAttrName(i, e)}
-                        value={attr.name}
+                        value={attr.dtoItemName}
                         className="attr-type-name"
+                        required
                       />
 
                       <FontAwesomeIcon
@@ -183,7 +239,7 @@ export default function DatatypeModal({
                 <button
                   className="datatype-add-form-button"
                   type="button"
-                  onClick={() => setIsDatatypeAddOpen(false)}
+                  onClick={onCancleClick}
                 >
                   취소
                 </button>
@@ -201,54 +257,16 @@ export default function DatatypeModal({
               <FontAwesomeIcon icon={faPlus} />
             </button>
           )}
-          {objDataType.length > 0 &&
-            objDataType.map((dt, i) => {
+          {dtoRows.length > 0 &&
+            dtoRows.map((dt, i) => {
               return (
-                <div className="datatype-content" key={i}>
-                  <div
-                    className="datatype-title-wrapper"
-                    onClick={() => toggleObjDatatype(i)}
-                  >
-                    <h1 className="datatype-content-title">{dt.name}</h1>
-                    <FontAwesomeIcon
-                      icon={dt.isOpen ? faChevronUp : faChevronDown}
-                      className="datatype-content-openbtn"
-                    />
-                  </div>
-                  {dt.isOpen && (
-                    <>
-                      <div className="datatype-attr-list">
-                        <p className="datatype-add-brace">&#123;</p>
-                        {dt.attr.map((atr: any, j: number) => {
-                          return (
-                            <div className="attr-div" key={j}>
-                              <button
-                                type="button"
-                                className="attr-type-button"
-                              >
-                                {atr.isList ? `List<${atr.type}>` : atr.type}
-                              </button>
-                              <input
-                                type="text"
-                                value={atr.name}
-                                className="attr-type-name"
-                                readOnly
-                              />
-                            </div>
-                          );
-                        })}
-                        <p className="datatype-add-brace">&#125;</p>
-                      </div>{' '}
-                      <div className="datatype-button-wrapper">
-                        <FontAwesomeIcon
-                          icon={faTrashCan}
-                          className="attr-type-delete"
-                          onClick={() => deleteDatatype(i)}
-                        />
-                      </div>
-                    </>
-                  )}
-                </div>
+                <DatatypeRow
+                  rowId={dt.dtoId}
+                  dtoRows={dtoRows}
+                  setDtoRows={setDtoRows}
+                  rowIdx={i}
+                  key={i}
+                />
               );
             })}
         </div>
@@ -266,10 +284,10 @@ export default function DatatypeModal({
         <DataTypeList
           setIsDatatypeListOpen={setIsDatatypeListOpen}
           mousePos={mousePos}
-          objDataType={objDataType}
-          selectInfo={selectInfo}
-          newObjAttribute={newObjAttribute}
-          setNewObjAttribute={setNewObjAttribute}
+          selectIdx={selectIdx}
+          isAll
+          attribute={attributes}
+          setAttribute={setAttributes}
         />
       )}
     </section>

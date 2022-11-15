@@ -1,21 +1,112 @@
 import './style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
-import { useSyncedStore } from '@syncedstore/react';
+import { useEffect, useCallback } from 'react';
+import { useOthers, useUpdatePresence } from '@y-presence/react';
+import { UserPresence } from 'types/main';
 
-import { globalStore } from 'store/yjsStore';
+import { getApi, postApi } from 'api';
+import { Cursor } from 'components/Cursor';
 import RowList from './RowList';
 
-export default function Requirement() {
-  const store = useSyncedStore(globalStore);
+interface Props {
+  pid: string;
+  store: any;
+}
+export default function Requirement({ pid, store }: Props) {
+  const others = useOthers<UserPresence>();
+  const updatePresence = useUpdatePresence<UserPresence>();
+
+  const handlePointMove = useCallback(
+    (e: React.PointerEvent) => {
+      updatePresence({
+        cursor: {
+          x: e.clientX,
+          y: e.clientY,
+        },
+        step: 2,
+      });
+    },
+    [updatePresence],
+  );
+
+  useEffect(() => {
+    const getRequirements = async () => {
+      const { data }: any = await getApi(`/requirementdocs/${pid}`);
+      console.log(data);
+      if (data) {
+        const requirementsArray = data.map((req: any) => {
+          return {
+            id: req.requirementId,
+            category: req.requirementCategoryDto
+              ? {
+                  name: req.requirementCategoryDto.categoryName,
+                  color: req.requirementCategoryDto.categoryColor,
+                  id: req.requirementCategoryId,
+                }
+              : { name: '', color: '', id: 0 },
+            requirement: req.requirementName ? req.requirementName : '',
+            description: req.requirementContent ? req.requirementContent : '',
+            division: req.requirementPart ? req.requirementPart : '',
+            manager: req.memberNickName ? req.memberNickName : '',
+            importance: req.requirementPriority ? req.requirementPriority : 3,
+            point: req.requirementStoryPoint ? req.requirementStoryPoint : 0,
+          };
+        });
+        store.pjt.rows = requirementsArray;
+
+        const categoryListResp: any = await getApi(
+          `/requirementdocs/${pid}/categories`,
+        );
+        store.pjt.categories = categoryListResp.data.map((cat: any) => {
+          return {
+            name: cat.categoryName,
+            color: cat.categoryColor,
+            id: cat.requirementCategoryId,
+          };
+        });
+      } else {
+        console.log('없는 프젝의 요구사항명세 조회함');
+      }
+    };
+
+    if (pid !== 'new') getRequirements();
+  }, []);
+
+  const requireJira = async () => {
+    const reJira: any = await postApi(`/jiras/${pid}/createissue`);
+    console.log('!!!');
+  };
 
   return (
-    <div className="requirement-container">
-      <h1 className="requirement-title">요구사항명세서</h1>
+    <div className="requirement-container" onPointerMove={handlePointMove}>
+      <h1 className="requirement-title">
+        요구사항명세서 &nbsp;
+        <div className="other-list-container">
+          {others
+            .filter((user) => user.presence.step === 2)
+            .map((user: any, i: number) => {
+              return (
+                <div className="other-color-container" key={i}>
+                  <img src={user.presence.img} className="other-color" alt="" />
+                  <label className="other-hover-name">
+                    {user.presence.name}
+                  </label>
+                </div>
+              );
+            })}
+        </div>
+      </h1>
 
       <section className="requirement-info-section">
-        <h3 className="requirement-project-title">PROJECT NAME</h3>
-        <button className="requirement-save-button" type="button">
+        <h3 className="requirement-project-title">
+          {store && store.pjt.title}
+        </h3>
+        <button
+          className="requirement-save-button"
+          type="button"
+          onClick={requireJira}
+        >
           <FontAwesomeIcon icon={faSave} />
         </button>
       </section>
@@ -34,8 +125,13 @@ export default function Requirement() {
           <h5 className="table-col title one">포인트</h5>
         </article>
 
-        <RowList store={store} />
+        <RowList store={store} pid={pid} />
       </section>
+      {others
+        .filter((user) => user.presence.step === 2)
+        .map((user) => (
+          <Cursor key={user.id} {...user.presence} />
+        ))}
     </div>
   );
 }

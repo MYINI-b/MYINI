@@ -1,7 +1,8 @@
 import { getYjsValue, syncedStore } from '@syncedstore/core';
 import { WebrtcProvider } from 'y-webrtc';
-import { USER } from 'types/Setting';
-import { ROW } from 'types/Requirement';
+import { USER, JIRA } from 'types/Setting';
+import { ROW, CATEGORY } from 'types/Requirement';
+import { CONTROLLER, API, EDITOR } from 'types/ApiSpec';
 
 export type ProjectInfo = {
   // project info
@@ -15,14 +16,36 @@ export type ProjectInfo = {
   notionLink: string;
   figmaLink: string;
   members: USER[];
+  jiraMembers: USER[];
 
   // requirement
   rows: ROW[];
-  categories: string[];
-  managers: string[];
+  categories: CATEGORY[];
+
+  // controllers
+  editors: EDITOR[];
+
+  controllers: CONTROLLER[];
+  currentAPI: API;
+
+  // erd
+  erdData: string;
+  // jira
+  jiraId: string;
+  jiraApiKey: string;
+  jiraDomain: string;
+  JiraProject: JIRA[];
+  JiraProjectId: string;
+  JiraProjectKey: string;
+  JiraProjectName: string;
 };
 
 export const globalStore = syncedStore({
   pjt: {} as ProjectInfo,
 });
-new WebrtcProvider('id', getYjsValue(globalStore) as any); // sync via webrtc
+export const globalStore2 = syncedStore({
+  pjt: {} as ProjectInfo,
+});
+
+// export const id = new WebrtcProvider('id', getYjsValue(globalStore) as any); // sync via webrtc
+// export const id2 = new WebrtcProvider('id2', getYjsValue(globalStore2) as any); // sync via webrtc

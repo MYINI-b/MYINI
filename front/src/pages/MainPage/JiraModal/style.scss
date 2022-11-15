@@ -1,0 +1,68 @@
+@import 'variables.scss';
+
+.jiramodal-pjt-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1001;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(131, 131, 131, 0.2);
+  @include FLEX-CENTER;
+
+  .modal-pjt-detail {
+    justify-content: space-between;
+    width: rem(400);
+    height: rem(250);
+    padding: rem(12) rem(10) rem(12) rem(20);
+    overflow-y: scroll;
+    background-color: #fff;
+    border-radius: 10px;
+    @include FLEX-COLUMN;
+
+    .modal-pjt-title {
+      @include FLEX-BETWEEN;
+      color: $primary;
+      font-weight: bold;
+      font-size: rem(24);
+    }
+    .modal-pjt-button-wrapper {
+      @include FLEX-ALIGN-RIGHT;
+      .modal-pjt-button-close {
+        font-size: rem(20);
+        cursor: pointer;
+      }
+    }
+    .modal-jira-content {
+      @include FLEX-COLUMN;
+
+      .modal-jira-input-container {
+        font-size: rem(18);
+        .jira-input {
+          width: 100%;
+          margin-top: rem(6);
+          padding: rem(16) rem(6);
+          font-size: rem(18);
+          font-family: $eng-content;
+          border: 1px solid $lightx2-gray;
+          border-radius: rem(6);
+          transition: 0.3s ease;
+
+          &:focus {
+            border: 1px solid $secondary;
+          }
+
+          &::placeholder {
+            font-size: rem(18);
+            font-family: $eng-content;
+          }
+        }
+      }
+    }
+
+    .jira-save-btn {
+      @include SUBMIT-BTN;
+      font-size: rem(18);
+    }
+  }
+}
