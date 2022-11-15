@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import MainHeader from 'components/MainHeader';
 import ProjectCard from 'components/ProjectCard';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,7 +24,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 // api
-
 import { getApi, patchApi } from 'api';
 import { PROJECT_LIST } from 'types/main';
 import { setSessions } from 'modules/project';
@@ -43,7 +42,6 @@ export default function MainPage() {
   const { sessions } = useSelector((state: RootState) => state.project);
   const [step, setStep] = useState(0);
   const [myProjectList, getMyProject] = useState<PROJECT_LIST[]>([]);
-  const [jiraEdit, setJiraEdit] = useState(false);
   const [myMember, setMyMember] = useState<MEMBER[]>([]);
   const [myInfo, setMyInfo] = useState<{
     memberEmail: string;
@@ -220,10 +218,12 @@ export default function MainPage() {
                 </div>
               </div>
             </div>
-            {myProjectList.length > 0 &&
-              myProjectList.map((content, idx: number) => (
-                <ProjectCard content={content} key={idx} />
-              ))}
+            <div className="main-project-cards">
+              {myProjectList.length > 0 &&
+                myProjectList.map((content, idx: number) => (
+                  <ProjectCard content={content} key={idx} />
+                ))}
+            </div>
           </div>
         </section>
       </div>
