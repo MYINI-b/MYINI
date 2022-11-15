@@ -11,25 +11,15 @@ import ProjectManage from './ProjectManage';
 import Social from './User/Social';
 
 function App() {
-  const store = configureStore({
-    reducer: rootReducer,
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({
-        serializableCheck: false,
-      }),
-  });
-
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/social/redirect" element={<Social />} />
-          <Route path="/main" element={<MainPage />} />
-          <Route path="/project/:pid" element={<ProjectManage />} />
-        </Routes>
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/social/redirect" element={<Social />} />
+        <Route path="/main" element={<MainPage />} />
+        <Route path="/project/:pid" element={<ProjectManage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

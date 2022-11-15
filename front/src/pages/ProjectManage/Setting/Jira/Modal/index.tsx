@@ -3,6 +3,7 @@ import React, { useCallback, useState } from 'react';
 import {
   faFileCircleQuestion,
   faXmark,
+  faCircleQuestion,
 } from '@fortawesome/free-solid-svg-icons';
 import './style.scss';
 import { putApi } from 'api';
@@ -15,10 +16,7 @@ interface Props {
 }
 
 function Modal({ store, modalClose, pid, editJiraInfo }: Props) {
-  const [isEdit, setIsEdit] = useState(false);
-
   const onSubmitClick = useCallback(() => {
-    setIsEdit(false);
     editJiraInfo();
   }, []);
 
@@ -29,10 +27,7 @@ function Modal({ store, modalClose, pid, editJiraInfo }: Props) {
       modalClose();
     }
   };
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    // alert(`${text}\nchecked? ${isChecked}`);
-  };
+
   const handleTextJiraId = useCallback(
     (e: any) => {
       store.pjt.jiraId = e.target.value;
@@ -72,6 +67,7 @@ function Modal({ store, modalClose, pid, editJiraInfo }: Props) {
         body,
       );
       console.log(resp);
+      modalClose();
     },
     [store],
   );
@@ -86,7 +82,7 @@ function Modal({ store, modalClose, pid, editJiraInfo }: Props) {
             rel="noreferrer"
           >
             <FontAwesomeIcon
-              icon={faFileCircleQuestion}
+              icon={faCircleQuestion}
               className="modal-jira-button-left"
               href="https://github.com/wooobinkim/myini/blob/main/docs/MYINIGuide.md"
             />
@@ -119,20 +115,21 @@ function Modal({ store, modalClose, pid, editJiraInfo }: Props) {
           <div className="jira-content-button" onClick={onSubmitClick}>
             프로젝트 찾기
           </div>
-          <div className="jira-project-category">
-            {store.pjt.jiraProject &&
-              store.pjt.jiraProject.map((item: any, idx: number) => (
-                <div key={idx}>
+          <div className="jira-projects-overflow">
+            <div className="jira-project-category">
+              {store.pjt.jiraProject &&
+                store.pjt.jiraProject.map((item: any, idx: number) => (
                   <button
                     type="button"
                     className="jira-project-category-item"
                     onClick={handleTextJira}
                     value={item.jiraProjectId}
+                    key={idx}
                   >
                     {item.jiraProjectName}
                   </button>
-                </div>
-              ))}
+                ))}
+            </div>
           </div>
         </div>
       </div>

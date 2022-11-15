@@ -3,6 +3,7 @@ export interface USER {
   img: string;
   name: string;
   email: string;
+  nickname?: string;
 }
 
 export interface JIRA {
