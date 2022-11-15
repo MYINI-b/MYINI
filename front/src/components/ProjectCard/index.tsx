@@ -16,21 +16,10 @@ interface Props {
   content: PROJECT_LIST;
 }
 export default function ProjectCard({ content }: Props) {
-  const [myProjectList, getMyProject] = useState<PROJECT_LIST[]>([]);
-
   const deletePjt = async (pid: any) => {
     const deletePjtData: any = await deleteApi(`projects/${pid}`);
     deletePjtData();
   };
-
-  useEffect(() => {
-    const fetchProject = async () => {
-      const getProjectDatas: any = await getApi(`/projects`);
-      getMyProject(getProjectDatas.data);
-    };
-    fetchProject();
-  }, [deletePjt]);
-
   const goProjectSetting = useCallback(() => {
     window.location.href = `/project/${content.projectId}`;
   }, []);
@@ -61,6 +50,7 @@ export default function ProjectCard({ content }: Props) {
           <FontAwesomeIcon
             icon={faTrash}
             onClick={() => deletePjt(content.projectId)}
+            className="card-body-delete"
           />
         </div>
       </div>
