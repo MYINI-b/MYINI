@@ -1,26 +1,26 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState, useCallback } from 'react';
-import { useSyncedStore } from '@syncedstore/react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getYjsValue, syncedStore } from '@syncedstore/core';
-import { WebrtcProvider } from 'y-webrtc';
+import { useOthers, useUpdatePresence } from '@y-presence/react';
+import { UserPresence } from 'types/main';
 
-import { globalStore, ProjectInfo } from 'store/yjsStore';
-import { getApi, postApi, putApi } from 'api';
+import { getApi, putApi } from 'api';
 import DefaultProfile from 'assets/default-profile.png';
-// import { PROJECT_LIST } from 'types/main';
+import { Cursor } from 'components/Cursor';
 import ImageTitle from './ImageTitle';
 import ProjectDesc from './ProjectDesc/index';
 import Period from './Period/index';
 import ReferenceLink from './ReferenceLink';
 import ProjectMember from './Member/index';
+import ProjectJira from './Jira';
 import './style.scss';
 
 interface Props {
+  store: any;
   pid: string;
 }
-export default function SettingPage({ pid }: Props) {
-  const [store, setStore] = useState<any>(useSyncedStore(globalStore));
+export default function Setting({ store, pid }: Props) {
+  const others = useOthers<UserPresence>();
+  const updatePresence = useUpdatePresence<UserPresence>();
 
   const editProjectInfo = useCallback(async () => {
     const body = {
@@ -34,57 +34,101 @@ export default function SettingPage({ pid }: Props) {
       projectFigmaUrl: store.pjt.figmaLink,
     };
     const resp = await putApi(`/projects/${pid}`, body);
-    console.log(resp);
+    // console.log(resp);
   }, [store]);
+
+  const editJiraInfo = useCallback(async () => {
+    const body = {
+      jiraId: store.pjt.jiraId,
+      jiraApiKey: store.pjt.jiraApiKey,
+    };
+    const body1 = {
+      jiraDomain: store.pjt.jiraDomain,
+    };
+
+    const resp = await putApi(
+      `https://k7b203.p.ssafy.io/api/jiras/${pid}/jiraaccount`,
+      body,
+    );
+    const resp1 = await putApi(
+      `https://k7b203.p.ssafy.io/api/jiras/${pid}/jiradomain`,
+      body1,
+    );
+    const jiraResp: any = await getApi(
+      `https://k7b203.p.ssafy.io/api/jiras/${pid}/projects`,
+    );
+    console.log(resp, resp1, jiraResp);
+    store.pjt.jiraProject = jiraResp.data;
+  }, [store]);
+
+  const handlePointMove = React.useCallback(
+    (e: React.PointerEvent) => {
+      updatePresence({
+        cursor: {
+          x: e.clientX,
+          y: e.clientY,
+        },
+        step: 1,
+      });
+    },
+    [updatePresence],
+  );
 
   useEffect(() => {
     const getProjectDetail = async () => {
-      const projectResp: any = await getApi(`/projects/${pid}`);
-      console.log(projectResp.data);
-      if (projectResp.status === 200) {
-        store.pjt.img = `https://myini.s3.ap-northeast-2.amazonaws.com/projectProfile/${projectResp.data.projectImg}`;
-        store.pjt.title = projectResp.data.projectName;
-        store.pjt.desc = projectResp.data.projectDescription;
-        store.pjt.startDay = projectResp.data.projectStartedDate;
-        store.pjt.endDay = projectResp.data.projectFinishedDate;
-        store.pjt.gitLink = projectResp.data.projectGithubUrl;
-        store.pjt.jiraLink = projectResp.data.projectJiraUrl;
-        store.pjt.notionLink = projectResp.data.projectNotionUrl;
-        store.pjt.figmaLink = projectResp.data.projectFigmaUrl;
+      const { data }: any = await getApi(`/projects/${pid}`);
+      console.log(data, store, pid);
+
+      if (store && pid !== '') {
+        store.pjt.img = data.projectImg
+          ? `https://myini.s3.ap-northeast-2.amazonaws.com/projectProfile/${data.projectImg}`
+          : DefaultProfile;
+        store.pjt.title = data.projectName;
+        store.pjt.desc = data.projectDescription;
+        store.pjt.startDay = data.projectStartedDate;
+        store.pjt.endDay = data.projectFinishedDate;
+        store.pjt.gitLink = data.projectGithubUrl;
+        store.pjt.jiraLink = data.projectJiraUrl;
+        store.pjt.notionLink = data.projectNotionUrl;
+        store.pjt.figmaLink = data.projectFigmaUrl;
+        if (!store.pjt.editors) store.pjt.editors = [];
 
         const memberResp: any = await getApi(`/projects/members/${pid}`);
-        console.log(memberResp);
+
         const memberData = memberResp.data.map((member: any) => {
           return {
             id: member.memberId,
             name: member.memberNickName,
             img: member.memberProfileImg
-              ? `https://myini.s3.ap-northeast-2.amazonaws.com/userProfile/${member.memberProfileImg}`
+              ? `${member.memberProfileImg}`
               : DefaultProfile,
             email: member.memberEmail,
           };
         });
+
+        const jiraResp: any = await getApi(`/projects/members/${pid}/jiras`);
+        const jiraData = jiraResp.data.map((member: any) => {
+          return {
+            id: member.memberId,
+            name: member.memberName,
+            img: member.memberProfileImg
+              ? `${member.memberProfileImg}`
+              : DefaultProfile,
+            email: member.memberEmail,
+            nickname: member.memberNickname,
+          };
+        });
+        store.pjt.jiraMembers = jiraData;
         store.pjt.members = memberData;
-      } else if (projectResp.response.status === 400) alert('없는 프젝');
-      else if (projectResp.response.status === 500) alert('api 에러');
+      }
     };
 
-    const initNewProject = async () => {
-      const { data }: any = await postApi(`/projects`);
-      const newStore = syncedStore({
-        pjt: {} as ProjectInfo,
-      });
-      new WebrtcProvider(`id${data.projectId}`, getYjsValue(newStore) as any);
-      setStore(newStore);
-    };
-
-    if (pid === 'new') initNewProject();
-    else getProjectDetail();
-  }, []);
+    getProjectDetail();
+  }, [store, pid]);
 
   return (
-    <div className="setting-page">
-      {pid && (
+    <div className="setting-page" onPointerMove={handlePointMove}>
+      {!!pid && store && (
         <div className="setting-components">
           <ImageTitle
             store={store}
@@ -98,6 +142,11 @@ export default function SettingPage({ pid }: Props) {
               <ReferenceLink store={store} editProjectInfo={editProjectInfo} />
             </div>
             <div className="right-side">
+              <ProjectJira
+                store={store}
+                pid={pid}
+                editJiraInfo={editJiraInfo}
+              />
               <ProjectMember
                 store={store}
                 pid={pid}
@@ -105,8 +154,30 @@ export default function SettingPage({ pid }: Props) {
               />
             </div>
           </div>
+
+          <div className="others-container">
+            {others
+              .filter((user) => user.presence.step === 1)
+              .map((user: any, i: number) => {
+                return (
+                  <div className="other-card" key={i}>
+                    <img
+                      src={user.presence.img}
+                      alt=""
+                      className="other-color"
+                    />
+                    <label>&nbsp;{user.presence.name}</label>
+                  </div>
+                );
+              })}
+          </div>
         </div>
       )}
+      {others
+        .filter((user) => user.presence.step === 1)
+        .map((user) => (
+          <Cursor key={user.id} {...user.presence} />
+        ))}
     </div>
   );
 }

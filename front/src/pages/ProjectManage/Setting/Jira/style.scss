@@ -1,0 +1,24 @@
+@import 'variables.scss';
+
+.project-detail-title-wrapper {
+  display: flex;
+  align-items: center;
+  padding-bottom: rem(10);
+  .project-detail-jira-title {
+    color: $primary;
+    font-weight: bold;
+    font-size: rem(24);
+    font-family: $eng-content;
+    @include FLEX-ALIGN-CENTER;
+  }
+  .project-detail-jira-image-icon {
+    width: rem(24);
+    margin-left: rem(2);
+    cursor: pointer;
+  }
+}
+.project-select-jira {
+  padding-bottom: rem(30);
+  font-size: rem(20);
+  font-family: $eng-title;
+}

@@ -61,7 +61,7 @@ public class InitializerServiceImpl implements InitializerService {
         try {
             JSONParser jsonParser = new JSONParser();
             File file = new File(projectId + "_erd");
-            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/" + projectId + ".vuerd.json"), file);
+            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/" + projectId + ".myini.json"), file);
 
             Reader reader = new FileReader(file);
             JSONObject erd = (JSONObject) jsonParser.parse(reader);

@@ -1,9 +1,13 @@
 /* eslint-disable no-console */
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import MainHeader from 'components/MainHeader';
 import ProjectCard from 'components/ProjectCard';
 import { useDispatch, useSelector } from 'react-redux';
+import { getYjsValue, syncedStore } from '@syncedstore/core';
+import { WebrtcProvider } from 'y-webrtc';
+import * as Y from 'yjs';
 
+import { ProjectInfo } from 'store/yjsStore';
 import { Link } from 'react-router-dom';
 import { RootState } from 'modules/Reducers';
 
@@ -20,10 +24,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 // api
-import { getApi, deleteApi } from 'api';
+import { getApi, patchApi } from 'api';
+import { PROJECT_LIST } from 'types/main';
+import { setSessions } from 'modules/project';
 import Modal from './Modal';
 import MemberModal from './MemberModal';
 import JiraModal from './JiraModal';
+
 import { authAxios } from '../../api/common';
 
 import { Profile } from '../../modules/member';
@@ -31,7 +38,10 @@ import CardLogo from '../../assets/card-logo.png';
 import './style.scss';
 
 export default function MainPage() {
+  const ydoc = new Y.Doc();
+  const { sessions } = useSelector((state: RootState) => state.project);
   const [step, setStep] = useState(0);
+  const [myProjectList, getMyProject] = useState<PROJECT_LIST[]>([]);
   const [myMember, setMyMember] = useState<MEMBER[]>([]);
   const [myInfo, setMyInfo] = useState<{
     memberEmail: string;
@@ -98,12 +108,23 @@ export default function MainPage() {
           console.log(err, '에러요');
         });
     };
-    fetchData();
+
     const getMembers = async () => {
       const getMemberData: any = await getApi(`/members/crew`);
       setMyMember(getMemberData.data);
     };
+
+    const fetchProject = async () => {
+      const getProjectDatas: any = await getApi(`/projects`);
+      getMyProject(getProjectDatas.data);
+    };
+    fetchProject();
+    fetchData();
     getMembers();
+  }, []);
+
+  const addNewProject = useCallback(() => {
+    window.location.href = '/project/new';
   }, []);
 
   return (
@@ -190,15 +211,18 @@ export default function MainPage() {
         <section className="card-container">
           <div className="card-scroll">
             <div className="project-start-container">
-              <Link to="/project/new" className="main-link-style">
+              <div className="main-link-style" onClick={addNewProject}>
                 <div className="project-start">
                   <img src={CardLogo} alt="" className="card-logo" />
                   <span>새 프로젝트</span>
                 </div>
-              </Link>
+              </div>
             </div>
             <div className="main-project-cards">
-              <ProjectCard />
+              {myProjectList.length > 0 &&
+                myProjectList.map((content, idx: number) => (
+                  <ProjectCard content={content} key={idx} />
+                ))}
             </div>
           </div>
         </section>

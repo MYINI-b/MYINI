@@ -263,6 +263,7 @@
     border-radius: 30px;
     box-shadow: $shadow;
     background-color: $white;
+    transition:0.3s ease;
   }
   
   .project-start:hover {
@@ -304,6 +305,7 @@
 }
 
 .main-link-style {
-  color: black
+  color: black;
+  @include STRETCH;
 }
 

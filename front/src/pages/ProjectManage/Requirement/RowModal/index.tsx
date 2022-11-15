@@ -7,12 +7,14 @@ import {
 } from 'react';
 import './style.scss';
 import { MOUSEPOS } from 'types/ApiSpec';
+import { deleteApi, postApi } from 'api';
 
 interface Props {
   setIsRowModalOpen: Dispatch<SetStateAction<boolean>>;
   clickMousePos: MOUSEPOS;
   idx: number;
   store: any;
+  pid: string;
 }
 
 export default function RowModal({
@@ -20,6 +22,7 @@ export default function RowModal({
   clickMousePos,
   idx,
   store,
+  pid,
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
 
@@ -32,7 +35,8 @@ export default function RowModal({
     setIsRowModalOpen(false);
   };
 
-  const addRow = useCallback(() => {
+  const addRow = useCallback(async () => {
+    await postApi(`/requirementdocs/${pid}/requirements`);
     store.pjt.rows.push({
       category: '',
       requirement: '',
@@ -45,14 +49,25 @@ export default function RowModal({
     setIsRowModalOpen(false);
   }, [store]);
 
-  const deleteRow = useCallback(() => {
+  const deleteRow = useCallback(async () => {
+    await deleteApi(`/requirementdocs/requirements/${store.pjt.rows[idx].id}`);
     store.pjt.rows.splice(idx, 1);
     setIsRowModalOpen(false);
   }, [store, idx]);
 
   const duplicateRow = useCallback(() => {
-    const copyRow = { ...store.pjt.rows[idx] };
-    store.pjt.rows.splice(idx, 0, copyRow);
+    // const copyRow = { ...store.pjt.rows[idx] };
+    // const newObj = {
+    //   category: copyRow.category,
+    //   requirement: copyRow.requirement,
+    //   description: copyRow.description,
+    //   division: copyRow.division,
+    //   manager: copyRow.manager,
+    //   importance: copyRow.importance,
+    //   point: copyRow.point,
+    // };
+    // store.pjt.rows.push(newObj);
+
     setIsRowModalOpen(false);
   }, [store, idx]);
 

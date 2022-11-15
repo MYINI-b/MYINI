@@ -21,9 +21,10 @@ export type initDependenciesListType = {
 
 interface Props {
   pid: string;
+  store: any;
 }
 
-export default function Build({ pid }: Props) {
+export default function Build({ pid, store }: Props) {
   const [modalOpen, setModalOpen] = useState(false);
   const modalClose = () => {
     setModalOpen(!modalOpen);
@@ -297,7 +298,7 @@ export default function Build({ pid }: Props) {
   return (
     <div className="build-container">
       <h1 className="build-title">API 명세서</h1>
-      <h2 className="build-project-title">project name</h2>
+      <h2 className="build-project-title">{store && store.pjt.title}</h2>
       <div className="build-main">
         <div className="init-container">
           <div className="title-item">INIT SETTING</div>
