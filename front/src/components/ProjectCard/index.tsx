@@ -6,7 +6,6 @@ import { useCallback } from 'react';
 import { PROJECT_LIST } from 'types/main';
 
 // api
-
 interface Props {
   content: PROJECT_LIST;
 }

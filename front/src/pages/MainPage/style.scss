@@ -44,6 +44,11 @@
   .project-title-div {
     display: flex;
 
+    .project-info-title {
+      padding-bottom: 0.5rem;
+      color: $primary;
+    }  
+
     .projects-detail-btn {
       color: $primary;
       cursor: pointer;
@@ -64,16 +69,31 @@
   border-top: none;
   border-bottom: none;
   border-left: none;
-  width: 33%
+  width: 33%;
+
+  .project-div1-title {
+    display: flex;
+
+    .project-info-title {
+      padding-bottom: 0.5rem;
+      color: $primary;
+    }
+  
+    .projects-detail-btn {
+      color: $primary;
+      cursor: pointer;
+      padding: 0.5rem;
+      padding-bottom: 1.5rem;
+    }
+  }
 }
 
 .project-jira-div {
   @include FLEX-CENTER;
   @include FLEX-COLUMN;
   padding: 0.5rem;
-  padding-right: 8rem;
-  padding-left: 8rem;
-  padding-bottom: 1.25rem;
+  padding-right: 7rem;
+  padding-left: 7rem;
   border: solid;
   border-color: $gray;
   border-top: none;
@@ -84,7 +104,6 @@
   .jira-info-title-container {
     @include FLEX-CENTER;
     display: flex;
-    width: rem(300);
 
     .jira-edit-button {
       color: $primary;
@@ -97,6 +116,10 @@
       padding-bottom: 1rem;
       color: $primary;
     }
+  }
+
+  .project-jira-info-content {
+    padding: 1rem;
   }
 }
 
@@ -129,32 +152,34 @@
       display: inline-block;
       position: relative;
       overflow: hidden;
-    }
-    
-    .card-img {
-      border-radius: 30px;
-    
-    }
-    
-    .card-header {
-      -webkit-transition: 0.5s; /*사파리 & 크롬*/
-      -moz-transition: 0.5s; /*파이어폭스*/
-      -ms-transition: 0.5s;	/*인터넷 익스플로러*/
-      -o-transition: 0.5s; /*오페라*/
-      transition: 0.5s;
-      width: 100%;
-      height: 100%;
-      border-radius: 15px 15px 0 0;
-      background-image: url("https://picsum.photos/300");
-      background-size: 100% 300px;
-      background-repeat: no-repeat;	
-    }
-    
-    .card-header-title {
-      bottom: 0;
-      padding: 2rem;
-      font-size: 2rem;
-      color: white;
+
+      .card-header {
+        -webkit-transition: 0.5s; /*사파리 & 크롬*/
+        -moz-transition: 0.5s; /*파이어폭스*/
+        -ms-transition: 0.5s;	/*인터넷 익스플로러*/
+        -o-transition: 0.5s; /*오페라*/
+        transition: 0.5s;
+        width: 100%;
+        height: 100%;
+        border-radius: 15px 15px 0 0;
+        // background-image: url("https://picsum.photos/300");
+        background-size: 100% 300px;
+        background-repeat: no-repeat;	
+  
+        .card-background-img {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          z-index: -1;
+        }
+  
+        .card-header-title {
+          bottom: 0;
+          padding: 2rem;
+          font-size: 2rem;
+          color: white;
+        }
+      }
     }
     
     .card:hover .card-header {
@@ -165,11 +190,14 @@
     
     .card-body {
       background-color: $white;
+      position: absolute;
+      z-index: 100;
+      width: 100%;
     
       .card-body-header{
         padding-top: 20px;
         margin: 0px 20px 10px 20px;
-        @include ELLIPSIS-LINE(1)
+        @include ELLIPSIS-LINE(1);
       }
     
       .card-body-context {
@@ -184,18 +212,23 @@
         overflow: hidden;
         height: 180px;
         margin: 5px 20px;
+        position: relative;
+
       }
     
       .card-body-footer {
+        color: #757B82;
         position: absolute;
-        bottom: 0;
+        bottom: 25%;
         right: 0;
         padding: 1rem;
       }
-    
+      
       .card-body-footer:hover {
         color: $primary;
       }
+    
+
     }
     
     .card:hover .card-body-context {
@@ -243,18 +276,8 @@
 }
 
 
-
-.project-info-title {
-  padding-bottom: 0.5rem;
-  color: $primary;
-}
-
 .main-members-container {
   display: flex;
-
-  .nothing-div {
-    display: none;
-  }
 
   .main-member-container {
     display: flex;
