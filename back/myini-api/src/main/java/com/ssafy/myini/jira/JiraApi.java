@@ -183,7 +183,6 @@ public class JiraApi {
             }
         });
         //커스텀필드 스크린 입력 끝
-
         //이슈타입 정보 시작
         String storyId = "";
         String epicId = "";
@@ -207,7 +206,6 @@ public class JiraApi {
         }
         if (storyId.isEmpty()) throw new JiraException(JiraException.ISSUE_TYPE_NOT_FOUND);
         //이슈타입 정보 끝
-
         //에픽입력 시작
         //등록된 에픽들 먼저 가져오기
 //        List<EpicIssue> epicIssues = new ArrayList<>();
@@ -230,9 +228,7 @@ public class JiraApi {
 //        categoryList = categoryList.stream().distinct().collect(Collectors.toList());
 
         for (RequirementCategory requirementCategory : requirementCategories) {
-
             if(isExist(requirementCategory,jiraDomain, jiraApiKey, jiraId)){
-                System.out.println("에픽수정");
                 JsonNodeFactory jnf = JsonNodeFactory.instance;
                 ObjectNode payload = jnf.objectNode();
                 {
@@ -284,7 +280,6 @@ public class JiraApi {
                         .body(payload)
                         .asJson();
             }else{
-                System.out.println("에픽 생성");
                 //등록
                 JsonNodeFactory jnf = JsonNodeFactory.instance;
                 ObjectNode payload = jnf.objectNode();
@@ -328,7 +323,6 @@ public class JiraApi {
             }
 
         }
-
 
 //        la:
 //        for (re : requirementCategories) {
@@ -386,7 +380,6 @@ public class JiraApi {
         //에픽입력 끝
         //요구사항 - 스토리 연동 시작
         for (Requirement requirement : requirements) {
-
             String reportUser = "";
             for (JiraUser jiraUser : jiraUsers) {
                 if (jiraUser.userEmailAddress.equals(requirement.getMember().getMemberJiraEmail())) {
@@ -397,8 +390,6 @@ public class JiraApi {
 
             //수정
             if (isExist(requirement, jiraDomain, jiraApiKey, jiraId)){
-                System.out.println("수정");
-
                 JsonNodeFactory jnf = JsonNodeFactory.instance;
                 ObjectNode payload = jnf.objectNode();
                 {
@@ -474,7 +465,6 @@ public class JiraApi {
             }
             //생성
             else{
-                System.out.println("생성");
                 //등록
                 JsonNodeFactory jnf = JsonNodeFactory.instance;
                 ObjectNode payload = jnf.objectNode();
