@@ -102,16 +102,19 @@ function Modal({ store, modalClose, pid, editJiraInfo }: Props) {
             className="jira-content-input"
             placeholder="Jira ID"
             onChange={handleTextJiraId}
+            defaultValue={store.pjt.jiraId}
           />
           <input
             className="jira-content-input"
             placeholder="API Key"
             onChange={handleTextJiraApiKey}
+            defaultValue={store.pjt.jiraApiKey}
           />
           <input
             className="jira-content-input"
             placeholder="도메인"
             onChange={handleTextJiraDomain}
+            defaultValue={store.pjt.jiraDomain}
           />
           <div className="jira-content-button" onClick={onSubmitClick}>
             프로젝트 찾기
