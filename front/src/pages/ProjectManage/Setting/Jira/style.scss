@@ -3,6 +3,7 @@
 .project-detail-jira {
   display: flex;
   align-items: center;
+  padding-bottom: rem(10);
   .project-detail-jira-title {
     color: $primary;
     font-weight: bold;
@@ -13,4 +14,9 @@
     margin-left: rem(2);
     width: rem(24);
   }
+}
+.project-select-jira {
+  padding-bottom: rem(30);
+  font-family: $eng-content;
+  font-size: rem(20);
 }
