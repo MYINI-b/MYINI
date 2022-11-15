@@ -16,7 +16,12 @@ import { MEMBER } from 'types/main';
 
 // 3rd party
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faCheck, faOtter } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPen,
+  faCheck,
+  faOtter,
+  faFolderOpen,
+} from '@fortawesome/free-solid-svg-icons';
 
 // api
 import { getApi, patchApi } from 'api';
@@ -126,22 +131,28 @@ export default function MainPage() {
         <span className="user-name">{myInfo.memberNickname}</span>
         <span className="user-ini">`s INI</span>
         <div className="project-info">
-          <div className="project-div">
-            <h2 className="project-info-title">내 프로젝트 수</h2>
+          <div className="main-project-div">
+            <div className="project-title-div">
+              <h2 className="project-info-title">내 프로젝트 수</h2>
+              <FontAwesomeIcon
+                icon={faFolderOpen}
+                className="projects-detail-btn"
+              />
+            </div>
             <h2>{getMyInfo.projectCount} 개</h2>
           </div>
           <div className="project-div1">
             <h2 className="project-info-title">함께 했던 팀원</h2>
             <div className="main-members-container">
-              {myMember.map((content, idx) => {
+              {myMember.map((content: any, idx: number) => {
                 return (
                   <div key={idx} className="main-member-container">
                     {content === null ? (
                       <div>
                         <span>함께한 팀원이 없습니다.</span>
                       </div>
-                    ) : content.memberProfileImg === null ? (
-                      <div className="main-member">
+                    ) : (
+                      <div className="main-member" key={idx}>
                         <div className="main-member-img">
                           <FontAwesomeIcon
                             icon={faOtter}
@@ -151,15 +162,6 @@ export default function MainPage() {
                         <p className="main-member-name">
                           {content.memberNickname}
                         </p>
-                      </div>
-                    ) : (
-                      <div className="main-member">
-                        <img
-                          src={content.memberProfileImg}
-                          alt=""
-                          className="main-member-img"
-                        />
-                        <p>{content.memberNickname}</p>
                       </div>
                     )}
                   </div>

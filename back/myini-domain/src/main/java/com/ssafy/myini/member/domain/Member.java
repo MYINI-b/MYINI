@@ -53,7 +53,7 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Requirement> requirements = new ArrayList<>();
 
-    public static Member createMember(Provider memberProvider, String memberProviderId, String memberName, String memberEmail, String memberNickname, Role role) {
+    public static Member createMember(Provider memberProvider, String memberProviderId, String memberName, String memberEmail, String memberNickname, Role role, String memberProfileImg) {
         Member member = new Member();
         member.memberProvider = memberProvider;
         member.memberProviderId = memberProviderId;
@@ -61,13 +61,21 @@ public class Member extends BaseEntity {
         member.memberEmail = memberEmail;
         member.memberNickname = memberNickname;
         member.role = role;
+        member.memberProfileImg = memberProfileImg;
         return member;
     }
 
-    public void updateMemberProfileImg(String profileImg){
+    public void updateMember(String memberEmail, String memberNickname, String memberProfileImg) {
+        this.memberEmail = memberEmail;
+        this.memberNickname = memberNickname;
+        this.memberProfileImg = memberProfileImg;
+    }
+
+    public void updateMemberProfileImg(String profileImg) {
         this.memberProfileImg = profileImg;
     }
-    public void updateMemberJiraEmail(String memberJiraEmail){
+
+    public void updateMemberJiraEmail(String memberJiraEmail) {
         this.memberJiraEmail = memberJiraEmail;
     }
 }

@@ -1,6 +1,6 @@
 import { getYjsValue, syncedStore } from '@syncedstore/core';
 import { WebrtcProvider } from 'y-webrtc';
-import { USER } from 'types/Setting';
+import { USER, JIRA } from 'types/Setting';
 import { ROW, CATEGORY } from 'types/Requirement';
 import { CONTROLLER, API, EDITOR } from 'types/ApiSpec';
 
@@ -16,6 +16,7 @@ export type ProjectInfo = {
   notionLink: string;
   figmaLink: string;
   members: USER[];
+  jiraMembers: USER[];
 
   // requirement
   rows: ROW[];
@@ -29,6 +30,14 @@ export type ProjectInfo = {
 
   // erd
   erdData: string;
+  // jira
+  jiraId: string;
+  jiraApiKey: string;
+  jiraDomain: string;
+  JiraProject: JIRA[];
+  JiraProjectId: string;
+  JiraProjectKey: string;
+  JiraProjectName: string;
 };
 
 export const globalStore = syncedStore({

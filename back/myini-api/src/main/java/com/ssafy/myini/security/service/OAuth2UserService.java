@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.*;
 import java.util.Optional;
 
 @Service
@@ -25,6 +26,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     private final MemberRepository memberRepository;
 
     @Override
+    @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         // OAuth로 넘어온 사용자 profile scope가 전처리되는 메서드
         OAuth2User oAuth2User = super.loadUser(userRequest);
@@ -47,6 +49,11 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         Member member;
         if (memberOptional.isPresent()) {
             member = memberOptional.get();
+            String memberProfileImg = oAuth2UserInfo.getUserProfileImg();
+            if (memberProfileImg != null && memberProfileImg.isEmpty()) {
+                memberProfileImg = null;
+            }
+            member.updateMember(oAuth2UserInfo.getUserEmail(), oAuth2UserInfo.getUserNickname(), memberProfileImg);
         } else {
             member = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
         }
@@ -59,8 +66,12 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         String memberProviderId = oAuth2UserInfo.getUserProviderId();
         String memberName = oAuth2UserInfo.getUserName();
         String memberEmail = oAuth2UserInfo.getUserEmail();
+        String memberProfileImg = oAuth2UserInfo.getUserProfileImg();
+        if (memberProfileImg != null && memberProfileImg.isEmpty()) {
+            memberProfileImg = null;
+        }
 
-        Member member = Member.createMember(memberProvider, memberProviderId, memberName, memberEmail, memberNickname, Role.ROLE_USER);
+        Member member = Member.createMember(memberProvider, memberProviderId, memberName, memberEmail, memberNickname, Role.ROLE_USER, memberProfileImg);
 
         return memberRepository.save(member);
     }

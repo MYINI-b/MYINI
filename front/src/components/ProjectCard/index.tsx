@@ -1,6 +1,7 @@
 import './style.scss';
 import { Link } from 'react-router-dom';
 import { useCallback } from 'react';
+
 // types
 import { PROJECT_LIST } from 'types/main';
 

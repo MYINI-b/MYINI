@@ -23,7 +23,7 @@ export default function CategoryListModal({
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
 
   const selectManager = useCallback(
-    async (manager: string) => {
+    async (manager: USER) => {
       const body = {
         memberName: manager,
       };
@@ -42,7 +42,7 @@ export default function CategoryListModal({
     modalContainer.current.style.left = `${clickElementPos.x}px`;
     modalContainer.current.style.top = `${clickElementPos.y}px`;
     modalContainer.current.style.width = `${clickElementPos.width}px`;
-    console.log(store.pjt.members);
+    console.log(store.pjt.jiraMembers);
   }, [clickElementPos]);
 
   return (
@@ -53,15 +53,15 @@ export default function CategoryListModal({
         ref={modalContainer}
       >
         <div className="category-list-overflow">
-          {store.pjt.members &&
-            store.pjt.members.map((user: USER, i: number) => {
+          {store.pjt.jiraMembers &&
+            store.pjt.jiraMembers.map((user: USER, i: number) => {
               return (
                 <span
                   className={`category-row ${
                     store.pjt.rows[idx].manager === user.name && 'select'
                   }`}
                   key={i}
-                  onClick={() => selectManager(user.name)}
+                  onClick={() => selectManager(user)}
                 >
                   {user.name}
                 </span>

@@ -56,19 +56,17 @@ export default function RowModal({
   }, [store, idx]);
 
   const duplicateRow = useCallback(() => {
-    // const copyRows = [...store.pjt.rows];
-    const copyRow = { ...store.pjt.rows[idx] };
-    // const leftRows = [...copyRows.slice(0, idx + 1)];
-    const newObj = {
-      category: copyRow.category,
-      requirement: copyRow.requirement,
-      description: copyRow.description,
-      division: copyRow.division,
-      manager: copyRow.manager,
-      importance: copyRow.importance,
-      point: copyRow.point,
-    };
-    // store.pjt.rows.splice(idx, 0, { ...newObj });
+    // const copyRow = { ...store.pjt.rows[idx] };
+    // const newObj = {
+    //   category: copyRow.category,
+    //   requirement: copyRow.requirement,
+    //   description: copyRow.description,
+    //   division: copyRow.division,
+    //   manager: copyRow.manager,
+    //   importance: copyRow.importance,
+    //   point: copyRow.point,
+    // };
+    // store.pjt.rows.push(newObj);
 
     setIsRowModalOpen(false);
   }, [store, idx]);

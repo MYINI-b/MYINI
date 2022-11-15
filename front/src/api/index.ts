@@ -15,7 +15,7 @@ export const getApi = async (url: string) => {
     const data = await axios.get(`${url}`, headers);
     return data;
   } catch (err) {
-    console.log(err);
+    console.log(err, '에러입니다.');
     // alert('문제가 발생했습니다');
     return err;
   }

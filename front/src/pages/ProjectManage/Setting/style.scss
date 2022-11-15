@@ -23,7 +23,7 @@
   .bottom-side {
     display: flex;
     width: 100%;
-    margin-top: rem(36);
+    margin-top: rem(40);
 
     .left-side {
       flex: 0.7;
@@ -33,7 +33,7 @@
     .right-side {
       flex: 0.3;
       width: 100%;
-      max-height: rem(440);
+      max-height: rem(600);
       margin-left: rem(30);
       @include FLEX-COLUMN;
     }
@@ -52,6 +52,7 @@
 .project-detail-title-wrapper {
   @include FLEX-BETWEEN;
   width: 100%;
+  margin-top: rem(40);
 
   &.normal {
     justify-content: initial;

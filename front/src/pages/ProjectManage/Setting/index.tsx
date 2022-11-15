@@ -11,6 +11,7 @@ import ProjectDesc from './ProjectDesc/index';
 import Period from './Period/index';
 import ReferenceLink from './ReferenceLink';
 import ProjectMember from './Member/index';
+import ProjectJira from './Jira';
 import './style.scss';
 
 interface Props {
@@ -33,7 +34,31 @@ export default function Setting({ store, pid }: Props) {
       projectFigmaUrl: store.pjt.figmaLink,
     };
     const resp = await putApi(`/projects/${pid}`, body);
-    console.log(resp);
+    // console.log(resp);
+  }, [store]);
+
+  const editJiraInfo = useCallback(async () => {
+    const body = {
+      jiraId: store.pjt.jiraId,
+      jiraApiKey: store.pjt.jiraApiKey,
+    };
+    const body1 = {
+      jiraDomain: store.pjt.jiraDomain,
+    };
+
+    const resp = await putApi(
+      `https://k7b203.p.ssafy.io/api/jiras/${pid}/jiraaccount`,
+      body,
+    );
+    const resp1 = await putApi(
+      `https://k7b203.p.ssafy.io/api/jiras/${pid}/jiradomain`,
+      body1,
+    );
+    const jiraResp: any = await getApi(
+      `https://k7b203.p.ssafy.io/api/jiras/${pid}/projects`,
+    );
+    console.log(resp, resp1, jiraResp);
+    store.pjt.jiraProject = jiraResp.data;
   }, [store]);
 
   const handlePointMove = React.useCallback(
@@ -69,6 +94,7 @@ export default function Setting({ store, pid }: Props) {
         if (!store.pjt.editors) store.pjt.editors = [];
 
         const memberResp: any = await getApi(`/projects/members/${pid}`);
+
         const memberData = memberResp.data.map((member: any) => {
           return {
             id: member.memberId,
@@ -79,6 +105,20 @@ export default function Setting({ store, pid }: Props) {
             email: member.memberEmail,
           };
         });
+
+        const jiraResp: any = await getApi(`/projects/members/${pid}/jiras`);
+        const jiraData = jiraResp.data.map((member: any) => {
+          return {
+            id: member.memberId,
+            name: member.memberName,
+            img: member.memberProfileImg
+              ? `${member.memberProfileImg}`
+              : DefaultProfile,
+            email: member.memberEmail,
+            nickname: member.memberNickname,
+          };
+        });
+        store.pjt.jiraMembers = jiraData;
         store.pjt.members = memberData;
       }
     };
@@ -102,6 +142,11 @@ export default function Setting({ store, pid }: Props) {
               <ReferenceLink store={store} editProjectInfo={editProjectInfo} />
             </div>
             <div className="right-side">
+              <ProjectJira
+                store={store}
+                pid={pid}
+                editJiraInfo={editJiraInfo}
+              />
               <ProjectMember
                 store={store}
                 pid={pid}

@@ -7,26 +7,84 @@
   overflow: hidden;
 }
 
-.logo {
+.login-logo {
   z-index: 100;
-  width: rem(300);
-  height: rem(300);
-  margin-bottom: 1rem;
+  width: 13rem;
+  height: 10rem;
+  margin-top: 1rem;
+  margin-right: 1rem;
 }
 
 .login-container {
   z-index: 100;
-}
 
-.MY {
-  color: $primary;
-  font-size: rem(90);
-  font-family: $eng-title;
-}
+  .login-title-container {
+    .MY {
+      color: $primary;
+      font-size: rem(90);
+      font-family: $eng-title;
+    }
 
-.INI {
-  font-size: rem(90);
-  font-family: $eng-title;
+    .INI {
+      font-size: rem(90);
+      font-family: $eng-title;
+    }
+  }
+
+  .login-google-btn {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    padding: rem(22) rem(45);
+    overflow: hidden;
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: $third;
+    border: none;
+    border-radius: 15px;
+    outline: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+
+  .login-google-btn span {
+    position: relative;
+    z-index: 1;
+    line-height: 1px;
+
+    .google-logo {
+      padding-right: rem(10);
+      font-size: rem(20);
+    }
+
+    .start-with-google {
+      font-size: rem(20);
+      font-family: $eng-title;
+      text-align: center;
+    }
+  }
+
+  .login-google-btn::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 140%;
+    height: 490%;
+    background: $primary;
+    -webkit-transform: translateX(-98%) translateY(-25%) rotate(45deg);
+    transform: translateX(-98%) translateY(-25%) rotate(45deg);
+    -webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    content: '';
+  }
+
+  .login-google-btn:hover::after {
+    -webkit-transform: translateX(-9%) translateY(-25%) rotate(45deg);
+    transform: translateX(-9%) translateY(-25%) rotate(45deg);
+  }
 }
 
 .wave-container {
@@ -44,10 +102,10 @@
   top: 165%;
   left: -63%;
   z-index: 0;
-  width: 4000px;
-  height: 4000px;
-  margin-top: -250px;
-  margin-left: -250px;
+  width: rem(4000);
+  height: rem(4000);
+  margin-top: rem(-250);
+  margin-left: rem(-250);
   background: $fourth;
   border-radius: 43%;
   transform-origin: 50% 48%;

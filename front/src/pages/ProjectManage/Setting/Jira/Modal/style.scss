@@ -1,0 +1,109 @@
+@import 'variables.scss';
+
+.modal-jira-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100000;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(131, 131, 131, 0.2);
+  @include FLEX-CENTER;
+
+  .modal-jira-detail {
+    width: rem(500);
+    height: rem(650);
+    padding: rem(30);
+    overflow: hidden;
+    background-color: #fff;
+    border: 2px solid $jira;
+    border-radius: 3%;
+    @include FLEX-COLUMN;
+
+    // Modal 창 브라우저 가운데로 조정
+
+    .modal-jira-title {
+      @include FLEX-BETWEEN;
+      flex-shrink: 0;
+      font-size: rem(30);
+      .modal-jira-button-left {
+        color: $black;
+        font-size: rem(16);
+      }
+      .modal-jira-button-right {
+        cursor: pointer;
+      }
+    }
+    .modal-jira-content {
+      @include FLEX-COLUMN;
+      @include STRETCH;
+      .jira-content-input {
+        flex-shrink: 0;
+        margin-top: rem(30);
+        font-size: rem(20);
+        font-family: $eng-content;
+        border: 0;
+        border-bottom: 1px solid $lightx2-gray;
+        outline: 0;
+      }
+      input::placeholder {
+        color: $light-gray;
+      }
+      .jira-content-button {
+        flex-shrink: 0;
+        margin-top: rem(30);
+        padding: rem(10) 0;
+        color: $black;
+        font-weight: bold;
+        font-size: rem(16);
+        border-radius: 40px;
+        cursor: pointer;
+        @include BTN-COLOR($jira);
+        @include FLEX-CENTER;
+      }
+
+      .jira-projects-overflow {
+        margin-top: rem(10);
+        overflow: hidden;
+        @include STRETCH;
+        @include FLEX-COLUMN;
+      }
+
+      .jira-project-category {
+        width: 100%;
+        height: 100%;
+        padding-bottom: rem(30);
+        overflow-y: auto;
+        &::-webkit-scrollbar-thumb {
+          background-color: $light-jira;
+        }
+
+        .jira-project-category-item {
+          width: 100%;
+          height: rem(100);
+          font-weight: bold;
+          font-size: rem(24);
+          font-family: $eng-title;
+          background-color: $white;
+          outline: 0;
+          box-shadow: $shadow;
+          transition: 0.3s ease;
+
+          &:hover {
+            background-color: $light-jira;
+          }
+        }
+        .jira-project-category-item:active {
+          background-color: $light-jira;
+        }
+        .jira-project-category-item:focus {
+          background-color: $light-jira;
+        }
+
+        .jira-project-category-item + .jira-project-category-item {
+          margin-top: rem(20);
+        }
+      }
+    }
+  }
+}
