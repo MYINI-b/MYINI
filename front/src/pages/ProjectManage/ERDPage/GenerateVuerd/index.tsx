@@ -136,7 +136,6 @@ function GenerateVuerd({ pid, store }: Props) {
     console.log(obj.editor.context, 'editor');
     // fileName
     const fileName = `${pid}.myini.json`;
-    console.log('hi');
     const uploadFile = () => {
       const params = {
         ACL: 'public-read',
