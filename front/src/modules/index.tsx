@@ -1,8 +1,21 @@
-import { createStore } from 'redux';
-import { persistStore } from 'redux-persist';
-import Reducers from './Reducers';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import { combineReducers } from 'redux';
 
-export const Store = createStore(Reducers);
-export const Persistor = persistStore(Store);
+import member from './member';
+import erd from './erd';
+import vuerd from './vuerd';
+import project from './project';
 
-export default { Store, Persistor };
+const persistConfig = {
+  key: 'root',
+  storage,
+};
+export const rootReducer = combineReducers({
+  member,
+  erd,
+  vuerd,
+  project,
+});
+
+export default persistReducer(persistConfig, rootReducer);

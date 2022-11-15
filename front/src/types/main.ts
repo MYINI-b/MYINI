@@ -19,3 +19,14 @@ export interface MY_INFO {
   memberProfileImg: string;
   projectCount: number;
 }
+
+export interface UserPresence {
+  cursor?: {
+    x: number;
+    y: number;
+  };
+  name: string;
+  color: string;
+  step?: number;
+  img?: string;
+}
