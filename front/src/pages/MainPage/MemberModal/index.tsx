@@ -27,17 +27,17 @@ function MemberModal({ modalMemberClose }: { modalMemberClose: any }) {
   return (
     <div className="modal-pjt-container" onClick={onCloseModal}>
       <div className="modal-pjt-detail">
-        <div className="modal-pjt-title">
-          <h2>함께한 팀원</h2>
+        <div className="modal-pjt-button-wrapper">
           <FontAwesomeIcon
             icon={faXmark}
             className="modal-pjt-button-close"
             onClick={modalMemberClose}
           />
         </div>
+        <div className="modal-pjt-title">
+          <h2>함께한 팀원</h2>
+        </div>
         <div className="modal-pjt-content">
-          <span>팀원목록</span>
-          <hr />
           {memberList.map((content) => {
             return (
               <div key={content.memberId} className="modal-pjt-content-detail">
