@@ -4,6 +4,7 @@ import fork from 'assets/fork.png';
 import clone from 'assets/clone.png';
 import pullrequest from 'assets/pullrequest.png';
 import pullrequest2 from 'assets/pullrequest2.png';
+import pullrequest3 from 'assets/pullrequest3.png';
 import comment from 'assets/comment.png';
 import './style.scss';
 
@@ -233,6 +234,7 @@ export default function Docs() {
                 </h4>
                 <img src={pullrequest} alt="pullrequest" />
                 <img src={pullrequest2} alt="pullrequest2" />
+                <img src={pullrequest3} alt="pullrequest3" />
               </div>
               <div className="docs-content-item">
                 <h4>
