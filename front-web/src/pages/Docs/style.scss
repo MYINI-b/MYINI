@@ -51,6 +51,9 @@
       box-shadow: $shadow;
     }
   }
+  .docs-content {
+    padding: rem(40);
+  }
 
   .docs-content > h1 {
     margin: 10px 0px 7px 5px;
@@ -87,6 +90,9 @@
     margin: 7px;
     padding: 10px;
     width: 60%;
+  }
+  .docs-content-email > li {
+    margin-top: 15px;
   }
   a {
     color: $secondary;

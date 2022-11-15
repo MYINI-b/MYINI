@@ -1,14 +1,9 @@
 /* eslint-disable no-console */
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import MainHeader from 'components/MainHeader';
 import ProjectCard from 'components/ProjectCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { getYjsValue, syncedStore } from '@syncedstore/core';
-import { WebrtcProvider } from 'y-webrtc';
-import * as Y from 'yjs';
 
-import { ProjectInfo } from 'store/yjsStore';
-import { Link } from 'react-router-dom';
 import { RootState } from 'modules/Reducers';
 
 // types
@@ -24,10 +19,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 // api
-
 import { getApi, patchApi } from 'api';
 import { PROJECT_LIST } from 'types/main';
-import { setSessions } from 'modules/project';
 import Modal from './Modal';
 import MemberModal from './MemberModal';
 import JiraModal from './JiraModal';
@@ -39,11 +32,8 @@ import CardLogo from '../../assets/card-logo.png';
 import './style.scss';
 
 export default function MainPage() {
-  const ydoc = new Y.Doc();
-  const { sessions } = useSelector((state: RootState) => state.project);
   const [step, setStep] = useState(0);
   const [myProjectList, getMyProject] = useState<PROJECT_LIST[]>([]);
-  const [jiraEdit, setJiraEdit] = useState(false);
   const [myMember, setMyMember] = useState<MEMBER[]>([]);
   const [myInfo, setMyInfo] = useState<{
     memberEmail: string;
@@ -83,8 +73,7 @@ export default function MainPage() {
   const getMyInfo = useSelector((state: RootState) => state.member);
   useEffect(() => {
     const fetchData = async () => {
-      await authAxios
-        .get('members')
+      await getApi(`members`)
         .then((res: any) => {
           const data = {
             memberEmail: res.data.memberEmail,
@@ -149,9 +138,15 @@ export default function MainPage() {
                 className="projects-detail-btn"
                 onClick={modalClose}
               />
-              {pjtModalOpen && <Modal modalClose={modalClose} />}
+              {pjtModalOpen && (
+                <Modal
+                  modalClose={modalClose}
+                  myProjectList={myProjectList}
+                  setMyProjectList={getMyProject}
+                />
+              )}
             </div>
-            <h2>{getMyInfo.projectCount} 개</h2>
+            <h2>{myProjectList.length} 개</h2>
           </div>
           <div className="project-div1">
             <div className="project-div1-title">
@@ -199,7 +194,13 @@ export default function MainPage() {
                 className="jira-edit-button"
                 onClick={modalJiraClose}
               />
-              {jiraModalOpen && <JiraModal modalJiraClose={modalJiraClose} />}
+              {jiraModalOpen && (
+                <JiraModal
+                  modalJiraClose={modalJiraClose}
+                  myInfo={myInfo}
+                  setMyInfo={setMyInfo}
+                />
+              )}
             </div>
             <div className="project-jira-info-content">
               {myInfo.memberJiraEmail === '' ? (
@@ -220,10 +221,12 @@ export default function MainPage() {
                 </div>
               </div>
             </div>
-            {myProjectList.length > 0 &&
-              myProjectList.map((content, idx: number) => (
-                <ProjectCard content={content} key={idx} />
-              ))}
+            <div className="main-project-cards">
+              {myProjectList.length > 0 &&
+                myProjectList.map((content, idx: number) => (
+                  <ProjectCard content={content} key={idx} />
+                ))}
+            </div>
           </div>
         </section>
       </div>

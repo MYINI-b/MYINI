@@ -16,6 +16,7 @@ import com.ssafy.myini.requirementdocs.query.RequirementDocsQueryRepository;
 import com.ssafy.myini.requirementdocs.request.*;
 import com.ssafy.myini.requirementdocs.response.RequirementCategoryCreateResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementCategoryListResponse;
+import com.ssafy.myini.requirementdocs.response.RequirementCreateResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,10 +47,12 @@ public class RequirementDocsServiceImpl implements RequirementDocsService{
 
     @Override
     @Transactional
-    public void createRequirement(Long projectId) {
+    public RequirementCreateResponse createRequirement(Long projectId) {
         Project findProject = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(NotFoundException.PROJECT_NOT_FOUND));
         Requirement requirement = Requirement.createRequirement(findProject);
         requirementRepository.save(requirement);
+        System.out.println("requirement.getRequirementId() = " + requirement.getRequirementId());
+        return RequirementCreateResponse.from(requirement);
     }
 
     @Override

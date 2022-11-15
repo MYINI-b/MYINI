@@ -124,11 +124,11 @@ export default function Onboarding() {
           <h4>그 밖에 문의사항 또는 개선사항은 아래 주소로 연락바랍니다.</h4>
           <div className="footer-header-content">
             <div className="footer-content">
-              <FontAwesomeIcon icon={faEnvelope} /> dkwlrdjqtdjdy@gmail.com
+              <FontAwesomeIcon icon={faEnvelope} /> rladnqls98@gmail.com
             </div>
             <div className="footer-content">
               <FontAwesomeIcon icon={faGithub} />{' '}
-              https://lab.ssafy.com/s07-final/S07P31B203
+              https://github.com/wooobinkim/myini/
             </div>
           </div>
         </div>

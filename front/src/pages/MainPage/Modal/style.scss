@@ -1,58 +1,69 @@
 @import 'variables.scss';
 
 .modal-pjt-container {
-  width: 100%;
-  height: 100vh;
-  background-color: rgba(0,0,0,0.4);
-  z-index: 1001;
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 1001;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(131, 131, 131, 0.2);
+  box-shadow: $light-shadow;
+  @include FLEX-CENTER;
+
   .modal-pjt-detail {
-    width: 30%;
-    height: 40%;
-    border-radius: 3%;
+    width: rem(450);
+    height: rem(500);
+    padding: rem(12) rem(10) rem(12) rem(20);
     overflow-y: scroll;
     background-color: #fff;
-    // Modal 창 브라우저 가운데로 조정
-    position: absolute;
-    left: 50%;
-    top:50%;
-    transform: translate(-50%, -50%);
-    z-index:100;
-    padding-left: rem(10);
-    padding-right: rem(10);
-    .modal-pjt-title {
-      @include FLEX-BETWEEN;
-      padding-top: rem(10);
-      font-size: rem(30);
-      padding-bottom: rem(10);
-      color: $primary;
+    border-radius: 10px;
+    @include FLEX-COLUMN;
 
+    .modal-pjt-button-wrapper {
+      @include FLEX-ALIGN-RIGHT;
       .modal-pjt-button-close {
-        padding-right: rem(10);
+        font-size: rem(20);
         cursor: pointer;
       }
     }
+    .modal-pjt-title {
+      @include FLEX-BETWEEN;
+      margin-top: rem(20);
+      color: $primary;
+      font-size: rem(20);
+    }
+
     .modal-pjt-content {
       @include FLEX-COLUMN;
-      padding: 1rem;
-
-      .modal-pjt-content span {
-        padding: 1rem;
-      }
 
       .modal-pjt-content-detail {
         @include FLEX-BETWEEN;
-        padding: 0.75rem;
+        width: 100%;
+        height: rem(50);
+        margin-top: rem(12);
+        padding: rem(10);
+        box-shadow: $light-shadow;
+        cursor: pointer;
+        transition: 0.3s ease;
 
-        .modal-pjt-content-detail-delete-btn {
-          color: $light-gray;
+        &:hover {
+          font-weight: bold;
+          background-color: $lightx2-gray;
+
+          .modal-pjt-content-detail-delete-btn {
+            opacity: 1;
+          }
         }
 
-        .modal-pjt-content-detail-delete-btn:hover {
-          color: $primary;
+        .modal-pjt-content-detail-delete-btn {
           cursor: pointer;
+          opacity: 0;
+          transition: 0.2s ease;
+
+          &:hover {
+            color: $secondary;
+          }
         }
       }
     }
