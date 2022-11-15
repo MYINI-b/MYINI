@@ -89,7 +89,7 @@ public class ProjectController {
     // 프로젝트 팀원 검색
     @PostMapping("/members")
     public ResponseEntity<List<ProjectMemberResponse>> findByMemberEmail(@RequestBody @Valid FindByMemberEmailRequest request){
-        System.out.println("request.getMemberEmail() = " + request.getMemberEmail());
+        System.out.println("request.getMemberEmail11() = " + request.getMemberEmail());
         List<ProjectMemberResponse> body = projectService.findByMemberEmail(request);
         return ResponseEntity.ok().body(body);
     }

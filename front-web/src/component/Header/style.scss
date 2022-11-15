@@ -3,8 +3,7 @@
 .header {
   display: flex;
   overflow-y: hidden;
-  max-height: 100%;
-  background-color: $white;
+  background-color: transparent;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   @include FLEX-AROUND;
@@ -25,13 +24,13 @@
   font-family: $eng-title;
   color: $primary;
   font-size: rem(30);
-  background-color: white;
+  background-color: transparent;
 }
 
 .INI {
   font-family: $eng-title;
   font-size: rem(30);
-  background-color: white;
+  background-color: transparent;
 }
 
 .logo {
@@ -41,16 +40,17 @@
 }
 
 .nav-button {
-  background-color: $white;
+  background-color: transparent;
   font-family: $eng-title;
   font-size: rem(20);
   margin-right: rem(20);
   color: $gray;
   padding: 0.5rem;
-  border-radius: 15px;
+  transition: 0.3s ease;
+  border-bottom: 3px solid transparent;
 }
 
 .nav-button:hover {
-  background-color: $primary;
-  color: $white;
+  border-bottom: 3px solid $secondary;
+  font-weight: bold;
 }
