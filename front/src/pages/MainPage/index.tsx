@@ -39,8 +39,6 @@ import CardLogo from '../../assets/card-logo.png';
 import './style.scss';
 
 export default function MainPage() {
-  const ydoc = new Y.Doc();
-  const { sessions } = useSelector((state: RootState) => state.project);
   const [step, setStep] = useState(0);
   const [myProjectList, getMyProject] = useState<PROJECT_LIST[]>([]);
   const [jiraEdit, setJiraEdit] = useState(false);
@@ -199,7 +197,13 @@ export default function MainPage() {
                 className="jira-edit-button"
                 onClick={modalJiraClose}
               />
-              {jiraModalOpen && <JiraModal modalJiraClose={modalJiraClose} />}
+              {jiraModalOpen && (
+                <JiraModal
+                  modalJiraClose={modalJiraClose}
+                  myInfo={myInfo}
+                  setMyInfo={setMyInfo}
+                />
+              )}
             </div>
             <div className="project-jira-info-content">
               {myInfo.memberJiraEmail === '' ? (

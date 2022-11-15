@@ -12,7 +12,6 @@ function Modal({ modalClose }: { modalClose: any }) {
 
   const deletePjt = async (pid: any) => {
     const deletePjtData: any = await deleteApi(`projects/${pid}`);
-    deletePjtData();
   };
 
   useEffect(() => {
@@ -32,17 +31,17 @@ function Modal({ modalClose }: { modalClose: any }) {
   return (
     <div className="modal-pjt-container" onClick={onCloseModal}>
       <div className="modal-pjt-detail">
-        <div className="modal-pjt-title">
-          <h2>프로젝트 정보</h2>
+        <div className="modal-pjt-button-wrapper">
           <FontAwesomeIcon
             icon={faXmark}
             className="modal-pjt-button-close"
             onClick={modalClose}
           />
         </div>
+        <div className="modal-pjt-title">
+          <h2>프로젝트 명</h2>
+        </div>
         <div className="modal-pjt-content">
-          <span>프로젝트명</span>
-          <hr />
           {pjtList.map((content) => {
             return (
               <div key={content.projectId} className="modal-pjt-content-detail">

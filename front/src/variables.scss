@@ -30,6 +30,7 @@ $eng-content: "Gmarket"; //영어 본문
 
 // 그림자
 $shadow: 0 4px 4px rgba(131, 131, 131, 0.2);
+$light-shadow:2px 2px 0px rgba(131, 131, 131, 0.2);
 
 //px을 파라미터로 넘기면 rem으로 변환
 @function rem($px) {
