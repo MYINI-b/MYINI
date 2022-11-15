@@ -3,13 +3,14 @@ package com.ssafy.myini.requirementdocs.service;
 import com.ssafy.myini.requirementdocs.request.*;
 import com.ssafy.myini.requirementdocs.response.RequirementCategoryCreateResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementCategoryListResponse;
+import com.ssafy.myini.requirementdocs.response.RequirementCreateResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementListResponse;
 
 import java.util.List;
 
 public interface RequirementDocsService {
     List<RequirementListResponse> findAllRequirement(Long projectId);
-    void createRequirement(Long projectId);
+    RequirementCreateResponse createRequirement(Long projectId);
     void updateRequirementCategory(Long requirementId, RequirementCategoryUpdateRequest requirementCategoryUpdateRequest);
     void updateRequirementName(Long requirementId, RequirementNameUpdateRequest requirementNameUpdateRequest);
     void updateRequirementContent(Long requirementId, RequirementContentUpdateRequest requirementContentUpdateRequest);
