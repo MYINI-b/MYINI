@@ -38,20 +38,80 @@ export default function Docs() {
           {docsStep === 0 ? (
             <div className="docs-content">
               <h1>MYINI는 무엇을 제공해주나요?</h1>
+              <span>
+                더 자세한 사항은{' '}
+                <a
+                  href="https://github.com/wooobinkim/myini/blob/main/docs/MYINIGuide.md"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  MYINI 가이드
+                </a>
+                를 참고해주세요.
+              </span>
               <hr />
-              <div>이러이러한거 제공해줍니다.</div>
+              <div className="docs-content-item">
+                myINI에는 프로젝트 기획에 필요한 다양한 기능들이 있습니다.{' '}
+                <br />
+                <b>동시편집 기능</b>을 제공하여 더 확실한 협업서비스를
+                제공합니다.
+              </div>
+              <hr />
+              <div className="docs-content-item">
+                <h4>myini는 다음과 같은 기능들을 제공합니다.</h4>
+                <ul>
+                  <li>
+                    <span>요구사항 명세서 기반의 jira 이슈 등록</span>
+                  </li>
+                  <li>
+                    <span>E-R 다이어그램 기반의 Entity 생성</span>
+                  </li>
+                  <li>
+                    <span>
+                      API 명세서 기반의 Controller, Service, ServiceImpl 생성
+                    </span>
+                  </li>
+                  <li>
+                    <span>프로젝트 버전 관리 및 이니셜라이징</span>
+                  </li>
+                </ul>
+              </div>
+              <h3>요구사항 명세서 With Jira</h3>
+              <div>
+                작성한 요구사항 명세서를 바탕으로 Jira 이슈가 자동으로
+                등록됩니다.
+              </div>
+
+              <h3>E-R 다이어그램</h3>
+              <div>
+                서비스 요구사항 기획에 따라 E-R Diagram(개체-관계 다이어그램)을
+                생성할 수 있습니다. 만들어진 ERD정보를 바탕으로 해당 프로젝트의
+                Domain(Entity, Repository)이 생성됩니다.
+              </div>
+
+              <h3>API 명세서</h3>
+              <div>
+                서API 문서에 따라 프로젝트의 기본적인 MVC 패턴 코드를
+                이니셜라이징 해드립니다.
+              </div>
+
+              <h4>빌드</h4>
+              <div>
+                사용자가 원하는 버전에 맞춰 프로젝트의 환경을 설정하고, 산출물을
+                바탕으로 코드를 이니셜라이징 할 수 있습니다.
+              </div>
             </div>
           ) : docsStep === 1 ? (
             <div className="docs-content">
               <h1>MYINI에 기여해보세요.</h1>
               <span>
-                더 자세한 내용은
+                더 자세한 사항은
                 <a
                   href="https://github.com/wooobinkim/myini/blob/main/docs/ContributorGuide.md"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  &nbsp;이곳
+                  &nbsp;컨트리뷰트 가이드
                 </a>
                 에서 확인해주세요.
               </span>
