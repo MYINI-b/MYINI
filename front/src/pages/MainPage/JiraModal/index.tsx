@@ -21,10 +21,9 @@ function JiraModal({
     }
   };
 
-  const onChange = (e: any) => {
-    const getMail = e.target.value;
-    editJiraMail(getMail);
-  };
+  const onChange = useCallback((e: any) => {
+    editJiraMail(e.target.value);
+  }, []);
 
   const patchJiraMail = useCallback(() => {
     const data = { memberJiraEmail: jiraMail };
@@ -36,10 +35,10 @@ function JiraModal({
     copyInfo.memberJiraEmail = jiraMail;
     setMyInfo(copyInfo);
     modalJiraClose();
-  }, [myInfo]);
+  }, [myInfo, jiraMail]);
 
   return (
-    <div className="modal-pjt-container" onClick={onCloseModal}>
+    <div className="jiramodal-pjt-container" onClick={onCloseModal}>
       <div className="modal-pjt-detail">
         <div className="modal-pjt-button-wrapper">
           <FontAwesomeIcon

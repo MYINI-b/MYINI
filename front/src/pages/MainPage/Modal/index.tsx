@@ -7,20 +7,24 @@ import './style.scss';
 // types
 import { PROJECT_LIST } from 'types/main';
 
-function Modal({ modalClose }: { modalClose: any }) {
-  const [pjtList, setPjtList] = useState<PROJECT_LIST[]>([]);
-
-  const deletePjt = async (pid: any) => {
-    const deletePjtData: any = await deleteApi(`projects/${pid}`);
-  };
-
-  useEffect(() => {
-    const fetchProject = async () => {
-      const getProjectDatas: any = await getApi(`/projects`);
-      setPjtList(getProjectDatas.data);
-    };
-    fetchProject();
-  }, [deletePjt]);
+function Modal({
+  modalClose,
+  myProjectList,
+  setMyProjectList,
+}: {
+  modalClose: any;
+  myProjectList: any[];
+  setMyProjectList: React.Dispatch<React.SetStateAction<any[]>>;
+}) {
+  const deletePjt = useCallback(
+    async (pid: any, idx: number) => {
+      const deletePjtData: any = await deleteApi(`projects/${pid}`);
+      const copyArr = [...myProjectList];
+      copyArr.splice(idx, 1);
+      setMyProjectList(copyArr);
+    },
+    [myProjectList],
+  );
 
   const onCloseModal = (e: any) => {
     if (e.target === e.currentTarget) {
@@ -42,14 +46,14 @@ function Modal({ modalClose }: { modalClose: any }) {
           <h2>프로젝트 명</h2>
         </div>
         <div className="modal-pjt-content">
-          {pjtList.map((content) => {
+          {myProjectList.map((content: any, i: number) => {
             return (
               <div key={content.projectId} className="modal-pjt-content-detail">
                 <span>{content.projectName}</span>
                 <FontAwesomeIcon
                   icon={faTrash}
                   className="modal-pjt-content-detail-delete-btn"
-                  onClick={() => deletePjt(content.projectId)}
+                  onClick={() => deletePjt(content.projectId, i)}
                 />
               </div>
             );

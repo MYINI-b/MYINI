@@ -2,10 +2,7 @@ package com.ssafy.myini.requirementdocs;
 
 import com.ssafy.myini.requirementdocs.domain.type.RequirementPart;
 import com.ssafy.myini.requirementdocs.request.*;
-import com.ssafy.myini.requirementdocs.response.RequirementCategoryCreateResponse;
-import com.ssafy.myini.requirementdocs.response.RequirementCategoryDto;
-import com.ssafy.myini.requirementdocs.response.RequirementCategoryListResponse;
-import com.ssafy.myini.requirementdocs.response.RequirementListResponse;
+import com.ssafy.myini.requirementdocs.response.*;
 
 public class RequirementDocsFixture {
     public static final Long ID = 1L;
@@ -15,6 +12,9 @@ public class RequirementDocsFixture {
     public static final String EMAIL = "이메일";
     public static final Integer NUM = 1;
     public static final Double DOUNUM = 1.0;
+
+    public static final RequirementCreateResponse TEST_REQUIREMENT_CREATE_RESPONSE
+            = new RequirementCreateResponse(ID);
 
     public static final RequirementCategoryCreateRequest TEST_REQUIREMENT_CATEGORY_CREATE_REQUEST
              = new RequirementCategoryCreateRequest(NAME,CONTENT);

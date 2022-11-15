@@ -1,6 +1,6 @@
 @import 'variables.scss';
 
-.modal-pjt-container {
+.jiramodal-pjt-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -14,6 +14,7 @@
     justify-content: space-between;
     width: rem(400);
     height: rem(250);
+    padding: rem(12) rem(10) rem(12) rem(20);
     overflow-y: scroll;
     background-color: #fff;
     border-radius: 10px;

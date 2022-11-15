@@ -82,16 +82,21 @@ class RequirementDocsControllerTest extends ControllerTest {
     @Test
     @DisplayName("요구사항 생성입니다.")
     void createRequirement() throws Exception{
-        willDoNothing().given(requirementDocsService).createRequirement(any());
+        given(requirementDocsService.createRequirement(any()))
+                .willReturn(TEST_REQUIREMENT_CREATE_RESPONSE);
 
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/requirementdocs/{projectid}/requirements",ID)
                         .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isCreated())
+                .andExpect(content().json(objectMapper.writeValueAsString(TEST_REQUIREMENT_CREATE_RESPONSE)))
                 .andDo(document("api/requirementdocs/{projectid}/requirements/create",
                         requestHeaders( headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")),
                         pathParameters(
                                 parameterWithName("projectid").description("프로젝트 ID")
+                        ),
+                        responseFields(
+                                fieldWithPath("requirementId").type(JsonFieldType.NUMBER).description("요구사항 아이디")
                         )
                 ));
 

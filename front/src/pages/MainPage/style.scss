@@ -213,7 +213,6 @@
         height: 180px;
         margin: 5px 20px;
         position: relative;
-
       }
     
       .card-body-footer {
@@ -238,7 +237,6 @@
       -ms-transition: .5s ease-in-out;
       -o-transition: .5s ease-in-out;
       transition : .5s ease-in-out;
-      cursor: pointer;
       // overflow: scroll;
     }
   }
@@ -311,3 +309,10 @@
   @include STRETCH;
 }
 
+.card-body-delete{
+  transition: 0.3s ease;
+  cursor:pointer;
+  &:hover{
+    color:$delete;
+  }
+}
