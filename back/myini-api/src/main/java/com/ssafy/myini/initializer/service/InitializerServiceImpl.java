@@ -151,16 +151,14 @@ public class InitializerServiceImpl implements InitializerService {
         //ERD json 받아오기
         try {
             JSONParser jsonParser = new JSONParser();
-            File file = new File("erd");
-            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/" + projectId + ".vuerd.json"), file);
-
+            File file = new File(projectId + "_erd");
+            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/" + projectId + ".myini.json"), file);
 
             Reader reader = new FileReader(file);
             JSONObject erd = (JSONObject) jsonParser.parse(reader);
             JSONObject table = (JSONObject) erd.get("table");
             JSONArray tables = (JSONArray) table.get("tables");
             JSONObject relationship = (JSONObject) erd.get("relationship");
-
             //entity 작성
             EntityWrite.setTableAndColumn(erd);
             for (int i = 0; i < tables.size(); i++) {
@@ -175,7 +173,6 @@ public class InitializerServiceImpl implements InitializerService {
                         (String) ((JSONObject) tables.get(i)).get("name") + "Repository.java",
                         RepositoryWrite.repositoryPreview((JSONObject) tables.get(i), initializerRequest)));
             }
-
             // controller
             projectInfoListResponses.forEach(projectInfoListResponse -> {
                 previewResponses.add(
@@ -183,7 +180,6 @@ public class InitializerServiceImpl implements InitializerService {
                                 projectInfoListResponse.getApiControllerName() + "Controller.java",
                                 ControllerWrite.controllerPreview(projectInfoListResponse, initializerRequest)));
             });
-
             // service
             projectInfoListResponses.forEach(projectInfoListResponse -> {
                 previewResponses.add(
@@ -191,7 +187,6 @@ public class InitializerServiceImpl implements InitializerService {
                                 projectInfoListResponse.getApiControllerName() + "Service.java",
                                 ServiceWrite.servicePreview(projectInfoListResponse, initializerRequest)));
             });
-
             // serviceImpl
             projectInfoListResponses.forEach(projectInfoListResponse -> {
                 previewResponses.add(
@@ -199,7 +194,6 @@ public class InitializerServiceImpl implements InitializerService {
                                 projectInfoListResponse.getApiControllerName() + "ServiceImpl.java",
                                 ServiceWrite.servicePreview(projectInfoListResponse, initializerRequest)));
             });
-
             // dto
             project.getDtos().forEach(dto -> {
                 previewResponses.add(
@@ -207,6 +201,16 @@ public class InitializerServiceImpl implements InitializerService {
                                 dto.getDtoName() + ".java",
                                 DtoWrite.dtoPreview(dto, initializerRequest)));
             });
+
+            // erd 파일 삭제
+            reader.close();
+            if (file.exists()) {
+                if (file.delete()) {
+                    System.out.println("erd 파일 삭제 성공");
+                } else {
+                    System.out.println("erd 파일 삭제 실패");
+                }
+            }
         } catch (Exception e) {
             throw new InitializerException(InitializerException.INITIALIZER_FAIL);
         }
