@@ -15,23 +15,25 @@ export default function ProjectJira({ store, pid, editJiraInfo }: Props) {
     setModalOpen(!modalOpen);
   };
   return (
-    <div className="project-detail-jira">
-      <div className="project-detail-jira-title">지라관리&nbsp;</div>
-      <img
-        className="project-detail-jira-image-icon"
-        src={LINK_LIST[1].img}
-        onClick={modalClose}
-        alt="git"
-      />
-      {modalOpen && (
-        <Modal
-          store={store}
-          pid={pid}
-          modalClose={modalClose}
-          editJiraInfo={editJiraInfo}
+    <>
+      <div className="project-detail-jira">
+        <div className="project-detail-jira-title">지라관리&nbsp;</div>
+        <img
+          className="project-detail-jira-image-icon"
+          src={LINK_LIST[1].img}
+          onClick={modalClose}
+          alt="git"
         />
-      )}
-      {store.pjt.jiraProjectName}
-    </div>
+        {modalOpen && (
+          <Modal
+            store={store}
+            pid={pid}
+            modalClose={modalClose}
+            editJiraInfo={editJiraInfo}
+          />
+        )}
+      </div>
+      <div className="project-select-jira">{store.pjt.jiraProjectName}</div>
+    </>
   );
 }
