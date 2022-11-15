@@ -1,21 +1,36 @@
-$primary: #F26B3A;
-$secondary: #FF865A;
-$third: #FCAF92;
-$fourth: #FFE6DC;
+$primary: #f26b3a;
+$secondary: #ff865a;
+$third: #fcaf92;
+$fourth: #ffe6dc;
 
 $black: #393939;
-$gray : #838383;
-$light-gray : #dedede;
+$gray: #838383;
+$light-gray: #dedede;
+$lightx2-gray: #efefef;
+$pure-white: #ffffff;
 $white: #fbfbfb;
+$jira: #3883e6;
+$light-jira: #cbdffa;
 
+$FE: #d3e5ef;
+$BE: #fbc9c9;
+$COMMON: #ecd8f2;
 
-$kor: "AppleNeoB"; //한글 포함 폰트
+$get: #92c68d;
+$post: #b6cbff;
+$put: #fcaf92;
+$delete: #ff6e6e;
+$patch: #ffc5c5;
+$code: #dff7ff;
 
-$eng-title: "Multicolore"; //영어 제목 (오직 대문자)
-$eng-content: "Gmarket"; //영어 본문
+$kor: 'AppleNeoB'; //한글 포함 폰트
+
+$eng-title: 'Multicolore'; //영어 제목 (오직 대문자)
+$eng-content: 'Gmarket'; //영어 본문
 
 // 그림자
-$shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+$shadow: 0 4px 4px rgba(131, 131, 131, 0.2);
+$light-shadow: 2px 2px 0px rgba(131, 131, 131, 0.2);
 
 //px을 파라미터로 넘기면 rem으로 변환
 @function rem($px) {
@@ -50,6 +65,12 @@ $shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
   align-items: center;
 }
 
+@mixin FLEX-ALIGN-RIGHT() {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
 @mixin STRETCH() {
   width: 100%;
   height: 100%;
@@ -68,7 +89,11 @@ $shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
   width: 100%;
   padding: rem(6) rem(12);
   transition: 0.3s ease;
-  @include BTN-COLOR($secondary);
+  font-size: rem(24);
+  color: $white;
+  font-family: $eng-content;
+  border-radius: rem(15);
+  @include BTN-COLOR($primary);
   @include FLEX-CENTER();
 }
 
@@ -76,8 +101,9 @@ $shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
   color: $white;
   width: rem(60);
   height: rem(60);
+  border-radius: 60px;
   @include FLEX-CENTER();
-  @include BTN-COLOR($secondary);
+  @include BTN-COLOR($primary);
 }
 
 @mixin WHITE-BTN() {
@@ -87,7 +113,21 @@ $shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
   background-color: $white;
   color: $black;
   border: 1px solid $secondary;
+  transition: 0.3s ease;
   @include FLEX-CENTER();
+
+  &:hover {
+    background-color: $secondary;
+    color: $white;
+  }
+}
+
+@mixin METHOD-BLOCK($method) {
+  padding: rem(6) rem(18);
+  font-size: rem(18);
+  font-family: $eng-title;
+  border-radius: rem(5);
+  background-color: $method;
 }
 
 @mixin ELLIPSIS-LINE($line) {
@@ -103,4 +143,24 @@ $shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
   border-radius: 20px;
   background-color: $white;
   border: 2px solid $third;
+}
+
+@mixin ADD-BUTTON() {
+  @include FLEX-CENTER;
+  width: rem(30);
+  height: rem(30);
+  margin-top: rem(10);
+  padding: rem(10);
+  color: $white;
+  font-size: rem(18);
+  background-color: $secondary;
+  border: 2px solid $secondary;
+  border-radius: 30px;
+  transition: 0.3s ease;
+
+  &:hover {
+    color: $black;
+    font-weight: bold;
+    background-color: $pure-white;
+  }
 }
