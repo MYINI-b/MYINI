@@ -1,6 +1,6 @@
 import './style.scss';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getApi } from 'api';
 import axios from 'axios';
 import Modal from './Modal';
@@ -23,6 +23,19 @@ interface Props {
   pid: string;
   store: any;
 }
+export interface selectObj {
+  Jvm: string;
+  Language: string;
+  Packaging: string;
+  Platform: string;
+  Type: string;
+  textGroup: string;
+  textArtifact: string;
+  textName: string;
+  textDescription: string;
+  textPackage: string;
+  depDatas: string[];
+}
 
 export default function Build({ pid, store }: Props) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -30,26 +43,14 @@ export default function Build({ pid, store }: Props) {
     setModalOpen(!modalOpen);
   };
 
-  const [textGroup, setTextGroup] = useState('');
-  const [textArtifact, setTextArtifact] = useState('');
-  const [textName, setTextName] = useState('');
-  const [textDescription, setTextDescription] = useState('');
-  const [textPackage, setTextPackage] = useState('');
   const [isChecked, setChecked] = useState(false);
   const [confirmData, setConfirmData] = useState([]);
   const [buildStart, setBuildStart] = useState([]);
 
-  const [initSelectJvm, setInitSelectJvm] = useState<string>('17');
   const [initSelectJvmList, setInitSelectJvmList] = useState([]);
-  const [initSelectLanguage, setInitSelectLanguage] = useState<string>('java');
   const [initSelectLanguageList, setInitSelectLanguageList] = useState([]);
-  const [initSelectPackaging, setInitSelectPackaging] = useState<string>('jar');
   const [initSelectPackagingList, setInitSelectPackagingList] = useState([]);
-  const [initSelectPlatform, setInitSelectPlatform] =
-    useState<string>('2.7.5.RELEASE');
   const [initSelectPlatformList, setInitSelectPlatformList] = useState([]);
-  const [initSelectType, setInitSelectType] =
-    useState<string>('gradle-project');
   const [initSelectTypeList, setInitSelectTypeList] = useState([]);
   const [initDependencies, setInitDependencies] = useState<string>();
   const [initDependenciesList, setInitDependenciesList] = useState([]);
@@ -60,65 +61,79 @@ export default function Build({ pid, store }: Props) {
     'devtools',
     'validation',
   ]);
+  const [selectObj, setSelectObj] = useState<selectObj>({
+    Jvm: '',
+    Language: '',
+    Packaging: '',
+    Platform: '',
+    Type: '',
+    textGroup: '',
+    textArtifact: '',
+    textName: '',
+    textDescription: '',
+    textPackage: '',
+    depDatas: [],
+  });
+  const {
+    Jvm,
+    Language,
+    Packaging,
+    Platform,
+    Type,
+    textGroup,
+    textArtifact,
+    textName,
+    textDescription,
+    textPackage,
+    depDatas,
+  } = selectObj;
+
   const getDependencies = () => {
     setDependenciesData(dependenciesData);
   };
 
-  const radioHandlerSelectJvm = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setInitSelectJvm(event.target.id);
+  const radioHandlerSelectJvm = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
   const radioHandlerSelectLanguage = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setInitSelectLanguage(event.target.id);
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
   const radioHandlerSelectPackaging = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setInitSelectPackaging(event.target.id);
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
   const radioHandlerSelectPlatform = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setInitSelectPlatform(event.target.id);
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
-  const radioHandlerSelectType = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setInitSelectType(event.target.id);
+  const radioHandlerSelectType = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
+
   const radioHandlerDependencies = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setInitDependencies(event.target.value);
   };
-
-  const ConfirmCodeData = {
-    springType: 'gradle-project',
-    springLanguage: 'java',
-    springPlatformVersion: '2.2.0.RELEASE',
-    springPackaging: 'jar',
-    springJvmVersion: '1.8',
-    springGroupId: 'com.example',
-    springArtifactId: 'demo',
-    springName: 'demo',
-    springDescription: 'Demo%20project%20for%20Spring%20Boot',
-    springPackageName: 'com.example.demo',
-    springDependencyName: 'web,jpa,lombok,devtools',
-  };
   const getProjectDetail = async () => {
     const ConfirmCode: any = await getApi(
-      `https://k7b203.p.ssafy.io/api/initializers/${pid}/previews?springType=${initSelectType}&springLanguage=${initSelectLanguage}&springPlatformVersion=${initSelectPlatform}&springPackaging=${initSelectPackaging}&springJvmVersion=${initSelectJvm}&springGroupId=${textGroup}&springArtifactId=${textArtifact}&springName=${textName}&springDescription=${textDescription}&springPackageName=${textPackage}&springDependencyName=${dependenciesData}`,
+      `/initializers/${pid}/previews?springType=${selectObj.Type}&springLanguage=${selectObj.Language}&springPlatformVersion=${selectObj.Platform}&springPackaging=${selectObj.Packaging}&springJvmVersion=${selectObj.Jvm}&springGroupId=${selectObj.textGroup}&springArtifactId=${selectObj.textArtifact}&springName=${selectObj.textName}&springDescription=${selectObj.textDescription}&springPackageName=${selectObj.textPackage}&springDependencyName=${dependenciesData}`,
     );
     console.log(ConfirmCode);
     setConfirmData(ConfirmCode.data);
   };
-
   const downloadCode = async () => {
     await axios({
-      url: `https://k7b203.p.ssafy.io/api/initializers/${pid}?springType=${initSelectType}&springLanguage=${initSelectLanguage}&springPlatformVersion=${initSelectPlatform}&springPackaging=${initSelectPackaging}&springJvmVersion=${initSelectJvm}&springGroupId=${textGroup}&springArtifactId=${textArtifact}&springName=${textName}&springDescription=${textDescription}&springPackageName=${textPackage}&springDependencyName=${dependenciesData}`,
+      url: `/initializers/${pid}?springType=${selectObj.Type}&springLanguage=${selectObj.Language}&springPlatformVersion=${selectObj.Platform}&springPackaging=${selectObj.Packaging}&springJvmVersion=${selectObj.Jvm}&springGroupId=${selectObj.textGroup}&springArtifactId=${selectObj.textArtifact}&springName=${selectObj.textName}&springDescription=${selectObj.textDescription}&springPackageName=${selectObj.textPackage}&springDependencyName=${dependenciesData}`,
       method: 'GET',
       responseType: 'blob', // important
       data: 'data',
@@ -126,28 +141,15 @@ export default function Build({ pid, store }: Props) {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `${textName}.zip`);
+      link.setAttribute('download', `${store.pjt.textName}.zip`);
       document.body.appendChild(link);
       link.click();
     });
   };
 
-  // useEffect(() => {
-  //   const buildProcess = async () => {
-  //     const BuildSet: any = await getApi(
-  //       `https://k7b203.p.ssafy.io/api/initializers/3?springType=gradle-project&springLanguage=java&springPlatformVersion=2.2.0.RELEASE&springPackaging=jar&springJvmVersion=1.8&springGroupId=com.example&springArtifactId=demo&springName=aaa&springDescription=Demo%20project%20for%20Spring%20Boot&springPackageName=com.example.demo&springDependencyName=web,jpa,lombok,devtools`,
-  //     );
-  //     console.log(BuildSet);
-  //     // setConfirmData(BuildSet.data);
-  //   };
-  //   buildProcess();
-  // }, []);
-
   useEffect(() => {
     const initSettings = async () => {
-      const InitSet: any = await getApi(
-        `https://k7b203.p.ssafy.io/api/initializers/settings`,
-      );
+      const InitSet: any = await getApi(`/initializers/settings`);
       console.log(InitSet.data);
       setInitSelectJvmList(
         InitSet.data['single-select'].springJvmVersion.values,
@@ -166,138 +168,33 @@ export default function Build({ pid, store }: Props) {
     };
     initSettings();
   }, []);
-
   const handleTextGroupArea = (e: any) => {
-    setTextGroup(e.target.value);
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
   const handleTextArtifactArea = (e: any) => {
-    setTextArtifact(e.target.value);
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
   const handleTextNameArea = (e: any) => {
-    setTextName(e.target.value);
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
   const handleTextDescriptionArea = (e: any) => {
-    setTextDescription(e.target.value);
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
   const handleTextPackageArea = (e: any) => {
-    setTextPackage(e.target.value);
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    // alert(`${text}\nchecked? ${isChecked}`);
   };
-  const accordionItems = [
-    {
-      title: 'Controller',
-      content: (
-        <div className="confirm-total">
-          {' '}
-          {confirmData.map((items: any, index: number) => (
-            <div key={index}>
-              {items.fileCategory === 'controller' ? (
-                <>
-                  <div className="confirm-title">{items.fileName}</div>
-                  <div className="confirm-content">{items.contents}</div>
-                </>
-              ) : (
-                <div />
-              )}
-            </div>
-          ))}
-        </div>
-      ),
-    },
-    {
-      title: 'Entity',
-      content: (
-        <div className="confirm-total">
-          {' '}
-          {confirmData.map((items: any, index: number) => (
-            <div key={index}>
-              {items.fileCategory === 'entity' ? (
-                <>
-                  <div className="confirm-title">{items.fileName}</div>
-                  <div className="confirm-content">{items.contents}</div>
-                </>
-              ) : (
-                <div />
-              )}
-            </div>
-          ))}
-        </div>
-      ),
-    },
-    {
-      title: 'Repository',
-      content: (
-        <div className="confirm-total">
-          {' '}
-          {confirmData.map((items: any, index: number) => (
-            <div key={index}>
-              {items.fileCategory === 'repository' ? (
-                <>
-                  <div className="confirm-title">{items.fileName}</div>
-                  <div className="confirm-content">{items.contents}</div>
-                </>
-              ) : (
-                <div />
-              )}
-            </div>
-          ))}
-        </div>
-      ),
-    },
-    {
-      title: 'Service',
-      content: (
-        <div className="confirm-total">
-          {' '}
-          {confirmData.map((items: any, index: number) => (
-            <div key={index}>
-              {items.fileCategory.slice(0, 7) === 'service' ? (
-                <>
-                  <div className="confirm-title">{items.fileName}</div>
-                  <div className="confirm-content">{items.contents}</div>
-                </>
-              ) : (
-                <div />
-              )}
-            </div>
-          ))}
-        </div>
-      ),
-    },
-    {
-      title: 'Dto',
-      content: (
-        <div className="confirm-total">
-          {' '}
-          {confirmData.map((items: any, index: number) => (
-            <div key={index}>
-              {items.fileCategory === 'dto' ? (
-                <>
-                  <div className="confirm-title">{items.fileName}</div>
-                  <div className="confirm-content">{items.contents}</div>
-                </>
-              ) : (
-                <div />
-              )}
-            </div>
-          ))}
-        </div>
-      ),
-    },
-  ];
 
-  // console.log(textGroup, 1);
-  // console.log(textArtifact, 2);
-  // console.log(textName, 3);
-  // console.log(textDescription, 4);
-  // console.log(textPackage, 5);
   return (
     <div className="build-container">
-      <h1 className="build-title">API 명세서</h1>
+      <h1 className="build-title">Project Build</h1>
       <h2 className="build-project-title">{store && store.pjt.title}</h2>
       <div className="build-main">
         <div className="init-container">
@@ -319,7 +216,7 @@ export default function Build({ pid, store }: Props) {
                               value={items.name}
                               id={items.id}
                               onChange={radioHandlerSelectJvm}
-                              checked={initSelectJvm === items.id}
+                              checked={selectObj.Jvm === items.id}
                             />
                             <label htmlFor={items.id} className="radio-field">
                               {items.name}
@@ -345,7 +242,7 @@ export default function Build({ pid, store }: Props) {
                                 value={items.name}
                                 id={items.id}
                                 onChange={radioHandlerSelectLanguage}
-                                checked={initSelectLanguage === items.id}
+                                checked={selectObj.Language === items.id}
                               />
                               <label htmlFor={items.id} className="radio-field">
                                 {items.name}
@@ -372,7 +269,7 @@ export default function Build({ pid, store }: Props) {
                                 value={items.name}
                                 id={items.id}
                                 onChange={radioHandlerSelectPackaging}
-                                checked={initSelectPackaging === items.id}
+                                checked={selectObj.Packaging === items.id}
                               />
                               <label htmlFor={items.id} className="radio-field">
                                 {items.name}
@@ -399,7 +296,7 @@ export default function Build({ pid, store }: Props) {
                                 value={items.name}
                                 id={items.id}
                                 onChange={radioHandlerSelectPlatform}
-                                checked={initSelectPlatform === items.id}
+                                checked={selectObj.Platform === items.id}
                               />
                               <label htmlFor={items.id} className="radio-field">
                                 {items.name}
@@ -425,7 +322,7 @@ export default function Build({ pid, store }: Props) {
                               value={items.name}
                               id={items.id}
                               onChange={radioHandlerSelectType}
-                              checked={initSelectType === items.id}
+                              checked={selectObj.Type === items.id}
                             />
                             <label htmlFor={items.id} className="radio-field">
                               {items.name}
@@ -448,6 +345,7 @@ export default function Build({ pid, store }: Props) {
                   className="text-box"
                   rows={5}
                   placeholder="com.example"
+                  name="textGroup"
                   onChange={handleTextGroupArea}
                 />
               </form>
@@ -459,6 +357,7 @@ export default function Build({ pid, store }: Props) {
                   className="text-box"
                   rows={5}
                   placeholder="demo"
+                  name="textArtifact"
                   onChange={handleTextArtifactArea}
                 />
               </form>
@@ -470,6 +369,7 @@ export default function Build({ pid, store }: Props) {
                   className="text-box"
                   rows={5}
                   placeholder="demo"
+                  name="textName"
                   onChange={handleTextNameArea}
                 />
               </form>
@@ -481,6 +381,7 @@ export default function Build({ pid, store }: Props) {
                   className="text-box"
                   rows={5}
                   placeholder="Demo project for Spring Boot"
+                  name="textDescription"
                   onChange={handleTextDescriptionArea}
                 />
               </form>
@@ -492,6 +393,7 @@ export default function Build({ pid, store }: Props) {
                   className="text-box"
                   rows={5}
                   placeholder="com.example.demo"
+                  name="textPackage"
                   onChange={handleTextPackageArea}
                 />
               </form>
@@ -533,7 +435,7 @@ export default function Build({ pid, store }: Props) {
         </div>
         <div className="confirm-code">
           <div className="confirmcode-title">CONFIRM CODE</div>
-          <Accordion1 items={accordionItems} />
+          <Accordion1 confirmData={confirmData} />
           <button
             type="submit"
             className="build-project-button"
