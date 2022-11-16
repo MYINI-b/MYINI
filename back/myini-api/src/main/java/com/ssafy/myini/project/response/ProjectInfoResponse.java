@@ -20,6 +20,11 @@ public class ProjectInfoResponse {
     private String projectJiraUrl;
     private String projectNotionUrl;
     private String projectFigmaUrl;
+    private String jiraApiKey;
+    private String jiraId;
+    private String jiraDomain;
+    private String jiraProjectKey;
+    private String jiraProjectId;
 
 
     public static ProjectInfoResponse from(Project project){
@@ -33,6 +38,11 @@ public class ProjectInfoResponse {
         projectInfoResponse.projectJiraUrl = project.getProjectJiraUrl();
         projectInfoResponse.projectNotionUrl = project.getProjectNotionUrl();
         projectInfoResponse.projectFigmaUrl = project.getProjectFigmaUrl();
+        projectInfoResponse.jiraApiKey = project.getJiraApiKey();
+        projectInfoResponse.jiraId = project.getJiraId();
+        projectInfoResponse.jiraDomain = project.getJiraDomain();
+        projectInfoResponse.jiraProjectKey = project.getJiraProjectKey();
+        projectInfoResponse.jiraProjectId = project.getJiraProjectId();
         return  projectInfoResponse;
     }
 }
