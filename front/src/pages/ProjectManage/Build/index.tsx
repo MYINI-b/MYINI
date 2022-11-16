@@ -88,10 +88,9 @@ export default function Build({ pid, store }: Props) {
     depDatas,
   } = selectObj;
 
-  const getDependencies = useCallback(() => {
+  const getDependencies = () => {
     setDependenciesData(dependenciesData);
-    store.pjt.depDatas = dependenciesData;
-  }, [store]);
+  };
 
   const radioHandlerSelectJvm = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, id } = e.target;
@@ -127,14 +126,14 @@ export default function Build({ pid, store }: Props) {
   };
   const getProjectDetail = async () => {
     const ConfirmCode: any = await getApi(
-      `/initializers/${pid}/previews?springType=${store.pjt.springType}&springLanguage=${store.pjt.springLang}&springPlatformVersion=${store.pjt.springPlat}&springPackaging=${store.pjt.springPack}&springJvmVersion=${store.pjt.springJvm}&springGroupId=${store.pjt.textGroup}&springArtifactId=${store.pjt.textArtifact}&springName=${store.pjt.textName}&springDescription=${store.pjt.textDescription}&springPackageName=${store.pjt.textPackage}&springDependencyName=${dependenciesData}`,
+      `/initializers/${pid}/previews?springType=${selectObj.Type}&springLanguage=${selectObj.Language}&springPlatformVersion=${selectObj.Platform}&springPackaging=${selectObj.Packaging}&springJvmVersion=${selectObj.Jvm}&springGroupId=${selectObj.textGroup}&springArtifactId=${selectObj.textArtifact}&springName=${selectObj.textName}&springDescription=${selectObj.textDescription}&springPackageName=${selectObj.textPackage}&springDependencyName=${dependenciesData}`,
     );
     console.log(ConfirmCode);
     setConfirmData(ConfirmCode.data);
   };
   const downloadCode = async () => {
     await axios({
-      url: `/initializers/${pid}?springType=${store.pjt.springType}&springLanguage=${store.pjt.springLang}&springPlatformVersion=${store.pjt.springPlat}&springPackaging=${store.pjt.springPack}&springJvmVersion=${store.pjt.springJvm}&springGroupId=${store.pjt.textGroup}&springArtifactId=${store.pjt.textArtifact}&springName=${store.pjt.textName}&springDescription=${store.pjt.textDescription}&springPackageName=${store.pjt.textPackage}&springDependencyName=${dependenciesData}`,
+      url: `/initializers/${pid}?springType=${selectObj.Type}&springLanguage=${selectObj.Language}&springPlatformVersion=${selectObj.Platform}&springPackaging=${selectObj.Packaging}&springJvmVersion=${selectObj.Jvm}&springGroupId=${selectObj.textGroup}&springArtifactId=${selectObj.textArtifact}&springName=${selectObj.textName}&springDescription=${selectObj.textDescription}&springPackageName=${selectObj.textPackage}&springDependencyName=${dependenciesData}`,
       method: 'GET',
       responseType: 'blob', // important
       data: 'data',
