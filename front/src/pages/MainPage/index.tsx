@@ -113,7 +113,6 @@ export default function MainPage() {
         }
         dispatch(CrewOnlyFour(result));
       }
-      console.log(getCrewInfo, 'eee');
     };
 
     const fetchProject = async () => {
