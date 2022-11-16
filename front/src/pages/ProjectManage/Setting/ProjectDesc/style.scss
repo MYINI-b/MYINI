@@ -13,18 +13,23 @@
   }
 
   .project-info-desc {
-    width: 100%;
+    width: 90%;
     height: rem(70);
     margin-top: rem(8);
     padding: rem(8);
-    font-size: rem(20);
+    font-size: rem(16);
     font-family: $eng-content;
     background-color: transparent;
+    border: 1px solid $lightx2-gray;
     border-radius: rem(16);
 
     &.edit {
       background-color: $pure-white;
-      border: 1px solid $lightx2-gray;
+    }
+
+    &::placeholder {
+      color: $gray;
+      font-size: rem(16);
     }
   }
 }

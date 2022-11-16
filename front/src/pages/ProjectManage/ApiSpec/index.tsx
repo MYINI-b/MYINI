@@ -30,7 +30,7 @@ interface Props {
 export default function ApiSpec({ store, pid }: Props) {
   const others = useOthers<UserPresence>();
   const updatePresence = useUpdatePresence<UserPresence>();
-  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
+  const [alertText, setAlertText] = useState('');
   const [controllerIdx, setControllerIdx] = useState(-1); // 현재 선택된 컨트롤러 인덱스
   const [clickControllerIdx, setClickControllerIdx] = useState(0); // 현재 선택된 컨트롤러 인덱스
   const [isControllerAddModalOpen, setIsControllerAddModalOpen] =
@@ -65,7 +65,7 @@ export default function ApiSpec({ store, pid }: Props) {
 
       console.log(find);
       if (find) {
-        setIsAlertModalOpen(true);
+        setAlertText('한 번에 한 명의 유저만이 편집할 수 있는 설정입니다.');
         return;
       }
 
@@ -85,7 +85,7 @@ export default function ApiSpec({ store, pid }: Props) {
   const onDatatypeClick = useCallback(() => {
     const find = store.pjt.editors.find((edt: any) => edt.space === 'DATATYPE');
     if (find) {
-      setIsAlertModalOpen(true);
+      setAlertText('한 번에 한 명의 유저만이 편집할 수 있는 설정입니다.');
       return;
     }
     setIsDatatypeModalOpen(true);
@@ -288,12 +288,7 @@ export default function ApiSpec({ store, pid }: Props) {
         />
       )}
 
-      {isAlertModalOpen && (
-        <TimerModal
-          text="한 번에 한 명의 유저만이 편집할 수 있는 설정입니다."
-          setIsOpen={setIsAlertModalOpen}
-        />
-      )}
+      {!!alertText && <TimerModal text={alertText} setText={setAlertText} />}
 
       {others
         .filter((user) => user.presence.step === 4)
