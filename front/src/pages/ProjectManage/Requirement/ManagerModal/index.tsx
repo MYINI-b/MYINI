@@ -41,7 +41,7 @@ export default function CategoryListModal({
   useEffect(() => {
     modalContainer.current.style.left = `${clickElementPos.x}px`;
     modalContainer.current.style.top = `${clickElementPos.y}px`;
-    modalContainer.current.style.width = `${clickElementPos.width}px`;
+    // modalContainer.current.style.width = `${clickElementPos.width}px`;
     console.log(store.pjt.jiraMembers);
   }, [clickElementPos]);
 
@@ -53,7 +53,9 @@ export default function CategoryListModal({
         ref={modalContainer}
       >
         <div className="category-list-overflow">
-          {store.pjt.jiraMembers &&
+          {store.pjt.jiraMembers && store.pjt.jiraMembers.length === 0 ? (
+            <span className={`category-row `}>지라 멤버를 등록해보세요</span>
+          ) : (
             store.pjt.jiraMembers.map((user: USER, i: number) => {
               return (
                 <span
@@ -66,7 +68,8 @@ export default function CategoryListModal({
                   {user.nickname}
                 </span>
               );
-            })}
+            })
+          )}
         </div>
       </div>
     </div>

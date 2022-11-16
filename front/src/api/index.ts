@@ -11,6 +11,13 @@ const headers = {
   },
 };
 
+const multipartHeaders = {
+  headers: {
+    Authorization: `Bearer ${accessToken}`,
+    'Content-Type': 'multipart/form-data',
+  },
+};
+
 export const getApi = async (url: string) => {
   try {
     const data = await axios.get(`${url}`, headers);
@@ -58,6 +65,17 @@ export const deleteApi = async (url: string) => {
 export const patchApi = async (url: string, body?: any) => {
   try {
     const data = await axios.patch(`${url}`, body, headers);
+    return data;
+  } catch (err) {
+    console.log(err);
+    // alert('문제가 발생했습니다');
+    return err;
+  }
+};
+
+export const multipartPatchApi = async (url: string, body?: any) => {
+  try {
+    const data = await axios.patch(`${url}`, body, multipartHeaders);
     return data;
   } catch (err) {
     console.log(err);
