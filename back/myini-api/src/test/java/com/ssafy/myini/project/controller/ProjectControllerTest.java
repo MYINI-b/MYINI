@@ -133,7 +133,12 @@ class ProjectControllerTest extends ControllerTest {
                                 fieldWithPath("projectGithubUrl").type(JsonFieldType.STRING).description("Project Gibhub URL"),
                                 fieldWithPath("projectJiraUrl").type(JsonFieldType.STRING).description("Project Jira URL"),
                                 fieldWithPath("projectNotionUrl").type(JsonFieldType.STRING).description("Project Notion URL"),
-                                fieldWithPath("projectFigmaUrl").type(JsonFieldType.STRING).description("Project Figma URL")
+                                fieldWithPath("projectFigmaUrl").type(JsonFieldType.STRING).description("Project Figma URL"),
+                                fieldWithPath("jiraApiKey").type(JsonFieldType.STRING).description("jiraApiKey"),
+                                fieldWithPath("jiraId").type(JsonFieldType.STRING).description("jiraId"),
+                                fieldWithPath("jiraDomain").type(JsonFieldType.STRING).description("jiraDomain"),
+                                fieldWithPath("jiraProjectKey").type(JsonFieldType.STRING).description("jiraProjectKey"),
+                                fieldWithPath("jiraProjectId").type(JsonFieldType.STRING).description("jiraProjectIdL")
                         )));
 
         // then

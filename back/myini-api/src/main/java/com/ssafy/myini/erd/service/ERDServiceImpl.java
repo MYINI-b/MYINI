@@ -40,7 +40,7 @@ public class ERDServiceImpl implements ERDService{
     private final RelationItemRepository relationItemRepository;
     private final ConditionItemRepository conditionItemRepository;
     private final ColumnConditionRepository columnConditionRepository;
-    
+
     @Override
     @Transactional
     public void createErdTable(Long projectId, ErdTableCreateRequest erdTableCreateRequest) {
