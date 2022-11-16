@@ -64,9 +64,17 @@ export default function ERDPage({ pid, store }: Props) {
             <span>Column명은 </span>
             <span className="for-primary-color">snake_case</span>
             <span>로 적어주세요.</span>
+            <h5>자세한 내용은 ERD작성방법을 클릭하세요.</h5>
           </div>
-          ERD 작성방법
-          <FontAwesomeIcon icon={faCircleInfo} className="erd-info-btn" />
+          <a
+            href="https://github.com/wooobinkim/myini/blob/main/docs/MYINIGuide.md#e-r-%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8"
+            target="_blank"
+            rel="noreferrer"
+            className="erd-info-content"
+          >
+            <span className="erd-info-content">ERD 작성방법</span>
+            <FontAwesomeIcon icon={faCircleInfo} className="erd-info-btn" />
+          </a>
         </div>
       </section>
 

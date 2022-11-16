@@ -34,6 +34,7 @@
         position: absolute;
         right: 4%;
         bottom: 79%;
+        z-index: 100000000;
         display: none;
         padding: 0.5rem;
         color: black;
@@ -41,6 +42,14 @@
         background-color: $white;
         border: 1px solid $primary;
         border-radius: 10px;
+
+        .erd-info-content {
+          color: $primary;
+        }
+      }
+
+      .erd-info-hover-content a {
+        color: $black;
       }
 
       .erd-info-btn {
@@ -70,5 +79,9 @@
 }
 
 .for-primary-color {
+  color: $primary;
+}
+
+.erd-info-content {
   color: $primary;
 }
