@@ -114,15 +114,7 @@ export default function MainPage() {
         // console.log(result, 'res');
         setMemberOnly4(result);
         // console.log(memberOnly4, '4');
-      } else {
-        const result = [];
-        for (let i = 0; i < myMember.length; i++) {
-          result.push(myMember[i]);
-        }
-        // console.log(result, 'res1');
-        setMemberOnly4(result);
       }
-      // console.log(memberOnly4, '???');
     };
 
     const fetchProject = async () => {
