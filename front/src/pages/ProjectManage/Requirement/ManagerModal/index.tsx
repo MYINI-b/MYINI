@@ -41,7 +41,7 @@ export default function CategoryListModal({
   useEffect(() => {
     modalContainer.current.style.left = `${clickElementPos.x}px`;
     modalContainer.current.style.top = `${clickElementPos.y}px`;
-    // modalContainer.current.style.width = `${clickElementPos.width}px`;
+    modalContainer.current.style.minWidth = `${clickElementPos.width}px`;
     console.log(store.pjt.jiraMembers);
   }, [clickElementPos]);
 

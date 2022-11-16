@@ -6,19 +6,18 @@ import {
   faCircleQuestion,
 } from '@fortawesome/free-solid-svg-icons';
 import './style.scss';
-import { putApi } from 'api';
+import { putApi, getApi } from 'api';
+import Loading from 'assets/loading.gif';
 
 interface Props {
   store: any;
   modalClose: any;
   pid: string;
-  editJiraInfo: () => Promise<void>;
 }
 
-function Modal({ store, modalClose, pid, editJiraInfo }: Props) {
-  const onSubmitClick = useCallback(() => {
-    editJiraInfo();
-  }, []);
+function Modal({ store, modalClose, pid }: Props) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(false);
 
   const onCloseModal = (e: any) => {
     // console.log('e.target: ', e.target);
@@ -71,7 +70,34 @@ function Modal({ store, modalClose, pid, editJiraInfo }: Props) {
     },
     [store],
   );
-  console.log(store.pjt.jiraProjectId);
+
+  const editJiraInfo = useCallback(async () => {
+    setIsLoading(true);
+    setInitialLoading(true);
+    const body = {
+      jiraId: store.pjt.jiraId,
+      jiraApiKey: store.pjt.jiraApiKey,
+    };
+    const body1 = {
+      jiraDomain: store.pjt.jiraDomain,
+    };
+
+    const resp = await putApi(
+      `https://k7b203.p.ssafy.io/api/jiras/${pid}/jiraaccount`,
+      body,
+    );
+    const resp1 = await putApi(
+      `https://k7b203.p.ssafy.io/api/jiras/${pid}/jiradomain`,
+      body1,
+    );
+    const jiraResp: any = await getApi(
+      `https://k7b203.p.ssafy.io/api/jiras/${pid}/projects`,
+    );
+    console.log(resp, resp1, jiraResp);
+    store.pjt.jiraProject = jiraResp.data;
+    setIsLoading(false);
+  }, [store]);
+
   return (
     <div className="modal-jira-container" onClick={onCloseModal}>
       <div className="modal-jira-detail">
@@ -112,9 +138,7 @@ function Modal({ store, modalClose, pid, editJiraInfo }: Props) {
             onChange={handleTextJiraDomain}
             defaultValue={store.pjt.jiraDomain}
           />
-          <div className="jira-content-button" onClick={onSubmitClick}>
-            프로젝트 찾기
-          </div>
+
           <div className="jira-projects-overflow">
             <div className="jira-project-category">
               {store.pjt.jiraProject &&
@@ -129,7 +153,14 @@ function Modal({ store, modalClose, pid, editJiraInfo }: Props) {
                     {item.jiraProjectName}
                   </button>
                 ))}
+
+              {initialLoading && isLoading && (
+                <img src={Loading} alt="jira" className="loading-img" />
+              )}
             </div>
+          </div>
+          <div className="jira-content-button" onClick={editJiraInfo}>
+            프로젝트 찾기
           </div>
         </div>
       </div>

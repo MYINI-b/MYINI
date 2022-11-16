@@ -1,0 +1,20 @@
+@import 'variables.scss';
+
+.loading-empty {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100000;
+  flex-direction: column;
+  background-color: rgba(131, 131, 131, 0.2);
+  @include STRETCH;
+  @include FLEX-CENTER;
+
+  h1 {
+    font-size: rem(40);
+  }
+
+  img {
+    width: rem(400);
+  }
+}

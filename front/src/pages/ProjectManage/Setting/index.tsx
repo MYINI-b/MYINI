@@ -37,30 +37,6 @@ export default function Setting({ store, pid }: Props) {
     // console.log(resp);
   }, [store]);
 
-  const editJiraInfo = useCallback(async () => {
-    const body = {
-      jiraId: store.pjt.jiraId,
-      jiraApiKey: store.pjt.jiraApiKey,
-    };
-    const body1 = {
-      jiraDomain: store.pjt.jiraDomain,
-    };
-
-    const resp = await putApi(
-      `https://k7b203.p.ssafy.io/api/jiras/${pid}/jiraaccount`,
-      body,
-    );
-    const resp1 = await putApi(
-      `https://k7b203.p.ssafy.io/api/jiras/${pid}/jiradomain`,
-      body1,
-    );
-    const jiraResp: any = await getApi(
-      `https://k7b203.p.ssafy.io/api/jiras/${pid}/projects`,
-    );
-    console.log(resp, resp1, jiraResp);
-    store.pjt.jiraProject = jiraResp.data;
-  }, [store]);
-
   const handlePointMove = React.useCallback(
     (e: React.PointerEvent) => {
       updatePresence({
@@ -155,11 +131,7 @@ export default function Setting({ store, pid }: Props) {
               <ReferenceLink store={store} editProjectInfo={editProjectInfo} />
             </div>
             <div className="right-side">
-              <ProjectJira
-                store={store}
-                pid={pid}
-                editJiraInfo={editJiraInfo}
-              />
+              <ProjectJira store={store} pid={pid} />
               <ProjectMember
                 store={store}
                 pid={pid}
