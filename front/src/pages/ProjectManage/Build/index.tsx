@@ -1,19 +1,10 @@
 import './style.scss';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getApi } from 'api';
 import axios from 'axios';
-import { RootState } from 'modules/Reducers';
-import { useSelector, useDispatch } from 'react-redux';
 import Modal from './Modal';
 import Accordion1 from './Accor';
-import {
-  editJvm,
-  editLang,
-  editPack,
-  editPlat,
-  editType,
-} from '../../../modules/build';
 
 export type AccordionType = {
   id: number;
@@ -32,22 +23,26 @@ interface Props {
   pid: string;
   store: any;
 }
+export interface selectObj {
+  Jvm: string;
+  Language: string;
+  Packaging: string;
+  Platform: string;
+  Type: string;
+  textGroup: string;
+  textArtifact: string;
+  textName: string;
+  textDescription: string;
+  textPackage: string;
+  depDatas: string[];
+}
 
 export default function Build({ pid, store }: Props) {
-  const { springJvm, springLang, springPack, springPlat, springType } =
-    useSelector((state: RootState) => state.build);
-  const dispatch = useDispatch();
-
   const [modalOpen, setModalOpen] = useState(false);
   const modalClose = () => {
     setModalOpen(!modalOpen);
   };
 
-  const [textGroup, setTextGroup] = useState('');
-  const [textArtifact, setTextArtifact] = useState('');
-  const [textName, setTextName] = useState('');
-  const [textDescription, setTextDescription] = useState('');
-  const [textPackage, setTextPackage] = useState('');
   const [isChecked, setChecked] = useState(false);
   const [confirmData, setConfirmData] = useState([]);
   const [buildStart, setBuildStart] = useState([]);
@@ -66,36 +61,65 @@ export default function Build({ pid, store }: Props) {
     'devtools',
     'validation',
   ]);
-  const getDependencies = () => {
-    setDependenciesData(dependenciesData);
-  };
+  const [selectObj, setSelectObj] = useState<selectObj>({
+    Jvm: '',
+    Language: '',
+    Packaging: '',
+    Platform: '',
+    Type: '',
+    textGroup: '',
+    textArtifact: '',
+    textName: '',
+    textDescription: '',
+    textPackage: '',
+    depDatas: [],
+  });
+  const {
+    Jvm,
+    Language,
+    Packaging,
+    Platform,
+    Type,
+    textGroup,
+    textArtifact,
+    textName,
+    textDescription,
+    textPackage,
+    depDatas,
+  } = selectObj;
 
-  const radioHandlerSelectJvm = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    dispatch(editJvm(event.target.id));
+  const getDependencies = useCallback(() => {
+    setDependenciesData(dependenciesData);
+    store.pjt.depDatas = dependenciesData;
+  }, [store]);
+
+  const radioHandlerSelectJvm = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
   const radioHandlerSelectLanguage = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    dispatch(editLang(event.target.id));
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
   const radioHandlerSelectPackaging = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    dispatch(editPack(event.target.id));
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
   const radioHandlerSelectPlatform = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    dispatch(editPlat(event.target.id));
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
-  const radioHandlerSelectType = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    dispatch(editType(event.target.id));
+  const radioHandlerSelectType = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
-  console.log(springType, springLang, springPack, springPlat, springType);
+
   const radioHandlerDependencies = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -103,14 +127,14 @@ export default function Build({ pid, store }: Props) {
   };
   const getProjectDetail = async () => {
     const ConfirmCode: any = await getApi(
-      `/initializers/${pid}/previews?springType=${springType}&springLanguage=${springLang}&springPlatformVersion=${springPlat}&springPackaging=${springPack}&springJvmVersion=${springJvm}&springGroupId=${textGroup}&springArtifactId=${textArtifact}&springName=${textName}&springDescription=${textDescription}&springPackageName=${textPackage}&springDependencyName=${dependenciesData}`,
+      `/initializers/${pid}/previews?springType=${store.pjt.springType}&springLanguage=${store.pjt.springLang}&springPlatformVersion=${store.pjt.springPlat}&springPackaging=${store.pjt.springPack}&springJvmVersion=${store.pjt.springJvm}&springGroupId=${store.pjt.textGroup}&springArtifactId=${store.pjt.textArtifact}&springName=${store.pjt.textName}&springDescription=${store.pjt.textDescription}&springPackageName=${store.pjt.textPackage}&springDependencyName=${dependenciesData}`,
     );
     console.log(ConfirmCode);
     setConfirmData(ConfirmCode.data);
   };
   const downloadCode = async () => {
     await axios({
-      url: `/initializers/${pid}?springType=${springType}&springLanguage=${springLang}&springPlatformVersion=${springPlat}&springPackaging=${springPack}&springJvmVersion=${springJvm}&springGroupId=${textGroup}&springArtifactId=${textArtifact}&springName=${textName}&springDescription=${textDescription}&springPackageName=${textPackage}&springDependencyName=${dependenciesData}`,
+      url: `/initializers/${pid}?springType=${store.pjt.springType}&springLanguage=${store.pjt.springLang}&springPlatformVersion=${store.pjt.springPlat}&springPackaging=${store.pjt.springPack}&springJvmVersion=${store.pjt.springJvm}&springGroupId=${store.pjt.textGroup}&springArtifactId=${store.pjt.textArtifact}&springName=${store.pjt.textName}&springDescription=${store.pjt.textDescription}&springPackageName=${store.pjt.textPackage}&springDependencyName=${dependenciesData}`,
       method: 'GET',
       responseType: 'blob', // important
       data: 'data',
@@ -118,7 +142,7 @@ export default function Build({ pid, store }: Props) {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `${textName}.zip`);
+      link.setAttribute('download', `${store.pjt.textName}.zip`);
       document.body.appendChild(link);
       link.click();
     });
@@ -145,30 +169,33 @@ export default function Build({ pid, store }: Props) {
     };
     initSettings();
   }, []);
-
   const handleTextGroupArea = (e: any) => {
-    setTextGroup(e.target.value);
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
   const handleTextArtifactArea = (e: any) => {
-    setTextArtifact(e.target.value);
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
   const handleTextNameArea = (e: any) => {
-    setTextName(e.target.value);
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
   const handleTextDescriptionArea = (e: any) => {
-    setTextDescription(e.target.value);
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
   const handleTextPackageArea = (e: any) => {
-    setTextPackage(e.target.value);
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
   };
 
   return (
     <div className="build-container">
-      <h1 className="build-title">API 명세서</h1>
+      <h1 className="build-title">Project Build</h1>
       <h2 className="build-project-title">{store && store.pjt.title}</h2>
       <div className="build-main">
         <div className="init-container">
@@ -190,7 +217,7 @@ export default function Build({ pid, store }: Props) {
                               value={items.name}
                               id={items.id}
                               onChange={radioHandlerSelectJvm}
-                              checked={springJvm === items.id}
+                              checked={selectObj.Jvm === items.id}
                             />
                             <label htmlFor={items.id} className="radio-field">
                               {items.name}
@@ -216,7 +243,7 @@ export default function Build({ pid, store }: Props) {
                                 value={items.name}
                                 id={items.id}
                                 onChange={radioHandlerSelectLanguage}
-                                checked={springLang === items.id}
+                                checked={selectObj.Language === items.id}
                               />
                               <label htmlFor={items.id} className="radio-field">
                                 {items.name}
@@ -243,7 +270,7 @@ export default function Build({ pid, store }: Props) {
                                 value={items.name}
                                 id={items.id}
                                 onChange={radioHandlerSelectPackaging}
-                                checked={springPack === items.id}
+                                checked={selectObj.Packaging === items.id}
                               />
                               <label htmlFor={items.id} className="radio-field">
                                 {items.name}
@@ -270,7 +297,7 @@ export default function Build({ pid, store }: Props) {
                                 value={items.name}
                                 id={items.id}
                                 onChange={radioHandlerSelectPlatform}
-                                checked={springPlat === items.id}
+                                checked={selectObj.Platform === items.id}
                               />
                               <label htmlFor={items.id} className="radio-field">
                                 {items.name}
@@ -296,7 +323,7 @@ export default function Build({ pid, store }: Props) {
                               value={items.name}
                               id={items.id}
                               onChange={radioHandlerSelectType}
-                              checked={springType === items.id}
+                              checked={selectObj.Type === items.id}
                             />
                             <label htmlFor={items.id} className="radio-field">
                               {items.name}
@@ -319,6 +346,7 @@ export default function Build({ pid, store }: Props) {
                   className="text-box"
                   rows={5}
                   placeholder="com.example"
+                  name="textGroup"
                   onChange={handleTextGroupArea}
                 />
               </form>
@@ -330,6 +358,7 @@ export default function Build({ pid, store }: Props) {
                   className="text-box"
                   rows={5}
                   placeholder="demo"
+                  name="textArtifact"
                   onChange={handleTextArtifactArea}
                 />
               </form>
@@ -341,6 +370,7 @@ export default function Build({ pid, store }: Props) {
                   className="text-box"
                   rows={5}
                   placeholder="demo"
+                  name="textName"
                   onChange={handleTextNameArea}
                 />
               </form>
@@ -352,6 +382,7 @@ export default function Build({ pid, store }: Props) {
                   className="text-box"
                   rows={5}
                   placeholder="Demo project for Spring Boot"
+                  name="textDescription"
                   onChange={handleTextDescriptionArea}
                 />
               </form>
@@ -363,6 +394,7 @@ export default function Build({ pid, store }: Props) {
                   className="text-box"
                   rows={5}
                   placeholder="com.example.demo"
+                  name="textPackage"
                   onChange={handleTextPackageArea}
                 />
               </form>

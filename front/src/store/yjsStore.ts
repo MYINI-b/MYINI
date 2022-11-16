@@ -38,6 +38,19 @@ export type ProjectInfo = {
   JiraProjectId: string;
   JiraProjectKey: string;
   JiraProjectName: string;
+
+  // build
+  springJvm: string;
+  springLang: string;
+  springPack: string;
+  springPlat: string;
+  springType: string;
+  textGroup: string;
+  textArtifact: string;
+  textName: string;
+  textDescription: string;
+  textPackage: string;
+  depDatas: string[];
 };
 
 export const globalStore = syncedStore({

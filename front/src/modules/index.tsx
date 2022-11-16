@@ -6,7 +6,6 @@ import member from './member';
 import erd from './erd';
 import vuerd from './vuerd';
 import project from './project';
-import build from './build';
 
 const persistConfig = {
   key: 'root',
@@ -17,7 +16,6 @@ export const rootReducer = combineReducers({
   erd,
   vuerd,
   project,
-  build,
 });
 
 export default persistReducer(persistConfig, rootReducer);

@@ -7,6 +7,11 @@ export type initDependenciesListType = {
   id: string;
 };
 
+interface Props {
+  pid: string;
+  store: any;
+}
+
 function Modal({
   modalClose,
   initDependenciesList,
@@ -55,7 +60,6 @@ function Modal({
     // }
     // console.log(newDependenciesData);
     // setDependenciesData(newDependenciesData);
-    console.log(dependenciesData);
   };
 
   return (
