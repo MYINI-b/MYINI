@@ -6,14 +6,16 @@ import './style.scss';
 interface Props {
   children: any;
   text: string;
+  under?: boolean;
 }
 
-export default function Tooltip({ children, text }: Props) {
+function Tooltip({ children, text, under }: Props) {
   const [isTextOpen, setIsTextOpen] = useState(false);
 
   const onIconClick = useCallback((e: any) => {
     e.stopPropagation();
     setIsTextOpen(true);
+    console.log(under);
   }, []);
 
   return (
@@ -30,7 +32,9 @@ export default function Tooltip({ children, text }: Props) {
             onClick={onIconClick}
           />
           <div
-            className={`tooltip-text ${isTextOpen && 'open'}`}
+            className={`tooltip-text ${isTextOpen && 'open'} ${
+              under && 'under'
+            }`}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="tooltip-balloon">{text}</div>
@@ -40,3 +44,8 @@ export default function Tooltip({ children, text }: Props) {
     </div>
   );
 }
+Tooltip.defaultProps = {
+  under: false,
+};
+
+export default Tooltip;
