@@ -83,14 +83,20 @@ export default function Setting({ store, pid }: Props) {
         store.pjt.img = data.projectImg
           ? `https://myini.s3.ap-northeast-2.amazonaws.com/projectProfile/${data.projectImg}`
           : DefaultProfile;
-        store.pjt.title = data.projectName;
-        store.pjt.desc = data.projectDescription;
-        store.pjt.startDay = data.projectStartedDate;
-        store.pjt.endDay = data.projectFinishedDate;
-        store.pjt.gitLink = data.projectGithubUrl;
-        store.pjt.jiraLink = data.projectJiraUrl;
-        store.pjt.notionLink = data.projectNotionUrl;
-        store.pjt.figmaLink = data.projectFigmaUrl;
+        store.pjt.title = data.projectName ? data.projectName : '';
+        store.pjt.desc = data.projectDescription ? data.projectDescription : '';
+        store.pjt.startDay = data.projectStartedDate
+          ? data.projectStartedDate
+          : '';
+        store.pjt.endDay = data.projectFinishedDate
+          ? data.projectFinishedDate
+          : '';
+        store.pjt.gitLink = data.projectGithubUrl ? data.projectGithubUrl : '';
+        store.pjt.jiraLink = data.projectJiraUrl ? data.projectJiraUrl : '';
+        store.pjt.notionLink = data.projectNotionUrl
+          ? data.projectNotionUrl
+          : '';
+        store.pjt.figmaLink = data.projectFigmaUrl ? data.projectFigmaUrl : '';
         if (!store.pjt.editors) store.pjt.editors = [];
 
         const memberResp: any = await getApi(`/projects/members/${pid}`);
@@ -105,21 +111,28 @@ export default function Setting({ store, pid }: Props) {
             email: member.memberEmail,
           };
         });
-
-        const jiraResp: any = await getApi(`/projects/members/${pid}/jiras`);
-        const jiraData = jiraResp.data.map((member: any) => {
-          return {
-            id: member.memberId,
-            name: member.memberName,
-            img: member.memberProfileImg
-              ? `${member.memberProfileImg}`
-              : DefaultProfile,
-            email: member.memberEmail,
-            nickname: member.memberNickName,
-          };
-        });
-        store.pjt.jiraMembers = jiraData;
         store.pjt.members = memberData;
+
+        if (memberResp.data.length > 1) {
+          const jiraResp: any = await getApi(`/projects/members/${pid}/jiras`);
+
+          if (jiraResp.status === 200) {
+            const jiraData = jiraResp.data.map((member: any) => {
+              return {
+                id: member.memberId,
+                name: member.memberName,
+                img: member.memberProfileImg
+                  ? `${member.memberProfileImg}`
+                  : DefaultProfile,
+                email: member.memberEmail,
+                nickname: member.memberNickName,
+              };
+            });
+            store.pjt.jiraMembers = jiraData;
+          } else {
+            store.pjt.jiraMembers = [];
+          }
+        }
       }
     };
 

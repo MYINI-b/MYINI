@@ -19,7 +19,7 @@ interface Props {
 
 export default function APIList({ store, controllerIdx }: Props) {
   const [isApiModalOpen, setIsApiModalOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [alertText, setAlertText] = useState('');
   const [apiRowIdx, setApiRowIdx] = useState(-1);
   const { memberId, memberProfileImg, memberNickname } = useSelector(
     (state: RootState) => state.member,
@@ -30,7 +30,7 @@ export default function APIList({ store, controllerIdx }: Props) {
       (x: any) => x.space === 'API' && x.sid === aid,
     );
     if (aid !== 0 && findIdx >= 0) {
-      setIsModalOpen(true);
+      setAlertText('한 번에 한 명의 유저만이 편집할 수 있는 설정입니다.');
       return;
     }
     setApiRowIdx(idx);
@@ -153,12 +153,7 @@ export default function APIList({ store, controllerIdx }: Props) {
         />
       )}
 
-      {isModalOpen && (
-        <TimerModal
-          text="한 번에 한 명의 유저만이 편집할 수 있는 설정입니다."
-          setIsOpen={setIsModalOpen}
-        />
-      )}
+      {!!alertText && <TimerModal text={alertText} setText={setAlertText} />}
     </section>
   );
 }

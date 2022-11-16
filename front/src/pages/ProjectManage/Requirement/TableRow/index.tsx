@@ -85,8 +85,8 @@ export default function TableRow({ row, idx, store, pid }: Props) {
     setIsCategoryListOpen(true);
     setClickElementPos({
       y: isBlock
-        ? e.target.parentElement.getBoundingClientRect().top + 40
-        : e.target.getBoundingClientRect().top + 40,
+        ? e.target.parentElement.getBoundingClientRect().top + 35
+        : e.target.getBoundingClientRect().top + 35,
       x: isBlock
         ? e.target.parentElement.getBoundingClientRect().left
         : e.target.getBoundingClientRect().left,
@@ -99,7 +99,7 @@ export default function TableRow({ row, idx, store, pid }: Props) {
   const openManagerList = useCallback((e: any) => {
     setIsManagerOpen(true);
     setClickElementPos({
-      y: e.target.getBoundingClientRect().top + 40,
+      y: e.target.getBoundingClientRect().top + 35,
       x: e.target.getBoundingClientRect().left,
       width: e.target.offsetWidth,
     });
@@ -110,8 +110,8 @@ export default function TableRow({ row, idx, store, pid }: Props) {
     setIsDivisionOpen(true);
     setClickElementPos({
       y: isBlock
-        ? e.target.parentElement.getBoundingClientRect().top + 40
-        : e.target.getBoundingClientRect().top + 40,
+        ? e.target.parentElement.getBoundingClientRect().top + 35
+        : e.target.getBoundingClientRect().top + 35,
       x: isBlock
         ? e.target.parentElement.getBoundingClientRect().left
         : e.target.getBoundingClientRect().left,
@@ -121,12 +121,21 @@ export default function TableRow({ row, idx, store, pid }: Props) {
     });
   }, []);
 
-  const openImportanceList = useCallback((e: any) => {
+  const openImportanceList = useCallback((e: any, isBlock: boolean) => {
+    e.stopPropagation();
+    e.preventDefault();
     setIsImportanceOpen(true);
+    console.log(e.target);
     setClickElementPos({
-      y: e.target.getBoundingClientRect().top + 40,
-      x: e.target.getBoundingClientRect().left,
-      width: e.target.offsetWidth,
+      y: isBlock
+        ? e.target.parentElement.getBoundingClientRect().top + 35
+        : e.target.getBoundingClientRect().top + 35,
+      x: isBlock
+        ? e.target.parentElement.getBoundingClientRect().left
+        : e.target.getBoundingClientRect().left,
+      width: isBlock
+        ? e.target.parentElement.offsetWidth
+        : e.target.offsetWidth,
     });
   }, []);
 
@@ -214,14 +223,17 @@ export default function TableRow({ row, idx, store, pid }: Props) {
           ref={requireContainer}
           onChange={onRequirementChange}
           className="table-col content one-half textarea"
+          placeholder="요구사항 명"
           autoFocus
         />
       ) : (
         <span
-          className="table-col content one-half"
+          className={`table-col content one-half ${
+            row.requirement === '' && 'empty'
+          }`}
           onDoubleClick={() => setIsRequireEdit(true)}
         >
-          {row.requirement}
+          {row.requirement || '요구사항 명'}
         </span>
       )}
       {isDescEdit ? (
@@ -230,14 +242,17 @@ export default function TableRow({ row, idx, store, pid }: Props) {
           ref={descContainer}
           onChange={onDescChange}
           className="table-col content two textarea"
+          placeholder="요구사항 내용을 설명해주세요"
           autoFocus
         />
       ) : (
         <span
-          className="table-col content two"
+          className={`table-col content two ${
+            row.description === '' && 'empty'
+          }`}
           onDoubleClick={() => setIsDescEdit(true)}
         >
-          {row.description}
+          {row.description || '요구사항 내용을 설명해주세요'}
         </span>
       )}
       <span
@@ -251,25 +266,43 @@ export default function TableRow({ row, idx, store, pid }: Props) {
           {row.division}
         </div>
       </span>
-      <span className="table-col content one" onClick={openManagerList}>
-        {row.manager}
+      <span
+        className={`table-col content one ${row.manager === '' && 'empty'}`}
+        onClick={openManagerList}
+      >
+        {row.manager || '담당자가 없습니다.'}
       </span>
-      <span className="table-col content one" onClick={openImportanceList}>
+      <span
+        className="table-col content one"
+        onClick={(e) => openImportanceList(e, false)}
+      >
         {row.importance === 1 ? (
           <div className="double-chevron" onClick={(e) => e.stopPropagation()}>
-            <FontAwesomeIcon icon={faChevronUp} />
-            <FontAwesomeIcon icon={faChevronUp} />
+            <FontAwesomeIcon icon={faChevronUp} className="imp1" />
+            <FontAwesomeIcon icon={faChevronUp} className="imp2" />
           </div>
         ) : row.importance === 2 ? (
-          <FontAwesomeIcon icon={faChevronUp} />
+          <FontAwesomeIcon
+            icon={faChevronUp}
+            onClick={(e) => e.stopPropagation()}
+            className="imp2"
+          />
         ) : row.importance === 3 ? (
-          <FontAwesomeIcon icon={faGripLines} />
+          <FontAwesomeIcon
+            icon={faGripLines}
+            onClick={(e) => e.stopPropagation()}
+            className="imp3"
+          />
         ) : row.importance === 4 ? (
-          <FontAwesomeIcon icon={faChevronDown} />
+          <FontAwesomeIcon
+            icon={faChevronDown}
+            onClick={(e) => e.stopPropagation()}
+            className="imp4"
+          />
         ) : row.importance === 5 ? (
           <div className="double-chevron" onClick={(e) => e.stopPropagation()}>
-            <FontAwesomeIcon icon={faChevronDown} />
-            <FontAwesomeIcon icon={faChevronDown} />
+            <FontAwesomeIcon icon={faChevronDown} className="imp4" />
+            <FontAwesomeIcon icon={faChevronDown} className="imp5" />
           </div>
         ) : (
           ''
