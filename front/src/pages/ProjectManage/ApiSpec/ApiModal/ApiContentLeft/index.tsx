@@ -70,7 +70,7 @@ export default function ApiContentLeft({
   const [selectIdx, setSelectIdx] = useState(0);
 
   const onApiNameChange = useCallback((e: any) => {
-    setApiName(e.target.value.trim());
+    setApiName(e.target.value);
   }, []);
 
   const onMethodNameChange = useCallback((e: any) => {

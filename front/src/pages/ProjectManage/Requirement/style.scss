@@ -82,6 +82,11 @@
       border-radius: 20px;
       @include FLEX-CENTER;
       position:relative;
+      line-height: 1.5;
+
+      svg{
+        cursor:pointer;
+      }
 
       &.title {
         // height: rem(40);
@@ -97,7 +102,7 @@
           content: "";
           height: 50%;
           display: block;
-          border-right: 1px solid rgba(128, 128, 128, 0.199);
+          border-right: 1px solid rgba(128, 128, 128, 0.2);
           position: absolute;
           right: 0;
           top: 50%;
@@ -128,6 +133,10 @@
         position: relative;
       }
 
+      &.empty{
+        color:$light-gray;
+      }
+
       &.textarea {
         border: 1px solid $lightx2-gray;
         border-radius: rem(6);
@@ -136,6 +145,15 @@
           width: 0;
           height: 0;
         }
+
+        &::placeholder{
+          color:$light-gray;
+          font-size: inherit;
+          font-family: $eng-content;
+          text-align: center;
+        }
+
+        
       }
 
       .desc-block {
@@ -160,6 +178,7 @@
 
       .double-chevron {
         position: relative;
+        cursor:pointer;
         svg {
           position: absolute;
           top: -3px;

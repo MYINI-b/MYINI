@@ -7,7 +7,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 100000;
+    z-index: 10;
     background-color: rgba(131, 131, 131, 0.5);
     @include STRETCH;
   }

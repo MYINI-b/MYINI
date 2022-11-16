@@ -274,7 +274,7 @@ export default function DatatypeModal({
         <button
           className="datatype-modal-button"
           type="button"
-          onClick={() => setIsDatatypeModalOpen(false)}
+          onClick={closeModal}
         >
           확인
         </button>
