@@ -167,18 +167,29 @@ export default function MainPage() {
               {myMember.map((content: any, idx: number) => {
                 return (
                   <div key={idx} className="main-member-container">
-                    {content === null ? (
+                    {content === null || content === undefined ? (
                       <div>
                         <span>함께한 팀원이 없습니다.</span>
                       </div>
                     ) : (
                       <div className="main-member" key={idx}>
-                        <div className="main-member-img">
-                          <FontAwesomeIcon
-                            icon={faOtter}
-                            className="member-default-img"
-                          />
-                        </div>
+                        {content.memberProfileImg === null ? (
+                          <div className="main-member-img">
+                            <FontAwesomeIcon
+                              icon={faOtter}
+                              className="member-default-img"
+                            />
+                          </div>
+                        ) : (
+                          <div>
+                            <img
+                              src={content.memberProfileImg}
+                              alt=""
+                              className="member-google-img"
+                            />
+                          </div>
+                        )}
+
                         <p className="main-member-name">
                           {content.memberNickname}
                         </p>
