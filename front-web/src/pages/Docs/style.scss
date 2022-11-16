@@ -14,11 +14,12 @@
       border-top-left-radius: rem(15);
       border-top-right-radius: rem(15);
       border: 2px solid $secondary;
-      padding: rem(12);
+      padding: rem(12) rem(18);
       font-size: rem(20);
       border-bottom: none;
       cursor: pointer;
       transition: 0.3s ease;
+      background-color: $white;
 
       &.select {
         background-color: $secondary;
