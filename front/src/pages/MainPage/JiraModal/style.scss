@@ -38,6 +38,16 @@
 
       .modal-jira-input-container {
         font-size: rem(18);
+
+        .modal-jira-input-title {
+          @include FLEX-BETWEEN;
+
+          .jira-input-info-tooltip {
+            color: $black;
+            cursor: pointer;
+          }
+        }
+
         .jira-input {
           width: 100%;
           margin-top: rem(6);

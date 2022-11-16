@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 /* eslint-disable object-shorthand */
 import { useEffect, useLayoutEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import AWS from 'aws-sdk';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 
 import './style.scss';
 import { getApi } from 'api';
@@ -12,12 +12,9 @@ import { getApi } from 'api';
 import 'vuerd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
 import { assignCurrentErd } from 'modules/vuerd';
-import { ERD } from 'modules/erd';
-import { RootState } from 'modules/Reducers';
-import { setInterval } from 'timers/promises';
-import { toEditorSettings } from 'typescript';
 
 const S3_BUCKET = 'myini/ERD';
 const REGION = 'ap-northeast-2';
@@ -57,7 +54,7 @@ function GenerateVuerd({ pid, store }: Props) {
 
   useLayoutEffect(() => {
     generateVuerd();
-  }, []);
+  }, [store]);
 
   // useInterval(() => {}, 5000);
 
@@ -72,9 +69,8 @@ function GenerateVuerd({ pid, store }: Props) {
     } else editor = document.createElement('erd-editor');
 
     container?.appendChild(editor);
-    const payload: any = {
-      editor,
-    };
+
+    // 테마
     editor.setTheme({
       canvas: '#f4f4f4',
       table: '#fff',
@@ -100,7 +96,7 @@ function GenerateVuerd({ pid, store }: Props) {
 
     // import project erd
     if (pid) {
-      await getApi(`erds/erdjson/${pid}`)
+      getApi(`erds/erdjson/${pid}`)
         .then((res: any) => {
           editor.initLoadJson(JSON.stringify(res.data));
         })
@@ -108,6 +104,28 @@ function GenerateVuerd({ pid, store }: Props) {
           console.log(err, '새로운 프로젝트입니다.');
         });
     }
+
+    // TODO: 변경사항?
+    editor.addEventListener('change', (event: any) => {
+      // const targetValue = JSON.parse(event.target.value);
+      // console.log(targetValue);
+      // const totalValue = {
+      //   canvas: targetValue.canvas,
+      //   table: targetValue.table,
+      //   memo: targetValue.memo,
+      //   relationship: targetValue.relationship,
+      // };
+      // store.pjt.erdData = JSON.stringify(totalValue);
+      // setErdValue(store.pjt.erdData);
+      // console.log(editor.value, 'zzz');
+      // editor.dispatch(store.pjt.erdData);
+      // console.log(totalValue, '?');
+      // saveBtn();
+      store.pjt.erdData = editor.value;
+      saveBtn();
+      editor.initLoadJson(store.pjt.erdData);
+      // console.log(store.pjt.erdData, '?');
+    });
 
     // vuerd size
     window.addEventListener('resize', () => {
@@ -122,7 +140,6 @@ function GenerateVuerd({ pid, store }: Props) {
     const obj: any = {
       editor: erdDiv.current.children.item(0),
     };
-
     // canvas, tabel, memo, relationship
 
     // for vuerd version 1.2.2
@@ -139,9 +156,7 @@ function GenerateVuerd({ pid, store }: Props) {
 
     // for vuerd version 2.2.2
     const combinedState = obj.editor.value;
-    console.log(combinedState, '???');
-    // const stateToJson = JSON.parse(combinedState);
-    // console.log(combinedState, '?');
+
     // fileName
     const fileName = `${pid}.myini.json`;
     const uploadFile = () => {
@@ -156,17 +171,19 @@ function GenerateVuerd({ pid, store }: Props) {
       });
     };
     uploadFile();
+    // alert('저장했습니다.');
   };
   return (
     <>
-      <button type="button" onClick={saveBtn}>
-        <FontAwesomeIcon icon={faSave} className="erd-save-btn" />
-      </button>
       <div id="app-erd" ref={erdDiv} />
       <br />
     </>
   );
 }
+
+/* <button type="button" onClick={saveBtn} className="erd-save-btn">
+<FontAwesomeIcon icon={faSave} />
+</button> */
 
 const mapToDispatch = (dispatch: any) => ({
   currentErd: (action: any) => dispatch(assignCurrentErd(action)),
