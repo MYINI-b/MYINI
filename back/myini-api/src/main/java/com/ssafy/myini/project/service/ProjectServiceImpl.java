@@ -131,15 +131,18 @@ public class ProjectServiceImpl implements ProjectService {
         String jiraDomain = findProject.getJiraDomain();
         String jiraProjectKey = findProject.getJiraProjectKey();
 
-        if(jiraDomain == null || jiraDomain.equals("")) {
+        if(jiraId == null || jiraId.equals("")
+        ||jiraApiKey == null || jiraApiKey.equals("")
+        ||jiraDomain == null || jiraDomain.equals("")
+        ||jiraProjectKey == null || jiraProjectKey.equals("")) {
             return new ArrayList<ProjectMemberResponse>();
         }
 
         try {
+            System.out.println(jiraId+" "+jiraApiKey+" "+jiraDomain+" "+jiraProjectKey);
             List<JiraApi.JiraUser> jiraUser = JiraApi.getJiraUser(jiraId, jiraApiKey, jiraDomain,jiraProjectKey);
 
             List<MemberProject> findMemberProjects = projectQueryRepository.findProjectMemberList(projectId);
-
 
             List<ProjectMemberResponse> projectMemberResponses = new ArrayList<>();
             for (int i = 0; i < findMemberProjects.size(); i++) {
@@ -157,7 +160,7 @@ public class ProjectServiceImpl implements ProjectService {
             return projectMemberResponses;
 
         }catch (Exception e){
-            throw new JiraException(JiraException.JIRA_FAIL);
+            throw new JiraException(JiraException.JIRA_MEMBER_FAIL);
         }
     }
 
