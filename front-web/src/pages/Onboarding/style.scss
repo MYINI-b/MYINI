@@ -12,8 +12,7 @@
     position: absolute;
     right: 20%;
     bottom: 30%;
-    width: 35%;
-    height: 45%;
+    width: rem(500);
     z-index: 100;
   }
 
@@ -28,6 +27,9 @@
     .head-line {
       padding-bottom: 0.5rem;
       font-size: rem(40);
+      b {
+        color: $secondary;
+      }
     }
   }
 
@@ -136,6 +138,10 @@
 
     .second-content {
       font-size: rem(45);
+      b {
+        font-family: $eng-title;
+        color: $secondary;
+      }
     }
 
     .second-content1 {
@@ -316,14 +322,16 @@
 .footer-container {
   height: 35vh;
   width: 100%;
-  background-color: $secondary;
+  background-color: $third;
   position: relative;
 
   .footer-header-container {
     padding: 2rem;
+    font-size: rem(12);
 
     .footer-header-title {
       margin-bottom: 1rem;
+      font-size: rem(26);
     }
 
     .footer-header-content {
@@ -331,7 +339,7 @@
       margin-bottom: 1rem;
 
       .footer-content {
-        font-size: rem(15);
+        font-size: rem(12);
       }
     }
   }

@@ -317,3 +317,10 @@
   @include STRETCH;
 }
 
+.card-body-delete{
+  transition: 0.3s ease;
+  cursor:pointer;
+  &:hover{
+    color:$delete;
+  }
+}

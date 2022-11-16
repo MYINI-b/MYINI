@@ -13,7 +13,7 @@ interface Props {
 
 export default function RowList({ store, pid }: Props) {
   const addTableRow = useCallback(async () => {
-    await postApi(`/requirementdocs/${pid}/requirements`);
+    const { data }: any = await postApi(`/requirementdocs/${pid}/requirements`);
     store.pjt.rows.push({
       category: '',
       requirement: '',
@@ -22,6 +22,7 @@ export default function RowList({ store, pid }: Props) {
       manager: '',
       importance: 3,
       point: 0,
+      id: data.requirementId,
     });
   }, [store]);
 

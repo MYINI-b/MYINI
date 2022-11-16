@@ -34,6 +34,20 @@ interface Props {
   pid: string;
 }
 
+// function useInterval(callback: any, delay: number) {
+//   const savedCallback = useRef<any>();
+//   useEffect(() => {
+//     savedCallback.current = callback;
+//   }, [callback]);
+
+//   useEffect(() => {
+//     if (delay !== null) {
+//       const interval = window.setInterval(() => savedCallback.current(), delay);
+//       return () => clearInterval(interval);
+//     }
+//   }, [delay]);
+// }
+
 function GenerateVuerd({ pid, store }: Props) {
   const erdDiv = useRef() as React.MutableRefObject<HTMLDivElement>;
   const [saveErdValue, setErdValue] = useState('');
@@ -41,6 +55,8 @@ function GenerateVuerd({ pid, store }: Props) {
   useLayoutEffect(() => {
     generateVuerd();
   }, [store]);
+
+  // useInterval(() => {}, 5000);
 
   const generateVuerd = async () => {
     // vuerd import
@@ -82,8 +98,7 @@ function GenerateVuerd({ pid, store }: Props) {
     if (pid) {
       getApi(`erds/erdjson/${pid}`)
         .then((res: any) => {
-          store.pjt.erdData = JSON.stringify(res.data);
-          editor.initLoadJson(store.pjt.erdData);
+          editor.initLoadJson(JSON.stringify(res.data));
         })
         .catch((err: any) => {
           console.log(err, '새로운 프로젝트입니다.');
@@ -125,8 +140,6 @@ function GenerateVuerd({ pid, store }: Props) {
     const obj: any = {
       editor: erdDiv.current.children.item(0),
     };
-    // console.log(obj.editor.value, 'asd');
-    // setErdValue(obj.editor.value);
     // canvas, tabel, memo, relationship
 
     // for vuerd version 1.2.2
