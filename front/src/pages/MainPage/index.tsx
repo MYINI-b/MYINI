@@ -22,11 +22,10 @@ import {
 // api
 import { getApi, patchApi } from 'api';
 import { PROJECT_LIST } from 'types/main';
+import getCrewOnlyFour, { CrewOnlyFour } from 'modules/crew';
 import Modal from './Modal';
 import MemberModal from './MemberModal';
 import JiraModal from './JiraModal';
-
-import { authAxios } from '../../api/common';
 
 import { Profile } from '../../modules/member';
 import CardLogo from '../../assets/card-logo.png';
@@ -72,7 +71,8 @@ export default function MainPage() {
   const dispatch = useDispatch();
 
   // redux 사용
-  const getMyInfo = useSelector((state: RootState) => state.member);
+  // const getMyInfo = useSelector((state: RootState) => state.member);
+  const getCrewInfo = useSelector((state: RootState) => state.crew);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -105,16 +105,15 @@ export default function MainPage() {
     const getMembers = async () => {
       const getMemberData: any = await getApi(`/members/crew`);
       setMyMember(getMemberData.data);
-      if (myMember.length >= 4) {
+
+      if (getMemberData.data) {
         const result = [];
         for (let i = 0; i < 4; i++) {
-          // console.log(myMember[i]);
-          result.push(myMember[i]);
+          result.push(getMemberData.data[i]);
         }
-        // console.log(result, 'res');
-        setMemberOnly4(result);
-        // console.log(memberOnly4, '4');
+        dispatch(CrewOnlyFour(result));
       }
+      console.log(getCrewInfo, 'eee');
     };
 
     const fetchProject = async () => {
@@ -172,15 +171,14 @@ export default function MainPage() {
                 <MemberModal modalMemberClose={modalMemberClose} />
               )}
             </div>
-            <div className="main-members-container">
-              {memberOnly4.map((content: any, idx: number) => {
-                return (
-                  <div key={idx} className="main-member-container">
-                    {content === null || content === undefined ? (
-                      <div>
-                        <span>함께한 팀원이 없습니다.</span>
-                      </div>
-                    ) : (
+            {getCrewInfo.crewData[0] === null ||
+            getCrewInfo.crewData[0] === undefined ? (
+              <div>함께한 팀원이 없습니다.</div>
+            ) : (
+              <div className="main-members-wrapper">
+                <div className="main-members-container">
+                  {getCrewInfo.crewData.map((content: any, idx: number) => {
+                    return (
                       <div className="main-member" key={idx}>
                         {content.memberProfileImg === null ? (
                           <div className="main-member-img">
@@ -198,19 +196,18 @@ export default function MainPage() {
                             />
                           </div>
                         )}
-
                         <p className="main-member-name">
                           {content.memberNickname}
                         </p>
                       </div>
-                    )}
-                  </div>
-                );
-              })}
-              <div className="icon-ellipsis">
-                <FontAwesomeIcon icon={faEllipsis} />
+                    );
+                  })}
+                </div>
+                <div className="icon-ellipsis">
+                  <FontAwesomeIcon icon={faEllipsis} />
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <div className="project-jira-div">
             <div className="jira-info-title-container">
