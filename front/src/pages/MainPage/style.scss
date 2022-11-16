@@ -23,8 +23,8 @@
 
 .project-info {
   display: flex;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   width: 100%
 }
 
@@ -281,6 +281,11 @@
 
 .main-members-container {
   display: flex;
+
+  .icon-ellipsis {
+    @include FLEX-CENTER;
+    padding-bottom: 0.5rem;
+  }
 
   .main-member-container {
     display: flex;

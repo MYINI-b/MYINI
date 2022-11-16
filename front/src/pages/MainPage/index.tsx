@@ -16,6 +16,7 @@ import {
   faOtter,
   faFolderOpen,
   faAddressBook,
+  faEllipsis,
 } from '@fortawesome/free-solid-svg-icons';
 
 // api
@@ -35,6 +36,7 @@ export default function MainPage() {
   const [step, setStep] = useState(0);
   const [myProjectList, getMyProject] = useState<PROJECT_LIST[]>([]);
   const [myMember, setMyMember] = useState<MEMBER[]>([]);
+  const [memberOnly4, setMemberOnly4] = useState<MEMBER[]>([]);
   const [myInfo, setMyInfo] = useState<{
     memberEmail: string;
     memberId: number;
@@ -71,6 +73,7 @@ export default function MainPage() {
 
   // redux 사용
   const getMyInfo = useSelector((state: RootState) => state.member);
+
   useEffect(() => {
     const fetchData = async () => {
       await getApi(`members`)
@@ -98,13 +101,28 @@ export default function MainPage() {
         .catch((err) => {
           console.log(err, '에러요');
         });
-
-      // if (myInfo)
     };
-
     const getMembers = async () => {
       const getMemberData: any = await getApi(`/members/crew`);
       setMyMember(getMemberData.data);
+      if (myMember.length >= 4) {
+        const result = [];
+        for (let i = 0; i < 4; i++) {
+          // console.log(myMember[i]);
+          result.push(myMember[i]);
+        }
+        // console.log(result, 'res');
+        setMemberOnly4(result);
+        // console.log(memberOnly4, '4');
+      } else {
+        const result = [];
+        for (let i = 0; i < myMember.length; i++) {
+          result.push(myMember[i]);
+        }
+        // console.log(result, 'res1');
+        setMemberOnly4(result);
+      }
+      // console.log(memberOnly4, '???');
     };
 
     const fetchProject = async () => {
@@ -163,7 +181,7 @@ export default function MainPage() {
               )}
             </div>
             <div className="main-members-container">
-              {myMember.map((content: any, idx: number) => {
+              {memberOnly4.map((content: any, idx: number) => {
                 return (
                   <div key={idx} className="main-member-container">
                     {content === null || content === undefined ? (
@@ -197,6 +215,9 @@ export default function MainPage() {
                   </div>
                 );
               })}
+              <div className="icon-ellipsis">
+                <FontAwesomeIcon icon={faEllipsis} />
+              </div>
             </div>
           </div>
           <div className="project-jira-div">
