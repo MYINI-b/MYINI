@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useCallback } from 'react';
 import { patchApi } from 'api';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faXmark, faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import './style.scss';
 
 function JiraModal({
@@ -50,7 +50,19 @@ function JiraModal({
         <div className="modal-pjt-title">내 Jira정보</div>
         <div className="modal-jira-content">
           <div className="modal-jira-input-container">
-            <h4>지라 이메일 등록</h4>
+            <div className="modal-jira-input-title">
+              <h4>지라 이메일 등록</h4>
+              <a
+                href="https://github.com/wooobinkim/myini/blob/main/docs/MYINIGuide.md#1-%EC%A7%80%EB%9D%BC%EC%9D%B4%EB%A9%94%EC%9D%BC-%EB%93%B1%EB%A1%9D"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <FontAwesomeIcon
+                  icon={faCircleInfo}
+                  className="jira-input-info-tooltip"
+                />
+              </a>
+            </div>
             <form action="">
               <input
                 type="email"

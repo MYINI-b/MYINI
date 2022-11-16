@@ -392,7 +392,7 @@ export default function ApiModal({
         await deleteApi(`/apidocs/querystrings/${path.id}`);
       });
 
-      setIsApiModalOpen(false);
+      closeModal();
     },
     [
       isEdit,

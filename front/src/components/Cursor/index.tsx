@@ -5,7 +5,6 @@ export const Cursor = React.memo(({ cursor, color, name }: CursorProps) => {
   if (!cursor) return null;
 
   const { x, y } = cursor;
-
   return (
     <div
       style={{
@@ -30,13 +29,13 @@ export const Cursor = React.memo(({ cursor, color, name }: CursorProps) => {
       >
         <path
           d="M5.65376 12.3673H5.46026L5.31717 12.4976L0.500002 16.8829L0.500002 1.19841L11.7841 12.3673H5.65376Z"
-          fill={color}
+          fill={color.length !== 7 ? '#F26B3A' : color}
         />
       </svg>
 
       <div
         style={{
-          backgroundColor: color,
+          backgroundColor: color.length !== 7 ? '#F26B3A' : color,
           borderRadius: 4,
           position: 'absolute',
           top: 20,

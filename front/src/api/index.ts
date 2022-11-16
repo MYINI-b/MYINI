@@ -2,13 +2,19 @@ import axios from 'axios';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 // const accessToken =
-//   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMCIsIlJPTEUiOiJST0xFX1VTRVIiLCJpYXQiOjE2Njg0ODQxODYsImV4cCI6MTY2OTA4ODk4Nn0.zsn9X8sEPXyLVO19N1BL0qdOy9KNbGbZusRFa7Syh6U'; // localStorage.getItem('accessToken');
-
+//   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4IiwiUk9MRSI6IlJPTEVfVVNFUiIsImlhdCI6MTY2ODQ4NTAyMSwiZXhwIjoxNjY5MDg5ODIxfQ.rfrS89tGfsBwCiKqN9IBx451tGORmSYOw_Y2arNaDdU';
 const accessToken = localStorage.getItem('accessToken');
 
 const headers = {
   headers: {
     Authorization: `Bearer ${accessToken}`,
+  },
+};
+
+const multipartHeaders = {
+  headers: {
+    Authorization: `Bearer ${accessToken}`,
+    'Content-Type': 'multipart/form-data',
   },
 };
 
@@ -59,6 +65,17 @@ export const deleteApi = async (url: string) => {
 export const patchApi = async (url: string, body?: any) => {
   try {
     const data = await axios.patch(`${url}`, body, headers);
+    return data;
+  } catch (err) {
+    console.log(err);
+    // alert('문제가 발생했습니다');
+    return err;
+  }
+};
+
+export const multipartPatchApi = async (url: string, body?: any) => {
+  try {
+    const data = await axios.patch(`${url}`, body, multipartHeaders);
     return data;
   } catch (err) {
     console.log(err);

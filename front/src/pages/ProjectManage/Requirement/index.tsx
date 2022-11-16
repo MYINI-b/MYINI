@@ -1,12 +1,13 @@
 import './style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { useOthers, useUpdatePresence } from '@y-presence/react';
 import { UserPresence } from 'types/main';
 
 import { getApi, postApi } from 'api';
 import { Cursor } from 'components/Cursor';
+import TimerModal from 'components/TimerModal';
 import RowList from './RowList';
 
 interface Props {
@@ -16,6 +17,7 @@ interface Props {
 export default function Requirement({ pid, store }: Props) {
   const others = useOthers<UserPresence>();
   const updatePresence = useUpdatePresence<UserPresence>();
+  const [alertText, setAlertText] = useState('');
 
   const handlePointMove = useCallback(
     (e: React.PointerEvent) => {
@@ -75,7 +77,11 @@ export default function Requirement({ pid, store }: Props) {
 
   const requireJira = async () => {
     const reJira: any = await postApi(`/jiras/${pid}/createissue`);
-    console.log('!!!');
+    if (reJira.status < 300) {
+      setAlertText('지라 등록 완료!');
+    } else {
+      setAlertText('지라 연결중 에러 발생');
+    }
   };
 
   return (
@@ -132,6 +138,8 @@ export default function Requirement({ pid, store }: Props) {
         .map((user) => (
           <Cursor key={user.id} {...user.presence} />
         ))}
+
+      {!!alertText && <TimerModal text={alertText} setText={setAlertText} />}
     </div>
   );
 }
