@@ -149,6 +149,8 @@
       border-radius: 30px;
       margin-right: 3.5rem;
       box-shadow: $shadow;
+      background-color: $black;
+      z-index: 1;
       display: inline-block;
       position: relative;
       overflow: hidden;
@@ -296,6 +298,12 @@
 
     .member-default-img {
       font-size: rem(20);
+    }
+
+    .member-google-img {
+      width: rem(40);
+      height: rem(40);
+      border-radius: 50%;
     }
 
     .main-member-name {
