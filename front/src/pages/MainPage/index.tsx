@@ -104,20 +104,25 @@ export default function MainPage() {
     };
     const getMembers = async () => {
       const getMemberData: any = await getApi(`/members/crew`);
-
+      setMyMember(getMemberData.data);
       if (myMember.length >= 4) {
         const result = [];
         for (let i = 0; i < 4; i++) {
-          console.log(myMember[i]);
+          // console.log(myMember[i]);
           result.push(myMember[i]);
         }
-        console.log(result, 'res');
+        // console.log(result, 'res');
         setMemberOnly4(result);
-        console.log(memberOnly4, '4');
+        // console.log(memberOnly4, '4');
       } else {
-        setMyMember(getMemberData.data);
+        const result = [];
+        for (let i = 0; i < myMember.length; i++) {
+          result.push(myMember[i]);
+        }
+        // console.log(result, 'res1');
+        setMemberOnly4(result);
       }
-      console.log(memberOnly4, '???');
+      // console.log(memberOnly4, '???');
     };
 
     const fetchProject = async () => {
