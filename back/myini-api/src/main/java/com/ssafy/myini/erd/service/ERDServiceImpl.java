@@ -1,5 +1,6 @@
 package com.ssafy.myini.erd.service;
 
+import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.erd.domain.entity.*;
 import com.ssafy.myini.erd.domain.repository.*;
 import com.ssafy.myini.erd.request.TableColumnUpdateRequest;
@@ -19,6 +20,7 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.net.URL;
@@ -38,8 +40,7 @@ public class ERDServiceImpl implements ERDService{
     private final RelationItemRepository relationItemRepository;
     private final ConditionItemRepository conditionItemRepository;
     private final ColumnConditionRepository columnConditionRepository;
-
-
+    
     @Override
     @Transactional
     public void createErdTable(Long projectId, ErdTableCreateRequest erdTableCreateRequest) {
@@ -141,10 +142,10 @@ public class ERDServiceImpl implements ERDService{
     public JSONObject getErdJson(Long projectId) {
         try {
             URL url = new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/"+projectId+".myini.json");
-            
+
             File file = new File(projectId+"_vuerd");
             FileUtils.copyURLToFile(url,file);
-            
+
             FileReader fileReader = new FileReader(file);
 
             JSONParser parser = new JSONParser();
@@ -160,7 +161,7 @@ public class ERDServiceImpl implements ERDService{
             return jsonObject;
 
         }catch (Exception e){
-            throw new RuntimeException("erd Json을 다운로드하는데 실패하였습니다.");
+            throw new RuntimeException("먼저 ERD 작성 후 저장해주세요");
         }
     }
 }

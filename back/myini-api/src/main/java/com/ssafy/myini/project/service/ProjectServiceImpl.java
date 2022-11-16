@@ -131,6 +131,10 @@ public class ProjectServiceImpl implements ProjectService {
         String jiraDomain = findProject.getJiraDomain();
         String jiraProjectKey = findProject.getJiraProjectKey();
 
+        if(jiraDomain == null || jiraDomain.equals("")) {
+            return new ArrayList<ProjectMemberResponse>();
+        }
+
         try {
             List<JiraApi.JiraUser> jiraUser = JiraApi.getJiraUser(jiraId, jiraApiKey, jiraDomain,jiraProjectKey);
 
