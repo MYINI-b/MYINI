@@ -28,7 +28,7 @@ export default function ProjectJira({ store, pid }: Props) {
 
         {modalOpen && <Modal store={store} pid={pid} modalClose={modalClose} />}
       </div>
-      <div className="project-select-jira">{store.pjt.jiraProjectName}</div>
+      <div className="project-select-jira">{store.pjt.jiraProjectKey}</div>
     </>
   );
 }

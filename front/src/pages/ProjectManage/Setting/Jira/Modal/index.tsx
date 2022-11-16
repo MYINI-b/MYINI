@@ -7,6 +7,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import './style.scss';
 import { putApi, getApi } from 'api';
+import DefaultProfile from 'assets/default-profile.png';
 import Loading from 'assets/loading.gif';
 
 interface Props {
@@ -45,33 +46,43 @@ function Modal({ store, modalClose, pid }: Props) {
     },
     [store],
   );
-  const handleTextJira = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
-      const button: HTMLButtonElement = e.currentTarget;
-      store.pjt.jiraProjectId = e.currentTarget.value;
-      store.pjt.jiraProject.forEach((value: any) => {
-        if (value.jiraProjectId === store.pjt.jiraProjectId) {
-          store.pjt.jiraProjectKey = value.jiraProjectKey;
-          store.pjt.jiraProjectName = value.jiraProjectName;
-        }
-      });
+  const selectJiraProject = useCallback(
+    async (item: any) => {
+      store.pjt.jiraProjectId = item.jiraProjectId;
+      store.pjt.jiraProjectKey = item.jiraProjectKey;
+
       const body = {
-        jiraProjectId: store.pjt.jiraProjectId,
-        jiraProjectKey: store.pjt.jiraProjectKey,
-        jiraProjectName: store.pjt.jiraProjectName,
+        jiraProjectId: item.jiraProjectId,
+        jiraProjectKey: item.jiraProjectKey,
+        jiraProjectName: item.jiraProjectName,
       };
-      const resp = putApi(
-        `https://k7b203.p.ssafy.io/api/jiras/${pid}/jiraproject`,
-        body,
-      );
-      console.log(resp);
+      // 연동된 지라 프로젝트 수정
+      const resp: any = await putApi(`/jiras/${pid}/jiraproject`, body);
+
+      const jiraResp: any = await getApi(`/projects/members/${pid}/jiras`);
+
+      if (jiraResp.status === 200) {
+        const jiraData = jiraResp.data.map((member: any) => {
+          return {
+            id: member.memberId,
+            name: member.memberName,
+            img: member.memberProfileImg
+              ? `${member.memberProfileImg}`
+              : DefaultProfile,
+            email: member.memberEmail,
+            nickname: member.memberNickName,
+          };
+        });
+        store.pjt.jiraMembers = jiraData;
+      } else {
+        store.pjt.jiraMembers = [];
+      }
       modalClose();
     },
     [store],
   );
 
-  const editJiraInfo = useCallback(async () => {
+  const searchJiraProject = useCallback(async () => {
     setIsLoading(true);
     setInitialLoading(true);
     const body = {
@@ -82,18 +93,13 @@ function Modal({ store, modalClose, pid }: Props) {
       jiraDomain: store.pjt.jiraDomain,
     };
 
-    const resp = await putApi(
-      `https://k7b203.p.ssafy.io/api/jiras/${pid}/jiraaccount`,
-      body,
-    );
-    const resp1 = await putApi(
-      `https://k7b203.p.ssafy.io/api/jiras/${pid}/jiradomain`,
-      body1,
-    );
-    const jiraResp: any = await getApi(
-      `https://k7b203.p.ssafy.io/api/jiras/${pid}/projects`,
-    );
-    console.log(resp, resp1, jiraResp);
+    // 지라 계정 수정
+    const resp: any = await putApi(`/jiras/${pid}/jiraaccount`, body);
+    // 지라 도메인 수정
+    const resp1: any = await putApi(`/jiras/${pid}/jiradomain`, body1);
+    // 등록된 지라 계정, 도메인 바탕으로 지라 프로젝트 리스트 조회
+    const jiraResp: any = await getApi(`/jiras/${pid}/projects`);
+    console.log(jiraResp.data);
     store.pjt.jiraProject = jiraResp.data;
     setIsLoading(false);
   }, [store]);
@@ -124,7 +130,7 @@ function Modal({ store, modalClose, pid }: Props) {
             className="jira-content-input"
             placeholder="Jira ID"
             onChange={handleTextJiraId}
-            defaultValue={store.pjt.jiraId}
+            value={store.pjt.jiraId}
           />
           <input
             className="jira-content-input"
@@ -146,8 +152,7 @@ function Modal({ store, modalClose, pid }: Props) {
                   <button
                     type="button"
                     className="jira-project-category-item"
-                    onClick={handleTextJira}
-                    value={item.jiraProjectId}
+                    onClick={() => selectJiraProject(item)}
                     key={idx}
                   >
                     {item.jiraProjectName}
@@ -159,7 +164,7 @@ function Modal({ store, modalClose, pid }: Props) {
               )}
             </div>
           </div>
-          <div className="jira-content-button" onClick={editJiraInfo}>
+          <div className="jira-content-button" onClick={searchJiraProject}>
             프로젝트 찾기
           </div>
         </div>

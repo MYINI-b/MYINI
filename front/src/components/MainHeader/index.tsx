@@ -33,6 +33,10 @@ export default function MainHeader({ needStepper, step, setStep }: Props) {
     // navigate('/');
   };
 
+  const goToHome = () => {
+    window.location.href = '/';
+  };
+
   // TODO: tokencheck
   // const checkToken = () => {
   //   if (
@@ -74,7 +78,13 @@ export default function MainHeader({ needStepper, step, setStep }: Props) {
         </div>
       </div>
 
-      {!!alertText && <TextModal text={alertText} setText={setAlertText} />}
+      {!!alertText && (
+        <TextModal
+          text={alertText}
+          setText={setAlertText}
+          callback={goToHome}
+        />
+      )}
     </div>
   );
 }

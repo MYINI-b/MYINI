@@ -73,6 +73,17 @@ export default function Setting({ store, pid }: Props) {
           ? data.projectNotionUrl
           : '';
         store.pjt.figmaLink = data.projectFigmaUrl ? data.projectFigmaUrl : '';
+
+        store.pjt.jiraId = data.jiraId ? data.jiraId : '';
+        store.pjt.jiraApiKey = data.jiraApiKey ? data.jiraApiKey : '';
+        store.pjt.jiraProjectId = data.jiraProjectId ? data.jiraProjectId : '';
+        store.pjt.jiraProjectKey = data.jiraProjectKey
+          ? data.jiraProjectKey
+          : '';
+        store.pjt.jiraDomain = data.jiraDomain ? data.jiraDomain : '';
+
+        if (!store.pjt.jiraProject) store.pjt.jiraProject = [];
+
         if (!store.pjt.editors) store.pjt.editors = [];
 
         const memberResp: any = await getApi(`/projects/members/${pid}`);
@@ -108,6 +119,8 @@ export default function Setting({ store, pid }: Props) {
           } else {
             store.pjt.jiraMembers = [];
           }
+        } else {
+          store.pjt.jiraMembers = [];
         }
       }
     };

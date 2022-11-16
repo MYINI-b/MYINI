@@ -5,11 +5,14 @@ import Icon from 'assets/icon.png';
 interface Props {
   text: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
+  callback?: any;
 }
-export default function TextModal({ text, setText }: Props) {
+export default function TextModal({ text, setText, callback }: Props) {
   const onOkClick = () => {
     setText('');
-    window.location.href = '/';
+    if (callback) {
+      callback();
+    }
   };
   return (
     <div className="textmodal-empty" onClick={onOkClick}>
@@ -25,3 +28,7 @@ export default function TextModal({ text, setText }: Props) {
     </div>
   );
 }
+
+TextModal.defaultProps = {
+  callback: () => {},
+};
