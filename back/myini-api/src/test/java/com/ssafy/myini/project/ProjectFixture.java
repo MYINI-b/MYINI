@@ -20,6 +20,7 @@ public class ProjectFixture {
     public static final String DESCRIPTION = "프로젝트 설명";
     public static final String IMG = "프로젝트 이미지";
     public static final LocalDate DATE = LocalDate.now();
+    public static final String CONTENTS = "내용";
     public static final String PROJECT_URL = "https://www.ssafy.com/";
 
     public static final UpdateProjectRequest TEST_UPDATE_PROJECT_REQUEST
@@ -34,7 +35,7 @@ public class ProjectFixture {
     public static final ProjectMemberResponse TEST_PROJECT_MEMBER_RESPONSE
             = new ProjectMemberResponse(ID, EMAIL, IMG, NAME, NAME);
     public static final ProjectInfoResponse TEST_PROJECT_INFO_RESPONSE
-            = new ProjectInfoResponse(NAME, DESCRIPTION, IMG, DATE, DATE, PROJECT_URL, PROJECT_URL, PROJECT_URL, PROJECT_URL);
+            = new ProjectInfoResponse(NAME, DESCRIPTION, IMG, DATE, DATE, PROJECT_URL, PROJECT_URL, PROJECT_URL, PROJECT_URL,CONTENTS,CONTENTS,CONTENTS,CONTENTS,CONTENTS);
     public static final ProjectListResponse TEST_PROJECT_LIST_RESPONSE
             = new ProjectListResponse(ID, NAME, DESCRIPTION, IMG, Arrays.asList(TEST_PROJECT_MEMBER_RESPONSE));
 }
