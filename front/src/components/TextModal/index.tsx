@@ -20,7 +20,7 @@ export default function TextModal({ text, setText, callback }: Props) {
         <div className="img-box">
           <img src={Icon} alt="로고아이콘" />
         </div>
-        <label className="textmodal-text">{text}</label>
+        <label className="textmodal-text">{`${text}`}</label>
         <button type="button" onClick={onOkClick} className="textmodal-submit">
           확인
         </button>

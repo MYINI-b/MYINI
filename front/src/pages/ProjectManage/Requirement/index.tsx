@@ -77,7 +77,7 @@ export default function Requirement({ pid, store }: Props) {
     if (pid !== 'new') getRequirements();
   }, []);
 
-  const requireJira = useCallback(async () => {
+  const registJiraIssue = useCallback(async () => {
     if (!store.pjt.jiraProjectId || !store.pjt.jiraProjectKey) {
       setAlertText('프로젝트 관리에서  지라 프로젝트를 등록해주세요!');
       return;
@@ -91,7 +91,7 @@ export default function Requirement({ pid, store }: Props) {
       setAlertText('지라 연동 완료!');
     } else {
       setIsLoading(false);
-      setAlertText('지라 연결중 에러 발생');
+      setAlertText('유효하지 않은 요구사항이 있는지 확인해주세요.');
     }
   }, [store]);
 
@@ -122,7 +122,7 @@ export default function Requirement({ pid, store }: Props) {
         <button
           className="requirement-jira-button"
           type="button"
-          onClick={requireJira}
+          onClick={registJiraIssue}
         >
           <img src={LINK_LIST[1].img} alt="지라 아이콘" />
           &nbsp;이슈 등록
