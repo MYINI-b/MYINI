@@ -33,7 +33,7 @@ export default function Onboarding() {
             <h1 className="head-line"> MYINI로 쉽고 간편하게</h1>
           </div>
           <button type="button" className="download-btn">
-            다운로드
+            DOWNLOAD
           </button>
           <div className="wave-container">
             <div className="wave -one" />
@@ -60,9 +60,7 @@ export default function Onboarding() {
                 <h1 className="second-content">
                   <b>MYINI</b>에서
                 </h1>
-                <h1 className="second-content">
-                  새로운 프로젝트를 시작해보세요.
-                </h1>
+                <h1 className="second-content">새 프로젝트를 시작해보세요.</h1>
               </div>
             </div>
           </div>
