@@ -149,7 +149,8 @@
       border-radius: 30px;
       margin-right: 3.5rem;
       box-shadow: $shadow;
-      background-color: $black;
+      background-color: $white;
+      opacity: 0.85;
       z-index: 1;
       display: inline-block;
       position: relative;
@@ -177,9 +178,11 @@
   
         .card-header-title {
           bottom: 0;
-          padding: 2rem;
-          font-size: 2rem;
-          color: white;
+          padding-top: 4.5rem;
+          padding-left: 1.5rem;
+          font-size: 1.5rem;
+          font-weight: bold;
+          color: black;
         }
       }
     }

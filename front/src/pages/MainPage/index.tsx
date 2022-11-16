@@ -98,6 +98,8 @@ export default function MainPage() {
         .catch((err) => {
           console.log(err, '에러요');
         });
+
+      // if (myInfo)
     };
 
     const getMembers = async () => {
