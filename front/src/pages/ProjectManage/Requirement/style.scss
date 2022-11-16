@@ -74,6 +74,10 @@
       @include FLEX-COLUMN;
       align-items: center;
       overflow-y: auto;
+
+      &::-webkit-scrollbar {
+        width: 0px;
+      }
     }
 
     .table-row {
@@ -94,6 +98,11 @@
       position:relative;
       line-height: 1.5;
       
+      .importance-img{
+        width:rem(25);
+        height:rem(25);
+        cursor: pointer;
+      }
 
       svg{
         cursor:pointer;
@@ -139,7 +148,6 @@
       }
 
       &.content {
-
         // margin: 0 rem(12);
         padding: rem(10) rem(18);
         font-size: rem(14);

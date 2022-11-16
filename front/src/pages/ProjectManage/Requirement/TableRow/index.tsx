@@ -10,6 +10,11 @@ import { MOUSEPOS } from 'types/ApiSpec';
 import { IMPORTANCE_TEXT } from 'constants/index';
 import { putApi } from 'api';
 
+import IMP1 from 'assets/imp1.jpg';
+import IMP2 from 'assets/imp2.jpg';
+import IMP3 from 'assets/imp3.jpg';
+import IMP4 from 'assets/imp4.jpg';
+import IMP5 from 'assets/imp5.jpg';
 import CategoryListModal from '../CategoryListModal';
 import RowModal from '../RowModal';
 import DivisionModal from '../DivisionModal';
@@ -125,7 +130,6 @@ export default function TableRow({ row, idx, store, pid }: Props) {
     e.stopPropagation();
     e.preventDefault();
     setIsImportanceOpen(true);
-    console.log(e.target);
     setClickElementPos({
       y: isBlock
         ? e.target.parentElement.getBoundingClientRect().top + 40
@@ -277,33 +281,40 @@ export default function TableRow({ row, idx, store, pid }: Props) {
         onClick={(e) => openImportanceList(e, false)}
       >
         {row.importance === 1 ? (
-          <div className="double-chevron" onClick={(e) => e.stopPropagation()}>
-            <FontAwesomeIcon icon={faChevronUp} className="imp1" />
-            <FontAwesomeIcon icon={faChevronUp} className="imp2" />
-          </div>
+          <img
+            src={IMP1}
+            alt="중요도1"
+            className="importance-img"
+            onClick={(e) => openImportanceList(e, true)}
+          />
         ) : row.importance === 2 ? (
-          <FontAwesomeIcon
-            icon={faChevronUp}
-            onClick={(e) => e.stopPropagation()}
-            className="imp2"
+          <img
+            src={IMP2}
+            alt="중요도2"
+            className="importance-img"
+            onClick={(e) => openImportanceList(e, true)}
           />
         ) : row.importance === 3 ? (
-          <FontAwesomeIcon
-            icon={faGripLines}
-            onClick={(e) => e.stopPropagation()}
-            className="imp3"
+          <img
+            src={IMP3}
+            alt="중요도3"
+            className="importance-img"
+            onClick={(e) => openImportanceList(e, true)}
           />
         ) : row.importance === 4 ? (
-          <FontAwesomeIcon
-            icon={faChevronDown}
-            onClick={(e) => e.stopPropagation()}
-            className="imp4"
+          <img
+            src={IMP4}
+            alt="중요도4"
+            className="importance-img"
+            onClick={(e) => openImportanceList(e, true)}
           />
         ) : row.importance === 5 ? (
-          <div className="double-chevron" onClick={(e) => e.stopPropagation()}>
-            <FontAwesomeIcon icon={faChevronDown} className="imp4" />
-            <FontAwesomeIcon icon={faChevronDown} className="imp5" />
-          </div>
+          <img
+            src={IMP5}
+            alt="중요도5"
+            className="importance-img"
+            onClick={(e) => openImportanceList(e, true)}
+          />
         ) : (
           ''
         )}
