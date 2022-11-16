@@ -278,28 +278,31 @@ export default function TableRow({ row, idx, store, pid }: Props) {
       >
         {row.importance === 1 ? (
           <div className="double-chevron" onClick={(e) => e.stopPropagation()}>
-            <FontAwesomeIcon icon={faChevronUp} />
-            <FontAwesomeIcon icon={faChevronUp} />
+            <FontAwesomeIcon icon={faChevronUp} className="imp1" />
+            <FontAwesomeIcon icon={faChevronUp} className="imp2" />
           </div>
         ) : row.importance === 2 ? (
           <FontAwesomeIcon
             icon={faChevronUp}
             onClick={(e) => e.stopPropagation()}
+            className="imp2"
           />
         ) : row.importance === 3 ? (
           <FontAwesomeIcon
             icon={faGripLines}
             onClick={(e) => e.stopPropagation()}
+            className="imp3"
           />
         ) : row.importance === 4 ? (
           <FontAwesomeIcon
             icon={faChevronDown}
             onClick={(e) => e.stopPropagation()}
+            className="imp4"
           />
         ) : row.importance === 5 ? (
           <div className="double-chevron" onClick={(e) => e.stopPropagation()}>
-            <FontAwesomeIcon icon={faChevronDown} />
-            <FontAwesomeIcon icon={faChevronDown} />
+            <FontAwesomeIcon icon={faChevronDown} className="imp4" />
+            <FontAwesomeIcon icon={faChevronDown} className="imp5" />
           </div>
         ) : (
           ''

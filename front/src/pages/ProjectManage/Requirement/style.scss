@@ -86,6 +86,21 @@
 
       svg{
         cursor:pointer;
+        &.imp1{
+          color:$imp1;
+        }
+        &.imp2{
+          color:$imp2;
+        }
+        &.imp3{
+          color:$imp3;
+        }
+        &.imp4{
+          color:$imp4;
+        }
+        &.imp5{
+          color:$imp5;
+        }
       }
 
       &.title {
@@ -140,6 +155,7 @@
       &.textarea {
         border: 1px solid $lightx2-gray;
         border-radius: rem(6);
+        margin:6px 0;
 
         &::-webkit-scrollbar {
           width: 0;
