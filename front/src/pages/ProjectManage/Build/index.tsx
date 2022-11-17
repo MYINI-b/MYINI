@@ -4,6 +4,10 @@ import { useState, useEffect, useCallback } from 'react';
 import { getApi } from 'api';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import Loading from 'components/Loading';
+import TimerModal from 'components/TimerModal';
 import Modal from './Modal';
 import Accordion1 from './Accor';
 
@@ -44,35 +48,28 @@ export default function Build({ pid, store }: Props) {
     setModalOpen(!modalOpen);
   };
 
-  const [isChecked, setChecked] = useState(false);
   const [confirmData, setConfirmData] = useState([]);
-  const [buildStart, setBuildStart] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [alertText, setAlertText] = useState('');
 
   const [initSelectJvmList, setInitSelectJvmList] = useState([]);
   const [initSelectLanguageList, setInitSelectLanguageList] = useState([]);
   const [initSelectPackagingList, setInitSelectPackagingList] = useState([]);
   const [initSelectPlatformList, setInitSelectPlatformList] = useState([]);
   const [initSelectTypeList, setInitSelectTypeList] = useState([]);
-  const [initDependencies, setInitDependencies] = useState<string>();
   const [initDependenciesList, setInitDependenciesList] = useState([]);
-  const [dependenciesData, setDependenciesData] = useState<string[]>([
-    'web',
-    'jpa',
-    'lombok',
-    'devtools',
-    'validation',
-  ]);
+
   const [selectObj, setSelectObj] = useState<selectObj>({
     Jvm: '17',
     Language: 'java',
     Packaging: 'jar',
     Platform: '2.7.5.RELEASE',
     Type: 'gradle-project',
-    textGroup: 'springGroupId',
-    textArtifact: 'springArtifactId',
-    textName: 'springName',
+    textGroup: 'springGroup',
+    textArtifact: '',
+    textName: '',
     textDescription: 'springDescription',
-    textPackage: 'springPackageName',
+    textPackage: 'com.springGroupId.',
     depDatas: ['web', 'jpa', 'lombok', 'devtools', 'validation'],
   });
   const {
@@ -89,8 +86,8 @@ export default function Build({ pid, store }: Props) {
     depDatas,
   } = selectObj;
 
-  const getDependencies = () => {
-    setSelectObj({ ...selectObj, depDatas: dependenciesData });
+  const getDependencies = (newDepData: any[]) => {
+    setSelectObj({ ...selectObj, depDatas: newDepData });
   };
 
   const radioHandlerSelectJvm = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,32 +118,40 @@ export default function Build({ pid, store }: Props) {
     setSelectObj({ ...selectObj, [name]: id });
   };
 
-  const radioHandlerDependencies = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setInitDependencies(event.target.value);
-  };
-  const getProjectDetail = async () => {
+  const getProjectDetail = async (e: any) => {
+    e.preventDefault();
     const ConfirmCode: any = await getApi(
       `/initializers/${pid}/previews?springType=${selectObj.Type}&springLanguage=${selectObj.Language}&springPlatformVersion=${selectObj.Platform}&springPackaging=${selectObj.Packaging}&springJvmVersion=${selectObj.Jvm}&springGroupId=${selectObj.textGroup}&springArtifactId=${selectObj.textArtifact}&springName=${selectObj.textName}&springDescription=${selectObj.textDescription}&springPackageName=${selectObj.textPackage}&springDependencyName=${selectObj.depDatas}`,
     );
     console.log(ConfirmCode);
     setConfirmData(ConfirmCode.data);
+    window.scrollTo({
+      top: parseInt(`${window.scrollY + 100}`, 10),
+      left: 0,
+      behavior: 'smooth',
+    });
   };
   const downloadCode = async () => {
+    setIsLoading(true);
     await axios({
       url: `/initializers/${pid}?springType=${selectObj.Type}&springLanguage=${selectObj.Language}&springPlatformVersion=${selectObj.Platform}&springPackaging=${selectObj.Packaging}&springJvmVersion=${selectObj.Jvm}&springGroupId=${selectObj.textGroup}&springArtifactId=${selectObj.textArtifact}&springName=${selectObj.textName}&springDescription=${selectObj.textDescription}&springPackageName=${selectObj.textPackage}&springDependencyName=${selectObj.depDatas}`,
       method: 'GET',
       responseType: 'blob', // important
       data: 'data',
-    }).then((response) => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `${store.pjt.textName}.zip`);
-      document.body.appendChild(link);
-      link.click();
-    });
+    })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${store.pjt.textName}.zip`);
+        document.body.appendChild(link);
+        link.click();
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setIsLoading(false);
+        setAlertText('다운로드 중 에러가 발생했습니다!');
+      });
   };
 
   useEffect(() => {
@@ -172,45 +177,51 @@ export default function Build({ pid, store }: Props) {
   }, []);
   const handleTextGroupArea = (e: any) => {
     const { name, value } = e.target;
-    setSelectObj({ ...selectObj, [name]: value });
+    const substr = value.substring(4);
+    setSelectObj({
+      ...selectObj,
+      [name]: substr,
+      textPackage: `com.${substr}.${selectObj.textName}`,
+    });
   };
-  const handleTextArtifactArea = (e: any) => {
+  const handleTextArtifactNameArea = (e: any) => {
     const { name, value } = e.target;
-    setSelectObj({ ...selectObj, [name]: value });
+    setSelectObj({
+      ...selectObj,
+      textName: value,
+      textArtifact: value,
+      textPackage: `com.${selectObj.textGroup}.${value}`,
+    });
   };
-  const handleTextNameArea = (e: any) => {
+
+  const handleTextPackage = (e: any) => {
     const { name, value } = e.target;
-    setSelectObj({ ...selectObj, [name]: value });
+    setSelectObj({
+      ...selectObj,
+      textPackage: value,
+    });
   };
+
   const handleTextDescriptionArea = (e: any) => {
     const { name, value } = e.target;
     setSelectObj({ ...selectObj, [name]: value });
   };
-  const handleTextPackageArea = (e: any) => {
-    const { name, value } = e.target;
-    setSelectObj({ ...selectObj, [name]: value });
-  };
-  console.log(selectObj.textArtifact);
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-  };
 
   return (
     <div className="build-container">
-      <h1 className="build-title">Project Build</h1>
+      <h1 className="build-title">PROJECT BUILD</h1>
       <h2 className="build-project-title">{store && store.pjt.title}</h2>
       <div className="build-main">
-        <div className="init-container">
+        <form className="init-container" onSubmit={getProjectDetail}>
           <div className="title-item">INIT SETTING</div>
           <span className="tab-item" title="Spring Boot">
-            <div className="item-row">
-              <div className="button-item">
-                <div className="single-select">
-                  <div className="container">
-                    {initSelectJvmList ? (
-                      <div className="radio-set">
-                        <div className="radio-title">Jvm version</div>
+            <div className="button-item">
+              <div className="single-select">
+                <div className="container">
+                  {initSelectJvmList ? (
+                    <div className="radio-set">
+                      <div className="radio-title">Jvm Version</div>
+                      <div className="radio-content-list">
                         {initSelectJvmList.map((items: any, index: number) => (
                           <p key={index} className="radio-content">
                             <input
@@ -228,14 +239,16 @@ export default function Build({ pid, store }: Props) {
                           </p>
                         ))}
                       </div>
-                    ) : (
-                      <div />
-                    )}
-                  </div>
-                  <div className="container">
-                    {initSelectLanguageList ? (
-                      <div className="radio-set">
-                        <div className="radio-title">Language</div>
+                    </div>
+                  ) : (
+                    <div />
+                  )}
+                </div>
+                <div className="container">
+                  {initSelectLanguageList ? (
+                    <div className="radio-set">
+                      <div className="radio-title">Language</div>
+                      <div className="radio-content-list">
                         {initSelectLanguageList.map(
                           (items: any, index: number) => (
                             <p key={index} className="radio-content">
@@ -255,14 +268,16 @@ export default function Build({ pid, store }: Props) {
                           ),
                         )}
                       </div>
-                    ) : (
-                      <div />
-                    )}
-                  </div>
-                  <div className="container">
-                    {initSelectPackagingList ? (
-                      <div className="radio-set">
-                        <div className="radio-title">Packaging</div>
+                    </div>
+                  ) : (
+                    <div />
+                  )}
+                </div>
+                <div className="container">
+                  {initSelectPackagingList ? (
+                    <div className="radio-set">
+                      <div className="radio-title">Packaging</div>
+                      <div className="radio-content-list">
                         {initSelectPackagingList.map(
                           (items: any, index: number) => (
                             <p key={index} className="radio-content">
@@ -282,17 +297,19 @@ export default function Build({ pid, store }: Props) {
                           ),
                         )}
                       </div>
-                    ) : (
-                      <div />
-                    )}
-                  </div>
-                  <div className="container">
-                    {initSelectPlatformList ? (
-                      <div className="radio-set">
-                        <div className="radio-title">Platform Version</div>
+                    </div>
+                  ) : (
+                    <div />
+                  )}
+                </div>
+                <div className="container">
+                  {initSelectPlatformList ? (
+                    <div className="radio-set">
+                      <div className="radio-title">Platform Version</div>
+                      <div className="radio-content-list">
                         {initSelectPlatformList.map(
                           (items: any, index: number) => (
-                            <p key={index} className="radio-content">
+                            <p key={index} className="radio-content lines">
                               <input
                                 className="radio-input"
                                 type="radio"
@@ -309,14 +326,16 @@ export default function Build({ pid, store }: Props) {
                           ),
                         )}
                       </div>
-                    ) : (
-                      <div />
-                    )}
-                  </div>
-                  <div className="container">
-                    {initSelectTypeList ? (
-                      <div className="radio-set">
-                        <div className="radio-title">Type</div>
+                    </div>
+                  ) : (
+                    <div />
+                  )}
+                </div>
+                <div className="container">
+                  {initSelectTypeList ? (
+                    <div className="radio-set">
+                      <div className="radio-title">Type</div>
+                      <div className="radio-content-list">
                         {initSelectTypeList.map((items: any, index: number) => (
                           <p key={index} className="radio-content">
                             <input
@@ -334,116 +353,105 @@ export default function Build({ pid, store }: Props) {
                           </p>
                         ))}
                       </div>
-                    ) : (
-                      <div />
-                    )}
-                  </div>
+                    </div>
+                  ) : (
+                    <div />
+                  )}
                 </div>
               </div>
             </div>
             <div className="metadata">Metadata</div>
             <div className="project-metadata">
               <div className="metadata-name">Group</div>
-              <form onSubmit={handleSubmit} className="submit-box">
-                <textarea
-                  className="text-box"
-                  rows={5}
-                  placeholder="com.example"
-                  name="textGroup"
-                  onChange={handleTextGroupArea}
-                  defaultValue={selectObj.textGroup}
-                />
-              </form>
+              <input
+                type="text"
+                className="text-box"
+                placeholder="com.example"
+                onChange={handleTextGroupArea}
+                value={`com.${selectObj.textGroup}`}
+                name="textGroup"
+                required
+              />
             </div>
             <div className="project-metadata">
               <div className="metadata-name">Artifact</div>
-              <form onSubmit={handleSubmit} className="submit-box">
-                <textarea
-                  className="text-box"
-                  rows={5}
-                  placeholder="demo"
-                  name="textArtifact"
-                  onChange={handleTextArtifactArea}
-                  defaultValue={selectObj.textArtifact}
-                />
-              </form>
+              <input
+                type="text"
+                className="text-box"
+                placeholder="springArtifactId"
+                onChange={handleTextArtifactNameArea}
+                value={selectObj.textArtifact}
+                name="textArtifact"
+                required
+              />
             </div>
             <div className="project-metadata">
               <div className="metadata-name">Name</div>
-              <form onSubmit={handleSubmit} className="submit-box">
-                <textarea
-                  className="text-box"
-                  rows={5}
-                  placeholder="demo"
-                  name="textName"
-                  onChange={handleTextNameArea}
-                  defaultValue={selectObj.textName}
-                />
-              </form>
+              <input
+                type="text"
+                className="text-box"
+                placeholder="springName"
+                onChange={handleTextArtifactNameArea}
+                value={selectObj.textName}
+                name="textName"
+                required
+              />
             </div>
             <div className="project-metadata">
               <div className="metadata-name">Description</div>
-              <form onSubmit={handleSubmit} className="submit-box">
-                <textarea
-                  className="text-box"
-                  rows={5}
-                  placeholder="Demo project for Spring Boot"
-                  name="textDescription"
-                  onChange={handleTextDescriptionArea}
-                  defaultValue={selectObj.textDescription}
-                />
-              </form>
+              <input
+                type="text"
+                className="text-box"
+                placeholder="Spring Description for Spring Boot"
+                onChange={handleTextDescriptionArea}
+                value={selectObj.textDescription}
+                name="textDescription"
+                required
+              />
             </div>
             <div className="project-metadata">
               <div className="metadata-name">Package name</div>
-              <form onSubmit={handleSubmit} className="submit-box">
-                <textarea
-                  className="text-box"
-                  rows={5}
-                  placeholder="com.example.demo"
-                  name="textPackage"
-                  onChange={handleTextPackageArea}
-                  defaultValue={selectObj.textPackage}
-                />
-              </form>
+              <input
+                type="text"
+                className="text-box"
+                placeholder="com.example.demo"
+                name="textPackage"
+                onChange={handleTextPackage}
+                value={selectObj.textPackage}
+                required
+              />
             </div>
             <div className="dependency-container">
               <div className="dependency">Dependencies</div>
-              <button
-                type="button"
+              <FontAwesomeIcon
+                icon={faPlus}
                 onClick={modalClose}
                 className="dependency-button"
-              >
-                Add
-              </button>
+              />
             </div>
           </span>
           {modalOpen && initDependenciesList && (
             <Modal
               modalClose={modalClose}
               initDependenciesList={initDependenciesList}
-              dependenciesData={dependenciesData}
+              selectObj={selectObj}
               getDependencies={getDependencies}
             />
           )}
           <div className="dependency-items">
-            {dependenciesData &&
-              dependenciesData.map((dependencyData, idx) => (
-                <span key={idx} className="dependencies-data">
-                  {dependencyData}
-                </span>
-              ))}
+            {selectObj.depDatas.map((dependencyData, idx: number) => (
+              <span key={idx} className="dependencies-data">
+                {dependencyData}
+              </span>
+            ))}
           </div>
-          <button
-            type="submit"
-            className="build-project-button"
-            onClick={getProjectDetail}
-          >
+
+          <button type="submit" className="build-project-button">
             Build
           </button>
-        </div>
+        </form>
         <div className="confirm-code">
-          <div className="confirmcode-title">CONFIRM CODE</div>
+          <div className="title-item">CONFIRM CODE</div>
           <Accordion1 confirmData={confirmData} />
           <button
             type="submit"
@@ -454,6 +462,9 @@ export default function Build({ pid, store }: Props) {
           </button>
         </div>
       </div>
+      {isLoading && <Loading />}
+
+      {!!alertText && <TimerModal text={alertText} setText={setAlertText} />}
     </div>
   );
 }
