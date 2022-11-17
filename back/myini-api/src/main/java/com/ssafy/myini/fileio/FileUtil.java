@@ -23,8 +23,6 @@ public class FileUtil {
 
             path += folderPath + "/";
 
-            System.out.println("path = " + path);
-
             // 폴더 만들기
             File folder = new File(path);
             if (!folder.exists()) {

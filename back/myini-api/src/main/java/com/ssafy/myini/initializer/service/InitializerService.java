@@ -5,7 +5,6 @@ import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
 import com.ssafy.myini.initializer.response.InitializerStartResponse;
 import com.ssafy.myini.initializer.response.PreviewResponse;
 import org.json.simple.JSONObject;
-import net.lingala.zip4j.ZipFile;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;

@@ -25,7 +25,6 @@ public class InitProjectDownload {
                 "description=" + initializerRequest.getSpringDescription().replaceAll(" ", "+") + "&" +
                 "packageName=" + initializerRequest.getSpringPackageName() + "&" +
                 "dependencies=" + initializerRequest.getSpringDependencyName();
-        System.out.println("address = " + address);
 
         try {
             //이미 만들어진게 있다면 삭제

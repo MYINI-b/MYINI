@@ -1,7 +1,5 @@
 package com.ssafy.myini.requirementdocs.response;
 
-import com.ssafy.myini.project.domain.Project;
-import com.ssafy.myini.project.response.ProjectCreateResponse;
 import com.ssafy.myini.requirementdocs.domain.Requirement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
