@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './style.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 export type initDependenciesListType = {
   name: string;
@@ -15,14 +17,17 @@ interface Props {
 function Modal({
   modalClose,
   initDependenciesList,
-  dependenciesData,
+  selectObj,
   getDependencies,
 }: {
   modalClose: any;
   initDependenciesList: Array<initDependenciesListType>;
-  dependenciesData: string[];
+  selectObj: any;
   getDependencies: any;
 }) {
+  const [searchResult, setSearchResult] = useState<any[]>([]);
+  const [keyword, setKeyword] = useState('');
+
   const onCloseModal = (e: any) => {
     // console.log('e.target: ', e.target);
     // console.log('e.tarcurrentTargetget: ', e.currentTarget);
@@ -32,77 +37,74 @@ function Modal({
   };
   const autoData = ['web', 'jpa', 'lombok', 'devtools', 'validation'];
   // Handle the onChange event of the select
-  const getDependenciesData = (event: React.MouseEvent<HTMLLIElement>) => {
-    const sampleData = dependenciesData;
-    if (
-      sampleData &&
-      sampleData.includes(initDependenciesList[event.currentTarget.value].id)
-    ) {
-      for (let i = 0; i < sampleData.length; i++) {
-        if (
-          sampleData[i] === initDependenciesList[event.currentTarget.value].id
-        ) {
-          sampleData.splice(i, 1);
-          i--;
-        }
+  const getDependenciesData = useCallback(
+    (item: any) => {
+      console.log(item);
+      const sampleData = [...selectObj.depDatas];
+      const findIdx = sampleData.findIndex((x: any) => x === item.id);
+      console.log(findIdx);
+      if (findIdx >= 0) {
+        sampleData.splice(findIdx, 1);
+      } else {
+        sampleData.push(item.id);
       }
-    } else if (sampleData) {
-      sampleData.push(initDependenciesList[event.currentTarget.value].id);
-    }
-    getDependencies(sampleData);
-    // const { selectedOptions }: any =
-    //   initDependenciesList[event.currentTarget.value];
-    // const newDependenciesData = [];
-    // for (let i = 0; selectedOptions && i < selectedOptions.length; i++) {
-    //   newDependenciesData.push(
-    //     initDependenciesList[event.currentTarget.value].id,
-    //   );
-    // }
-    // console.log(newDependenciesData);
-    // setDependenciesData(newDependenciesData);
-  };
+      console.log(sampleData);
+      getDependencies(sampleData);
+    },
+    [selectObj, initDependenciesList],
+  );
 
+  const onKeywordChange = useCallback(
+    (e: any) => {
+      const lowerKeyword = e.target.value.toLowerCase();
+      setKeyword(e.target.value);
+      const copyArr: any[] = [...initDependenciesList].filter(
+        (item: any) => item.name.toLowerCase().indexOf(lowerKeyword) >= 0,
+      );
+      if (e.target.value === '') setSearchResult([...initDependenciesList]);
+      else setSearchResult(copyArr);
+    },
+    [keyword],
+  );
+
+  useEffect(() => {
+    setSearchResult([...initDependenciesList]);
+  }, []);
   return (
     <div className="modal-container" onClick={onCloseModal}>
       <div className="modal">
-        <div>
-          <input placeholder="검색은 나중에..Web, Security, JPA, Actuator, Devtools..." />
+        <div className="buildmodal-title-wrapper">
+          <input
+            placeholder="검색어를 입력하세요."
+            onChange={onKeywordChange}
+            value={keyword}
+          />
 
-          <button type="button" className="modal-button" onClick={modalClose}>
-            {' '}
-            Modal Close
+          <button
+            type="button"
+            className="buildmodal-button"
+            onClick={modalClose}
+          >
+            <FontAwesomeIcon icon={faClose} />
           </button>
         </div>
-        {/* <select
-          multiple
-          size={5}
-          onChange={onChangeHandler}
-          className="dependencies-select"
-        >
-          {initDependenciesList.map((item, idx) => (
-            <option key={idx} value={item.id} className="dependencies-button">
-              <div className="dependencies-name">{item.name}</div>
-              <div className="dependencies-description">{item.description}</div>
-            </option>
-          ))}
-        </select> */}
 
         <div className="dependencies-select">
           <ul className="dependencies-ul">
-            {initDependenciesList.map((item, idx) =>
-              !autoData.includes(item.id) ? (
-                <li
-                  key={idx}
-                  onClick={getDependenciesData}
-                  value={idx}
-                  className="dependencies-button"
-                >
-                  <div className="dependencies-name">{item.id}</div>
-                  <hr />
-                </li>
-              ) : (
-                <div />
-              ),
+            {searchResult.map(
+              (item, idx) =>
+                !autoData.includes(item.id) && (
+                  <li
+                    key={idx}
+                    onClick={() => getDependenciesData(item)}
+                    value={idx}
+                    className={`dependencies-button ${
+                      selectObj.depDatas.includes(item.id) && 'select'
+                    }`}
+                  >
+                    <div className="dependencies-name">{item.name}</div>
+                  </li>
+                ),
             )}
           </ul>
         </div>
