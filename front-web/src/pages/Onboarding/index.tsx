@@ -21,21 +21,21 @@ export default function Onboarding() {
     AOS.init();
   });
 
-  const onClick = async () => {
-    await axios({
-      url: `initializers/downloads`,
-      method: 'GET',
-      responseType: 'blob', // important
-      data: 'data',
-    }).then((response) => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `myini.exe`);
-      document.body.appendChild(link);
-      link.click();
-    });
-  };
+  // const onClick = async () => {
+  //   await axios({
+  //     url: `initializers/downloads`,
+  //     method: 'GET',
+  //     responseType: 'blob', // important
+  //     data: 'data',
+  //   }).then((response) => {
+  //     const url = window.URL.createObjectURL(new Blob([response.data]));
+  //     const link = document.createElement('a');
+  //     link.href = url;
+  //     link.setAttribute('download', `myini.exe`);
+  //     document.body.appendChild(link);
+  //     link.click();
+  //   });
+  // };
 
   return (
     <div>
@@ -49,9 +49,13 @@ export default function Onboarding() {
             </h1>
             <h1 className="head-line"> MYINI로 쉽고 간편하게</h1>
           </div>
-          <button type="button" className="download-btn" onClick={onClick}>
+          <a
+            href="https://k7b203.p.ssafy.io/api/initializers/downloads"
+            type="button"
+            className="download-btn"
+          >
             DOWNLOAD
-          </button>
+          </a>
           <div className="wave-container">
             <div className="wave -one" />
             <div className="wave -two" />
