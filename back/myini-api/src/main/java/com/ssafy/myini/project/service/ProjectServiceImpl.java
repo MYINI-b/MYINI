@@ -158,7 +158,7 @@ public class ProjectServiceImpl implements ProjectService {
                     }
                 }
             }
-            
+
             return projectMemberResponses;
 
         }catch (Exception e){
