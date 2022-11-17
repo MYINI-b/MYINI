@@ -320,14 +320,14 @@ export default function ApiModal({
 
         // request 생성
         const reqBody = {
-          dtoName: `RequestDto${methodName}`,
+          dtoName: `${methodName}RequestDto`,
           dtoType: 'REQUEST',
           dtoIsList: dtoResponse[0].dtoIsList ? 'Y' : 'N',
         };
 
         // response 생성
         const resBody = {
-          dtoName: `ResponseDto${methodName}`,
+          dtoName: `${methodName}ResponseDto`,
           dtoType: 'RESPONSE',
           dtoIsList: dtoResponse[1].dtoIsList ? 'Y' : 'N',
         };
