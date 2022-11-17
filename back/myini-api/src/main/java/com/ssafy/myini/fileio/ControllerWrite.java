@@ -137,7 +137,7 @@ public class ControllerWrite {
             }
             // 3. requestBody
             for (DtoResponse dtoResponse : apiInfoResponse.getDtoResponses()) {
-                if (dtoResponse.getDtoType().equals("REQUEST")) {
+                if (dtoResponse.getDtoType().equals("REQUEST") && !dtoResponse.getDtoItemResponses().isEmpty()) {
                     containValid = true;
                     containRequest = true;
                     methodContents.append("@RequestBody @Valid ").append(FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName()))

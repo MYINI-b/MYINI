@@ -86,7 +86,7 @@ public class ServiceWrite {
             }
             // 3. requestBody
             for (DtoResponse dtoResponse : apiInfoResponse.getDtoResponses()) {
-                if (dtoResponse.getDtoType().equals("REQUEST")) {
+                if (dtoResponse.getDtoType().equals("REQUEST") && !dtoResponse.getDtoItemResponses().isEmpty()) {
                     containRequest = true;
                     methodContents.append(FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName()))
                             .append(" request");
