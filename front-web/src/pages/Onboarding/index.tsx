@@ -21,6 +21,7 @@ export default function Onboarding() {
   });
 
   // const onClick = async () => {
+  //   console.log('nothing')
   //   await axios({
   //     url: `initializers/downloads`,
   //     method: 'GET',
@@ -49,7 +50,7 @@ export default function Onboarding() {
             <h1 className="head-line"> MYINI로 쉽고 간편하게</h1>
           </div>
           <a
-            href="https://myini.s3.ap-northeast-2.amazonaws.com/front+Setup+0.1.0.exe"
+            href="https://k7b203.p.ssafy.io/api/initializers/downloads"
             type="button"
             className="download-btn"
           >
