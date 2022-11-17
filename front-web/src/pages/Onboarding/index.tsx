@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import Header from 'component/Header';
 import './style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import AOS from 'aos';
-import { getApi } from 'api';
 import axios from 'axios';
 import Background from '../../assets/main-bg.png';
 import BackgroundOne from '../../assets/main-bg1.png';
