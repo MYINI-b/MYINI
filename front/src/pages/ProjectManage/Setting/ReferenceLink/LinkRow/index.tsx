@@ -32,12 +32,11 @@ export default function LinkRow({ idx, link, isEdit, store }: Props) {
           onChange={onLinkChange}
           placeholder="협업 링크를 작성해주세요!"
         />
-      ) : link === '' ? (
-        <li className="link-row-a blank"> 협업 링크를 작성해주세요!</li>
       ) : (
-        <a className="link-row-a" href={link} target="_blank" rel="noreferrer">
-          {link}
-        </a>
+        <li className={`link-row-a ${link === '' && 'blank'}`}>
+          {' '}
+          {link === '' ? '협업 링크를 작성해주세요!' : link}
+        </li>
       )}
     </div>
   );
