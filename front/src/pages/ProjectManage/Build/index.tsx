@@ -3,6 +3,7 @@ import './style.scss';
 import { useState, useEffect, useCallback } from 'react';
 import { getApi } from 'api';
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
 import Modal from './Modal';
 import Accordion1 from './Accor';
 
@@ -62,17 +63,17 @@ export default function Build({ pid, store }: Props) {
     'validation',
   ]);
   const [selectObj, setSelectObj] = useState<selectObj>({
-    Jvm: '',
-    Language: '',
-    Packaging: '',
-    Platform: '',
-    Type: '',
-    textGroup: '',
-    textArtifact: '',
-    textName: '',
-    textDescription: '',
-    textPackage: '',
-    depDatas: [],
+    Jvm: '17',
+    Language: 'java',
+    Packaging: 'jar',
+    Platform: '2.7.5.RELEASE',
+    Type: 'gradle-project',
+    textGroup: 'springGroupId',
+    textArtifact: 'springArtifactId',
+    textName: 'springName',
+    textDescription: 'springDescription',
+    textPackage: 'springPackageName',
+    depDatas: ['web', 'jpa', 'lombok', 'devtools', 'validation'],
   });
   const {
     Jvm,
@@ -89,12 +90,13 @@ export default function Build({ pid, store }: Props) {
   } = selectObj;
 
   const getDependencies = () => {
-    setDependenciesData(dependenciesData);
+    setSelectObj({ ...selectObj, depDatas: dependenciesData });
   };
 
   const radioHandlerSelectJvm = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, id } = e.target;
     setSelectObj({ ...selectObj, [name]: id });
+    store.pjt.Jvm = selectObj.Jvm;
   };
   const radioHandlerSelectLanguage = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -126,14 +128,14 @@ export default function Build({ pid, store }: Props) {
   };
   const getProjectDetail = async () => {
     const ConfirmCode: any = await getApi(
-      `/initializers/${pid}/previews?springType=${selectObj.Type}&springLanguage=${selectObj.Language}&springPlatformVersion=${selectObj.Platform}&springPackaging=${selectObj.Packaging}&springJvmVersion=${selectObj.Jvm}&springGroupId=${selectObj.textGroup}&springArtifactId=${selectObj.textArtifact}&springName=${selectObj.textName}&springDescription=${selectObj.textDescription}&springPackageName=${selectObj.textPackage}&springDependencyName=${dependenciesData}`,
+      `/initializers/${pid}/previews?springType=${selectObj.Type}&springLanguage=${selectObj.Language}&springPlatformVersion=${selectObj.Platform}&springPackaging=${selectObj.Packaging}&springJvmVersion=${selectObj.Jvm}&springGroupId=${selectObj.textGroup}&springArtifactId=${selectObj.textArtifact}&springName=${selectObj.textName}&springDescription=${selectObj.textDescription}&springPackageName=${selectObj.textPackage}&springDependencyName=${selectObj.depDatas}`,
     );
     console.log(ConfirmCode);
     setConfirmData(ConfirmCode.data);
   };
   const downloadCode = async () => {
     await axios({
-      url: `/initializers/${pid}?springType=${selectObj.Type}&springLanguage=${selectObj.Language}&springPlatformVersion=${selectObj.Platform}&springPackaging=${selectObj.Packaging}&springJvmVersion=${selectObj.Jvm}&springGroupId=${selectObj.textGroup}&springArtifactId=${selectObj.textArtifact}&springName=${selectObj.textName}&springDescription=${selectObj.textDescription}&springPackageName=${selectObj.textPackage}&springDependencyName=${dependenciesData}`,
+      url: `/initializers/${pid}?springType=${selectObj.Type}&springLanguage=${selectObj.Language}&springPlatformVersion=${selectObj.Platform}&springPackaging=${selectObj.Packaging}&springJvmVersion=${selectObj.Jvm}&springGroupId=${selectObj.textGroup}&springArtifactId=${selectObj.textArtifact}&springName=${selectObj.textName}&springDescription=${selectObj.textDescription}&springPackageName=${selectObj.textPackage}&springDependencyName=${selectObj.depDatas}`,
       method: 'GET',
       responseType: 'blob', // important
       data: 'data',
@@ -169,25 +171,27 @@ export default function Build({ pid, store }: Props) {
     initSettings();
   }, []);
   const handleTextGroupArea = (e: any) => {
-    const { name, id } = e.target;
-    setSelectObj({ ...selectObj, [name]: id });
+    const { name, value } = e.target;
+    setSelectObj({ ...selectObj, [name]: value });
   };
   const handleTextArtifactArea = (e: any) => {
-    const { name, id } = e.target;
-    setSelectObj({ ...selectObj, [name]: id });
+    const { name, value } = e.target;
+    setSelectObj({ ...selectObj, [name]: value });
   };
   const handleTextNameArea = (e: any) => {
-    const { name, id } = e.target;
-    setSelectObj({ ...selectObj, [name]: id });
+    const { name, value } = e.target;
+    setSelectObj({ ...selectObj, [name]: value });
   };
   const handleTextDescriptionArea = (e: any) => {
-    const { name, id } = e.target;
-    setSelectObj({ ...selectObj, [name]: id });
+    const { name, value } = e.target;
+    setSelectObj({ ...selectObj, [name]: value });
   };
   const handleTextPackageArea = (e: any) => {
-    const { name, id } = e.target;
-    setSelectObj({ ...selectObj, [name]: id });
+    const { name, value } = e.target;
+    setSelectObj({ ...selectObj, [name]: value });
   };
+  console.log(selectObj.textArtifact);
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
   };
@@ -347,6 +351,7 @@ export default function Build({ pid, store }: Props) {
                   placeholder="com.example"
                   name="textGroup"
                   onChange={handleTextGroupArea}
+                  defaultValue={selectObj.textGroup}
                 />
               </form>
             </div>
@@ -359,6 +364,7 @@ export default function Build({ pid, store }: Props) {
                   placeholder="demo"
                   name="textArtifact"
                   onChange={handleTextArtifactArea}
+                  defaultValue={selectObj.textArtifact}
                 />
               </form>
             </div>
@@ -371,6 +377,7 @@ export default function Build({ pid, store }: Props) {
                   placeholder="demo"
                   name="textName"
                   onChange={handleTextNameArea}
+                  defaultValue={selectObj.textName}
                 />
               </form>
             </div>
@@ -383,6 +390,7 @@ export default function Build({ pid, store }: Props) {
                   placeholder="Demo project for Spring Boot"
                   name="textDescription"
                   onChange={handleTextDescriptionArea}
+                  defaultValue={selectObj.textDescription}
                 />
               </form>
             </div>
@@ -395,6 +403,7 @@ export default function Build({ pid, store }: Props) {
                   placeholder="com.example.demo"
                   name="textPackage"
                   onChange={handleTextPackageArea}
+                  defaultValue={selectObj.textPackage}
                 />
               </form>
             </div>
