@@ -220,7 +220,7 @@ public class InitializerServiceImpl implements InitializerService {
 
     @Override
     public ByteArrayOutputStream myIniDownload() {
-        ByteArrayOutputStream byteArrayOutputStream = s3Uploader.downloadFile("myini");
+        ByteArrayOutputStream byteArrayOutputStream = s3Uploader.downloadFile("myini.exe");
 
         return byteArrayOutputStream;
     }
