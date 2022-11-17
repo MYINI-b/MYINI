@@ -76,6 +76,7 @@ export default function MainPage() {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log(getCrewInfo, '3');
       await getApi(`members`)
         .then((res: any) => {
           const data = {
@@ -105,13 +106,13 @@ export default function MainPage() {
     const getMembers = async () => {
       const getMemberData: any = await getApi(`/members/crew`);
       setMyMember(getMemberData.data);
-
+      console.log(getMemberData.data, '1');
       if (getMemberData.data) {
-        const result = [];
-        for (let i = 0; i < 4; i++) {
-          result.push(getMemberData.data[i]);
+        if (getMemberData.data.length <= 4) {
+          dispatch(CrewOnlyFour(getMemberData.data));
+        } else {
+          dispatch(CrewOnlyFour(getMemberData.data.slice(0, 4)));
         }
-        dispatch(CrewOnlyFour(result));
       }
     };
 
@@ -170,8 +171,9 @@ export default function MainPage() {
                 <MemberModal modalMemberClose={modalMemberClose} />
               )}
             </div>
-            {getCrewInfo.crewData[0] === null ||
-            getCrewInfo.crewData[0] === undefined ? (
+            {!getCrewInfo ||
+            !getCrewInfo.crewData ||
+            getCrewInfo.crewData.length === 0 ? (
               <div>함께한 팀원이 없습니다.</div>
             ) : (
               <div className="main-members-wrapper">

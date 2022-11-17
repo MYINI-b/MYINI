@@ -21,6 +21,7 @@ export default function Onboarding() {
   });
 
   // const onClick = async () => {
+  //   console.log('nothing')
   //   await axios({
   //     url: `initializers/downloads`,
   //     method: 'GET',
