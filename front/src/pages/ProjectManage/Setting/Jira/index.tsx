@@ -6,10 +6,9 @@ import './style.scss';
 interface Props {
   store: any;
   pid: string;
-  editJiraInfo: () => Promise<void>;
 }
 
-export default function ProjectJira({ store, pid, editJiraInfo }: Props) {
+export default function ProjectJira({ store, pid }: Props) {
   const [modalOpen, setModalOpen] = useState(false);
   const modalClose = () => {
     setModalOpen(!modalOpen);
@@ -27,16 +26,9 @@ export default function ProjectJira({ store, pid, editJiraInfo }: Props) {
           />
         </div>
 
-        {modalOpen && (
-          <Modal
-            store={store}
-            pid={pid}
-            modalClose={modalClose}
-            editJiraInfo={editJiraInfo}
-          />
-        )}
+        {modalOpen && <Modal store={store} pid={pid} modalClose={modalClose} />}
       </div>
-      <div className="project-select-jira">{store.pjt.jiraProjectName}</div>
+      <div className="project-select-jira">{store.pjt.jiraProjectKey}</div>
     </>
   );
 }
