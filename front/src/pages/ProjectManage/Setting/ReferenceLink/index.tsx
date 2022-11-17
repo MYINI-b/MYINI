@@ -22,7 +22,7 @@ export default function ReferenceLink({ store, editProjectInfo }: Props) {
   return (
     <div className="project-link">
       <div className="project-detail-info-title">
-        링크 관리&nbsp;
+        협업 툴 주소&nbsp;
         {isEdit ? (
           <FontAwesomeIcon
             icon={faCheck}

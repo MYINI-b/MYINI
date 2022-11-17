@@ -1,5 +1,7 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState, RefObject, ReactNode } from 'react';
 import './style.scss';
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
 export function getRefValue<C>(ref: RefObject<C>) {
   return ref.current as C;
@@ -10,44 +12,33 @@ export type AccordionData = {
   content: ReactNode;
 };
 
-function AccordionItem({
-  data,
-  isOpen,
-  btnOnClick,
-}: {
-  data: AccordionData;
-  isOpen: boolean;
-  btnOnClick: () => void;
-}) {
+function AccordionItem({ data }: { data: any }) {
   const contentRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    if (isOpen) {
-      const contentEl = getRefValue(contentRef);
+  // useEffect(() => {
+  //   if (isOpen) {
+  //     const contentEl = getRefValue(contentRef);
 
-      setHeight(contentEl.scrollHeight);
-    } else {
-      setHeight(0);
-    }
-  }, [isOpen]);
+  //     setHeight(contentEl.scrollHeight);
+  //   } else {
+  //     setHeight(0);
+  //   }
+  // }, [isOpen]);
+
+  const btnOnClick = () => {
+    console.log('hi');
+    setIsOpen((prev) => !prev);
+  };
 
   return (
-    <li className={`accordion-item ${isOpen ? 'active' : ''}`}>
-      <h2 className="accordion-item-title">
-        <button
-          type="button"
-          className="accordion-item-btn"
-          onClick={btnOnClick}
-        >
-          {data.title}
-        </button>
+    <li className={`accordion-item ${isOpen && 'open'}`}>
+      <h2 className="accordion-item-title" onClick={btnOnClick}>
+        <label>{data.title}</label>
+        <FontAwesomeIcon icon={isOpen ? faChevronUp : faChevronDown} />
       </h2>
-      <div className="accordion-item-container" style={{ height }}>
-        <div ref={contentRef} className="accordion-item-content">
-          {data.content}
-        </div>
-      </div>
+      {isOpen && <div className="accordion-item-container">{data.content}</div>}
     </li>
   );
 }

@@ -1,13 +1,14 @@
 import './style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useCallback, useState } from 'react';
 import { useOthers, useUpdatePresence } from '@y-presence/react';
 import { UserPresence } from 'types/main';
+import { LINK_LIST } from 'constants/index';
 
 import { getApi, postApi } from 'api';
 import { Cursor } from 'components/Cursor';
 import TimerModal from 'components/TimerModal';
+import Loading from 'components/Loading';
 import RowList from './RowList';
 
 interface Props {
@@ -18,6 +19,7 @@ export default function Requirement({ pid, store }: Props) {
   const others = useOthers<UserPresence>();
   const updatePresence = useUpdatePresence<UserPresence>();
   const [alertText, setAlertText] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handlePointMove = useCallback(
     (e: React.PointerEvent) => {
@@ -75,14 +77,23 @@ export default function Requirement({ pid, store }: Props) {
     if (pid !== 'new') getRequirements();
   }, []);
 
-  const requireJira = async () => {
+  const registJiraIssue = useCallback(async () => {
+    if (!store.pjt.jiraProjectId || !store.pjt.jiraProjectKey) {
+      setAlertText('프로젝트 관리에서  지라 프로젝트를 등록해주세요!');
+      return;
+    }
+
+    setIsLoading(true);
+    // 지라 이슈 등록
     const reJira: any = await postApi(`/jiras/${pid}/createissue`);
     if (reJira.status < 300) {
-      setAlertText('지라 등록 완료!');
+      setIsLoading(false);
+      setAlertText('지라 연동 완료!');
     } else {
-      setAlertText('지라 연결중 에러 발생');
+      setIsLoading(false);
+      setAlertText('유효하지 않은 요구사항이 있는지 확인해주세요.');
     }
-  };
+  }, [store]);
 
   return (
     <div className="requirement-container" onPointerMove={handlePointMove}>
@@ -109,11 +120,12 @@ export default function Requirement({ pid, store }: Props) {
           {store && store.pjt.title}
         </h3>
         <button
-          className="requirement-save-button"
+          className="requirement-jira-button"
           type="button"
-          onClick={requireJira}
+          onClick={registJiraIssue}
         >
-          <FontAwesomeIcon icon={faSave} />
+          <img src={LINK_LIST[1].img} alt="지라 아이콘" />
+          &nbsp;이슈 등록
         </button>
       </section>
 
@@ -140,6 +152,8 @@ export default function Requirement({ pid, store }: Props) {
         ))}
 
       {!!alertText && <TimerModal text={alertText} setText={setAlertText} />}
+
+      {isLoading && <Loading />}
     </div>
   );
 }

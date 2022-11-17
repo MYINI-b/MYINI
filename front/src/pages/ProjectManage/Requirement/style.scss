@@ -33,12 +33,22 @@
       font-family: $eng-title;
     }
 
-    .requirement-save-button {
-      @include CIRCLE-BTN;
-      @include BTN-COLOR($third);
-      width: rem(50);
-      height: rem(50);
-      font-size: rem(24);
+    .requirement-jira-button {
+      background-color: transparent;
+      font-family: $kor;
+      font-size: rem(20);
+      @include FLEX-ALIGN-CENTER;
+      transition: 0.3s ease;
+
+      img{
+        @include STRETCH;
+        width: rem(30);
+        height: rem(30);
+      }
+
+      &:hover{
+        color:$jira;
+      }
     }
   }
 
@@ -64,6 +74,10 @@
       @include FLEX-COLUMN;
       align-items: center;
       overflow-y: auto;
+
+      &::-webkit-scrollbar {
+        width: 0px;
+      }
     }
 
     .table-row {
@@ -83,6 +97,12 @@
       @include FLEX-CENTER;
       position:relative;
       line-height: 1.5;
+      
+      .importance-img{
+        width:rem(25);
+        height:rem(25);
+        cursor: pointer;
+      }
 
       svg{
         cursor:pointer;
@@ -110,24 +130,24 @@
         font-family: $eng-title;
         // white-space: nowrap;
         // background-color: $third;
-        border-radius: 0px;
-        border-bottom: 2px solid $secondary;
+        background-color: rgba(255,230,220, 0.5);
+        border-radius: 10px;
+        // border-bottom: 2px solid $secondary;
 
-        &::after{
-          content: "";
-          height: 50%;
-          display: block;
-          border-right: 1px solid rgba(128, 128, 128, 0.2);
-          position: absolute;
-          right: 0;
-          top: 50%;
-          transform: translateY(-50%);
-        }
+        // &::after{
+        //   content: "";
+        //   height: 50%;
+        //   display: block;
+        //   border-right: 1px solid rgba(128, 128, 128, 0.2);
+        //   position: absolute;
+        //   right: 0;
+        //   top: 50%;
+        //   transform: translateY(-50%);
+        // }
      
       }
 
       &.content {
-
         // margin: 0 rem(12);
         padding: rem(10) rem(18);
         font-size: rem(14);

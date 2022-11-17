@@ -36,30 +36,6 @@ export default function Setting({ store, pid }: Props) {
     const resp = await putApi(`/projects/${pid}`, body);
   }, [store]);
 
-  const editJiraInfo = useCallback(async () => {
-    const body = {
-      jiraId: store.pjt.jiraId,
-      jiraApiKey: store.pjt.jiraApiKey,
-    };
-    const body1 = {
-      jiraDomain: store.pjt.jiraDomain,
-    };
-
-    const resp = await putApi(
-      `https://k7b203.p.ssafy.io/api/jiras/${pid}/jiraaccount`,
-      body,
-    );
-    const resp1 = await putApi(
-      `https://k7b203.p.ssafy.io/api/jiras/${pid}/jiradomain`,
-      body1,
-    );
-    const jiraResp: any = await getApi(
-      `https://k7b203.p.ssafy.io/api/jiras/${pid}/projects`,
-    );
-    console.log(resp, resp1, jiraResp);
-    store.pjt.jiraProject = jiraResp.data;
-  }, [store]);
-
   const handlePointMove = React.useCallback(
     (e: React.PointerEvent) => {
       updatePresence({
@@ -96,6 +72,17 @@ export default function Setting({ store, pid }: Props) {
           ? data.projectNotionUrl
           : '';
         store.pjt.figmaLink = data.projectFigmaUrl ? data.projectFigmaUrl : '';
+
+        store.pjt.jiraId = data.jiraId ? data.jiraId : '';
+        store.pjt.jiraApiKey = data.jiraApiKey ? data.jiraApiKey : '';
+        store.pjt.jiraProjectId = data.jiraProjectId ? data.jiraProjectId : '';
+        store.pjt.jiraProjectKey = data.jiraProjectKey
+          ? data.jiraProjectKey
+          : '';
+        store.pjt.jiraDomain = data.jiraDomain ? data.jiraDomain : '';
+
+        if (!store.pjt.jiraProject) store.pjt.jiraProject = [];
+
         if (!store.pjt.editors) store.pjt.editors = [];
 
         const memberResp: any = await getApi(`/projects/members/${pid}`);
@@ -113,24 +100,31 @@ export default function Setting({ store, pid }: Props) {
         store.pjt.members = memberData;
 
         if (memberResp.data.length > 1) {
-          const jiraResp: any = await getApi(`/projects/members/${pid}/jiras`);
+          if (store.pjt.jiraProjectId && store.pjt.jiraProjectKey) {
+            const jiraResp: any = await getApi(
+              `/projects/members/${pid}/jiras`,
+            );
 
-          if (jiraResp.status === 200) {
-            const jiraData = jiraResp.data.map((member: any) => {
-              return {
-                id: member.memberId,
-                name: member.memberName,
-                img: member.memberProfileImg
-                  ? `${member.memberProfileImg}`
-                  : DefaultProfile,
-                email: member.memberEmail,
-                nickname: member.memberNickName,
-              };
-            });
-            store.pjt.jiraMembers = jiraData;
-          } else {
-            store.pjt.jiraMembers = [];
+            console.log(jiraResp);
+            if (jiraResp.status === 200) {
+              const jiraData = jiraResp.data.map((member: any) => {
+                return {
+                  id: member.memberId,
+                  name: member.memberName,
+                  img: member.memberProfileImg
+                    ? `${member.memberProfileImg}`
+                    : DefaultProfile,
+                  email: member.memberEmail,
+                  nickname: member.memberNickName,
+                };
+              });
+              store.pjt.jiraMembers = jiraData;
+            } else {
+              store.pjt.jiraMembers = [];
+            }
           }
+        } else {
+          store.pjt.jiraMembers = [];
         }
       }
     };
@@ -154,11 +148,7 @@ export default function Setting({ store, pid }: Props) {
               <ReferenceLink store={store} editProjectInfo={editProjectInfo} />
             </div>
             <div className="right-side">
-              <ProjectJira
-                store={store}
-                pid={pid}
-                editJiraInfo={editJiraInfo}
-              />
+              <ProjectJira store={store} pid={pid} />
               <ProjectMember
                 store={store}
                 pid={pid}

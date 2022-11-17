@@ -11,11 +11,11 @@
   @include FLEX-CENTER;
 
   .modal-jira-detail {
-    width: rem(500);
-    height: rem(650);
+    width: rem(350);
+    height: rem(500);
     padding: rem(30);
     overflow: hidden;
-    background-color: #fff;
+    background-color: $pure-white;
     border: 2px solid $jira;
     border-radius: 3%;
     @include FLEX-COLUMN;
@@ -37,6 +37,7 @@
     .modal-jira-content {
       @include FLEX-COLUMN;
       @include STRETCH;
+      overflow: hidden;
       .jira-content-input {
         flex-shrink: 0;
         margin-top: rem(30);
@@ -72,7 +73,7 @@
       .jira-project-category {
         width: 100%;
         height: 100%;
-        padding-bottom: rem(30);
+        padding: rem(10) 0;
         overflow-y: auto;
         &::-webkit-scrollbar-thumb {
           background-color: $light-jira;
@@ -80,17 +81,18 @@
 
         .jira-project-category-item {
           width: 100%;
-          height: rem(100);
+          height: rem(40);
           font-weight: bold;
-          font-size: rem(24);
-          font-family: $eng-title;
-          background-color: $white;
+          font-size: rem(20);
+
+          font-family: $eng-content;
+          background-color: $light-jira;
           outline: 0;
           box-shadow: $shadow;
           transition: 0.3s ease;
 
           &:hover {
-            background-color: $light-jira;
+            background-color: darken($light-jira, 5);
           }
         }
         .jira-project-category-item:active {
@@ -106,4 +108,8 @@
       }
     }
   }
+}
+
+.loading-img {
+  width: 80%;
 }

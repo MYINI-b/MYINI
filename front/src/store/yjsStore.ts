@@ -31,13 +31,12 @@ export type ProjectInfo = {
   // erd
   erdData: string;
   // jira
-  jiraId: string;
-  jiraApiKey: string;
-  jiraDomain: string;
+  jiraId: string; // 내 지라 아이디(이메일)
+  jiraApiKey: string; // 내 지라 api key
+  jiraDomain: string; // 프로젝트 지라 도메인
   JiraProject: JIRA[];
   JiraProjectId: string;
   JiraProjectKey: string;
-  JiraProjectName: string;
 };
 
 export const globalStore = syncedStore({
