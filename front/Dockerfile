@@ -3,7 +3,7 @@ FROM node:16.16.0
 WORKDIR /usr/src/app
 
 COPY ./package.json ./
-COPY ./npmrc ./
+COPY .npmrc
 
 RUN npm cache clean --force
 RUN rm -rf node_modules package-lock.json
