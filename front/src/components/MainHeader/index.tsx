@@ -68,6 +68,9 @@ export default function MainHeader({ needStepper, step, setStep }: Props) {
           <Link to="/main">
             <p>홈</p>
           </Link>
+          <a href="https://k7b203.p.ssafy.io/" target="_blank" rel="noreferrer">
+            <p>공식홈페이지</p>
+          </a>
           <p onClick={getLogout}>로그아웃</p>
         </div>
       </div>

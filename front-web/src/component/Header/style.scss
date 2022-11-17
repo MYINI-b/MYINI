@@ -3,7 +3,8 @@
 .header {
   display: flex;
   overflow-y: hidden;
-  background-color: transparent;
+  background-color: $white;
+  opacity: 0.8;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   @include FLEX-AROUND;

@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import AOS from 'aos';
+import { getApi } from 'api';
+import axios from 'axios';
 import Background from '../../assets/main-bg.png';
 import BackgroundOne from '../../assets/main-bg1.png';
 import BackgroundTwo from '../../assets/main-bg2.png';
@@ -20,6 +22,22 @@ export default function Onboarding() {
     AOS.init();
   });
 
+  const onClick = async () => {
+    await axios({
+      url: `initializers/downloads`,
+      method: 'GET',
+      responseType: 'blob', // important
+      data: 'data',
+    }).then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `myini.exe`);
+      document.body.appendChild(link);
+      link.click();
+    });
+  };
+
   return (
     <div>
       <Header />
@@ -32,7 +50,7 @@ export default function Onboarding() {
             </h1>
             <h1 className="head-line"> MYINI로 쉽고 간편하게</h1>
           </div>
-          <button type="button" className="download-btn">
+          <button type="button" className="download-btn" onClick={onClick}>
             DOWNLOAD
           </button>
           <div className="wave-container">
