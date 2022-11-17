@@ -7,7 +7,7 @@ COPY ./package.json ./
 RUN npm cache clean --force
 RUN rm -rf node_modules package-lock.json
 
-RUN rm -rf node_modules
+RUN yarn install
 RUN npm install --save
 RUN npm install node-sass
 RUN npm install sass-loader sass webpack --save-dev
