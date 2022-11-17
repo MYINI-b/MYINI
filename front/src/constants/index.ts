@@ -1,3 +1,5 @@
+import Jira from 'assets/jira.png';
+
 export const API_METHOD = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
 
 export const PATHVARIABLE_TYPE = ['NORMAL', 'Long', 'Integer'];
@@ -21,7 +23,7 @@ export const LINK_LIST = [
     name: 'github',
   },
   {
-    img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3GvYRs1UzRDOE2WycbFmOCq_nnxhEYlf3nQ&usqp=CAU',
+    img: Jira,
     name: 'Jira',
   },
   {

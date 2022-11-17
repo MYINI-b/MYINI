@@ -12,6 +12,7 @@ import { Profile } from 'modules/member';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faOtter } from '@fortawesome/free-solid-svg-icons';
 import { RootState } from 'modules/Reducers';
+import TextModal from 'components/TextModal';
 
 interface Props {
   needStepper: boolean;
@@ -21,6 +22,7 @@ interface Props {
 export default function MainHeader({ needStepper, step, setStep }: Props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [alertText, setAlertText] = useState('');
 
   const myProfile: any = useSelector(
     (state: RootState) => state.member.memberProfileImg,
@@ -31,7 +33,12 @@ export default function MainHeader({ needStepper, step, setStep }: Props) {
     window.localStorage.removeItem('accessToken');
     dispatch(Profile('', -1, '', '', 0, ''));
     alert('정상적으로 로그아웃되었습니다.');
-    navigate('/');
+    setAlertText('로그아웃 되었습니다!');
+    // navigate('/');
+  };
+
+  const goToHome = () => {
+    window.location.href = '/';
   };
 
   // TODO: tokencheck
@@ -77,6 +84,14 @@ export default function MainHeader({ needStepper, step, setStep }: Props) {
           <p onClick={getLogout}>로그아웃</p>
         </div>
       </div>
+
+      {!!alertText && (
+        <TextModal
+          text={alertText}
+          setText={setAlertText}
+          callback={goToHome}
+        />
+      )}
     </div>
   );
 }
