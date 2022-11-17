@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import AOS from 'aos';
-import axios from 'axios';
 import Background from '../../assets/main-bg.png';
 import BackgroundOne from '../../assets/main-bg1.png';
 import BackgroundTwo from '../../assets/main-bg2.png';
