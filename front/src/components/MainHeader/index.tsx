@@ -5,7 +5,8 @@ import './style.scss';
 import Stepper from 'components/Stepper';
 
 // redux
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { Profile } from 'modules/member';
 
 // 3rd party
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,6 +20,7 @@ interface Props {
 }
 export default function MainHeader({ needStepper, step, setStep }: Props) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const myProfile: any = useSelector(
     (state: RootState) => state.member.memberProfileImg,
@@ -27,6 +29,7 @@ export default function MainHeader({ needStepper, step, setStep }: Props) {
   // logout func
   const getLogout = () => {
     window.localStorage.removeItem('accessToken');
+    dispatch(Profile('', -1, '', '', 0, ''));
     alert('정상적으로 로그아웃되었습니다.');
     navigate('/');
   };
