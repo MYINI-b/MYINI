@@ -121,10 +121,12 @@ public class ControllerWrite {
             methodContents.append("(");
             // 1. PathVariable
             for (PathVariableResponse pathVariableResponse : apiInfoResponse.getPathVariableResponses()) {
-                methodContents.append("@PathVariable(\"").append(pathVariableResponse.getPathVariableKey()).append("\") ")
-                        .append(pathVariableResponse.getPathVariableType()).append(" ")
-                        .append(pathVariableResponse.getPathVariableKey()).append(",");
-                variableNames.add(pathVariableResponse.getPathVariableKey());
+                if (!pathVariableResponse.getPathVariableType().equals("NORMAL")) {
+                    methodContents.append("@PathVariable(\"").append(pathVariableResponse.getPathVariableKey()).append("\") ")
+                            .append(pathVariableResponse.getPathVariableType()).append(" ")
+                            .append(pathVariableResponse.getPathVariableKey()).append(",");
+                    variableNames.add(pathVariableResponse.getPathVariableKey());
+                }
             }
             // 2. queryString
             for (QueryStringResponse queryStringResponse : apiInfoResponse.getQueryStringResponses()) {

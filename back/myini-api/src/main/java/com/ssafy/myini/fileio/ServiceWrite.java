@@ -74,8 +74,10 @@ public class ServiceWrite {
             methodContents.append("(");
             // 1. PathVariable
             for (PathVariableResponse pathVariableResponse : apiInfoResponse.getPathVariableResponses()) {
-                methodContents.append(pathVariableResponse.getPathVariableType()).append(" ")
-                        .append(pathVariableResponse.getPathVariableKey()).append(",");
+                if (!pathVariableResponse.getPathVariableType().equals("NORMAL")) {
+                    methodContents.append(pathVariableResponse.getPathVariableType()).append(" ")
+                            .append(pathVariableResponse.getPathVariableKey()).append(",");
+                }
             }
             // 2. queryString
             for (QueryStringResponse queryStringResponse : apiInfoResponse.getQueryStringResponses()) {
