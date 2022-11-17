@@ -100,30 +100,29 @@ export default function ApiSpec({ store, pid }: Props) {
 
   useEffect(() => {
     const getControllers = async () => {
-      store.pjt.controllers = [];
+      const curController: any[] = [];
       await getApi(`/apidocs/${pid}/controllers`).then(({ data }: any) => {
         data.forEach(async (apiController: any) => {
           await getApi(
             `/apidocs/controllers/${apiController.apiControllerId}`,
           ).then(({ data }: any) => {
-            console.log(data);
-            if (store.pjt.controllers !== undefined)
-              store.pjt.controllers.push({
-                id: data.apiControllerId,
-                name: data.apiControllerName,
-                desc: data.apiControllerDescription,
-                baseurl: data.apiControllerBaseUrl,
-                responses: data.apiResponses.map((api: any) => {
-                  return {
-                    id: api.apiId,
-                    apiName: api.apiName,
-                    methodName: api.apiMethodName,
-                    url: api.apiUrl,
-                    method: api.apiMethod,
-                    code: api.apiCode === 'OK' ? 200 : 201,
-                  };
-                }),
-              });
+            curController.push({
+              id: data.apiControllerId,
+              name: data.apiControllerName,
+              desc: data.apiControllerDescription,
+              baseurl: data.apiControllerBaseUrl,
+              responses: data.apiResponses.map((api: any) => {
+                return {
+                  id: api.apiId,
+                  apiName: api.apiName,
+                  methodName: api.apiMethodName,
+                  url: api.apiUrl,
+                  method: api.apiMethod,
+                  code: api.apiCode === 'OK' ? 200 : 201,
+                };
+              }),
+            });
+            store.pjt.controllers = curController;
           });
         });
         if (data.length > 0) setControllerIdx(0);
