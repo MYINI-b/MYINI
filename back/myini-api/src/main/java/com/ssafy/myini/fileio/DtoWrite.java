@@ -87,9 +87,11 @@ public class DtoWrite {
                             api -> {
                                 api.getDtos().forEach(
                                         dto -> {
-                                            String type = String.valueOf(dto.getDtoType());
-                                            String path = (type.equals("REQUEST")) ? "request" : "response";
-                                            FileUtil.fileWrite(initializerRequest, dtoPreview(dto, initializerRequest), path, FileUtil.firstIndexToUpperCase(dto.getDtoName().trim()));
+                                            if (!dto.getDtoItemChildren().isEmpty()) {
+                                                String type = String.valueOf(dto.getDtoType());
+                                                String path = (type.equals("REQUEST")) ? "request" : "response";
+                                                FileUtil.fileWrite(initializerRequest, dtoPreview(dto, initializerRequest), path, FileUtil.firstIndexToUpperCase(dto.getDtoName().trim()));
+                                            }
                                         }
                                 );
                             }
