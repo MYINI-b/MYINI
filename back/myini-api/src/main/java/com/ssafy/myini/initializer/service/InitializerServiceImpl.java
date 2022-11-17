@@ -43,7 +43,7 @@ public class InitializerServiceImpl implements InitializerService {
     @Override
     public InitializerPossibleResponse initializerIsPossible(Long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
-        //API명세서 체크
+
         return new InitializerPossibleResponse(true, "빌드가능");
     }
 
