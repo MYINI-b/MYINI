@@ -15,9 +15,12 @@ export default function MyiniGuide() {
       </span>
       <div className="docs-content-item">
         <h3>MYINI는..</h3>
-        <span> myINI에는 프로젝트 기획에 필요한 다양한 기능들이 있습니다.</span>
         <span>
-          <b>동시편집 기능</b>을 제공하여 더 확실한 협업서비스를 제공합니다.
+          ● myINI에는 <b>프로젝트 기획 및 초기 코드작성</b>에 필요한 다양한
+          기능들이 있습니다.
+        </span>
+        <span>
+          ● <b>동시편집 기능</b>을 제공하여 더 확실한 협업서비스를 제공합니다.
         </span>
       </div>
       <div className="docs-content-item">
