@@ -100,23 +100,28 @@ export default function Setting({ store, pid }: Props) {
         store.pjt.members = memberData;
 
         if (memberResp.data.length > 1) {
-          const jiraResp: any = await getApi(`/projects/members/${pid}/jiras`);
+          if (store.pjt.jiraProjectId && store.pjt.jiraProjectKey) {
+            const jiraResp: any = await getApi(
+              `/projects/members/${pid}/jiras`,
+            );
 
-          if (jiraResp.status === 200) {
-            const jiraData = jiraResp.data.map((member: any) => {
-              return {
-                id: member.memberId,
-                name: member.memberName,
-                img: member.memberProfileImg
-                  ? `${member.memberProfileImg}`
-                  : DefaultProfile,
-                email: member.memberEmail,
-                nickname: member.memberNickName,
-              };
-            });
-            store.pjt.jiraMembers = jiraData;
-          } else {
-            store.pjt.jiraMembers = [];
+            console.log(jiraResp);
+            if (jiraResp.status === 200) {
+              const jiraData = jiraResp.data.map((member: any) => {
+                return {
+                  id: member.memberId,
+                  name: member.memberName,
+                  img: member.memberProfileImg
+                    ? `${member.memberProfileImg}`
+                    : DefaultProfile,
+                  email: member.memberEmail,
+                  nickname: member.memberNickName,
+                };
+              });
+              store.pjt.jiraMembers = jiraData;
+            } else {
+              store.pjt.jiraMembers = [];
+            }
           }
         } else {
           store.pjt.jiraMembers = [];
