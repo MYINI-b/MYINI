@@ -1,9 +1,9 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-// const accessToken = localStorage.getItem('accessToken');
+const accessToken = localStorage.getItem('accessToken');
 
-const accessToken =
-  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4IiwiUk9MRSI6IlJPTEVfVVNFUiIsImlhdCI6MTY2ODQ4NTAyMSwiZXhwIjoxNjY5MDg5ODIxfQ.rfrS89tGfsBwCiKqN9IBx451tGORmSYOw_Y2arNaDdU';
+// const accessToken =
+//   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4IiwiUk9MRSI6IlJPTEVfVVNFUiIsImlhdCI6MTY2ODYwODc1OSwiZXhwIjoxNjY5MjEzNTU5fQ.0kN-ua5PcLQVGKlvxo0C68TDoLPwiwPPkkVtE2zGB_I';
 
 export const authAxios: AxiosInstance = axios.create({
   baseURL: `${process.env.REACT_APP_API_URL}`,

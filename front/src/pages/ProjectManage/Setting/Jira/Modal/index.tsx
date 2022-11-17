@@ -109,14 +109,14 @@ function Modal({ store, modalClose, pid }: Props) {
       <div className="modal-jira-detail">
         <div className="modal-jira-title">
           <a
-            href="https://github.com/wooobinkim/myini/blob/main/docs/MYINIGuide.md"
+            href="https://github.com/wooobinkim/myini/blob/main/docs/MYINIGuide.md#2-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%9D%98-%EC%97%B0%EB%8F%99"
             target="_blank"
             rel="noreferrer"
           >
             <FontAwesomeIcon
               icon={faCircleQuestion}
               className="modal-jira-button-left"
-              href="https://github.com/wooobinkim/myini/blob/main/docs/MYINIGuide.md"
+              href="https://github.com/wooobinkim/myini/blob/main/docs/MYINIGuide.md#2-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%9D%98-%EC%97%B0%EB%8F%99"
             />
           </a>
           <FontAwesomeIcon

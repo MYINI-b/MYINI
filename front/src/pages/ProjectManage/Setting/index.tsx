@@ -34,7 +34,6 @@ export default function Setting({ store, pid }: Props) {
       projectFigmaUrl: store.pjt.figmaLink,
     };
     const resp = await putApi(`/projects/${pid}`, body);
-    // console.log(resp);
   }, [store]);
 
   const handlePointMove = React.useCallback(

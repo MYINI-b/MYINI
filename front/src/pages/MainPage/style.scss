@@ -23,8 +23,8 @@
 
 .project-info {
   display: flex;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   width: 100%
 }
 
@@ -149,6 +149,9 @@
       border-radius: 30px;
       margin-right: 3.5rem;
       box-shadow: $shadow;
+      background-color: $white;
+      opacity: 0.85;
+      z-index: 1;
       display: inline-block;
       position: relative;
       overflow: hidden;
@@ -175,9 +178,11 @@
   
         .card-header-title {
           bottom: 0;
-          padding: 2rem;
-          font-size: 2rem;
-          color: white;
+          padding-top: 4.5rem;
+          padding-left: 1.5rem;
+          font-size: 1.5rem;
+          font-weight: bold;
+          color: black;
         }
       }
     }
@@ -273,33 +278,46 @@
   }
 }
 
-
-.main-members-container {
+.main-members-wrapper {
   display: flex;
 
-  .main-member-container {
-    display: flex;
-    width: rem(50);
-    height: rem(50);
+  .icon-ellipsis {
+    @include FLEX-CENTER;
+    margin-bottom: 1.25rem;
     margin-left: 0.5rem;
+  }
+  .main-members-container {
+    display: flex;
+    
 
-    .main-member-img {
-      @include FLEX-CENTER;
-      border-radius: 50%;
-      background-color: $fourth;
-      // border: 1px solid $secondary;
-      color: $primary;
-      width: rem(40);
-      height: rem(40);
-      margin-bottom: 0.25rem;
-    }
-
-    .member-default-img {
-      font-size: rem(20);
-    }
-
-    .main-member-name {
-      font-size: rem(14);
+    .main-member {
+      margin-left: 1rem;
+      width: rem(45);
+      
+      .main-member-img {
+        @include FLEX-CENTER;
+        border-radius: 50%;
+        background-color: $fourth;
+        // border: 1px solid $secondary;
+        color: $primary;
+        width: rem(40);
+        height: rem(40);
+        margin-bottom: 0.25rem;
+      }
+  
+      .member-default-img {
+        font-size: rem(20);
+      }
+  
+      .member-google-img {
+        width: rem(40);
+        height: rem(40);
+        border-radius: 50%;
+      }
+  
+      .main-member-name {
+        font-size: rem(14);
+      }
     }
   }
 }

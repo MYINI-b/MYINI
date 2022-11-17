@@ -1,6 +1,7 @@
 import './style.scss';
 import { Link } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
+import defaultFile from 'assets/default-file.jpg';
 
 // types
 import { PROJECT_LIST } from 'types/main';
@@ -27,11 +28,7 @@ export default function ProjectCard({ content }: Props) {
     <div className="card" onClick={goProjectSetting}>
       <div className="card-header">
         {content.projectImg === null ? (
-          <img
-            src="https://picsum.photos/id/522/300"
-            alt=""
-            className="card-background-img"
-          />
+          <img src={defaultFile} alt="" className="card-background-img" />
         ) : (
           <img
             src={`https://myini.s3.ap-northeast-2.amazonaws.com/projectProfile/${content.projectImg}`}
@@ -46,14 +43,15 @@ export default function ProjectCard({ content }: Props) {
           <h1>{content.projectName}</h1>
         </div>
         <div className="card-body-context">{content.projectDescription}</div>
-        <div className="card-body-footer">
-          <FontAwesomeIcon
-            icon={faTrash}
-            onClick={() => deletePjt(content.projectId)}
-            className="card-body-delete"
-          />
-        </div>
       </div>
     </div>
   );
 }
+
+/* <div className="card-body-footer">
+<FontAwesomeIcon
+  icon={faTrash}
+  onClick={() => deletePjt(content.projectId)}
+  className="card-body-delete"
+/>
+</div> */
