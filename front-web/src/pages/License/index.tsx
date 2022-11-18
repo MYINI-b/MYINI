@@ -91,6 +91,21 @@ export default function License() {
                   <h5>MIT License</h5>
                 </div>
               </div>
+              <div className="library-license-content">
+                <h3>electron</h3>
+                <div className="library-license-content-content">
+                  <a
+                    href="https://github.com/electron"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    https://github.com/electron
+                  </a>
+                  <h5>Copyright (c) Electron contributors</h5>
+                  <h5>Copyright (c) 2013-2020 GitHub Inc.</h5>
+                  <h5>MIT License</h5>
+                </div>
+              </div>
             </div>
           </div>
         </section>
