@@ -50,7 +50,7 @@ git push
 
 ![pullrequest2.png](asset/pullrequest2.png)
 
-![pullrequest3.png](asset/pullrequest3.png)
+![pullrequest3.png](asset/pullrequest3.PNG)
 
 ### 6. 개발진이 확인 후 작성하는 Comment를 확인해 주세요. 며칠 시간이 소요될 수 있습니다.
 
