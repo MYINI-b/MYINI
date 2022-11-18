@@ -96,7 +96,7 @@ ex) user_info_id
 
 각 기능별로 API가 생성될 수 있도록 API Controller를 생성합니다. 이를 토대로 Controller.java가 생성됩니다.
 
-<img src="asset/apicontroller.png" width="70%" height="70%"/>
+<img src="asset/apicontroller.PNG" width="20%" height="20%"/>
 
 ```bash
 💡 API Controller는 Pascal Case로 작성해주세요.   
@@ -108,7 +108,7 @@ ex) userController.java
 
 - 기능에 필요한 API를 생성합니다. API별로 각각의 method가 생성됩니다.
 
-<img src="asset/apicontext.png" width="70%" height="70%"/>
+<img src="asset/apicontext.PNG" width="70%" height="70%"/>
 
 ```bash
 💡 MethodName은 Camel Case로 작성해주세요.
@@ -119,7 +119,7 @@ ex) updateUser
 
 ResponseDTO에서 변수로 쓰일 객체형 DTO는 자료형 관리에서 생성할 수 있습니다.
 
-<img src="asset/apicustomdto.png" width="70%" height="70%"/>
+<img src="asset/customdto.PNG" width="20%" height="20%"/>
 
 ```bash
 💡 DTO 명을 타 DTO와 동일하게 생성하거나, DTO 내부의 변수를 등록하지 않으면 빌드 시 에러가 날 수 있습니다.
@@ -131,7 +131,7 @@ ResponseDTO에서 변수로 쓰일 객체형 DTO는 자료형 관리에서 생�
 
 ### 1. 원하는 버전에 맞춰 프로젝트 환경 설정
 
-(빌드 왼쪽화면 캡쳐)
+<img src="asset/startspring.PNG" width="70%" height="70%"/>
 
 - **Versions**
   - JVM(***Java Virtual Machine***) 버전
@@ -149,7 +149,7 @@ ResponseDTO에서 변수로 쓰일 객체형 DTO는 자료형 관리에서 생�
 
 ### 2. MVC코드 이니셜라이징
 
-(빌드 오른쪽화면 캡쳐)
+<img src="asset/build.PNG" width="70%" height="70%"/>
 
 ```bash
 💡 프로젝트를 다운받은 후 Settings or Preferences에서 **SDK와 자바 버전을 맞춰주세요.**
