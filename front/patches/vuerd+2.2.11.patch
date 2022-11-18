@@ -962,10 +962,18 @@ index 56c8801..246f9db 100644
  }
  
 diff --git a/node_modules/vuerd/dist/vuerd.js b/node_modules/vuerd/dist/vuerd.js
-index 6c3ba78..83ce8cd 100644
+index 6c3ba78..aa2f27c 100644
 --- a/node_modules/vuerd/dist/vuerd.js
 +++ b/node_modules/vuerd/dist/vuerd.js
-@@ -20129,12 +20129,7 @@
+@@ -4,6 +4,7 @@
+  * @author dineug <dineug2@gmail.com>
+  * @license MIT
+  */
++console.log('hi this is erd page')
+ (function (global, factory) {
+     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+     typeof define === 'function' && define.amd ? define(['exports'], factory) :
+@@ -20129,12 +20130,7 @@
      const setExcludePanel = (exclude) => (contextPanelConfig.exclude = exclude);
  
      const databaseList = [
@@ -978,7 +986,7 @@ index 6c3ba78..83ce8cd 100644
      ];
      const languageList = [
          'GraphQL',
-@@ -20182,9 +20177,9 @@
+@@ -20182,9 +20178,9 @@
              columnComment: true,
              columnDataType: true,
              columnDefault: true,
@@ -990,7 +998,7 @@ index 6c3ba78..83ce8cd 100644
              columnNotNull: true,
              relationship: true,
          },
-@@ -21692,246 +21687,213 @@
+@@ -21692,246 +21688,213 @@
      /**
       * https://mariadb.com/kb/en/data-types/
       */
@@ -1420,7 +1428,7 @@ index 6c3ba78..83ce8cd 100644
  
      var MySQLKeywords = [
          'ADD',
-@@ -21973,11 +21935,11 @@
+@@ -21973,11 +21936,11 @@
          'USE',
      ];
  
@@ -1435,7 +1443,7 @@ index 6c3ba78..83ce8cd 100644
  
      var tokenMatch = {
          whiteSpace: /(?:\s+|#.*|-- +.*|\/\*(?:[\s\S])*?\*\/)+/,
-@@ -25952,268 +25914,248 @@
+@@ -25952,268 +25915,248 @@
      /**
       * https://mariadb.com/kb/en/data-types/
       */
@@ -1918,7 +1926,7 @@ index 6c3ba78..83ce8cd 100644
      ];
  
      function getPrimitiveType(dataType, database) {
-@@ -52858,15 +52800,6 @@
+@@ -52858,15 +52801,6 @@
                  name: 'Export',
                  children: createExportMenus(context, canvas),
              },

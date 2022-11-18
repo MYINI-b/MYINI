@@ -13,9 +13,10 @@ import {
 import './style.scss';
 import DefaultProfile from 'assets/default-profile.png';
 import { getApi } from 'api';
-import { DTO } from 'types/ApiSpec';
+import { DTO, CONTROLLER } from 'types/ApiSpec';
 import { Cursor } from 'components/Cursor';
 import TimerModal from 'components/TimerModal';
+
 import { RootState } from 'modules/Reducers';
 import { stderr } from 'process';
 import APIList from './APIList';
@@ -100,33 +101,76 @@ export default function ApiSpec({ store, pid }: Props) {
 
   useEffect(() => {
     const getControllers = async () => {
-      const curController: any[] = [];
-      await getApi(`/apidocs/${pid}/controllers`).then(({ data }: any) => {
-        data.forEach(async (apiController: any) => {
-          await getApi(
-            `/apidocs/controllers/${apiController.apiControllerId}`,
-          ).then(({ data }: any) => {
-            curController.push({
-              id: data.apiControllerId,
-              name: data.apiControllerName,
-              desc: data.apiControllerDescription,
-              baseurl: data.apiControllerBaseUrl,
-              responses: data.apiResponses.map((api: any) => {
-                return {
-                  id: api.apiId,
-                  apiName: api.apiName,
-                  methodName: api.apiMethodName,
-                  url: api.apiUrl,
-                  method: api.apiMethod,
-                  code: api.apiCode === 'OK' ? 200 : 201,
-                };
-              }),
-            });
-            store.pjt.controllers = curController;
-          });
-        });
-        if (data.length > 0) setControllerIdx(0);
+      // 컨트롤러 목록 api
+      const controllerListResp: any = await getApi(
+        `/apidocs/${pid}/controllers/list`,
+      );
+      console.log(controllerListResp);
+      const newControllers = controllerListResp.data.map((res: any) => {
+        return {
+          id: res.apiControllerId,
+          name: res.apiControllerName,
+          desc: res.apiControllerDescription,
+          baseurl: res.apiControllerBaseUrl,
+          responses: res.apiResponses.map((api: any) => {
+            return {
+              id: api.apiId,
+              apiName: api.apiName,
+              methodName: api.apiMethodName,
+              url: api.apiUrl,
+              method: api.apiMethod,
+              code: api.apiCode === 'OK' ? 200 : 201,
+            };
+          }),
+        };
       });
+
+      newControllers.sort((a: any, b: any) => {
+        return a.id - b.id;
+      });
+      store.pjt.controllers = newControllers;
+
+      // if (controllerListResp.data) {
+      //   const newControllers: any[] = controllerListResp.data.map(
+      //     async (apiController: any) => {
+      //       // 각 컨트롤러의 상세 조회 api
+      //       const controllerDetailResp: any = await getApi(
+      //         `/apidocs/controllers/${apiController.apiControllerId}`,
+      //       );
+      //       const newObj = {
+      //         id: controllerDetailResp.data.apiControllerId,
+      //         name: controllerDetailResp.data.apiControllerName,
+      //         desc: controllerDetailResp.data.apiControllerDescription,
+      //         baseurl: controllerDetailResp.data.apiControllerBaseUrl,
+      //         responses: controllerDetailResp.data.apiResponses.map(
+      //           (api: any) => {
+      //             return {
+      //               id: api.apiId,
+      //               apiName: api.apiName,
+      //               methodName: api.apiMethodName,
+      //               url: api.apiUrl,
+      //               method: api.apiMethod,
+      //               code: api.apiCode === 'OK' ? 200 : 201,
+      //             };
+      //           },
+      //         ),
+      //       };
+      //       console.log(newObj);
+
+      //       return newObj;
+      //     },
+      //   );
+      //   const parsedControllers: any = [];
+      //   Promise.all(newControllers).then((res) => parsedControllers.push(res));
+
+      //   parsedControllers.sort((a: any, b: any) => {
+      //     return a.id - b.id;
+      //   });
+      //   console.log(parsedControllers);
+      //   store.pjt.controllers = parsedControllers;
+      // }
+
+      if (controllerListResp.data.length > 0) setControllerIdx(0);
     };
 
     getControllers();

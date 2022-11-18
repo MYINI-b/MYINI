@@ -43,6 +43,18 @@ public class ApiDocsServiceImpl implements ApiDocsService {
         return ApiControllerCreateResponse.from(apiController);
     }
 
+    // API컨트롤러정보 리스트 조회
+    @Override
+    public List<ApiControllerResponse> findApiControllerInfoList(Long projectId) {
+        Project findProject = projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+
+        List<ApiController> findApiControllerInfoList = apiDocsQueryRepository.findListByProjectId(findProject);
+        return findApiControllerInfoList.stream()
+                .map(apiController -> ApiControllerResponse.from(apiController))
+                .collect(Collectors.toList());
+    }
+
     // API컨트롤러 리스트 조회
     @Override
     public List<ApiControllerListResponse> findApiControllerList(Long projectId) {

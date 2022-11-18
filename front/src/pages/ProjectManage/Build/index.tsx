@@ -65,11 +65,11 @@ export default function Build({ pid, store }: Props) {
     Packaging: 'jar',
     Platform: '2.7.5.RELEASE',
     Type: 'gradle-project',
-    textGroup: 'springGroup',
+    textGroup: '',
     textArtifact: '',
     textName: '',
-    textDescription: 'springDescription',
-    textPackage: 'com.springGroupId.',
+    textDescription: '',
+    textPackage: 'com.',
     depDatas: ['web', 'jpa', 'lombok', 'devtools', 'validation'],
   });
   const {
