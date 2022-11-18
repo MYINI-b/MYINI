@@ -25,6 +25,13 @@ public class ApiDocsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
+    // API컨트롤러정보 리스트 조회
+    @GetMapping("/{projectid}/controllers/list")
+    public ResponseEntity<List<ApiControllerResponse>> findApiControllerInfoList(@PathVariable("projectid")Long projectId){
+        List<ApiControllerResponse> body = apiDocsService.findApiControllerInfoList(projectId);
+        return ResponseEntity.ok().body(body);
+    }
+
     // API컨트롤러 리스트 조회
     @GetMapping("/{projectid}/controllers")
     public ResponseEntity<List<ApiControllerListResponse>> findApiControllerList(@PathVariable("projectid")Long projectId){
