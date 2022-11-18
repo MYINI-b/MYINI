@@ -131,7 +131,7 @@ ResponseDTO에서 변수로 쓰일 객체형 DTO는 자료형 관리에서 생�
 
 ### 1. 원하는 버전에 맞춰 프로젝트 환경 설정
 
-<img src="asset/startspring.PNG" width="70%" height="70%"/>
+<img src="asset/startspring.PNG" width="60%" height="60%"/>
 
 - **Versions**
   - JVM(***Java Virtual Machine***) 버전
@@ -149,7 +149,7 @@ ResponseDTO에서 변수로 쓰일 객체형 DTO는 자료형 관리에서 생�
 
 ### 2. MVC코드 이니셜라이징
 
-<img src="asset/build.PNG" width="70%" height="70%"/>
+<img src="asset/build.PNG" width="60%" height="60%"/>
 
 ```bash
 💡 프로젝트를 다운받은 후 Settings or Preferences에서 **SDK와 자바 버전을 맞춰주세요.**

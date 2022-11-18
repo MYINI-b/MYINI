@@ -318,60 +318,7 @@ export default function ApiModal({
             await postApi(`/apidocs/${data.apiId}/querystrings`, body);
         });
 
-        // request 생성
-        const reqBody = {
-          dtoName: `${methodName}RequestDto`,
-          dtoType: 'REQUEST',
-          dtoIsList: dtoResponse[0].dtoIsList ? 'Y' : 'N',
-        };
-
-        // response 생성
-        const resBody = {
-          dtoName: `${methodName}ResponseDto`,
-          dtoType: 'RESPONSE',
-          dtoIsList: dtoResponse[1].dtoIsList ? 'Y' : 'N',
-        };
-
-        const reqDtoResp: any = await postApi(
-          `/apidocs/${data.apiId}/dtos`,
-          reqBody,
-        );
-        const resDtoResp: any = await postApi(
-          `/apidocs/${data.apiId}/dtos`,
-          resBody,
-        );
-
-        // request item 생성
-        reqItems.forEach(async (item) => {
-          const reqItemBody = {
-            dtoItemName: item.dtoItemName,
-            dtoClassType: item.dtoClassTypeId ? item.dtoClassTypeId : null,
-            dtoPrimitiveType: item.dtoPrimitiveTypeId
-              ? item.dtoPrimitiveTypeId
-              : null,
-            dtoIsList: item.dtoIsList ? 'Y' : 'N',
-          };
-          await postApi(
-            `/apidocs/${reqDtoResp.data.dtoId}/dtoitems`,
-            reqItemBody,
-          );
-        });
-
-        // response item 생성
-        resItems.forEach(async (item) => {
-          const resItemBody = {
-            dtoItemName: item.dtoItemName,
-            dtoClassType: item.dtoClassTypeId ? item.dtoClassTypeId : null,
-            dtoPrimitiveType: item.dtoPrimitiveTypeId
-              ? item.dtoPrimitiveTypeId
-              : null,
-            dtoIsList: item.dtoIsList ? 'Y' : 'N',
-          };
-          await postApi(
-            `/apidocs/${resDtoResp.data.dtoId}/dtoitems`,
-            resItemBody,
-          );
-        });
+        createNewDto(data.apiId);
 
         const parsedObj = {
           id: newApiObj.apiId,
@@ -431,23 +378,80 @@ export default function ApiModal({
       ...store.pjt.controllers[controllerIdx].responses[apiRowIdx],
     };
     const dupApiObj = {
-      apiName: copyObj.apiName,
-      apiDescription: copyObj.desc,
-      apiUrl: copyObj.url,
-      apiMethod: copyObj.method,
-      apiCode: copyObj.code,
-      apiMethodName: copyObj.methodName,
+      apiName,
+      apiDescription: apiDesc,
+      apiUrl,
+      apiMethod,
+      apiCode,
+      apiMethodName: methodName,
     };
+    // api생성
     const { data }: any = await postApi(
       `/apidocs/${store.pjt.controllers[controllerIdx].id}/apis`,
       { ...dupApiObj, apiCode: dupApiObj.apiCode === 200 ? 'OK' : 'CREATED' },
     );
 
+    createNewDto(data.apiId);
+
     copyObj.id = data.apiId;
     store.pjt.controllers[controllerIdx].responses.push(copyObj);
 
     closeModal();
-  }, [apiRowIdx]);
+  }, [apiRowIdx, apiName, apiDesc, apiUrl, apiMethod, apiCode, methodName]);
+
+  const createNewDto = useCallback(
+    async (apiId: number) => {
+      // request 생성
+      const reqBody = {
+        dtoName: `${methodName}RequestDto`,
+        dtoType: 'REQUEST',
+        dtoIsList: dtoResponse[0].dtoIsList ? 'Y' : 'N',
+      };
+
+      // response 생성
+      const resBody = {
+        dtoName: `${methodName}ResponseDto`,
+        dtoType: 'RESPONSE',
+        dtoIsList: dtoResponse[1].dtoIsList ? 'Y' : 'N',
+      };
+
+      const reqDtoResp: any = await postApi(`/apidocs/${apiId}/dtos`, reqBody);
+      const resDtoResp: any = await postApi(`/apidocs/${apiId}/dtos`, resBody);
+
+      // request item 생성
+      reqItems.forEach(async (item) => {
+        const reqItemBody = {
+          dtoItemName: item.dtoItemName,
+          dtoClassType: item.dtoClassTypeId ? item.dtoClassTypeId : null,
+          dtoPrimitiveType: item.dtoPrimitiveTypeId
+            ? item.dtoPrimitiveTypeId
+            : null,
+          dtoIsList: item.dtoIsList ? 'Y' : 'N',
+        };
+        await postApi(
+          `/apidocs/${reqDtoResp.data.dtoId}/dtoitems`,
+          reqItemBody,
+        );
+      });
+
+      // response item 생성
+      resItems.forEach(async (item) => {
+        const resItemBody = {
+          dtoItemName: item.dtoItemName,
+          dtoClassType: item.dtoClassTypeId ? item.dtoClassTypeId : null,
+          dtoPrimitiveType: item.dtoPrimitiveTypeId
+            ? item.dtoPrimitiveTypeId
+            : null,
+          dtoIsList: item.dtoIsList ? 'Y' : 'N',
+        };
+        await postApi(
+          `/apidocs/${resDtoResp.data.dtoId}/dtoitems`,
+          resItemBody,
+        );
+      });
+    },
+    [dtoResponse],
+  );
 
   return (
     <section className="modal-empty" onClick={closeModal}>
