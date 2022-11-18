@@ -171,6 +171,15 @@ export default function ApiModal({
           x.sid ===
             store.pjt.controllers[controllerIdx].responses[apiRowIdx].id,
       );
+
+      store.pjt.editors.splice(findIdx, 1);
+    } else {
+      // 새로 생성하는 api면
+      const findIdx = store.pjt.editors.findIndex(
+        (x: any) =>
+          x.space === 'API' && x.name === `controller${controllerIdx}`,
+      );
+
       store.pjt.editors.splice(findIdx, 1);
     }
     setIsApiModalOpen(false);

@@ -25,25 +25,37 @@ export default function APIList({ store, controllerIdx }: Props) {
     (state: RootState) => state.member,
   );
 
-  const onApiRowClick = useCallback((idx: number, aid: number) => {
-    const findIdx = store.pjt.editors.findIndex(
-      (x: any) => x.space === 'API' && x.sid === aid,
-    );
-    if (aid !== 0 && findIdx >= 0) {
-      setAlertText('한 번에 한 명의 유저만이 편집할 수 있는 설정입니다.');
-      return;
-    }
-    setApiRowIdx(idx);
-    setIsApiModalOpen(true);
-    if (idx !== -1)
-      store.pjt.editors.push({
-        id: memberId,
-        space: 'API',
-        sid: aid,
-        img: memberProfileImg,
-        name: memberNickname,
-      });
-  }, []);
+  const onApiRowClick = useCallback(
+    (idx: number, aid: number) => {
+      const findIdx = store.pjt.editors.findIndex(
+        (x: any) => x.space === 'API' && x.sid === aid,
+      );
+      if (aid !== 0 && findIdx >= 0) {
+        setAlertText('한 번에 한 명의 유저만이 편집할 수 있는 설정입니다.');
+        return;
+      }
+      setApiRowIdx(idx);
+      setIsApiModalOpen(true);
+      if (idx !== -1)
+        store.pjt.editors.push({
+          id: memberId,
+          space: 'API',
+          sid: aid,
+          img: memberProfileImg,
+          name: memberNickname,
+        });
+      else if (idx === -1)
+        store.pjt.editors.push({
+          id: memberId,
+          space: 'API',
+          sid: aid,
+          img: memberProfileImg,
+          name: `controller${store.pjt.controllers[controllerIdx].id}`,
+        });
+      console.log(store.pjt.controllers[controllerIdx].id);
+    },
+    [controllerIdx],
+  );
 
   return (
     <section className="apilist-container">
