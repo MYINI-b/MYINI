@@ -202,12 +202,14 @@
       .card-body-header{
         padding-top: 20px;
         margin: 0px 20px 10px 20px;
+        cursor:pointer;
         @include ELLIPSIS-LINE(1);
       }
     
       .card-body-context {
         opacity: 0;
         color: #757B82;
+        cursor:pointer;
         line-height: 25px;
         -webkit-transition: .2s ease-in-out; /*사파리&크롬*/
         -moz-transition: .2s ease-in-out; /*파이어폭스*/
