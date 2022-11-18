@@ -43,6 +43,9 @@ export default function ImportanceModal({
     modalContainer.current.style.left = `${clickElementPos.x}px`;
     modalContainer.current.style.top = `${clickElementPos.y}px`;
     modalContainer.current.style.width = `${clickElementPos.width}px`;
+    if (clickElementPos.y + 160 >= window.innerHeight - 30) {
+      modalContainer.current.style.top = `${clickElementPos.y - 164}px`;
+    }
   }, [clickElementPos]);
 
   return (
