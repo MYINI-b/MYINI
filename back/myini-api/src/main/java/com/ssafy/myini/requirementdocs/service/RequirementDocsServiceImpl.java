@@ -1,9 +1,7 @@
 package com.ssafy.myini.requirementdocs.service;
 
 import com.ssafy.myini.ExistException;
-import com.ssafy.myini.JiraException;
 import com.ssafy.myini.NotFoundException;
-import com.ssafy.myini.jira.JiraApi;
 import com.ssafy.myini.member.domain.Member;
 import com.ssafy.myini.member.domain.MemberRepository;
 import com.ssafy.myini.project.domain.Project;
@@ -19,7 +17,6 @@ import com.ssafy.myini.requirementdocs.response.RequirementCategoryListResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementCreateResponse;
 import com.ssafy.myini.requirementdocs.response.RequirementListResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +48,6 @@ public class RequirementDocsServiceImpl implements RequirementDocsService{
         Project findProject = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(NotFoundException.PROJECT_NOT_FOUND));
         Requirement requirement = Requirement.createRequirement(findProject);
         requirementRepository.save(requirement);
-        System.out.println("requirement.getRequirementId() = " + requirement.getRequirementId());
         return RequirementCreateResponse.from(requirement);
     }
 

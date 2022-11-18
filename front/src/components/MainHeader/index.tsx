@@ -5,7 +5,8 @@ import './style.scss';
 import Stepper from 'components/Stepper';
 
 // redux
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { Profile } from 'modules/member';
 
 // 3rd party
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,6 +21,7 @@ interface Props {
 }
 export default function MainHeader({ needStepper, step, setStep }: Props) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [alertText, setAlertText] = useState('');
 
   const myProfile: any = useSelector(
@@ -29,6 +31,8 @@ export default function MainHeader({ needStepper, step, setStep }: Props) {
   // logout func
   const getLogout = () => {
     window.localStorage.removeItem('accessToken');
+    dispatch(Profile('', -1, '', '', 0, ''));
+    alert('정상적으로 로그아웃되었습니다.');
     setAlertText('로그아웃 되었습니다!');
     // navigate('/');
   };
@@ -74,6 +78,9 @@ export default function MainHeader({ needStepper, step, setStep }: Props) {
           <Link to="/main">
             <p>홈</p>
           </Link>
+          <a href="https://k7b203.p.ssafy.io/" target="_blank" rel="noreferrer">
+            <p>공식홈페이지</p>
+          </a>
           <p onClick={getLogout}>로그아웃</p>
         </div>
       </div>

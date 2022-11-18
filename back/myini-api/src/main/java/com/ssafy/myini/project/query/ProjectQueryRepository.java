@@ -1,11 +1,9 @@
 package com.ssafy.myini.project.query;
 
 
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.myini.member.domain.Member;
 import com.ssafy.myini.member.domain.MemberProject;
-import com.ssafy.myini.project.domain.Project;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

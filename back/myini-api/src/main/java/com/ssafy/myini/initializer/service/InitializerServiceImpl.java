@@ -43,7 +43,7 @@ public class InitializerServiceImpl implements InitializerService {
     @Override
     public InitializerPossibleResponse initializerIsPossible(Long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
-        //API명세서 체크
+
         return new InitializerPossibleResponse(true, "빌드가능");
     }
 
@@ -86,7 +86,7 @@ public class InitializerServiceImpl implements InitializerService {
             projectInfoListResponses.forEach(projectInfoListResponse -> ServiceImplWrite.serviceImplWrite(projectInfoListResponse, initializerRequest));
 
             // dto 생성
-            projectInfoListResponses.forEach(projectInfoListResponse -> DtoWrite.dtoWrite(project, initializerRequest));
+            DtoWrite.dtoWrite(project, initializerRequest);
 
             // test 코드 수정
             FileUtil.deletefolder(FileUtil.basePath + "/" + initializerRequest.getSpringName() + "/src/test");
@@ -195,12 +195,34 @@ public class InitializerServiceImpl implements InitializerService {
                                 ServiceWrite.servicePreview(projectInfoListResponse, initializerRequest)));
             });
             // dto
-            project.getDtos().forEach(dto -> {
-                previewResponses.add(
-                        new PreviewResponse("dto",
-                                dto.getDtoName() + ".java",
-                                DtoWrite.dtoPreview(dto, initializerRequest)));
-            });
+            project.getDtos().forEach(
+                    dto -> {
+                        if (!dto.getDtoItemChildren().isEmpty()) {
+                            previewResponses.add(
+                                    new PreviewResponse("dto",
+                                            dto.getDtoName() + ".java",
+                                            DtoWrite.dtoPreview(dto, initializerRequest)));
+                        }
+                    }
+            );
+            project.getApiControllers().forEach(
+                    apiController -> {
+                        apiController.getApis().forEach(
+                                api -> {
+                                    api.getDtos().forEach(
+                                            dto -> {
+                                                if (!dto.getDtoItemChildren().isEmpty()) {
+                                                    previewResponses.add(
+                                                            new PreviewResponse("dto",
+                                                                    dto.getDtoName() + ".java",
+                                                                    DtoWrite.dtoPreview(dto, initializerRequest)));
+                                                }
+                                            }
+                                    );
+                                }
+                        );
+                    }
+            );
 
             // erd 파일 삭제
             reader.close();
@@ -220,7 +242,7 @@ public class InitializerServiceImpl implements InitializerService {
 
     @Override
     public ByteArrayOutputStream myIniDownload() {
-        ByteArrayOutputStream byteArrayOutputStream = s3Uploader.downloadFile("front Setup 0.1.0.exe");
+        ByteArrayOutputStream byteArrayOutputStream = s3Uploader.downloadFile("myini 0.1.0.exe");
 
         return byteArrayOutputStream;
     }

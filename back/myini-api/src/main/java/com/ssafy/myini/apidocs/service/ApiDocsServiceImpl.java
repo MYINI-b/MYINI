@@ -8,14 +8,12 @@ import com.ssafy.myini.apidocs.response.*;
 import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.ssafy.myini.NotFoundException.*;
 
@@ -43,6 +41,18 @@ public class ApiDocsServiceImpl implements ApiDocsService {
         ApiController apiController = ApiController.createApiController(request.getApiControllerName(), request.getApiControllerBaseUrl(), request.getApiControllerDescription(), findProject);
         apiControllerRepository.save(apiController);
         return ApiControllerCreateResponse.from(apiController);
+    }
+
+    // API컨트롤러정보 리스트 조회
+    @Override
+    public List<ApiControllerResponse> findApiControllerInfoList(Long projectId) {
+        Project findProject = projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
+
+        List<ApiController> findApiControllerInfoList = apiDocsQueryRepository.findListByProjectId(findProject);
+        return findApiControllerInfoList.stream()
+                .map(apiController -> ApiControllerResponse.from(apiController))
+                .collect(Collectors.toList());
     }
 
     // API컨트롤러 리스트 조회

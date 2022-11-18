@@ -522,7 +522,6 @@ public class JiraApi {
                 requirement.updateJiraIssueId(responseId2);
             }
         }
-//        System.out.println("지라결과 : "+s);
     }
 
     private static boolean isExist(Requirement requirement, String jiraDomain, String jiraApiKey, String jiraId) throws

@@ -13,20 +13,22 @@ import java.nio.file.Paths;
 
 public class InitProjectDownload {
     public static void initProject(InitializerRequest initializerRequest) {
+        System.out.println("initializerRequest.getSpringJvmVersion() = " + initializerRequest.getSpringJvmVersion());
+        System.out.println("initializerRequest.getSpringPlatformVersion() = " + initializerRequest.getSpringPlatformVersion());
         String address = "https://start.spring.io/starter.zip?" +
                 "type=" + initializerRequest.getSpringType() + "&" +
                 "language=" + initializerRequest.getSpringLanguage() + "&" +
-                "platformVersion=" + initializerRequest.getSpringPlatformVersion() + "&" +
+                "bootVersion=" + initializerRequest.getSpringPlatformVersion() + "&" +
                 "packaging=" + initializerRequest.getSpringPackaging() + "&" +
-                "jvmVersion=" + initializerRequest.getSpringJvmVersion() + "&" +
+                "javaVersion=" + initializerRequest.getSpringJvmVersion() + "&" +
                 "groupId=" + initializerRequest.getSpringGroupId() + "&" +
                 "artifactId=" + initializerRequest.getSpringArtifactId() + "&" +
                 "name=" + initializerRequest.getSpringName() + "&" +
                 "description=" + initializerRequest.getSpringDescription().replaceAll(" ", "+") + "&" +
                 "packageName=" + initializerRequest.getSpringPackageName() + "&" +
                 "dependencies=" + initializerRequest.getSpringDependencyName();
-        System.out.println("address = " + address);
 
+        System.out.println("address = " + address);
         try {
             //이미 만들어진게 있다면 삭제
             FileUtil.deletefolder(FileUtil.basePath + initializerRequest.getSpringName() + "/");

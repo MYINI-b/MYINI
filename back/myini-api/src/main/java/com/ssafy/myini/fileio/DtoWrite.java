@@ -64,7 +64,7 @@ public class DtoWrite {
                 .append("@Data\n")
                 .append("@NoArgsConstructor\n")
                 .append("@AllArgsConstructor\n")
-                .append("public class ").append(dto.getDtoName()).append(" {\n");
+                .append("public class ").append(FileUtil.firstIndexToUpperCase(dto.getDtoName())).append(" {\n");
 
         contents.append(body);
         FileUtil.appendTab(contents, depth);
@@ -87,9 +87,11 @@ public class DtoWrite {
                             api -> {
                                 api.getDtos().forEach(
                                         dto -> {
-                                            String type = String.valueOf(dto.getDtoType());
-                                            String path = (type.equals("REQUEST")) ? "request" : "response";
-                                            FileUtil.fileWrite(initializerRequest, dtoPreview(dto, initializerRequest), path, FileUtil.firstIndexToUpperCase(dto.getDtoName().trim()));
+                                            if (!dto.getDtoItemChildren().isEmpty()) {
+                                                String type = String.valueOf(dto.getDtoType());
+                                                String path = (type.equals("REQUEST")) ? "request" : "response";
+                                                FileUtil.fileWrite(initializerRequest, dtoPreview(dto, initializerRequest), path, FileUtil.firstIndexToUpperCase(dto.getDtoName().trim()));
+                                            }
                                         }
                                 );
                             }

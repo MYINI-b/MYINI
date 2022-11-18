@@ -19,23 +19,26 @@ export default function More() {
         </h4>
         <ul className="docs-content-email">
           <li>
-            ● 김갑경 : <a href="rkarud1324@naver.com">rkarud1324@naver.com</a>
+            ● 김갑경 :{' '}
+            <a href="mailto:rkarud1324@naver.com">rkarud1324@naver.com</a>
           </li>
           <li>
-            ● 김우빈 : <a href="rladnqls98@gmail.com">rladnqls98@gmail.com</a>
+            ● 김우빈 :{' '}
+            <a href="mailto:rladnqls98@gmail.com">rladnqls98@gmail.com</a>
           </li>
           <li>
-            ● 배건길 : <a href="roadcheers@gmail.com">roadcheers@gmail.com</a>
+            ● 배건길 :{' '}
+            <a href="mailto:roadcheers@gmail.com">roadcheers@gmail.com</a>
           </li>
           <li>
-            ● 이성재 : <a href="lsuksa1@naver.com">lsuksa1@naver.com</a>
+            ● 이성재 : <a href="mailto:lsuksa1@naver.com">lsuksa1@naver.com</a>
           </li>
           <li>
             ● 한다빈 :{' '}
-            <a href="gksekqls9808@naver.com">gksekqls9808@naver.com</a>
+            <a href="mailto:gksekqls9808@naver.com">gksekqls9808@naver.com</a>
           </li>
           <li>
-            ● 한윤석 : <a href="hys6078@naver.com">hys6078@naver.com</a>
+            ● 한윤석 : <a href="mailto:hys6078@naver.com">hys6078@naver.com</a>
           </li>
         </ul>
       </div>
