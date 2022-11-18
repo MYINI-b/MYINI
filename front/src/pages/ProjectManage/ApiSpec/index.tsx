@@ -64,7 +64,6 @@ export default function ApiSpec({ store, pid }: Props) {
         (edt: any) => edt.space === 'CONTROLLER' && edt.sid === cid,
       );
 
-      console.log(find);
       if (find) {
         setAlertText('한 번에 한 명의 유저만이 편집할 수 있는 설정입니다.');
         return;
