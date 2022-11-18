@@ -42,7 +42,10 @@ export default function CategoryListModal({
     modalContainer.current.style.left = `${clickElementPos.x}px`;
     modalContainer.current.style.top = `${clickElementPos.y}px`;
     modalContainer.current.style.minWidth = `${clickElementPos.width}px`;
-    console.log(store.pjt.jiraMembers);
+    const curHeight = Math.min(250, 16 + 28 * store.pjt.jiraMembers.length);
+    if (clickElementPos.y + curHeight >= window.innerHeight - 30) {
+      modalContainer.current.style.top = `${clickElementPos.y - curHeight}px`;
+    }
   }, [clickElementPos]);
 
   return (

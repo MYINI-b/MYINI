@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import Login from 'assets/login_btn.png';
+import { useNavigate } from 'react-router-dom';
 import logo from 'assets/icon.png';
 import './style.scss';
 
@@ -7,10 +9,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const moveToMain = () => {
     window.location.href =
       'https://k7b203.p.ssafy.io/oauth2/authorization/google';
   };
+
+  useEffect(() => {
+    if (localStorage.getItem('accessToken')) navigate('/main');
+  }, []);
 
   return (
     <div className="login-page">
