@@ -37,15 +37,12 @@ export default function DivisionModal({
     [store, idx, rowId],
   );
 
-  const t = store.pjt.rows[idx].division.length;
   useEffect(() => {
     modalContainer.current.style.left = `${clickElementPos.x}px`;
     modalContainer.current.style.top = `${clickElementPos.y}px`;
     modalContainer.current.style.width = `${clickElementPos.width}px`;
-    if (clickElementPos.y + 40 + t * 28 >= window.innerHeight - 30) {
-      modalContainer.current.style.top = `${
-        clickElementPos.y - (t * 28 + 80)
-      }px`;
+    if (clickElementPos.y + 80 >= window.innerHeight - 30) {
+      modalContainer.current.style.top = `${clickElementPos.y - 80}px`;
     }
   }, [clickElementPos]);
 
