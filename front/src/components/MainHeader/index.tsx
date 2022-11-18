@@ -32,7 +32,6 @@ export default function MainHeader({ needStepper, step, setStep }: Props) {
   const getLogout = () => {
     window.localStorage.removeItem('accessToken');
     dispatch(Profile('', -1, '', '', 0, ''));
-    alert('정상적으로 로그아웃되었습니다.');
     setAlertText('로그아웃 되었습니다!');
     // navigate('/');
   };
