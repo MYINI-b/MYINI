@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Loading from 'components/Loading';
 import TimerModal from 'components/TimerModal';
+import Tooltip from 'components/Tooltip';
 import Modal from './Modal';
 import Accordion1 from './Accor';
 
@@ -95,24 +96,28 @@ export default function Build({ pid, store }: Props) {
     setSelectObj({ ...selectObj, [name]: id });
     store.pjt.Jvm = selectObj.Jvm;
   };
+
   const radioHandlerSelectLanguage = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { name, id } = e.target;
     setSelectObj({ ...selectObj, [name]: id });
   };
+
   const radioHandlerSelectPackaging = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { name, id } = e.target;
     setSelectObj({ ...selectObj, [name]: id });
   };
+
   const radioHandlerSelectPlatform = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { name, id } = e.target;
     setSelectObj({ ...selectObj, [name]: id });
   };
+
   const radioHandlerSelectType = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, id } = e.target;
     setSelectObj({ ...selectObj, [name]: id });
@@ -126,11 +131,13 @@ export default function Build({ pid, store }: Props) {
     console.log(ConfirmCode);
     setConfirmData(ConfirmCode.data);
     window.scrollTo({
-      top: parseInt(`${window.scrollY + 100}`, 10),
+      top: window.innerHeight,
       left: 0,
       behavior: 'smooth',
     });
+    setAlertText('빌드 완료! PREVIEW를 확인해주세요');
   };
+
   const downloadCode = async () => {
     setIsLoading(true);
     await axios({
@@ -181,16 +188,23 @@ export default function Build({ pid, store }: Props) {
     setSelectObj({
       ...selectObj,
       [name]: substr,
-      textPackage: `com.${substr}.${selectObj.textName}`,
+      textPackage: `com.${substr.length === 4 ? substr : `${substr}.`}${
+        selectObj.textName
+      }`,
     });
   };
   const handleTextArtifactNameArea = (e: any) => {
     const { name, value } = e.target;
+    console.log(selectObj.textGroup);
     setSelectObj({
       ...selectObj,
       textName: value,
       textArtifact: value,
-      textPackage: `com.${selectObj.textGroup}.${value}`,
+      textPackage: `com.${
+        selectObj.textGroup === ''
+          ? selectObj.textGroup
+          : `${selectObj.textGroup}.`
+      }${value}`,
     });
   };
 
@@ -220,7 +234,9 @@ export default function Build({ pid, store }: Props) {
                 <div className="container">
                   {initSelectJvmList ? (
                     <div className="radio-set">
-                      <div className="radio-title">Jvm Version</div>
+                      <Tooltip text="설치된 자바 버전과 일치시켜주세요!">
+                        <div className="radio-title">Jvm Version</div>
+                      </Tooltip>
                       <div className="radio-content-list">
                         {initSelectJvmList.map((items: any, index: number) => (
                           <p key={index} className="radio-content">
@@ -451,7 +467,7 @@ export default function Build({ pid, store }: Props) {
           </button>
         </form>
         <div className="confirm-code">
-          <div className="title-item">CONFIRM CODE</div>
+          <div className="title-item">PREVIEW</div>
           <Accordion1 confirmData={confirmData} />
           <button
             type="submit"
