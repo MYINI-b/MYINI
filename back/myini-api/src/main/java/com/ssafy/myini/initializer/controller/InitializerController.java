@@ -67,7 +67,7 @@ public class InitializerController {
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM) //.APPLICATION_OCTET_STREAM
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "front Setup 0.1.0.exe" + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "myini 0.1.0.exe" + "\"")
                 .body(byteArrayOutputStream.toByteArray());
     }
 
