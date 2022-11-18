@@ -31,6 +31,7 @@
     font-family: $eng-title;
     white-space: nowrap;
     text-overflow: ellipsis;
+    cursor: pointer;
     transition: 0.3s ease;
     @include FLEX-CENTER;
 

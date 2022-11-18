@@ -118,6 +118,9 @@ export default function CategoryListModal({
     modalContainer.current.style.left = `${clickElementPos.x}px`;
     modalContainer.current.style.top = `${clickElementPos.y}px`;
     modalContainer.current.style.width = `${clickElementPos.width}px`;
+    if (clickElementPos.y + 250 >= window.innerHeight - 30) {
+      modalContainer.current.style.top = `${clickElementPos.y - 250}px`;
+    }
   }, [clickElementPos]);
 
   return (

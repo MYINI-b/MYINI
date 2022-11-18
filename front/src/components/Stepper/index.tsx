@@ -15,6 +15,7 @@ export default function Stepper({ step, setStep }: Props) {
 
   const onPrevClick = useCallback(() => {
     if (step > 1) setStep((prev) => prev - 1);
+    else if (step === 1) navigate('/main');
   }, [setStep, step, navigate]);
 
   const onNextClick = useCallback(() => {
@@ -23,10 +24,7 @@ export default function Stepper({ step, setStep }: Props) {
 
   return (
     <section className="main-stepper-container">
-      <span
-        className={`stepper-arrow left ${step <= 1 && 'hide'}`}
-        onClick={onPrevClick}
-      />
+      <span className="stepper-arrow left" onClick={onPrevClick} />
 
       <div className="stepper-step-wrapper">
         <div className="step-div-wrapper">
