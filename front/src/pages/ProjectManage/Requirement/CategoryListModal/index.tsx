@@ -113,11 +113,17 @@ export default function CategoryListModal({
     },
     [store, idx],
   );
-
+  const t = store.pjt.categories.length;
   useEffect(() => {
     modalContainer.current.style.left = `${clickElementPos.x}px`;
     modalContainer.current.style.top = `${clickElementPos.y}px`;
     modalContainer.current.style.width = `${clickElementPos.width}px`;
+    if (clickElementPos.y + 40 + t * 28 >= window.innerHeight - 30) {
+      modalContainer.current.style.top = `${
+        clickElementPos.y - (t * 28 + 40)
+      }px`;
+    }
+    console.log(modalContainer.current.style.top);
   }, [clickElementPos]);
 
   return (
