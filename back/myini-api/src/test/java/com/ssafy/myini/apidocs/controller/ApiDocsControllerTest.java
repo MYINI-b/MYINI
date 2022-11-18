@@ -71,6 +71,48 @@ class ApiDocsControllerTest extends ControllerTest {
     }
 
     @Test
+    @DisplayName("API컨트롤러정보 리스트를 조회한다.")
+    void findApiControllerInfoList() throws Exception {
+        // given
+        given(apiDocsService.findApiControllerInfoList(any()))
+                .willReturn(Arrays.asList(TEST_API_CONTROLLER_RESPONSE));
+
+        // when
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/apidocs/{projectid}/controllers/list", ID)
+                        .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
+                        .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(Arrays.asList(TEST_API_CONTROLLER_RESPONSE))))
+                .andDo(document("api/apidocs/{projectid}/controllers/info/list",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
+                        ),
+                        pathParameters(
+                                parameterWithName("projectid").description("프로젝트 ID")
+                        ),
+                        responseFields(
+                                fieldWithPath("[]").type(JsonFieldType.ARRAY).description("결과 배열"),
+                                fieldWithPath("[].apiControllerId").type(JsonFieldType.NUMBER).description("Api Controller ID"),
+                                fieldWithPath("[].apiControllerName").type(JsonFieldType.STRING).description("Api Controller 이름"),
+                                fieldWithPath("[].apiControllerBaseUrl").type(JsonFieldType.STRING).description("Api Controller Base URL"),
+                                fieldWithPath("[].apiControllerDescription").type(JsonFieldType.STRING).description("Api Controller 설명"),
+                                fieldWithPath("[].apiResponses").type(JsonFieldType.ARRAY).description("API 조회 결과 배열"),
+                                fieldWithPath("[].apiResponses.[].apiId").type(JsonFieldType.NUMBER).description("Api ID"),
+                                fieldWithPath("[].apiResponses.[].apiName").type(JsonFieldType.STRING).description("Api 이름"),
+                                fieldWithPath("[].apiResponses.[].apiDescription").type(JsonFieldType.STRING).description("Api 설명"),
+                                fieldWithPath("[].apiResponses.[].apiUrl").type(JsonFieldType.STRING).description("Api URL"),
+                                fieldWithPath("[].apiResponses.[].apiMethod").type(JsonFieldType.STRING).description("Api Method"),
+                                fieldWithPath("[].apiResponses.[].apiCode").type(JsonFieldType.STRING).description("Api Code"),
+                                fieldWithPath("[].apiResponses.[].apiMethodName").type(JsonFieldType.STRING).description("Api 메서드 이름")
+                        )));
+
+
+        // then
+        then(apiDocsService).should(times(1)).findApiControllerInfoList(any());
+    }
+
+
+    @Test
     @DisplayName("API컨트롤러 리스트를 조회한다.")
     void findApiControllerList() throws Exception {
         // given
