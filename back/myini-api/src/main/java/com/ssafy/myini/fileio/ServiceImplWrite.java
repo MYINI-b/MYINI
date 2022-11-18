@@ -3,9 +3,7 @@ package com.ssafy.myini.fileio;
 import com.ssafy.myini.apidocs.response.*;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ServiceImplWrite {
     static StringBuilder serviceImplImportContents;
@@ -81,8 +79,10 @@ public class ServiceImplWrite {
             methodContents.append("(");
             // 1. PathVariable
             for (PathVariableResponse pathVariableResponse : apiInfoResponse.getPathVariableResponses()) {
-                methodContents.append(pathVariableResponse.getPathVariableType()).append(" ")
-                        .append(pathVariableResponse.getPathVariableKey()).append(",");
+                if (!pathVariableResponse.getPathVariableType().equals("NORMAL")) {
+                    methodContents.append(pathVariableResponse.getPathVariableType()).append(" ")
+                            .append(pathVariableResponse.getPathVariableKey()).append(",");
+                }
             }
             // 2. queryString
             for (QueryStringResponse queryStringResponse : apiInfoResponse.getQueryStringResponses()) {
@@ -91,7 +91,7 @@ public class ServiceImplWrite {
             }
             // 3. requestBody
             for (DtoResponse dtoResponse : apiInfoResponse.getDtoResponses()) {
-                if (dtoResponse.getDtoType().equals("REQUEST")) {
+                if (dtoResponse.getDtoType().equals("REQUEST") && !dtoResponse.getDtoItemResponses().isEmpty()) {
                     containRequest = true;
                     methodContents.append(FileUtil.firstIndexToUpperCase(dtoResponse.getDtoName()))
                             .append(" request");

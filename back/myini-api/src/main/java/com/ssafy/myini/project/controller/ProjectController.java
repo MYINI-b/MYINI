@@ -3,8 +3,6 @@ package com.ssafy.myini.project.controller;
 import com.ssafy.myini.config.LoginMember;
 import com.ssafy.myini.member.domain.Member;
 import com.ssafy.myini.project.request.FindByMemberEmailRequest;
-import com.ssafy.myini.jira.request.UpdateJiraAccountRequest;
-import com.ssafy.myini.jira.request.UpdateJiraProjectRequest;
 import com.ssafy.myini.project.request.UpdateProjectRequest;
 import com.ssafy.myini.project.response.ProjectCreateResponse;
 import com.ssafy.myini.project.response.ProjectInfoResponse;
@@ -89,7 +87,6 @@ public class ProjectController {
     // 프로젝트 팀원 검색
     @PostMapping("/members")
     public ResponseEntity<List<ProjectMemberResponse>> findByMemberEmail(@RequestBody @Valid FindByMemberEmailRequest request){
-        System.out.println("request.getMemberEmail11() = " + request.getMemberEmail());
         List<ProjectMemberResponse> body = projectService.findByMemberEmail(request);
         return ResponseEntity.ok().body(body);
     }

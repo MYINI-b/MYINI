@@ -7,7 +7,6 @@ import com.ssafy.myini.initializer.response.PreviewResponse;
 import com.ssafy.myini.initializer.service.InitializerService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

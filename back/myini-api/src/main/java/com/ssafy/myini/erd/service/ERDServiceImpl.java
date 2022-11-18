@@ -1,6 +1,5 @@
 package com.ssafy.myini.erd.service;
 
-import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.erd.domain.entity.*;
 import com.ssafy.myini.erd.domain.repository.*;
 import com.ssafy.myini.erd.request.TableColumnUpdateRequest;
@@ -20,7 +19,6 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.net.URL;
