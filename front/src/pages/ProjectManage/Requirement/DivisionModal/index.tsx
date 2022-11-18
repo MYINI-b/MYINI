@@ -41,8 +41,8 @@ export default function DivisionModal({
     modalContainer.current.style.left = `${clickElementPos.x}px`;
     modalContainer.current.style.top = `${clickElementPos.y}px`;
     modalContainer.current.style.width = `${clickElementPos.width}px`;
-    if (clickElementPos.y + 80 >= window.innerHeight - 30) {
-      modalContainer.current.style.top = `${clickElementPos.y - 80}px`;
+    if (clickElementPos.y + 112 >= window.innerHeight - 30) {
+      modalContainer.current.style.top = `${clickElementPos.y - 112}px`;
     }
   }, [clickElementPos]);
 

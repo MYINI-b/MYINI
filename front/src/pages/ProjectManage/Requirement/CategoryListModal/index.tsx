@@ -119,16 +119,9 @@ export default function CategoryListModal({
     modalContainer.current.style.top = `${clickElementPos.y}px`;
     modalContainer.current.style.width = `${clickElementPos.width}px`;
 
-    if (clickElementPos.y + 40 + t * 28 >= window.innerHeight - 30 && t < 8) {
-      modalContainer.current.style.top = `${
-        clickElementPos.y - (t * 28 + 40)
-      }px`;
-    } else if (
-      clickElementPos.y + 40 + t * 28 >= window.innerHeight - 30 &&
-      t >= 8
-    ) {
-      modalContainer.current.style.top = `${clickElementPos.y - 250}px`;
-      console.log(modalContainer.current.style.top);
+    const curHeight = Math.min(250, 46 + 28 * store.pjt.categories.length);
+    if (clickElementPos.y + curHeight >= window.innerHeight - 30) {
+      modalContainer.current.style.top = `${clickElementPos.y - curHeight}px`;
     }
   }, [clickElementPos]);
 

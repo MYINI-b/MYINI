@@ -98,7 +98,7 @@ export default function ControllerAddModal({
           baseurl: `/${controllerBaseURL}`,
           responses: [],
         });
-        setControllerIdx(0);
+        setControllerIdx(store.pjt.controllers.length - 1);
       }
       closeModal();
     },
@@ -117,11 +117,12 @@ export default function ControllerAddModal({
     const { data }: any = await deleteApi(
       `/apidocs/controllers/${controllerId}`,
     );
+    const nextControllerIdx =
+      clickControllerIdx > 0 ? clickControllerIdx - 1 : 0;
 
-    console.log(data);
-
-    store.pjt.controllers.splice(clickControllerIdx, 1);
+    setControllerIdx(nextControllerIdx);
     closeModal();
+    store.pjt.controllers.splice(clickControllerIdx, 1);
   }, [store, clickControllerIdx]);
 
   return (
