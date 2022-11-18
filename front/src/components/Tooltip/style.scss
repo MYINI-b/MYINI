@@ -7,7 +7,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 10;
+    z-index: 99999;
     background-color: rgba(131, 131, 131, 0.5);
     @include STRETCH;
   }
@@ -22,7 +22,7 @@
     position: absolute;
     top: 50%;
     right: 0;
-    z-index: 11;
+    z-index: 100000;
     transform: translate(0, -50%);
     @include FLEX-CENTER;
 

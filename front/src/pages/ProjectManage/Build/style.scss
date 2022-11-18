@@ -105,7 +105,7 @@ $breakpoints: (
                   word-break: keep-all;
                   font-size: rem(16);
                   font-weight: bold;
-                  margin-right: rem(16);
+                  margin-right: rem(8);
                   @include FLEX-ALIGN-CENTER;
                   flex-shrink: 0;
                 }
@@ -113,6 +113,7 @@ $breakpoints: (
                   display:flex;
                   align-items: center;
                   flex-wrap: wrap;
+                  margin-left: rem(16);
                   width:100%;
                 }
                 .radio-content {
