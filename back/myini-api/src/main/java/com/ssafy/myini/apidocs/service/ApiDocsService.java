@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ApiDocsService {
     ApiControllerCreateResponse createApiController(Long projectId, CreateApiControllerRequest request);
+    List<ApiControllerResponse> findApiControllerInfoList(Long projectId);
     List<ApiControllerListResponse> findApiControllerList(Long projectId);
     ApiControllerResponse findByApiControllerId(Long apiControllerId);
     void updateApiController(Long apiControllerId, UpdateApiControllerRequest request);

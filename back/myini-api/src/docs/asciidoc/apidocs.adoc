@@ -26,6 +26,20 @@ include::{snippets}/api/apidocs/{projectid}/controllers/request-body.adoc[]
 ===== 응답
 include::{snippets}/api/apidocs/{projectid}/controllers/http-response.adoc[]
 
+==== (윤석 pick) API컨트롤러정보 리스트 조회 API
+===== 요청
+include::{snippets}/api/apidocs/{projectid}/controllers/info/list/http-request.adoc[]
+====== Header
+include::{snippets}/api/apidocs/{projectid}/controllers/info/list/request-headers.adoc[]
+====== Path
+include::{snippets}/api/apidocs/{projectid}/controllers/info/list/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/apidocs/{projectid}/controllers/info/list/http-response.adoc[]
+====== Body
+include::{snippets}/api/apidocs/{projectid}/controllers/info/list/response-fields.adoc[]
+
+
 ==== API컨트롤러 리스트 조회 API
 ===== 요청
 include::{snippets}/api/apidocs/{projectid}/controllers/list/http-request.adoc[]

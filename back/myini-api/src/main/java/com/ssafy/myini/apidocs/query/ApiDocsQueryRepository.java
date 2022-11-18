@@ -22,6 +22,14 @@ import static com.ssafy.myini.apidocs.domain.QQueryString.queryString;
 public class ApiDocsQueryRepository {
     private final JPAQueryFactory queryFactory;
 
+    public List<ApiController> findListByProjectId(Project findProject) {
+        return queryFactory
+                .selectFrom(apiController).distinct()
+                .leftJoin(apiController.apis, api).fetchJoin()
+                .where(apiController.project.eq(findProject))
+                .fetch();
+    }
+
     public ApiController findByApiControllerId(ApiController findApiController) {
         return queryFactory
                 .selectFrom(apiController).distinct()
