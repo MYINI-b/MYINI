@@ -8,18 +8,21 @@
 
 ### 1. 지라이메일 등록
 
-![account1](asset/account1.png)
+- Jira 계정관리에서 프로필 표시를 **공개**로 설정해주세요.
 
-![account2](asset/account2.png)
+<img src="asset/account1.png" width="70%" height="70%"/>
+
+<img src="asset/account2.png" width="70%" height="70%"/>
 
 ### 2. 프로젝트의 연동
 
-![api등록1.PNG](asset/apikey1.png)
+- Jira 계정관리에서 **JIRA API**키를 발급받고 **JIRA ID**, **JIRA Domain**과 함께 MYINI에 등록해주세요.
 
-![api등록2.PNG](assetc/apikey2.png)
+<img src="asset/apikey1.png" width="70%" height="70%"/>
 
+<img src="asset/apikey2.PNG" width="70%" height="70%"/>
 
-![domain](asset/domain.png)
+<img src="asset/domain1.png" width="70%" height="70%"/>
 
 ### 3. 요구사항 명세서 - 지라 스토리 매핑사항
 
@@ -38,7 +41,7 @@
 
 서비스 요구사항 기획에 따라 E-R Diagram(개체-관계 다이어그램)을 생성할 수 있습니다.
 
-만들어진 ERD정보를 바탕으로  해당 프로젝트의 Domain(Entity, Repository)이 생성됩니다.
+만들어진 ERD정보를 바탕으로 해당 프로젝트의 Domain(Entity, Repository)이 생성됩니다.
 
 **💡 myINI는 프로젝트를 이니셜라이징 할 때, Database는 MySQL과 JPA를 기준으로 생성됩니다.**
 
@@ -46,31 +49,38 @@
 ### 1. 테이블
 
 - 우클릭 후 “New Table”을 클릭해 테이블 생성
-- Pascal Case로 테이블명 작성
 
-  ![테이블.PNG](asset/table.png)
+<img src="asset/table.png" width="70%" height="70%"/>
 
+```bash
+💡 테이블명은 Pascal Case로 작성해주세요.
+ex) UserInfo
+```
 
 ### 2. 컬럼
 
-- Snake Case로 컬럼명 작성
+- 더블클릭해 컬럼명 작성
 
-![column](asset/column.png)
+<img src="asset/column.png" width="70%" height="70%"/>
+
+```bash
+💡 컬럼명은 Snake Case로 작성해주세요
+ex) user_info_id
+```
 
 ### 3. 제약조건
 
 - Not Null, Unique, Default, Auto Increment 제공
 - 우클릭 후 “Primary Key”를 클릭해 PK 지정
 
-![constraint](asset/constraint.png)
+<img src="asset/constraint.png" width="70%" height="70%"/>
 
 ### 4. 연관관계
 
 - 우클릭 후 “Relationship”를 클릭해 연관관계 설정
 - 연관짓는 테이블과 연관되는 테이블 클릭 후 관계설정
 
-![relation](asset/relation.png)
-
+<img src="asset/relation.png" width="70%" height="70%"/>
 
 💡 **더 자세한 이용방법은 [vuerd](https://github.com/vuerd/vuerd)에서 찾아보실 수 있습니다. (일부 기능 변형되어 다를 수 있음)**
 
@@ -86,47 +96,33 @@
 
 각 기능별로 API가 생성될 수 있도록 API Controller를 생성합니다. 이를 토대로 Controller.java가 생성됩니다.
 
-(화면 캡쳐)
+<img src="asset/apicontroller.png" width="70%" height="70%"/>
 
 ```bash
-💡 API Controller의 이름이 Controller.java의 이름으로 생성됩니다.   
-(예시) userController.java
-
-(유저컨트롤러 이미지)
+💡 API Controller는 Pascal Case로 작성해주세요.   
+ex) userController.java
 ```
 
-```bash
-📌 `MethodName`을 바탕으로 메소드가 생성되니, `MethodName`은 **Camel Case** 형식으로 작성해주세요
-```
 
 ### 2. API 생성
 
-기능에 필요한 API를 생성합니다. API별로 각각의 method가 생성됩니다.
+- 기능에 필요한 API를 생성합니다. API별로 각각의 method가 생성됩니다.
 
-(API 정보 입력 화면 캡쳐)
+<img src="asset/apicontext.png" width="70%" height="70%"/>
 
-### 3. API에 요구되는 Pathvariable, Querystring, Request / ResponseDTO들을 생성합니다.
+```bash
+💡 MethodName은 Camel Case로 작성해주세요.
+ex) updateUser
+```
 
-- Pathvariable과 Querystring은 API URL에 적용됩니다.
-
-(Pathvariable Querystring 생성 화면 캡쳐)
-
-- RequestBody ResponseBody는 생성될 API의 DTO로 생성됩니다.
-
-(RequestBody ResponseBody 생성화면 캡쳐)
-
-Response/Request DTO의 이름은 해당 `API 메서드 명 + Request/Response` 로 자동으로 생성됩니다.
-
-### 4. 사용자 정의 클래스 타입이 필요하다면 DTO를 생성할 수 있습니다.
+### 3. 사용자 정의 클래스 타입이 필요하다면 DTO를 생성할 수 있습니다.
 
 ResponseDTO에서 변수로 쓰일 객체형 DTO는 자료형 관리에서 생성할 수 있습니다.
 
-(화면 캡쳐)
-
+<img src="asset/apicustomdto.png" width="70%" height="70%"/>
 
 ```bash
-📌 주의사항 
-DTO 명을 타 DTO와 동일하게 생성하거나, DTO 내부의 변수를 등록하지 않으면 빌드 시 에러가 날 수 있습니다.
+💡 DTO 명을 타 DTO와 동일하게 생성하거나, DTO 내부의 변수를 등록하지 않으면 빌드 시 에러가 날 수 있습니다.
 ```
 ---
 
