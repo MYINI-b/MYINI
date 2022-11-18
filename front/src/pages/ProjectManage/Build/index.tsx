@@ -462,20 +462,22 @@ export default function Build({ pid, store }: Props) {
             ))}
           </div>
 
-          <button type="submit" className="build-project-button">
-            Build
-          </button>
+          <div className="build-project-button-wrapper">
+            <button type="submit" className="build-project-button">
+              PREVIEW
+            </button>
+            <button
+              type="submit"
+              className="build-project-button"
+              onClick={downloadCode}
+            >
+              Build Project
+            </button>
+          </div>
         </form>
         <div className="confirm-code">
           <div className="title-item">PREVIEW</div>
           <Accordion1 confirmData={confirmData} />
-          <button
-            type="submit"
-            className="build-project-button"
-            onClick={downloadCode}
-          >
-            Build Project
-          </button>
         </div>
       </div>
       {isLoading && <Loading />}

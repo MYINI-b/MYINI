@@ -306,14 +306,20 @@ $breakpoints: (
   }
 }
 
+.build-project-button-wrapper{
+  @include FLEX-CENTER;
+width:100%;
+}
+
 .build-project-button {
   border-radius: rem(8);
-  background-color: $primary;
+  background-color: $secondary;
   border: none;
   color: $white;
   font-size: rem(25);
   font-family: $eng-title;
-  width: 70%;
+  width: 45%;
+  height: 50px;
   transition: all 0.5s;
   box-shadow: 0 10px 20px -8px $light-gray;
   margin-top: rem(30);
@@ -321,6 +327,10 @@ $breakpoints: (
   position: relative;
   transition: all 0.2s linear 0s;
   @include FLEX-CENTER;
+}
+
+.build-project-button + .build-project-button{
+  margin-left: rem(50);
 }
 .build-project-button:after {
   content: '»';
@@ -331,6 +341,7 @@ $breakpoints: (
 .build-project-button:hover{
   padding-right: rem(50);
   padding-left: rem(8);
+  background-color: $primary;
 }
 .build-project-button:hover:after {
   opacity: 1;
