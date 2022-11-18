@@ -88,13 +88,20 @@ export default function TableRow({ row, idx, store, pid }: Props) {
   const openCategoryList = useCallback((e: any, isBlock: boolean) => {
     e.stopPropagation();
     setIsCategoryListOpen(true);
+    // setClickElementPos({
+    //   y: isBlock
+    //     ? e.target.parentElement.getBoundingClientRect().top + 40
+    //     : e.target.getBoundingClientRect().top + 40,
+    //   x: isBlock
+    //     ? e.target.parentElement.getBoundingClientRect().left
+    //     : e.target.getBoundingClientRect().left,
+    //   width: isBlock
+    //     ? e.target.parentElement.offsetWidth
+    //     : e.target.offsetWidth,
+    // });
     setClickElementPos({
-      y: isBlock
-        ? e.target.parentElement.getBoundingClientRect().top + 40
-        : e.target.getBoundingClientRect().top + 40,
-      x: isBlock
-        ? e.target.parentElement.getBoundingClientRect().left
-        : e.target.getBoundingClientRect().left,
+      y: e.clientY,
+      x: e.clientX,
       width: isBlock
         ? e.target.parentElement.offsetWidth
         : e.target.offsetWidth,
