@@ -38,6 +38,11 @@ export default function Header() {
             Repository
           </button>
         </a>
+        <Link to="/license">
+          <button type="button" className="nav-button">
+            License
+          </button>
+        </Link>
       </div>
     </div>
   );
