@@ -36,8 +36,9 @@ export default function ImportanceModal({
       store.pjt.rows[idx].importance = importance;
       setIsImportanceOpen(false);
     },
-    [store, idx],
+    [store, idx, rowId],
   );
+
   useEffect(() => {
     modalContainer.current.style.left = `${clickElementPos.x}px`;
     modalContainer.current.style.top = `${clickElementPos.y}px`;
@@ -46,10 +47,6 @@ export default function ImportanceModal({
       modalContainer.current.style.top = `${clickElementPos.y - 168}px`;
     }
   }, [clickElementPos]);
-
-  if (!store.pjt.rows[idx].importance) {
-    store.pjt.rows[idx].importance = 3;
-  }
 
   return (
     <div
