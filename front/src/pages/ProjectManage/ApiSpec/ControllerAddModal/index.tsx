@@ -9,6 +9,7 @@ import useNoSpaceInput from 'hooks/useNoSpaceInput';
 import Tooltip from 'components/Tooltip';
 import { deleteApi, postApi, putApi } from 'api';
 import './style.scss';
+import TextModal from 'components/TextModal';
 
 interface Props {
   setIsControllerAddModalOpen: Dispatch<React.SetStateAction<boolean>>;
@@ -29,6 +30,7 @@ export default function ControllerAddModal({
   const [controllerDesc, onControllerDescChange, setControllerDesc] =
     useInput('');
   const [controllerBaseURL, setControllerBaseURL] = useState('');
+  const [alertText, setAlertText] = useState('');
 
   useEffect(() => {
     if (clickControllerIdx >= 0) {
@@ -71,6 +73,8 @@ export default function ControllerAddModal({
       };
 
       if (clickControllerIdx >= 0) {
+        if (!canEdit()) return;
+
         const controllerId = store.pjt.controllers[clickControllerIdx].id;
         const { data }: any = await putApi(
           `/apidocs/controllers/${controllerId}`,
@@ -113,10 +117,11 @@ export default function ControllerAddModal({
   );
 
   const deleteController = useCallback(async () => {
+    if (!canEdit()) return;
+
     const controllerId = store.pjt.controllers[clickControllerIdx].id;
-    const { data }: any = await deleteApi(
-      `/apidocs/controllers/${controllerId}`,
-    );
+
+    await deleteApi(`/apidocs/controllers/${controllerId}`);
     const nextControllerIdx =
       clickControllerIdx > 0 ? clickControllerIdx - 1 : 0;
 
@@ -124,6 +129,28 @@ export default function ControllerAddModal({
     closeModal();
     store.pjt.controllers.splice(clickControllerIdx, 1);
   }, [store, clickControllerIdx]);
+
+  const canEdit = useCallback(() => {
+    const isFind = store.pjt.controllers[clickControllerIdx].responses.find(
+      (api: any) =>
+        store.pjt.editors.findIndex(
+          (edt: any) => edt.space === 'API' && edt.sid === api.id,
+        ) >= 0,
+    );
+    const isAdd =
+      store.pjt.editors.findIndex(
+        (edt: any) =>
+          edt.space === 'API' &&
+          edt.name ===
+            `controller${store.pjt.controllers[clickControllerIdx].id}`,
+      ) >= 0;
+
+    if ((isFind && isFind.id >= 0) || !!isAdd) {
+      setAlertText('현재 컨트롤러에서 편집중인 유저가 있습니다!');
+      return false;
+    }
+    return true;
+  }, [clickControllerIdx]);
 
   return (
     <section className="modal-empty" onClick={closeModal}>
@@ -182,6 +209,14 @@ export default function ControllerAddModal({
           )}
         </div>
       </form>
+
+      {!!alertText && (
+        <TextModal
+          text={alertText}
+          setText={setAlertText}
+          callback={closeModal}
+        />
+      )}
     </section>
   );
 }

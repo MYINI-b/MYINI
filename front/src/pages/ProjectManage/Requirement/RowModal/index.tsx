@@ -91,9 +91,9 @@ export default function RowModal({
         <p className="rowmodal-menu" onClick={addRow}>
           행 추가
         </p>
-        <p className="rowmodal-menu" onClick={duplicateRow}>
+        {/* <p className="rowmodal-menu" onClick={duplicateRow}>
           복제하기
-        </p>
+        </p> */}
       </div>
     </div>
   );
