@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { ROW } from 'types/Requirement';
-import { postApi } from 'api';
+import { postApi, putApi } from 'api';
 import TableRow from '../TableRow';
 
 interface Props {
@@ -14,6 +14,10 @@ interface Props {
 export default function RowList({ store, pid }: Props) {
   const addTableRow = useCallback(async () => {
     const { data }: any = await postApi(`/requirementdocs/${pid}/requirements`);
+    await putApi(
+      `/requirementdocs/requirements/${data.requirementId}/priorities`,
+      { requirementPriority: 3 },
+    );
     store.pjt.rows.push({
       category: '',
       requirement: '',
