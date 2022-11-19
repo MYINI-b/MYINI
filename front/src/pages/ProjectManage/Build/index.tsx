@@ -467,7 +467,7 @@ export default function Build({ pid, store }: Props) {
               PREVIEW
             </button>
             <button
-              type="submit"
+              type="button"
               className="build-project-button"
               onClick={downloadCode}
             >

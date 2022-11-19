@@ -35,7 +35,7 @@ export default function ProjectManage() {
       });
   const [store, setStore] = useState<any>(useSyncedStore(newStore));
   const [Awareness, setAwareness] = useState<any>(null);
-  const { memberNickname, memberProfileImg } = useSelector(
+  const { memberNickname, memberProfileImg, memberId } = useSelector(
     (state: RootState) => state.member,
   );
 
@@ -62,6 +62,21 @@ export default function ProjectManage() {
         const { awareness } = rtcProvider;
         setAwareness(awareness);
       }
+
+      if (store.pjt.editors) {
+        const editors = [...store.pjt.editors].map(
+          (edt: any) => edt.id !== memberId,
+        );
+        store.pjt.editors = editors;
+      }
+
+      window.addEventListener('beforeunload', () => {
+        const copyEditors = store.pjt.editors.map(
+          (edt: any) => edt.id !== memberId,
+        );
+        store.pjt.editors = copyEditors;
+        alert('end');
+      });
     };
 
     setReduxPid();
