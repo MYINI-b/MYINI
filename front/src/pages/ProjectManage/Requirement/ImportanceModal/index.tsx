@@ -36,7 +36,7 @@ export default function ImportanceModal({
       store.pjt.rows[idx].importance = importance;
       setIsImportanceOpen(false);
     },
-    [store, idx],
+    [store, idx, rowId],
   );
 
   useEffect(() => {
