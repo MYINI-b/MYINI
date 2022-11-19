@@ -171,6 +171,15 @@ export default function ApiModal({
           x.sid ===
             store.pjt.controllers[controllerIdx].responses[apiRowIdx].id,
       );
+
+      store.pjt.editors.splice(findIdx, 1);
+    } else {
+      // 새로 생성하는 api면
+      const findIdx = store.pjt.editors.findIndex(
+        (x: any) =>
+          x.space === 'API' && x.name === `controller${controllerIdx}`,
+      );
+
       store.pjt.editors.splice(findIdx, 1);
     }
     setIsApiModalOpen(false);
@@ -415,6 +424,8 @@ export default function ApiModal({
         dtoIsList: dtoResponse[1].dtoIsList ? 'Y' : 'N',
       };
 
+      console.log(reqBody, resBody);
+      console.log(reqItems, resItems);
       const reqDtoResp: any = await postApi(`/apidocs/${apiId}/dtos`, reqBody);
       const resDtoResp: any = await postApi(`/apidocs/${apiId}/dtos`, resBody);
 
@@ -450,7 +461,7 @@ export default function ApiModal({
         );
       });
     },
-    [dtoResponse],
+    [dtoResponse, reqItems, resItems, methodName],
   );
 
   return (
