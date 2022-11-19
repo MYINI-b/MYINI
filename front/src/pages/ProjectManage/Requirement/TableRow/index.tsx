@@ -159,14 +159,6 @@ export default function TableRow({ row, idx, store, pid }: Props) {
     setIsDescEdit(false);
   }, [store, row]);
 
-  const focusOutImport = useCallback(async () => {
-    const body = {
-      requirementPriority: store.pjt.rows[idx].importance,
-    };
-    await putApi(`/requirementdocs/requirements/${row.id}/storypoints`, body);
-    setIsPointEdit(false);
-  }, [store, row]);
-
   const focusOutPoint = useCallback(async () => {
     const body = {
       requirementStoryPoint: store.pjt.rows[idx].point,
