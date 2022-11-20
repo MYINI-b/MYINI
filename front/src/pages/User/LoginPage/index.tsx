@@ -7,10 +7,13 @@ import './style.scss';
 // 3rd party
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { patchApi } from 'api';
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const moveToMain = () => {
+  const moveToMain = async () => {
+    // await patchApi('/initializers/app&flag=true');
+
     window.location.href =
       'https://k7b203.p.ssafy.io/oauth2/authorization/google';
   };

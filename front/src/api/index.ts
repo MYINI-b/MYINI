@@ -23,7 +23,7 @@ export const getApi = async (url: string) => {
     return data;
   } catch (err) {
     console.log(err, '에러입니다.');
-    // alert('문제가 발생했습니다');
+
     return err;
   }
 };
@@ -34,7 +34,7 @@ export const postApi = async (url: string, body?: any) => {
     return data;
   } catch (err) {
     console.log(err);
-    // alert('문제가 발생했습니다');
+
     return err;
   }
 };
@@ -45,7 +45,7 @@ export const putApi = async (url: string, body?: any) => {
     return data;
   } catch (err) {
     console.log(err);
-    // alert('문제가 발생했습니다');
+
     return err;
   }
 };
@@ -56,7 +56,7 @@ export const deleteApi = async (url: string) => {
     return data;
   } catch (err) {
     console.log(err);
-    // alert('문제가 발생했습니다');
+
     return err;
   }
 };
@@ -67,7 +67,7 @@ export const patchApi = async (url: string, body?: any) => {
     return data;
   } catch (err) {
     console.log(err);
-    // alert('문제가 발생했습니다');
+
     return err;
   }
 };
@@ -78,7 +78,7 @@ export const multipartPatchApi = async (url: string, body?: any) => {
     return data;
   } catch (err) {
     console.log(err);
-    // alert('문제가 발생했습니다');
+
     return err;
   }
 };

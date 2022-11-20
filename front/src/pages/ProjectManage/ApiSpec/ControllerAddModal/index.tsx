@@ -80,7 +80,6 @@ export default function ControllerAddModal({
           `/apidocs/controllers/${controllerId}`,
           body,
         );
-        console.log(data);
 
         store.pjt.controllers[clickControllerIdx].name = controllerName;
         store.pjt.controllers[clickControllerIdx].desc = controllerDesc;

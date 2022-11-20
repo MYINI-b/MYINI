@@ -20,7 +20,6 @@ interface Props {
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }
 export default function MainHeader({ needStepper, step, setStep }: Props) {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [alertText, setAlertText] = useState('');
 
@@ -40,16 +39,10 @@ export default function MainHeader({ needStepper, step, setStep }: Props) {
     window.location.href = '/';
   };
 
-  // TODO: tokencheck
-  // const checkToken = () => {
-  //   if (
-  //     localStorage.getItem('accessToken') === null ||
-  //     localStorage.getItem('accessToken') === undefined
-  //   ) {
-  //     navigate('/');
-  //   }
-  // };
-  // checkToken();
+  const onDownClick = () => {
+    window.location.href =
+      'https://k7b203.p.ssafy.io/api/initializers/downloads';
+  };
 
   useEffect(() => {}, []);
 
@@ -80,6 +73,7 @@ export default function MainHeader({ needStepper, step, setStep }: Props) {
           <a href="https://k7b203.p.ssafy.io/" target="_blank" rel="noreferrer">
             <p>공식홈페이지</p>
           </a>
+          <p onClick={onDownClick}>앱 다운로드</p>
           <p onClick={getLogout}>로그아웃</p>
         </div>
       </div>

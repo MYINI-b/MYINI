@@ -52,7 +52,6 @@ export default function Setting({ store, pid }: Props) {
   useEffect(() => {
     const getProjectDetail = async () => {
       const { data }: any = await getApi(`/projects/${pid}`);
-      console.log(data, store, pid);
 
       if (store && pid !== '') {
         store.pjt.img = data.projectImg
@@ -105,7 +104,6 @@ export default function Setting({ store, pid }: Props) {
               `/projects/members/${pid}/jiras`,
             );
 
-            console.log(jiraResp);
             if (jiraResp.status === 200) {
               const jiraData = jiraResp.data.map((member: any) => {
                 return {

@@ -25,7 +25,6 @@ export default function ProjectImage({ store, pid, editProjectInfo }: Props) {
   const onTitleChange = useCallback(
     (e: any) => {
       store.pjt.title = e.target.value;
-      console.log(store.pjt.title);
     },
     [store],
   );

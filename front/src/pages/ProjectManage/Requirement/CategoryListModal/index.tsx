@@ -106,8 +106,6 @@ export default function CategoryListModal({
         body,
       );
 
-      console.log(data);
-
       store.pjt.rows[idx].category = { ...cat };
       closeCategoryList();
     },

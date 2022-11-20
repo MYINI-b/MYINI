@@ -67,7 +67,6 @@ function project(
         ...state.sessions,
         [action.payload.key]: action.payload.session,
       };
-      console.log(copySession);
       return {
         ...state,
         sessions: { ...copySession },

@@ -101,7 +101,6 @@ export default function ApiContentRight({
 
   useEffect(() => {
     dtoResponse.forEach((dtoItem: any) => {
-      console.log(dtoItem);
       if (dtoItem.dtoType === 'RESPONSE') {
         setResponse(dtoItem);
       } else {
