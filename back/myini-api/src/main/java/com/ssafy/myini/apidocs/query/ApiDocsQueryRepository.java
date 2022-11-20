@@ -6,7 +6,6 @@ import com.ssafy.myini.apidocs.domain.type.DtoType;
 import com.ssafy.myini.project.domain.Project;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StopWatch;
 
 
 import java.util.List;
@@ -22,6 +21,14 @@ import static com.ssafy.myini.apidocs.domain.QQueryString.queryString;
 @RequiredArgsConstructor
 public class ApiDocsQueryRepository {
     private final JPAQueryFactory queryFactory;
+
+    public List<ApiController> findListByProjectId(Project findProject) {
+        return queryFactory
+                .selectFrom(apiController).distinct()
+                .leftJoin(apiController.apis, api).fetchJoin()
+                .where(apiController.project.eq(findProject))
+                .fetch();
+    }
 
     public ApiController findByApiControllerId(ApiController findApiController) {
         return queryFactory

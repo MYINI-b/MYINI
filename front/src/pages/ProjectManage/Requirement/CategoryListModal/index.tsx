@@ -3,9 +3,12 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom';
 import { useCallback, Dispatch, useRef, useEffect, useState } from 'react';
 
+import { RootState } from 'modules/Reducers';
+import { useSelector } from 'react-redux';
 import './style.scss';
 import { deleteApi, postApi, putApi } from 'api';
 import { ELEMENTPOS, ROW, CATEGORY } from 'types/Requirement';
+import TimerModal from 'components/TimerModal';
 
 interface Props {
   closeCategoryList: () => void;
@@ -24,7 +27,8 @@ export default function CategoryListModal({
 }: Props) {
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
   const [categoryInput, setCategoryInput] = useState('');
-  const { pid } = useParams();
+  const [alertText, setAlertText] = useState('');
+  const { pid } = useSelector((state: RootState) => state.project);
 
   const deleteCategory = useCallback(
     async (e: any, idx: number, cat: CATEGORY) => {
@@ -44,7 +48,8 @@ export default function CategoryListModal({
         });
         store.pjt.categories.splice(idx, 1);
       } else {
-        alert(deleteResp.response.data.message);
+        setAlertText('이미 요구사항에서 사용하는 카테고리입니다.');
+        return;
       }
 
       closeCategoryList();
@@ -108,11 +113,16 @@ export default function CategoryListModal({
     },
     [store, idx],
   );
-
+  const t = store.pjt.categories.length;
   useEffect(() => {
     modalContainer.current.style.left = `${clickElementPos.x}px`;
     modalContainer.current.style.top = `${clickElementPos.y}px`;
     modalContainer.current.style.width = `${clickElementPos.width}px`;
+
+    const curHeight = Math.min(250, 46 + 28 * store.pjt.categories.length);
+    if (clickElementPos.y + curHeight >= window.innerHeight - 30) {
+      modalContainer.current.style.top = `${clickElementPos.y - curHeight}px`;
+    }
   }, [clickElementPos]);
 
   return (
@@ -152,6 +162,8 @@ export default function CategoryListModal({
             })}
         </div>
       </div>
+
+      {!!alertText && <TimerModal text={alertText} setText={setAlertText} />}
     </div>
   );
 }

@@ -1,10 +1,6 @@
 package com.ssafy.myini.requirementdocs.query;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.myini.member.domain.QMember;
-import com.ssafy.myini.requirementdocs.domain.QRequirement;
-import com.ssafy.myini.requirementdocs.domain.QRequirementCategory;
 import com.ssafy.myini.requirementdocs.domain.Requirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -20,11 +16,6 @@ public class RequirementDocsQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     public List<Requirement> findAllRequirement(Long projectId) {
-//        BooleanBuilder builder = new BooleanBuilder();
-//        if(requirement.requirementCategory != null){
-//            builder.
-//        }
-
 
         return queryFactory
                 .selectFrom(requirement)

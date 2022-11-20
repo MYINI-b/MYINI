@@ -1,52 +1,57 @@
-import { useEffect, useState } from 'react';
 import './style.scss';
-
 import { Link } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import defaultFile from 'assets/default-file.jpg';
 
 // types
 import { PROJECT_LIST } from 'types/main';
 
 // api
-import { getApi } from 'api';
+import { getApi, deleteApi } from 'api';
 
-export default function ProjectCard() {
-  const [myProjectList, getMyProject] = useState<PROJECT_LIST[]>([]);
+// 3rd party
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
-  useEffect(() => {
-    const fetchProject = async () => {
-      const getProjectDatas: any = await getApi(`/projects`);
-      getMyProject(getProjectDatas.data);
-    };
-    fetchProject();
+interface Props {
+  content: PROJECT_LIST;
+}
+export default function ProjectCard({ content }: Props) {
+  const deletePjt = async (pid: any) => {
+    const deletePjtData: any = await deleteApi(`projects/${pid}`);
+    deletePjtData();
+  };
+  const goProjectSetting = useCallback(() => {
+    window.location.href = `/project/${content.projectId}`;
   }, []);
-
   return (
-    <>
-      {myProjectList.map((content, idx) => {
-        return (
-          <div key={idx} className="card">
-            <Link to={`/project/${content.projectId}`}>
-              <div className="card-header">
-                <div className="card-header-title">{content.projectName}</div>
-                <div>{content.projectId}</div>
-              </div>
-              <div className="card-body">
-                <div className="card-body-header">
-                  <h1>{content.projectName}</h1>
-                </div>
-                <div className="card-body-context">
-                  {content.projectDescription}
-                  <div className="members">
-                    <div className="member" />
-                    <div className="member" />
-                    <div className="member" />
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
-        );
-      })}
-    </>
+    <div className="card" onClick={goProjectSetting}>
+      <div className="card-header">
+        {content.projectImg === null ? (
+          <img src={defaultFile} alt="" className="card-background-img" />
+        ) : (
+          <img
+            src={`https://myini.s3.ap-northeast-2.amazonaws.com/projectProfile/${content.projectImg}`}
+            alt=""
+            className="card-background-img"
+          />
+        )}
+        <div className="card-header-title">{content.projectName}</div>
+      </div>
+      <div className="card-body">
+        <div className="card-body-header">
+          <h1>{content.projectName}</h1>
+        </div>
+        <div className="card-body-context">{content.projectDescription}</div>
+      </div>
+    </div>
   );
 }
+
+/* <div className="card-body-footer">
+<FontAwesomeIcon
+  icon={faTrash}
+  onClick={() => deletePjt(content.projectId)}
+  className="card-body-delete"
+/>
+</div> */

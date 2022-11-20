@@ -1,8 +1,14 @@
 import './style.scss';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getApi } from 'api';
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import Loading from 'components/Loading';
+import TimerModal from 'components/TimerModal';
+import Tooltip from 'components/Tooltip';
 import Modal from './Modal';
 import Accordion1 from './Accor';
 
@@ -21,132 +27,143 @@ export type initDependenciesListType = {
 
 interface Props {
   pid: string;
+  store: any;
+}
+export interface selectObj {
+  Jvm: string;
+  Language: string;
+  Packaging: string;
+  Platform: string;
+  Type: string;
+  textGroup: string;
+  textArtifact: string;
+  textName: string;
+  textDescription: string;
+  textPackage: string;
+  depDatas: string[];
 }
 
-export default function Build({ pid }: Props) {
+export default function Build({ pid, store }: Props) {
   const [modalOpen, setModalOpen] = useState(false);
   const modalClose = () => {
     setModalOpen(!modalOpen);
   };
 
-  const [textGroup, setTextGroup] = useState('');
-  const [textArtifact, setTextArtifact] = useState('');
-  const [textName, setTextName] = useState('');
-  const [textDescription, setTextDescription] = useState('');
-  const [textPackage, setTextPackage] = useState('');
-  const [isChecked, setChecked] = useState(false);
   const [confirmData, setConfirmData] = useState([]);
-  const [buildStart, setBuildStart] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [alertText, setAlertText] = useState('');
 
-  const [initSelectJvm, setInitSelectJvm] = useState<string>('17');
   const [initSelectJvmList, setInitSelectJvmList] = useState([]);
-  const [initSelectLanguage, setInitSelectLanguage] = useState<string>('java');
   const [initSelectLanguageList, setInitSelectLanguageList] = useState([]);
-  const [initSelectPackaging, setInitSelectPackaging] = useState<string>('jar');
   const [initSelectPackagingList, setInitSelectPackagingList] = useState([]);
-  const [initSelectPlatform, setInitSelectPlatform] =
-    useState<string>('2.7.5.RELEASE');
   const [initSelectPlatformList, setInitSelectPlatformList] = useState([]);
-  const [initSelectType, setInitSelectType] =
-    useState<string>('gradle-project');
   const [initSelectTypeList, setInitSelectTypeList] = useState([]);
-  const [initDependencies, setInitDependencies] = useState<string>();
   const [initDependenciesList, setInitDependenciesList] = useState([]);
-  const [dependenciesData, setDependenciesData] = useState<string[]>([
-    'web',
-    'jpa',
-    'lombok',
-    'devtools',
-    'validation',
-  ]);
-  const getDependencies = () => {
-    setDependenciesData(dependenciesData);
+
+  const [selectObj, setSelectObj] = useState<selectObj>({
+    Jvm: '17',
+    Language: 'java',
+    Packaging: 'jar',
+    Platform: '2.7.5.RELEASE',
+    Type: 'gradle-project',
+    textGroup: '',
+    textArtifact: '',
+    textName: '',
+    textDescription: '',
+    textPackage: 'com.',
+    depDatas: ['web', 'jpa', 'lombok', 'devtools', 'validation'],
+  });
+  const {
+    Jvm,
+    Language,
+    Packaging,
+    Platform,
+    Type,
+    textGroup,
+    textArtifact,
+    textName,
+    textDescription,
+    textPackage,
+    depDatas,
+  } = selectObj;
+
+  const getDependencies = (newDepData: any[]) => {
+    setSelectObj({ ...selectObj, depDatas: newDepData });
   };
 
-  const radioHandlerSelectJvm = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setInitSelectJvm(event.target.id);
+  const radioHandlerSelectJvm = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
+    store.pjt.Jvm = selectObj.Jvm;
   };
+
   const radioHandlerSelectLanguage = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setInitSelectLanguage(event.target.id);
-  };
-  const radioHandlerSelectPackaging = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setInitSelectPackaging(event.target.id);
-  };
-  const radioHandlerSelectPlatform = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setInitSelectPlatform(event.target.id);
-  };
-  const radioHandlerSelectType = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setInitSelectType(event.target.id);
-  };
-  const radioHandlerDependencies = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setInitDependencies(event.target.value);
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
 
-  const ConfirmCodeData = {
-    springType: 'gradle-project',
-    springLanguage: 'java',
-    springPlatformVersion: '2.2.0.RELEASE',
-    springPackaging: 'jar',
-    springJvmVersion: '1.8',
-    springGroupId: 'com.example',
-    springArtifactId: 'demo',
-    springName: 'demo',
-    springDescription: 'Demo%20project%20for%20Spring%20Boot',
-    springPackageName: 'com.example.demo',
-    springDependencyName: 'web,jpa,lombok,devtools',
+  const radioHandlerSelectPackaging = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
   };
-  const getProjectDetail = async () => {
+
+  const radioHandlerSelectPlatform = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
+  };
+
+  const radioHandlerSelectType = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, id } = e.target;
+    setSelectObj({ ...selectObj, [name]: id });
+  };
+
+  const getProjectDetail = async (e: any) => {
+    e.preventDefault();
     const ConfirmCode: any = await getApi(
-      `https://k7b203.p.ssafy.io/api/initializers/${pid}/previews?springType=${initSelectType}&springLanguage=${initSelectLanguage}&springPlatformVersion=${initSelectPlatform}&springPackaging=${initSelectPackaging}&springJvmVersion=${initSelectJvm}&springGroupId=${textGroup}&springArtifactId=${textArtifact}&springName=${textName}&springDescription=${textDescription}&springPackageName=${textPackage}&springDependencyName=${dependenciesData}`,
+      `/initializers/${pid}/previews?springType=${selectObj.Type}&springLanguage=${selectObj.Language}&springPlatformVersion=${selectObj.Platform}&springPackaging=${selectObj.Packaging}&springJvmVersion=${selectObj.Jvm}&springGroupId=${selectObj.textGroup}&springArtifactId=${selectObj.textArtifact}&springName=${selectObj.textName}&springDescription=${selectObj.textDescription}&springPackageName=${selectObj.textPackage}&springDependencyName=${selectObj.depDatas}`,
     );
     console.log(ConfirmCode);
     setConfirmData(ConfirmCode.data);
+    window.scrollTo({
+      top: window.innerHeight,
+      left: 0,
+      behavior: 'smooth',
+    });
+    setAlertText('빌드 완료! PREVIEW를 확인해주세요');
   };
 
   const downloadCode = async () => {
+    setIsLoading(true);
     await axios({
-      url: `https://k7b203.p.ssafy.io/api/initializers/${pid}?springType=${initSelectType}&springLanguage=${initSelectLanguage}&springPlatformVersion=${initSelectPlatform}&springPackaging=${initSelectPackaging}&springJvmVersion=${initSelectJvm}&springGroupId=${textGroup}&springArtifactId=${textArtifact}&springName=${textName}&springDescription=${textDescription}&springPackageName=${textPackage}&springDependencyName=${dependenciesData}`,
+      url: `/initializers/${pid}?springType=${selectObj.Type}&springLanguage=${selectObj.Language}&springPlatformVersion=${selectObj.Platform}&springPackaging=${selectObj.Packaging}&springJvmVersion=${selectObj.Jvm}&springGroupId=${selectObj.textGroup}&springArtifactId=${selectObj.textArtifact}&springName=${selectObj.textName}&springDescription=${selectObj.textDescription}&springPackageName=${selectObj.textPackage}&springDependencyName=${selectObj.depDatas}`,
       method: 'GET',
       responseType: 'blob', // important
       data: 'data',
-    }).then((response) => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `${textName}.zip`);
-      document.body.appendChild(link);
-      link.click();
-    });
+    })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${store.pjt.textName}.zip`);
+        document.body.appendChild(link);
+        link.click();
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setIsLoading(false);
+        setAlertText('다운로드 중 에러가 발생했습니다!');
+      });
   };
-
-  // useEffect(() => {
-  //   const buildProcess = async () => {
-  //     const BuildSet: any = await getApi(
-  //       `https://k7b203.p.ssafy.io/api/initializers/3?springType=gradle-project&springLanguage=java&springPlatformVersion=2.2.0.RELEASE&springPackaging=jar&springJvmVersion=1.8&springGroupId=com.example&springArtifactId=demo&springName=aaa&springDescription=Demo%20project%20for%20Spring%20Boot&springPackageName=com.example.demo&springDependencyName=web,jpa,lombok,devtools`,
-  //     );
-  //     console.log(BuildSet);
-  //     // setConfirmData(BuildSet.data);
-  //   };
-  //   buildProcess();
-  // }, []);
 
   useEffect(() => {
     const initSettings = async () => {
-      const InitSet: any = await getApi(
-        `https://k7b203.p.ssafy.io/api/initializers/settings`,
-      );
+      const InitSet: any = await getApi(`/initializers/settings`);
       console.log(InitSet.data);
       setInitSelectJvmList(
         InitSet.data['single-select'].springJvmVersion.values,
@@ -165,150 +182,62 @@ export default function Build({ pid }: Props) {
     };
     initSettings();
   }, []);
-
   const handleTextGroupArea = (e: any) => {
-    setTextGroup(e.target.value);
+    const { name, value } = e.target;
+    const substr = value.substring(4);
+    setSelectObj({
+      ...selectObj,
+      [name]: substr,
+      textPackage: `com.${substr.length === 4 ? substr : `${substr}.`}${
+        selectObj.textName
+      }`,
+    });
   };
-  const handleTextArtifactArea = (e: any) => {
-    setTextArtifact(e.target.value);
+  const handleTextArtifactNameArea = (e: any) => {
+    const { name, value } = e.target;
+    console.log(selectObj.textGroup);
+    setSelectObj({
+      ...selectObj,
+      textName: value,
+      textArtifact: value,
+      textPackage: `com.${
+        selectObj.textGroup === ''
+          ? selectObj.textGroup
+          : `${selectObj.textGroup}.`
+      }${value}`,
+    });
   };
-  const handleTextNameArea = (e: any) => {
-    setTextName(e.target.value);
+
+  const handleTextPackage = (e: any) => {
+    const { name, value } = e.target;
+    setSelectObj({
+      ...selectObj,
+      textPackage: value,
+    });
   };
+
   const handleTextDescriptionArea = (e: any) => {
-    setTextDescription(e.target.value);
-  };
-  const handleTextPackageArea = (e: any) => {
-    setTextPackage(e.target.value);
+    const { name, value } = e.target;
+    setSelectObj({ ...selectObj, [name]: value });
   };
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    // alert(`${text}\nchecked? ${isChecked}`);
-  };
-  const accordionItems = [
-    {
-      title: 'Controller',
-      content: (
-        <div className="confirm-total">
-          {' '}
-          {confirmData.map((items: any, index: number) => (
-            <div key={index}>
-              {items.fileCategory === 'controller' ? (
-                <>
-                  <div className="confirm-title">{items.fileName}</div>
-                  <div className="confirm-content">{items.contents}</div>
-                </>
-              ) : (
-                <div />
-              )}
-            </div>
-          ))}
-        </div>
-      ),
-    },
-    {
-      title: 'Entity',
-      content: (
-        <div className="confirm-total">
-          {' '}
-          {confirmData.map((items: any, index: number) => (
-            <div key={index}>
-              {items.fileCategory === 'entity' ? (
-                <>
-                  <div className="confirm-title">{items.fileName}</div>
-                  <div className="confirm-content">{items.contents}</div>
-                </>
-              ) : (
-                <div />
-              )}
-            </div>
-          ))}
-        </div>
-      ),
-    },
-    {
-      title: 'Repository',
-      content: (
-        <div className="confirm-total">
-          {' '}
-          {confirmData.map((items: any, index: number) => (
-            <div key={index}>
-              {items.fileCategory === 'repository' ? (
-                <>
-                  <div className="confirm-title">{items.fileName}</div>
-                  <div className="confirm-content">{items.contents}</div>
-                </>
-              ) : (
-                <div />
-              )}
-            </div>
-          ))}
-        </div>
-      ),
-    },
-    {
-      title: 'Service',
-      content: (
-        <div className="confirm-total">
-          {' '}
-          {confirmData.map((items: any, index: number) => (
-            <div key={index}>
-              {items.fileCategory.slice(0, 7) === 'service' ? (
-                <>
-                  <div className="confirm-title">{items.fileName}</div>
-                  <div className="confirm-content">{items.contents}</div>
-                </>
-              ) : (
-                <div />
-              )}
-            </div>
-          ))}
-        </div>
-      ),
-    },
-    {
-      title: 'Dto',
-      content: (
-        <div className="confirm-total">
-          {' '}
-          {confirmData.map((items: any, index: number) => (
-            <div key={index}>
-              {items.fileCategory === 'dto' ? (
-                <>
-                  <div className="confirm-title">{items.fileName}</div>
-                  <div className="confirm-content">{items.contents}</div>
-                </>
-              ) : (
-                <div />
-              )}
-            </div>
-          ))}
-        </div>
-      ),
-    },
-  ];
-
-  // console.log(textGroup, 1);
-  // console.log(textArtifact, 2);
-  // console.log(textName, 3);
-  // console.log(textDescription, 4);
-  // console.log(textPackage, 5);
   return (
     <div className="build-container">
-      <h1 className="build-title">API 명세서</h1>
-      <h2 className="build-project-title">project name</h2>
+      <h1 className="build-title">PROJECT BUILD</h1>
+      <h2 className="build-project-title">{store && store.pjt.title}</h2>
       <div className="build-main">
-        <div className="init-container">
+        <form className="init-container" onSubmit={getProjectDetail}>
           <div className="title-item">INIT SETTING</div>
           <span className="tab-item" title="Spring Boot">
-            <div className="item-row">
-              <div className="button-item">
-                <div className="single-select">
-                  <div className="container">
-                    {initSelectJvmList ? (
-                      <div className="radio-set">
-                        <div className="radio-title">Jvm version</div>
+            <div className="button-item">
+              <div className="single-select">
+                <div className="container">
+                  {initSelectJvmList ? (
+                    <div className="radio-set">
+                      <Tooltip text="설치된 자바 버전과 일치시켜주세요!">
+                        <div className="radio-title">Jvm Version</div>
+                      </Tooltip>
+                      <div className="radio-content-list">
                         {initSelectJvmList.map((items: any, index: number) => (
                           <p key={index} className="radio-content">
                             <input
@@ -318,7 +247,7 @@ export default function Build({ pid }: Props) {
                               value={items.name}
                               id={items.id}
                               onChange={radioHandlerSelectJvm}
-                              checked={initSelectJvm === items.id}
+                              checked={selectObj.Jvm === items.id}
                             />
                             <label htmlFor={items.id} className="radio-field">
                               {items.name}
@@ -326,14 +255,16 @@ export default function Build({ pid }: Props) {
                           </p>
                         ))}
                       </div>
-                    ) : (
-                      <div />
-                    )}
-                  </div>
-                  <div className="container">
-                    {initSelectLanguageList ? (
-                      <div className="radio-set">
-                        <div className="radio-title">Language</div>
+                    </div>
+                  ) : (
+                    <div />
+                  )}
+                </div>
+                <div className="container">
+                  {initSelectLanguageList ? (
+                    <div className="radio-set">
+                      <div className="radio-title">Language</div>
+                      <div className="radio-content-list">
                         {initSelectLanguageList.map(
                           (items: any, index: number) => (
                             <p key={index} className="radio-content">
@@ -344,7 +275,7 @@ export default function Build({ pid }: Props) {
                                 value={items.name}
                                 id={items.id}
                                 onChange={radioHandlerSelectLanguage}
-                                checked={initSelectLanguage === items.id}
+                                checked={selectObj.Language === items.id}
                               />
                               <label htmlFor={items.id} className="radio-field">
                                 {items.name}
@@ -353,14 +284,16 @@ export default function Build({ pid }: Props) {
                           ),
                         )}
                       </div>
-                    ) : (
-                      <div />
-                    )}
-                  </div>
-                  <div className="container">
-                    {initSelectPackagingList ? (
-                      <div className="radio-set">
-                        <div className="radio-title">Packaging</div>
+                    </div>
+                  ) : (
+                    <div />
+                  )}
+                </div>
+                <div className="container">
+                  {initSelectPackagingList ? (
+                    <div className="radio-set">
+                      <div className="radio-title">Packaging</div>
+                      <div className="radio-content-list">
                         {initSelectPackagingList.map(
                           (items: any, index: number) => (
                             <p key={index} className="radio-content">
@@ -371,7 +304,7 @@ export default function Build({ pid }: Props) {
                                 value={items.name}
                                 id={items.id}
                                 onChange={radioHandlerSelectPackaging}
-                                checked={initSelectPackaging === items.id}
+                                checked={selectObj.Packaging === items.id}
                               />
                               <label htmlFor={items.id} className="radio-field">
                                 {items.name}
@@ -380,17 +313,19 @@ export default function Build({ pid }: Props) {
                           ),
                         )}
                       </div>
-                    ) : (
-                      <div />
-                    )}
-                  </div>
-                  <div className="container">
-                    {initSelectPlatformList ? (
-                      <div className="radio-set">
-                        <div className="radio-title">Platform Version</div>
+                    </div>
+                  ) : (
+                    <div />
+                  )}
+                </div>
+                <div className="container">
+                  {initSelectPlatformList ? (
+                    <div className="radio-set">
+                      <div className="radio-title">Platform Version</div>
+                      <div className="radio-content-list">
                         {initSelectPlatformList.map(
                           (items: any, index: number) => (
-                            <p key={index} className="radio-content">
+                            <p key={index} className="radio-content lines">
                               <input
                                 className="radio-input"
                                 type="radio"
@@ -398,7 +333,7 @@ export default function Build({ pid }: Props) {
                                 value={items.name}
                                 id={items.id}
                                 onChange={radioHandlerSelectPlatform}
-                                checked={initSelectPlatform === items.id}
+                                checked={selectObj.Platform === items.id}
                               />
                               <label htmlFor={items.id} className="radio-field">
                                 {items.name}
@@ -407,14 +342,16 @@ export default function Build({ pid }: Props) {
                           ),
                         )}
                       </div>
-                    ) : (
-                      <div />
-                    )}
-                  </div>
-                  <div className="container">
-                    {initSelectTypeList ? (
-                      <div className="radio-set">
-                        <div className="radio-title">Type</div>
+                    </div>
+                  ) : (
+                    <div />
+                  )}
+                </div>
+                <div className="container">
+                  {initSelectTypeList ? (
+                    <div className="radio-set">
+                      <div className="radio-title">Type</div>
+                      <div className="radio-content-list">
                         {initSelectTypeList.map((items: any, index: number) => (
                           <p key={index} className="radio-content">
                             <input
@@ -424,7 +361,7 @@ export default function Build({ pid }: Props) {
                               value={items.name}
                               id={items.id}
                               onChange={radioHandlerSelectType}
-                              checked={initSelectType === items.id}
+                              checked={selectObj.Type === items.id}
                             />
                             <label htmlFor={items.id} className="radio-field">
                               {items.name}
@@ -432,116 +369,120 @@ export default function Build({ pid }: Props) {
                           </p>
                         ))}
                       </div>
-                    ) : (
-                      <div />
-                    )}
-                  </div>
+                    </div>
+                  ) : (
+                    <div />
+                  )}
                 </div>
               </div>
             </div>
             <div className="metadata">Metadata</div>
             <div className="project-metadata">
               <div className="metadata-name">Group</div>
-              <form onSubmit={handleSubmit} className="submit-box">
-                <textarea
-                  className="text-box"
-                  rows={5}
-                  placeholder="com.example"
-                  onChange={handleTextGroupArea}
-                />
-              </form>
+              <input
+                type="text"
+                className="text-box"
+                placeholder="com.example"
+                onChange={handleTextGroupArea}
+                value={`com.${selectObj.textGroup}`}
+                name="textGroup"
+                required
+              />
             </div>
             <div className="project-metadata">
               <div className="metadata-name">Artifact</div>
-              <form onSubmit={handleSubmit} className="submit-box">
-                <textarea
-                  className="text-box"
-                  rows={5}
-                  placeholder="demo"
-                  onChange={handleTextArtifactArea}
-                />
-              </form>
+              <input
+                type="text"
+                className="text-box"
+                placeholder="springArtifactId"
+                onChange={handleTextArtifactNameArea}
+                value={selectObj.textArtifact}
+                name="textArtifact"
+                required
+              />
             </div>
             <div className="project-metadata">
               <div className="metadata-name">Name</div>
-              <form onSubmit={handleSubmit} className="submit-box">
-                <textarea
-                  className="text-box"
-                  rows={5}
-                  placeholder="demo"
-                  onChange={handleTextNameArea}
-                />
-              </form>
+              <input
+                type="text"
+                className="text-box"
+                placeholder="springName"
+                onChange={handleTextArtifactNameArea}
+                value={selectObj.textName}
+                name="textName"
+                required
+              />
             </div>
             <div className="project-metadata">
               <div className="metadata-name">Description</div>
-              <form onSubmit={handleSubmit} className="submit-box">
-                <textarea
-                  className="text-box"
-                  rows={5}
-                  placeholder="Demo project for Spring Boot"
-                  onChange={handleTextDescriptionArea}
-                />
-              </form>
+              <input
+                type="text"
+                className="text-box"
+                placeholder="Spring Description for Spring Boot"
+                onChange={handleTextDescriptionArea}
+                value={selectObj.textDescription}
+                name="textDescription"
+                required
+              />
             </div>
             <div className="project-metadata">
               <div className="metadata-name">Package name</div>
-              <form onSubmit={handleSubmit} className="submit-box">
-                <textarea
-                  className="text-box"
-                  rows={5}
-                  placeholder="com.example.demo"
-                  onChange={handleTextPackageArea}
-                />
-              </form>
+              <input
+                type="text"
+                className="text-box"
+                placeholder="com.example.demo"
+                name="textPackage"
+                onChange={handleTextPackage}
+                value={selectObj.textPackage}
+                required
+              />
             </div>
             <div className="dependency-container">
               <div className="dependency">Dependencies</div>
-              <button
-                type="button"
+              <FontAwesomeIcon
+                icon={faPlus}
                 onClick={modalClose}
                 className="dependency-button"
-              >
-                Add
-              </button>
+              />
             </div>
           </span>
           {modalOpen && initDependenciesList && (
             <Modal
               modalClose={modalClose}
               initDependenciesList={initDependenciesList}
-              dependenciesData={dependenciesData}
+              selectObj={selectObj}
               getDependencies={getDependencies}
             />
           )}
           <div className="dependency-items">
-            {dependenciesData &&
-              dependenciesData.map((dependencyData, idx) => (
-                <span key={idx} className="dependencies-data">
-                  {dependencyData}
-                </span>
-              ))}
+            {selectObj.depDatas.map((dependencyData, idx: number) => (
+              <span key={idx} className="dependencies-data">
+                {dependencyData}
+              </span>
+            ))}
           </div>
-          <button
-            type="submit"
-            className="build-project-button"
-            onClick={getProjectDetail}
-          >
-            Build
-          </button>
-        </div>
+
+          <div className="build-project-button-wrapper">
+            <button type="submit" className="build-project-button">
+              PREVIEW
+            </button>
+            <button
+              type="button"
+              className="build-project-button"
+              onClick={downloadCode}
+            >
+              Build Project
+            </button>
+          </div>
+        </form>
         <div className="confirm-code">
-          <div className="confirmcode-title">CONFIRM CODE</div>
-          <Accordion1 items={accordionItems} />
-          <button
-            type="submit"
-            className="build-project-button"
-            onClick={downloadCode}
-          >
-            Build Project
-          </button>
+          <div className="title-item">PREVIEW</div>
+          <Accordion1 confirmData={confirmData} />
         </div>
       </div>
+      {isLoading && <Loading />}
+
+      {!!alertText && <TimerModal text={alertText} setText={setAlertText} />}
     </div>
   );
 }

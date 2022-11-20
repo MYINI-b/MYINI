@@ -80,7 +80,7 @@ public class EntityWrite {
 
             depth++;
             //컬럼 작성
-            StringBuilder columnContents = columnWrite(columns);
+            StringBuilder columnContents = columnWrite(columns, relationships);
 //            //연관관계 작성
             StringBuilder relationContents = relationWrite(tableId, relationships, initializerRequest);
             depth--;
@@ -111,12 +111,15 @@ public class EntityWrite {
 
 
 
-    public static StringBuilder columnWrite(JSONArray columns){
+    public static StringBuilder columnWrite(JSONArray columns, JSONArray relationships){
         StringBuilder columnContents = new StringBuilder();
 
         //한 entity에 있는 컬럼 수만큼 돌기
         for (int i=0 ; i<columns.size() ; i++){
             JSONObject column = (JSONObject) columns.get(i);
+
+            //연관관계인 컬럼이면 건너뛰기
+            if(isRelationColumn(column, relationships)) continue;
 
             //컬럼 정보들
             String columnName = (String) column.get("name");
@@ -199,6 +202,20 @@ public class EntityWrite {
             }
         }
         return columnContents;
+    }
+
+    private static boolean isRelationColumn(JSONObject column, JSONArray relationships) {
+        for (int i=0 ; i<relationships.size() ; i++){
+            JSONObject relationship = (JSONObject) relationships.get(i);
+            JSONObject end = (JSONObject) relationship.get("end");
+            JSONArray columnIds = (JSONArray) end.get("columnIds");
+            for (int j = 0; j < columnIds.size(); j++) {
+                String columnId = (String) (columnIds.get(j));
+                if(columnId.equals((String) column.get("id"))) return true;
+            }
+
+        }
+        return false;
     }
 
     public static StringBuilder relationWrite(String tableId, JSONArray relationships, InitializerRequest initializerRequest){

@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import Header from 'component/Header';
+
 import './style.scss';
+import MyiniGuide from './MyiniGuide';
+import ContributeGuide from './ContributeGuide';
+import More from './More';
 
 export default function Docs() {
   const [docsStep, setDocsStep] = useState(0);
 
   return (
-    <div className="">
+    <div className="docs-container">
       <Header />
       <div className="docs-wrapper">
         <div className="docs-title-container">
@@ -31,35 +35,11 @@ export default function Docs() {
         </div>
         <div className="docs-content-container">
           {docsStep === 0 ? (
-            <div className="docs-content">
-              <h1>MYINI는 무엇을 제공해주나요?</h1>
-              <hr />
-              <div>이러이러한거 제공해줍니다.</div>
-            </div>
+            <MyiniGuide />
           ) : docsStep === 1 ? (
-            <div className="docs-content">
-              <h1>MYINI에 기여해보세요.</h1>
-              <hr />
-              <br />
-              <h3>시작하기 전</h3>
-              <br />
-              <span>
-                저희 MYINI는 올바른 오픈소스 문화를 토대로 컨트리부트를 진행하고
-                있습니다.
-              </span>
-              <span>
-                <a href="https://www.contributor-covenant.org/ko/version/1/4/code-of-conduct/">
-                  컨트리부트 행동강령
-                </a>
-                을 읽고 진행해주세요!
-              </span>
-              {/* <span>여기로 연락주세용~~~~</span> */}
-            </div>
+            <ContributeGuide />
           ) : (
-            <div className="docs-content">
-              <h1>혹시 사용 시 문제가 생기셨나요...?</h1>
-              <span>ㅁㄴ?ㅇ?ㅁㄴ?</span>
-            </div>
+            <More />
           )}
         </div>
       </div>

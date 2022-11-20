@@ -5,6 +5,7 @@ import { useState, useCallback, useRef } from 'react';
 import axios from 'axios';
 import './style.scss';
 import DefaultProfile from 'assets/default-profile.png';
+import { multipartPatchApi } from 'api';
 
 interface Props {
   store: any;
@@ -24,6 +25,7 @@ export default function ProjectImage({ store, pid, editProjectInfo }: Props) {
   const onTitleChange = useCallback(
     (e: any) => {
       store.pjt.title = e.target.value;
+      console.log(store.pjt.title);
     },
     [store],
   );
@@ -44,16 +46,8 @@ export default function ProjectImage({ store, pid, editProjectInfo }: Props) {
         // 이미지 정상적으로 불러오면 변경하기
         formData.append('projectImg', profileImg);
 
-        const dummyAccessToken =
-          'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiUk9MRSI6IlJPTEVfVVNFUiIsImlhdCI6MTY2NzI2NTcyMywiZXhwIjoxNjY3ODcwNTIzfQ.WSa3oFZmJtaXSdsMM0V46FgRFY53zP5E1sydiorQwgI';
-        const headers = {
-          headers: {
-            Authorization: `Bearer ${dummyAccessToken}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        };
+        await multipartPatchApi(`/projects/${pid}/images`, formData);
 
-        await axios.patch(`/projects/${pid}/images`, formData, headers);
         if (reader.result && typeof reader.result === 'string')
           store.pjt.img = reader.result;
         // 유저 이미지 변경 api 전송

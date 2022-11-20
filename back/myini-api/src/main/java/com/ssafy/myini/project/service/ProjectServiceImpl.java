@@ -13,8 +13,6 @@ import com.ssafy.myini.project.domain.Project;
 import com.ssafy.myini.project.domain.ProjectRepository;
 import com.ssafy.myini.project.query.ProjectQueryRepository;
 import com.ssafy.myini.project.request.FindByMemberEmailRequest;
-import com.ssafy.myini.jira.request.UpdateJiraAccountRequest;
-import com.ssafy.myini.jira.request.UpdateJiraProjectRequest;
 import com.ssafy.myini.project.request.UpdateProjectRequest;
 import com.ssafy.myini.project.response.ProjectCreateResponse;
 import com.ssafy.myini.project.response.ProjectInfoResponse;
@@ -131,14 +129,28 @@ public class ProjectServiceImpl implements ProjectService {
         String jiraDomain = findProject.getJiraDomain();
         String jiraProjectKey = findProject.getJiraProjectKey();
 
+        if(jiraId == null || jiraId.equals("")
+        ||jiraApiKey == null || jiraApiKey.equals("")
+        ||jiraDomain == null || jiraDomain.equals("")
+        ||jiraProjectKey == null || jiraProjectKey.equals("")) {
+            return new ArrayList<ProjectMemberResponse>();
+        }
+
         try {
             List<JiraApi.JiraUser> jiraUser = JiraApi.getJiraUser(jiraId, jiraApiKey, jiraDomain,jiraProjectKey);
 
             List<MemberProject> findMemberProjects = projectQueryRepository.findProjectMemberList(projectId);
+
             List<ProjectMemberResponse> projectMemberResponses = new ArrayList<>();
             for (int i = 0; i < findMemberProjects.size(); i++) {
                 for (int j = 0; j < jiraUser.size(); j++) {
-                    if(findMemberProjects.get(i).getMember().getMemberJiraEmail().contains(jiraUser.get(j).getUserEmailAddress())){
+                    if(findMemberProjects.get(i).getMember().getMemberJiraEmail() == null) {
+                        continue;
+                    }
+                    if(findMemberProjects.get(i).getMember().getMemberJiraEmail().isEmpty()) {
+                        continue;
+                    }
+                    if(findMemberProjects.get(i).getMember().getMemberJiraEmail().equals(jiraUser.get(j).getUserEmailAddress())){
                         projectMemberResponses.add(ProjectMemberResponse.from(findMemberProjects.get(i).getMember()));
                         break;
                     }
@@ -148,11 +160,12 @@ public class ProjectServiceImpl implements ProjectService {
             return projectMemberResponses;
 
         }catch (Exception e){
-            throw new JiraException(JiraException.JIRA_FAIL);
+            throw new JiraException(JiraException.JIRA_MEMBER_FAIL);
         }
     }
 
     @Override
+    @Transactional
     public List<ProjectMemberResponse> findByMemberEmail(FindByMemberEmailRequest request) {
         List<Member> findMember = memberRepository.findByMemberEmailContains(request.getMemberEmail());
 

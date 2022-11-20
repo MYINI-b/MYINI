@@ -19,6 +19,12 @@
     font-size: rem(14);
     border: 1px solid $lightx2-gray;
     border-radius: rem(10);
+
+    &::placeholder {
+      color: $gray;
+      font-size: rem(14);
+      font-family: $eng-content;
+    }
   }
 
   .link-row-a {
@@ -28,5 +34,9 @@
     color: $black;
     font-size: rem(14);
     word-break: break-all;
+
+    &.blank {
+      color: $light-gray;
+    }
   }
 }

@@ -1,15 +1,17 @@
 @import 'variables.scss';
 
 .erd-container {
+  position: relative;
   width: 100%;
   height: 100vh;
-  padding: rem(88) rem(30) rem(30) rem(30);
+  padding: rem(80) rem(30) rem(30) rem(30);
   @include FLEX-COLUMN;
 
   .erd-title {
-    margin-top: 0.5rem;
+    margin-top: rem(40);
     font-weight: bold;
     font-size: rem(36);
+    @include FLEX-ALIGN-CENTER;
   }
 
   .erd-info-section {
@@ -23,12 +25,43 @@
       font-family: $eng-title;
     }
 
-    .erd-save-button {
-      @include CIRCLE-BTN;
-      @include BTN-COLOR($third);
-      width: rem(50);
-      height: rem(50);
-      font-size: rem(24);
+    .erd-info-container {
+      margin-right: 1rem;
+      color: $primary;
+      cursor: pointer;
+
+      .erd-info-hover-content {
+        position: absolute;
+        right: 4%;
+        bottom: 79%;
+        z-index: 100000000;
+        display: none;
+        padding: 0.5rem;
+        color: black;
+        font-family: $kor;
+        background-color: $white;
+        border: 1px solid $primary;
+        border-radius: 10px;
+
+        .erd-info-content {
+          color: $primary;
+        }
+      }
+
+      .erd-info-hover-content a {
+        color: $black;
+      }
+
+      .erd-info-btn {
+        margin-left: 0.5rem;
+        color: $black;
+      }
+    }
+
+    .erd-info-container:hover {
+      .erd-info-hover-content {
+        display: block;
+      }
     }
   }
 
@@ -43,4 +76,12 @@
     border-radius: 20px;
     box-shadow: $shadow;
   }
+}
+
+.for-primary-color {
+  color: $primary;
+}
+
+.erd-info-content {
+  color: $primary;
 }

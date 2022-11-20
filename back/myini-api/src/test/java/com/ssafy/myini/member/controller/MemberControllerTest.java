@@ -71,6 +71,7 @@ class MemberControllerTest extends ControllerTest {
                                 fieldWithPath("memberNickname").type(JsonFieldType.STRING).description("회원 닉네임"),
                                 fieldWithPath("memberEmail").type(JsonFieldType.STRING).description("회원 이메일"),
                                 fieldWithPath("memberProfileImg").type(JsonFieldType.STRING).description("회원 프로필 이미지"),
+                                fieldWithPath("memberJiraEmail").type(JsonFieldType.STRING).description("회원 지라 이메일"),
                                 fieldWithPath("projectCount").type(JsonFieldType.NUMBER).description("회원의 프로젝트 개수")
                         )
                 ));

@@ -23,17 +23,16 @@ export default function CategoryListModal({
   const modalContainer = useRef() as React.MutableRefObject<HTMLDivElement>;
 
   const selectManager = useCallback(
-    async (manager: string) => {
+    async (manager: USER) => {
       const body = {
-        memberName: manager,
+        memberName: manager.name,
       };
       const { data }: any = await putApi(
         `/requirementdocs/requirements/${rowId}/members`,
         body,
       );
-      console.log(data);
 
-      store.pjt.rows[idx].manager = manager;
+      store.pjt.rows[idx].manager = manager.nickname;
       closeManagerModal();
     },
     [store, idx],
@@ -42,7 +41,11 @@ export default function CategoryListModal({
   useEffect(() => {
     modalContainer.current.style.left = `${clickElementPos.x}px`;
     modalContainer.current.style.top = `${clickElementPos.y}px`;
-    modalContainer.current.style.width = `${clickElementPos.width}px`;
+    modalContainer.current.style.minWidth = `${clickElementPos.width}px`;
+    const curHeight = Math.min(250, 16 + 28 * store.pjt.jiraMembers.length);
+    if (clickElementPos.y + curHeight >= window.innerHeight - 30) {
+      modalContainer.current.style.top = `${clickElementPos.y - curHeight}px`;
+    }
   }, [clickElementPos]);
 
   return (
@@ -53,20 +56,23 @@ export default function CategoryListModal({
         ref={modalContainer}
       >
         <div className="category-list-overflow">
-          {store.pjt.members &&
-            store.pjt.members.map((user: USER, i: number) => {
+          {store.pjt.jiraMembers && store.pjt.jiraMembers.length === 0 ? (
+            <span className={`category-row `}>지라 멤버를 등록해보세요</span>
+          ) : (
+            store.pjt.jiraMembers.map((user: USER, i: number) => {
               return (
                 <span
                   className={`category-row ${
-                    store.pjt.rows[idx].manager === user.name && 'select'
+                    store.pjt.rows[idx].manager === user.nickname && 'select'
                   }`}
                   key={i}
-                  onClick={() => selectManager(user.name)}
+                  onClick={() => selectManager(user)}
                 >
-                  {user.name}
+                  {user.nickname}
                 </span>
               );
-            })}
+            })
+          )}
         </div>
       </div>
     </div>

@@ -31,6 +31,7 @@
     font-family: $eng-title;
     white-space: nowrap;
     text-overflow: ellipsis;
+    cursor: pointer;
     transition: 0.3s ease;
     @include FLEX-CENTER;
 
@@ -55,7 +56,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 0;
+  z-index: 100000;
   background-color: transparent;
   @include STRETCH;
 }

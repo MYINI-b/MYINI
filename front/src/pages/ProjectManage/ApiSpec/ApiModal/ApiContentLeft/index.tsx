@@ -70,7 +70,7 @@ export default function ApiContentLeft({
   const [selectIdx, setSelectIdx] = useState(0);
 
   const onApiNameChange = useCallback((e: any) => {
-    setApiName(e.target.value.trim());
+    setApiName(e.target.value);
   }, []);
 
   const onMethodNameChange = useCallback((e: any) => {
@@ -237,7 +237,10 @@ export default function ApiContentLeft({
       </div>
 
       <div className="api-query-wrapper">
-        <Tooltip text="PATH는 소문자 복수형으로, PATH VARIABLE은 소문자로 작성해주세요.">
+        <Tooltip
+          text="PATH는 소문자 복수형으로, PATH VARIABLE은 소문자로 작성해주세요."
+          under
+        >
           <div className="api-query-title-container">
             <h3
               className={`api-query-title ${isPathVar && 'select'}`}

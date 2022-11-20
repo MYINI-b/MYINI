@@ -12,8 +12,7 @@
     position: absolute;
     right: 20%;
     bottom: 30%;
-    width: 35%;
-    height: 45%;
+    width: rem(500);
     z-index: 100;
   }
 
@@ -28,6 +27,9 @@
     .head-line {
       padding-bottom: 0.5rem;
       font-size: rem(40);
+      b {
+        color: $secondary;
+      }
     }
   }
 
@@ -37,20 +39,23 @@
     bottom: 37%;
     background-color: $primary;
     opacity: 80%;
-    font-size: rem(30);
+    font-size: rem(24);
     font-family: $eng-title;
-    border-radius: 15px;
+    border: 3px solid $primary;
+    @include FLEX-CENTER;
+    border-radius: 30px;
+    font-weight: bold;
     color: $white;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
+    padding: rem(12) rem(20);
     z-index: 100;
+    transition: 0.3s ease;
+
+    &:hover {
+      background-color: $white;
+      color: $primary;
+    }
   }
 
-  .download-btn:hover {
-    z-index: 100;
-  }
   .wave-container {
     position: absolute;
     bottom: 0;
@@ -102,7 +107,7 @@
 .second-section {
   height: 90vh;
   width: 100%;
-  @include FLEX-CENTER;
+  @include FLEX-AROUND;
   position: relative;
   padding-left: 12rem;
   padding-right: 12rem;
@@ -128,6 +133,8 @@
     .second-head-title {
       color: $primary;
       padding-bottom: 7rem;
+      font-size: rem(40);
+      font-family: $eng-title;
     }
 
     .second-content-box {
@@ -135,7 +142,11 @@
     }
 
     .second-content {
-      font-size: rem(45);
+      font-size: rem(36);
+      b {
+        font-family: $eng-title;
+        color: $secondary;
+      }
     }
 
     .second-content1 {
@@ -174,7 +185,9 @@
 
     .third-head-title {
       color: $primary;
-      padding-bottom: 6rem;
+      padding-bottom: 5rem;
+      font-size: rem(40);
+      font-family: $eng-title;
     }
 
     .third-content-box {
@@ -182,12 +195,12 @@
     }
 
     .third-content {
-      font-size: rem(45);
+      font-size: rem(36);
     }
 
     .third-icon-container {
       @include FLEX-AROUND;
-      padding-top: 2rem;
+      padding-top: rem(40);
 
       .third-content-icon {
         @include FLEX-CENTER;
@@ -316,14 +329,16 @@
 .footer-container {
   height: 35vh;
   width: 100%;
-  background-color: $secondary;
+  background-color: $third;
   position: relative;
 
   .footer-header-container {
     padding: 2rem;
+    font-size: rem(12);
 
     .footer-header-title {
       margin-bottom: 1rem;
+      font-size: rem(26);
     }
 
     .footer-header-content {
@@ -331,7 +346,7 @@
       margin-bottom: 1rem;
 
       .footer-content {
-        font-size: rem(15);
+        font-size: rem(12);
       }
     }
   }

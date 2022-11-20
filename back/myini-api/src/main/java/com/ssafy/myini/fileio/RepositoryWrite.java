@@ -1,18 +1,9 @@
 package com.ssafy.myini.fileio;
 
 import com.ssafy.myini.InitializerException;
-import com.ssafy.myini.erd.response.ConditionItemDto;
-import com.ssafy.myini.erd.response.ErdTableListResponse;
-import com.ssafy.myini.erd.response.TableColumnDto;
 import com.ssafy.myini.initializer.request.InitializerRequest;
-import com.ssafy.myini.initializer.response.PreviewResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.util.List;
 
 public class RepositoryWrite {
         static StringBuilder repositoryImportContents;
