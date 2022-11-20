@@ -10,10 +10,10 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  localStorage.setItem('isApp', 'true');
   const moveToMain = () => {
-    window.open('https://naver.com');
-    // window.location.href =
-    //   'https://k7b203.p.ssafy.io/oauth2/authorization/google';
+    window.location.href =
+      'https://k7b203.p.ssafy.io/oauth2/authorization/google';
   };
 
   useEffect(() => {
