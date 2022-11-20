@@ -11,8 +11,9 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 export default function LoginPage() {
   const navigate = useNavigate();
   const moveToMain = () => {
-    window.location.href =
-      'https://k7b203.p.ssafy.io/oauth2/authorization/google';
+    window.open('https://naver.com');
+    // window.location.href =
+    //   'https://k7b203.p.ssafy.io/oauth2/authorization/google';
   };
 
   useEffect(() => {
