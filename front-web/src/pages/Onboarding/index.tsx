@@ -20,22 +20,19 @@ export default function Onboarding() {
     AOS.init();
   });
 
-  // const onClick = async () => {
-  //   console.log('nothing')
-  //   await axios({
-  //     url: `initializers/downloads`,
-  //     method: 'GET',
-  //     responseType: 'blob', // important
-  //     data: 'data',
-  //   }).then((response) => {
-  //     const url = window.URL.createObjectURL(new Blob([response.data]));
-  //     const link = document.createElement('a');
-  //     link.href = url;
-  //     link.setAttribute('download', `myini.exe`);
-  //     document.body.appendChild(link);
-  //     link.click();
-  //   });
-  // };
+  const onDownClick = () => {
+    localStorage.setItem('isApp', 'false');
+    window.location.href =
+      'https://k7b203.p.ssafy.io/oauth2/authorization/google';
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem('isApp')) {
+      localStorage.removeItem('isApp');
+      window.location.href =
+        'https://k7b203.p.ssafy.io/api/initializers/downloads';
+    }
+  }, []);
 
   return (
     <div>
@@ -49,13 +46,9 @@ export default function Onboarding() {
             </h1>
             <h1 className="head-line"> MYINI로 쉽고 간편하게</h1>
           </div>
-          <a
-            href="https://k7b203.p.ssafy.io/api/initializers/downloads"
-            type="button"
-            className="download-btn"
-          >
+          <button type="button" onClick={onDownClick} className="download-btn">
             DOWNLOAD
-          </a>
+          </button>
           <div className="wave-container">
             <div className="wave -one" />
             <div className="wave -two" />
