@@ -36,9 +36,11 @@ export default function Onboarding() {
       const checkResp = await axios.get(
         `${process.env.REACT_APP_API_URL}/initializers/app`,
       );
+      console.log(checkResp.data);
       if (checkResp.data === 'false') {
+        console.log('다운로드 들어옴');
         await axios.patch(
-          `${process.env.REACT_APP_API_URL}/initializers/app&flag=true`,
+          `${process.env.REACT_APP_API_URL}/initializers/app?flag=true`,
         );
         window.location.href =
           'https://k7b203.p.ssafy.io/api/initializers/downloads';
