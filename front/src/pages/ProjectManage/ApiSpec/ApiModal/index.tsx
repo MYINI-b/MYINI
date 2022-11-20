@@ -163,6 +163,28 @@ export default function ApiModal({
     }
   }, []);
 
+  const closeModal = useCallback(() => {
+    if (apiRowIdx >= 0) {
+      const findIdx = store.pjt.editors.findIndex(
+        (x: any) =>
+          x.space === 'API' &&
+          x.sid ===
+            store.pjt.controllers[controllerIdx].responses[apiRowIdx].id,
+      );
+
+      store.pjt.editors.splice(findIdx, 1);
+    } else {
+      // 새로 생성하는 api면
+      const findIdx = store.pjt.editors.findIndex(
+        (x: any) =>
+          x.space === 'API' && x.name === `controller${controllerIdx}`,
+      );
+
+      store.pjt.editors.splice(findIdx, 1);
+    }
+    setIsApiModalOpen(false);
+  }, []);
+
   const submitApi = useCallback(
     async (e: any) => {
       e.preventDefault();
@@ -305,60 +327,7 @@ export default function ApiModal({
             await postApi(`/apidocs/${data.apiId}/querystrings`, body);
         });
 
-        // request 생성
-        const reqBody = {
-          dtoName: `RequestDto${methodName}`,
-          dtoType: 'REQUEST',
-          dtoIsList: dtoResponse[0].dtoIsList ? 'Y' : 'N',
-        };
-
-        // response 생성
-        const resBody = {
-          dtoName: `ResponseDto${methodName}`,
-          dtoType: 'RESPONSE',
-          dtoIsList: dtoResponse[1].dtoIsList ? 'Y' : 'N',
-        };
-
-        const reqDtoResp: any = await postApi(
-          `/apidocs/${data.apiId}/dtos`,
-          reqBody,
-        );
-        const resDtoResp: any = await postApi(
-          `/apidocs/${data.apiId}/dtos`,
-          resBody,
-        );
-
-        // request item 생성
-        reqItems.forEach(async (item) => {
-          const reqItemBody = {
-            dtoItemName: item.dtoItemName,
-            dtoClassType: item.dtoClassTypeId ? item.dtoClassTypeId : null,
-            dtoPrimitiveType: item.dtoPrimitiveTypeId
-              ? item.dtoPrimitiveTypeId
-              : null,
-            dtoIsList: item.dtoIsList ? 'Y' : 'N',
-          };
-          await postApi(
-            `/apidocs/${reqDtoResp.data.dtoId}/dtoitems`,
-            reqItemBody,
-          );
-        });
-
-        // response item 생성
-        resItems.forEach(async (item) => {
-          const resItemBody = {
-            dtoItemName: item.dtoItemName,
-            dtoClassType: item.dtoClassTypeId ? item.dtoClassTypeId : null,
-            dtoPrimitiveType: item.dtoPrimitiveTypeId
-              ? item.dtoPrimitiveTypeId
-              : null,
-            dtoIsList: item.dtoIsList ? 'Y' : 'N',
-          };
-          await postApi(
-            `/apidocs/${resDtoResp.data.dtoId}/dtoitems`,
-            resItemBody,
-          );
-        });
+        createNewDto(data.apiId);
 
         const parsedObj = {
           id: newApiObj.apiId,
@@ -379,7 +348,7 @@ export default function ApiModal({
         await deleteApi(`/apidocs/querystrings/${path.id}`);
       });
 
-      setIsApiModalOpen(false);
+      closeModal();
     },
     [
       isEdit,
@@ -401,23 +370,109 @@ export default function ApiModal({
   );
 
   const onDeleteClick = useCallback(async () => {
+    const findIdx = store.pjt.editors.findIndex(
+      (x: any) =>
+        x.space === 'API' &&
+        x.sid === store.pjt.controllers[controllerIdx].responses[apiRowIdx].id,
+    );
+    store.pjt.editors.splice(findIdx, 1);
+
     await deleteApi(`/apidocs/apis/${apiId}`);
     store.pjt.controllers[controllerIdx].responses.splice(apiRowIdx, 1);
     setIsApiModalOpen(false);
   }, [apiRowIdx, apiId]);
 
+  const onDuplicateClick = useCallback(async () => {
+    const copyObj = {
+      ...store.pjt.controllers[controllerIdx].responses[apiRowIdx],
+    };
+    const dupApiObj = {
+      apiName,
+      apiDescription: apiDesc,
+      apiUrl,
+      apiMethod,
+      apiCode,
+      apiMethodName: methodName,
+    };
+    // api생성
+    const { data }: any = await postApi(
+      `/apidocs/${store.pjt.controllers[controllerIdx].id}/apis`,
+      { ...dupApiObj, apiCode: dupApiObj.apiCode === 200 ? 'OK' : 'CREATED' },
+    );
+
+    createNewDto(data.apiId);
+
+    copyObj.id = data.apiId;
+    store.pjt.controllers[controllerIdx].responses.push(copyObj);
+
+    closeModal();
+  }, [apiRowIdx, apiName, apiDesc, apiUrl, apiMethod, apiCode, methodName]);
+
+  const createNewDto = useCallback(
+    async (apiId: number) => {
+      // request 생성
+      const reqBody = {
+        dtoName: `${methodName}RequestDto`,
+        dtoType: 'REQUEST',
+        dtoIsList: dtoResponse[0].dtoIsList ? 'Y' : 'N',
+      };
+
+      // response 생성
+      const resBody = {
+        dtoName: `${methodName}ResponseDto`,
+        dtoType: 'RESPONSE',
+        dtoIsList: dtoResponse[1].dtoIsList ? 'Y' : 'N',
+      };
+
+      console.log(reqBody, resBody);
+      console.log(reqItems, resItems);
+      const reqDtoResp: any = await postApi(`/apidocs/${apiId}/dtos`, reqBody);
+      const resDtoResp: any = await postApi(`/apidocs/${apiId}/dtos`, resBody);
+
+      // request item 생성
+      reqItems.forEach(async (item) => {
+        const reqItemBody = {
+          dtoItemName: item.dtoItemName,
+          dtoClassType: item.dtoClassTypeId ? item.dtoClassTypeId : null,
+          dtoPrimitiveType: item.dtoPrimitiveTypeId
+            ? item.dtoPrimitiveTypeId
+            : null,
+          dtoIsList: item.dtoIsList ? 'Y' : 'N',
+        };
+        await postApi(
+          `/apidocs/${reqDtoResp.data.dtoId}/dtoitems`,
+          reqItemBody,
+        );
+      });
+
+      // response item 생성
+      resItems.forEach(async (item) => {
+        const resItemBody = {
+          dtoItemName: item.dtoItemName,
+          dtoClassType: item.dtoClassTypeId ? item.dtoClassTypeId : null,
+          dtoPrimitiveType: item.dtoPrimitiveTypeId
+            ? item.dtoPrimitiveTypeId
+            : null,
+          dtoIsList: item.dtoIsList ? 'Y' : 'N',
+        };
+        await postApi(
+          `/apidocs/${resDtoResp.data.dtoId}/dtoitems`,
+          resItemBody,
+        );
+      });
+    },
+    [dtoResponse, reqItems, resItems, methodName],
+  );
+
   return (
-    <section className="modal-empty" onClick={() => setIsApiModalOpen(false)}>
+    <section className="modal-empty" onClick={closeModal}>
       <form
         className="api-add-modal-content"
         onClick={(e) => e.stopPropagation()}
         onSubmit={submitApi}
       >
         <article className="closebtn-container">
-          <FontAwesomeIcon
-            icon={faClose}
-            onClick={() => setIsApiModalOpen(false)}
-          />
+          <FontAwesomeIcon icon={faClose} onClick={closeModal} />
         </article>
 
         <article className="api-add-content-container">
@@ -462,13 +517,22 @@ export default function ApiModal({
             {isEdit ? '수정' : '등록'}
           </button>
           {isEdit && (
-            <button
-              type="button"
-              className="api-add-button"
-              onClick={onDeleteClick}
-            >
-              삭제
-            </button>
+            <>
+              <button
+                type="button"
+                className="api-add-button"
+                onClick={onDuplicateClick}
+              >
+                복제
+              </button>
+              <button
+                type="button"
+                className="api-add-button"
+                onClick={onDeleteClick}
+              >
+                삭제
+              </button>
+            </>
           )}
         </article>
       </form>

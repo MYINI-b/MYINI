@@ -3,6 +3,7 @@
 .setting-page {
   @include FLEX-COLUMN;
   @include STRETCH;
+  position: relative;
   min-height: 100vh;
   padding: rem(80) 15% 10% 15%;
   font-family: $eng-content;
@@ -16,12 +17,13 @@
   .setting-components {
     @include STRETCH;
     @include FLEX-COLUMN;
+    position: relative;
   }
 
   .bottom-side {
     display: flex;
     width: 100%;
-    margin-top: rem(36);
+    margin-top: rem(40);
 
     .left-side {
       flex: 0.7;
@@ -31,7 +33,7 @@
     .right-side {
       flex: 0.3;
       width: 100%;
-      max-height: rem(440);
+      max-height: rem(600);
       margin-left: rem(30);
       @include FLEX-COLUMN;
     }
@@ -50,8 +52,36 @@
 .project-detail-title-wrapper {
   @include FLEX-BETWEEN;
   width: 100%;
+  margin-top: rem(40);
 
   &.normal {
     justify-content: initial;
+  }
+}
+
+.others-container {
+  position: absolute;
+  top: 0;
+  right: -100px;
+  @include FLEX-COLUMN;
+
+  .other-card {
+    @include FLEX-ALIGN-CENTER;
+
+    .other-color {
+      width: rem(20);
+      height: rem(20);
+      border-radius: rem(20);
+      content: '';
+    }
+
+    .other-name {
+      font-weight: bold;
+      font-size: rem(14);
+    }
+  }
+
+  .other-card {
+    margin-top: rem(6);
   }
 }

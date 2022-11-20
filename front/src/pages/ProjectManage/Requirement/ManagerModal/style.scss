@@ -4,13 +4,13 @@
   @include BORDER-PAPER;
   position: fixed;
   align-items: center;
-  width: 100%;
+  width: fit-content;
   max-height: rem(250);
-  padding: rem(12) rem(12);
+  padding: rem(8) rem(12);
   overflow-y: auto;
-  border-top: initial;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  // border-top: initial;
+  // border-top-left-radius: 0;
+  // border-top-right-radius: 0;
   box-shadow: $shadow;
 
   &::-webkit-scrollbar {
@@ -78,7 +78,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 0;
+  z-index: 100000;
   background-color: transparent;
   @include STRETCH;
 }

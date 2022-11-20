@@ -3,11 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faGear,
   faCheck,
+  faUserPlus,
   faUserSlash,
 } from '@fortawesome/free-solid-svg-icons';
+
 import './style.scss';
-import useInput from 'hooks/useInput';
-import { deleteApi, postApi } from 'api';
+import { deleteApi, getApi, postApi } from 'api';
+import TimerModal from 'components/TimerModal';
 
 interface Props {
   store: any;
@@ -19,6 +21,7 @@ export default function ProjectMember({ store, pid, editProjectInfo }: Props) {
   const [isEdit, setIsEdit] = useState(false);
   const [userMail, setUserMail] = useState('');
   const [searchResult, setSearchResult] = useState([]);
+  const [alertText, setAlertText] = useState('');
 
   const onSubmitClick = useCallback(async () => {
     const resp = await postApi(`/projects/${pid}/members/${userMail}`);
@@ -26,22 +29,40 @@ export default function ProjectMember({ store, pid, editProjectInfo }: Props) {
     setUserMail('');
   }, []);
 
-  const onUserMailChange = useCallback(
-    (e: any) => {
-      setUserMail(e.target.value);
-    },
-    [userMail],
-  );
+  const onUserMailChange = useCallback(async (e: any) => {
+    setUserMail(e.target.value);
+    const body = {
+      memberEmail: e.target.value,
+    };
+    const { data }: any = await postApi(`/projects/members`, body);
+    setSearchResult(data);
+    setUserMail(e.target.value);
+  }, []);
 
   const addMember = useCallback(
-    (e: any) => {
-      e.preventDefault();
+    async (mem: any) => {
       if (store.pjt.members === undefined) store.pjt.members = [];
-      store.pjt.members.push({
-        id: 1,
-        name: userMail,
-        img: 'https://cdn.pixabay.com/photo/2019/08/02/19/25/vectorart-4380377__340.jpg',
-      });
+
+      const addResp: any = await postApi(
+        `/projects/${pid}/members/${mem.memberId}`,
+      );
+
+      console.log(addResp);
+      if (addResp.status === 201) {
+        const copyMem = {
+          id: mem.memberId,
+          img: mem.memberProfileImg,
+          name: mem.memberNickName,
+          email: mem.memberEmail,
+          nickname: mem.memberNickName,
+        };
+        store.pjt.members.push(copyMem);
+        setAlertText('팀원으로 추가되었습니다!');
+      } else {
+        setAlertText('팀원 추가중 에러 발생!');
+        return;
+      }
+
       setUserMail('');
     },
     [store, userMail],
@@ -74,7 +95,7 @@ export default function ProjectMember({ store, pid, editProjectInfo }: Props) {
         )}
       </div>
 
-      <form className="member-scroll" onSubmit={addMember}>
+      <div className="member-scroll">
         {isEdit && (
           <input
             type="text"
@@ -84,21 +105,36 @@ export default function ProjectMember({ store, pid, editProjectInfo }: Props) {
             value={userMail}
           />
         )}
-        {store.pjt.members &&
-          userMail === '' &&
-          store.pjt.members.map((mem: any, i: number) => (
-            <div key={i} className="team-member">
-              <img className="profile-image" src={mem.img} alt="profile" />
-              <div className="profile-name">{mem.name}</div>
-              <FontAwesomeIcon
-                icon={faUserSlash}
-                className={`profile-delete-button ${!isEdit && 'hidden'}`}
-                onClick={() => deleteMember(i, mem.id)}
-              />
-            </div>
-          ))}
-        {}
-      </form>
+        {userMail === ''
+          ? store.pjt.members &&
+            store.pjt.members.map((mem: any, i: number) => (
+              <div key={i} className="team-member">
+                <img className="profile-image" src={mem.img} alt="profile" />
+                <div className="profile-name">{mem.name}</div>
+                <FontAwesomeIcon
+                  icon={faUserSlash}
+                  className={`profile-delete-button ${!isEdit && 'hidden'}`}
+                  onClick={() => deleteMember(i, mem.id)}
+                />
+              </div>
+            ))
+          : searchResult.map((mem: any, i: number) => (
+              <div key={i} className="team-member">
+                <img
+                  className="profile-image"
+                  src={mem.memberProfileImg}
+                  alt="profile"
+                />
+                <div className="profile-name">{mem.memberNickName}</div>
+                <FontAwesomeIcon
+                  icon={faUserPlus}
+                  className={`profile-delete-button ${!isEdit && 'hidden'}`}
+                  onClick={() => addMember(mem)}
+                />
+              </div>
+            ))}
+      </div>
+      {!!alertText && <TimerModal text={alertText} setText={setAlertText} />}
     </>
   );
 }

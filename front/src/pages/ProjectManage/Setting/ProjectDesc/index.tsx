@@ -46,6 +46,7 @@ export default function DetailInfo({ store, editProjectInfo }: Props) {
         value={store.pjt.desc || ''}
         onChange={onDescChange}
         disabled={!isEdit}
+        placeholder="프로젝트 설명을 작성해주세요!"
       />
     </div>
   );

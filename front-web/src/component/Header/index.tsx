@@ -8,8 +8,14 @@ export default function Header() {
       <div className="head-title">
         <img src={Logo} alt="" className="logo" />
         <div className="title-container">
-          <span className="MY">MY</span>
-          <span className="INI">INI</span>
+          <Link to="/">
+            <button type="button" className="MY">
+              MY
+            </button>
+            <button type="button" className="INI">
+              INI
+            </button>
+          </Link>
         </div>
       </div>
       <div className="navbar">
@@ -23,9 +29,20 @@ export default function Header() {
             Docs
           </button>
         </Link>
-        <button type="button" className="nav-button">
-          Repository
-        </button>
+        <a
+          href="https://github.com/wooobinkim/myini/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <button type="button" className="nav-button">
+            Repository
+          </button>
+        </a>
+        <Link to="/license">
+          <button type="button" className="nav-button">
+            License
+          </button>
+        </Link>
       </div>
     </div>
   );

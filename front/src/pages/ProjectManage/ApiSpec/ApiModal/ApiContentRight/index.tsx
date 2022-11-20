@@ -113,7 +113,7 @@ export default function ApiContentRight({
   return (
     <div className="api-add-content-right">
       <section className="content-section">
-        <Tooltip text="변수명은 Camel Case로 작성해주세요.">
+        <Tooltip text="변수명은 Camel Case로 작성해주세요." under>
           <h1 className="content-right-title">REQUEST BODY</h1>
         </Tooltip>
 

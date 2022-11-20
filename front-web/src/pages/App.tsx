@@ -4,6 +4,7 @@ import React from 'react';
 import './global.scss';
 import Onboarding from './Onboarding';
 import Docs from './Docs';
+import License from './License';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         {' '}
         <Route path="/" element={<Onboarding />} />
         <Route path="/docs" element={<Docs />} />
+        <Route path="/license" element={<License />} />
       </Routes>
     </BrowserRouter>
   );

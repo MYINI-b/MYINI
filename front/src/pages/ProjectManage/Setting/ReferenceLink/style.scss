@@ -1,7 +1,7 @@
 @import 'variables.scss';
 
 .project-link {
-  margin-top: rem(30);
+  margin-top: rem(40);
 
   .ling-list-ul {
   }
@@ -14,8 +14,6 @@
   .image-icon {
     width: rem(30);
     height: rem(30);
-    background-color: $third;
-    background-blend-mode: multiply;
     border-radius: 70%;
   }
   .detail-word {

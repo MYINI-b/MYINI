@@ -3,19 +3,25 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useParams } from 'react-router-dom';
 import { faClose, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
+
 import { MOUSEPOS, DTO_RESPONSE, DTO } from 'types/ApiSpec';
 import './style.scss';
-
+import { RootState } from 'modules/Reducers';
+import { useSelector } from 'react-redux';
 import DataTypeList from 'components/DataTypeList';
 import { getApi, postApi } from 'api';
 import DatatypeRow from './DatatypeRow';
 
 interface Props {
   setIsDatatypeModalOpen: Dispatch<React.SetStateAction<boolean>>;
+  store: any;
 }
 
-export default function DatatypeModal({ setIsDatatypeModalOpen }: Props) {
-  const { pid } = useParams();
+export default function DatatypeModal({
+  setIsDatatypeModalOpen,
+  store,
+}: Props) {
+  const { pid } = useSelector((state: RootState) => state.project);
   const [isDatatypeAddOpen, setIsDatatypeAddOpen] = useState(false);
   const [dto, setDto] = useState<DTO>({
     dtoId: -1,
@@ -30,6 +36,10 @@ export default function DatatypeModal({ setIsDatatypeModalOpen }: Props) {
   const [dtoRows, setDtoRows] = useState<any[]>([]);
 
   const closeModal = useCallback(() => {
+    const findIdx = store.pjt.editors.findIndex(
+      (x: any) => x.space === 'DATATYPE',
+    );
+    store.pjt.editors.splice(findIdx, 1);
     setIsDatatypeModalOpen(false);
   }, [setIsDatatypeModalOpen]);
 
@@ -264,7 +274,7 @@ export default function DatatypeModal({ setIsDatatypeModalOpen }: Props) {
         <button
           className="datatype-modal-button"
           type="button"
-          onClick={() => setIsDatatypeModalOpen(false)}
+          onClick={closeModal}
         >
           확인
         </button>

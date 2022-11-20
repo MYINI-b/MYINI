@@ -9,6 +9,8 @@ $light-gray : #dedede;
 $lightx2-gray:#efefef;
 $pure-white:#ffffff;
 $white: #fbfbfb;
+$jira:#3883E6;
+$light-jira:#CBDFFA;
 
 $FE:#D3E5EF;
 $BE:#FBC9C9;
@@ -21,6 +23,12 @@ $delete:#FF6E6E;
 $patch:#FFC5C5;
 $code : #DFF7FF;
 
+$imp1:#FF5630;
+$imp2:#FF7452;
+$imp3:#FFAB00;
+$imp4:#2684FF;
+$imp5:#0065FF;
+
 $kor: "AppleNeoB"; //한글 포함 폰트
 
 $eng-title: "Multicolore"; //영어 제목 (오직 대문자)
@@ -28,6 +36,7 @@ $eng-content: "Gmarket"; //영어 본문
 
 // 그림자
 $shadow: 0 4px 4px rgba(131, 131, 131, 0.2);
+$light-shadow:2px 2px 0px rgba(131, 131, 131, 0.2);
 
 //px을 파라미터로 넘기면 rem으로 변환
 @function rem($px) {

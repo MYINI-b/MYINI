@@ -98,6 +98,20 @@ include::{snippets}/api/projects/members/{projectid}/http-response.adoc[]
 ===== Body
 include::{snippets}/api/projects/members/{projectid}/response-fields.adoc[]
 
+==== 로젝트의 팀원리스트중 지라이메일과 일치하는 팀원을 조회
+===== 요청
+include::{snippets}/api/projects/members/{projectid}/jiras/http-request.adoc[]
+====== Header
+include::{snippets}/api/projects/members/{projectid}/jiras/request-headers.adoc[]
+====== Path
+include::{snippets}/api/projects/members/{projectid}/jiras/path-parameters.adoc[]
+
+===== 응답
+include::{snippets}/api/projects/members/{projectid}/jiras/http-response.adoc[]
+===== Body
+include::{snippets}/api/projects/members/{projectid}/jiras/response-fields.adoc[]
+
+
 ==== 팀원 검색
 ===== 요청
 include::{snippets}/api/projects/members/http-request.adoc[]

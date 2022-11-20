@@ -1,0 +1,62 @@
+@import 'variables.scss';
+
+.textmodal-empty {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100000;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(131, 131, 131, 0.2);
+  @include FLEX-CENTER;
+
+  .textmodal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    align-items: center;
+    max-width: rem(600);
+    padding: rem(20);
+    background-color: $white;
+    border: 2px solid $secondary;
+    border-radius: rem(20);
+    transform: translate(-50%, -50%);
+    animation: updown 0.3s forwards ease-out;
+    @include FLEX-COLUMN;
+
+    .img-box {
+      width: rem(100);
+      height: rem(100);
+      margin-bottom: rem(30);
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .textmodal-text {
+      padding: 0 rem(20);
+      font-weight: bold;
+      font-size: rem(20);
+    }
+
+    .textmodal-submit {
+      max-width: rem(250);
+      margin-top: rem(30);
+      @include SUBMIT-BTN;
+    }
+  }
+}
+
+@keyframes updown {
+  100% {
+    transform: translate(-50%, -50%);
+  }
+  50% {
+    transform: translate(-50%, -60%);
+  }
+  100% {
+    transform: translate(-50%, -50%);
+  }
+}

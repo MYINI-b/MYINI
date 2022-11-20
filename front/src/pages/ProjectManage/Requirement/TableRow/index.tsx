@@ -10,6 +10,11 @@ import { MOUSEPOS } from 'types/ApiSpec';
 import { IMPORTANCE_TEXT } from 'constants/index';
 import { putApi } from 'api';
 
+import IMP1 from 'assets/imp1.jpg';
+import IMP2 from 'assets/imp2.jpg';
+import IMP3 from 'assets/imp3.jpg';
+import IMP4 from 'assets/imp4.jpg';
+import IMP5 from 'assets/imp5.jpg';
 import CategoryListModal from '../CategoryListModal';
 import RowModal from '../RowModal';
 import DivisionModal from '../DivisionModal';
@@ -20,9 +25,10 @@ interface Props {
   row: ROW;
   idx: number;
   store: any;
+  pid: string;
 }
 
-export default function TableRow({ row, idx, store }: Props) {
+export default function TableRow({ row, idx, store, pid }: Props) {
   const requireContainer =
     useRef() as React.MutableRefObject<HTMLTextAreaElement>;
   const descContainer = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
@@ -120,12 +126,20 @@ export default function TableRow({ row, idx, store }: Props) {
     });
   }, []);
 
-  const openImportanceList = useCallback((e: any) => {
+  const openImportanceList = useCallback((e: any, isBlock: boolean) => {
+    e.stopPropagation();
+    e.preventDefault();
     setIsImportanceOpen(true);
     setClickElementPos({
-      y: e.target.getBoundingClientRect().top + 40,
-      x: e.target.getBoundingClientRect().left,
-      width: e.target.offsetWidth,
+      y: isBlock
+        ? e.target.parentElement.getBoundingClientRect().top + 40
+        : e.target.getBoundingClientRect().top + 40,
+      x: isBlock
+        ? e.target.parentElement.getBoundingClientRect().left
+        : e.target.getBoundingClientRect().left,
+      width: isBlock
+        ? e.target.parentElement.offsetWidth
+        : e.target.offsetWidth,
     });
   }, []);
 
@@ -213,14 +227,17 @@ export default function TableRow({ row, idx, store }: Props) {
           ref={requireContainer}
           onChange={onRequirementChange}
           className="table-col content one-half textarea"
+          placeholder="요구사항 명"
           autoFocus
         />
       ) : (
         <span
-          className="table-col content one-half"
+          className={`table-col content one-half ${
+            row.requirement === '' && 'empty'
+          }`}
           onDoubleClick={() => setIsRequireEdit(true)}
         >
-          {row.requirement}
+          {row.requirement || '요구사항 명'}
         </span>
       )}
       {isDescEdit ? (
@@ -229,14 +246,17 @@ export default function TableRow({ row, idx, store }: Props) {
           ref={descContainer}
           onChange={onDescChange}
           className="table-col content two textarea"
+          placeholder="요구사항 내용을 설명해주세요"
           autoFocus
         />
       ) : (
         <span
-          className="table-col content two"
+          className={`table-col content two ${
+            row.description === '' && 'empty'
+          }`}
           onDoubleClick={() => setIsDescEdit(true)}
         >
-          {row.description}
+          {row.description || '요구사항 내용을 설명해주세요'}
         </span>
       )}
       <span
@@ -250,26 +270,51 @@ export default function TableRow({ row, idx, store }: Props) {
           {row.division}
         </div>
       </span>
-      <span className="table-col content one" onClick={openManagerList}>
-        {row.manager}
+      <span
+        className={`table-col content one ${row.manager === '' && 'empty'}`}
+        onClick={openManagerList}
+      >
+        {row.manager || '담당자가 없습니다.'}
       </span>
-      <span className="table-col content one" onClick={openImportanceList}>
+      <span
+        className="table-col content one"
+        onClick={(e) => openImportanceList(e, false)}
+      >
         {row.importance === 1 ? (
-          <div className="double-chevron" onClick={(e) => e.stopPropagation()}>
-            <FontAwesomeIcon icon={faChevronUp} />
-            <FontAwesomeIcon icon={faChevronUp} />
-          </div>
+          <img
+            src={IMP1}
+            alt="중요도1"
+            className="importance-img"
+            onClick={(e) => openImportanceList(e, true)}
+          />
         ) : row.importance === 2 ? (
-          <FontAwesomeIcon icon={faChevronUp} />
+          <img
+            src={IMP2}
+            alt="중요도2"
+            className="importance-img"
+            onClick={(e) => openImportanceList(e, true)}
+          />
         ) : row.importance === 3 ? (
-          <FontAwesomeIcon icon={faGripLines} />
+          <img
+            src={IMP3}
+            alt="중요도3"
+            className="importance-img"
+            onClick={(e) => openImportanceList(e, true)}
+          />
         ) : row.importance === 4 ? (
-          <FontAwesomeIcon icon={faChevronDown} />
+          <img
+            src={IMP4}
+            alt="중요도4"
+            className="importance-img"
+            onClick={(e) => openImportanceList(e, true)}
+          />
         ) : row.importance === 5 ? (
-          <div className="double-chevron" onClick={(e) => e.stopPropagation()}>
-            <FontAwesomeIcon icon={faChevronDown} />
-            <FontAwesomeIcon icon={faChevronDown} />
-          </div>
+          <img
+            src={IMP5}
+            alt="중요도5"
+            className="importance-img"
+            onClick={(e) => openImportanceList(e, true)}
+          />
         ) : (
           ''
         )}
@@ -299,6 +344,7 @@ export default function TableRow({ row, idx, store }: Props) {
           clickMousePos={clickMousePos}
           idx={idx}
           store={store}
+          pid={pid}
         />
       )}
 

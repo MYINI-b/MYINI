@@ -1,10 +1,7 @@
 package com.ssafy.myini.requirementdocs.controller;
 
 import com.ssafy.myini.requirementdocs.request.*;
-import com.ssafy.myini.requirementdocs.response.JiraProjectListResponse;
-import com.ssafy.myini.requirementdocs.response.RequirementCategoryCreateResponse;
-import com.ssafy.myini.requirementdocs.response.RequirementCategoryListResponse;
-import com.ssafy.myini.requirementdocs.response.RequirementListResponse;
+import com.ssafy.myini.requirementdocs.response.*;
 import com.ssafy.myini.requirementdocs.service.RequirementDocsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,10 +26,10 @@ public class RequirementDocsController {
 
     //요구사항 생성
     @PostMapping("/{projectid}/requirements")
-    public ResponseEntity<Void> createRequirement(@PathVariable("projectid") Long projectId){
-        requirementDocsService.createRequirement(projectId);
+    public ResponseEntity<RequirementCreateResponse> createRequirement(@PathVariable("projectid") Long projectId){
+        RequirementCreateResponse body = requirementDocsService.createRequirement(projectId);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
     //요구사항 카테고리 수정

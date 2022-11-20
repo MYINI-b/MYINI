@@ -1,0 +1,71 @@
+@import 'variables.scss';
+
+.modal-pjt-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1001;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(131, 131, 131, 0.2);
+  box-shadow: $light-shadow;
+  @include FLEX-CENTER;
+
+  .modal-pjt-detail {
+    width: rem(450);
+    height: rem(500);
+    padding: rem(12) rem(10) rem(12) rem(20);
+    overflow-y: scroll;
+    background-color: #fff;
+    border-radius: 10px;
+    @include FLEX-COLUMN;
+
+    .modal-pjt-button-wrapper {
+      @include FLEX-ALIGN-RIGHT;
+      .modal-pjt-button-close {
+        font-size: rem(20);
+        cursor: pointer;
+      }
+    }
+    .modal-pjt-title {
+      @include FLEX-BETWEEN;
+      margin-top: rem(20);
+      color: $primary;
+      font-size: rem(20);
+    }
+
+    .modal-pjt-content {
+      @include FLEX-COLUMN;
+
+      .modal-pjt-content-detail {
+        @include FLEX-BETWEEN;
+        width: 100%;
+        height: rem(50);
+        margin-top: rem(12);
+        padding: rem(10);
+        box-shadow: $light-shadow;
+        cursor: pointer;
+        transition: 0.3s ease;
+
+        &:hover {
+          font-weight: bold;
+          background-color: $lightx2-gray;
+
+          .modal-pjt-content-detail-delete-btn {
+            opacity: 1;
+          }
+        }
+
+        .modal-pjt-content-detail-delete-btn {
+          cursor: pointer;
+          opacity: 0;
+          transition: 0.2s ease;
+
+          &:hover {
+            color: $secondary;
+          }
+        }
+      }
+    }
+  }
+}

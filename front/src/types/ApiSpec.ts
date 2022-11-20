@@ -63,3 +63,11 @@ export interface DTO_RESPONSE {
   dtoPrimitiveTypeName?: string;
   dtoIsList: boolean;
 }
+
+export interface EDITOR {
+  id: number; // 편집자 아이디
+  space: string; // 편집중인 공간
+  sid: number; // 편집공간의 아이디
+  img: string; // 편집자 프로필
+  name: string; // 편집자 닉네임
+}

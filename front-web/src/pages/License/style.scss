@@ -1,0 +1,58 @@
+@import 'variables.scss';
+
+.license-container {
+  background: linear-gradient(to right, #fff, #ffd7c8);
+  font-family: $eng-title;
+}
+
+.license-wrapper {
+  padding: rem(100) rem(200);
+
+  .license-card {
+    background-color: $white;
+    box-shadow: $shadow;
+    border-radius: 15px;
+    padding-right: rem(80);
+    padding-left: rem(80);
+    padding-top: rem(30);
+    padding-bottom: rem(30);
+
+    .myini-license-title {
+      border-bottom: solid 1px $light-gray;
+      padding: rem(10);
+      margin: rem(30);
+    }
+
+    .myini-license-card {
+      margin: rem(30);
+      background-color: $black;
+      padding: rem(50);
+      border-radius: 15px;
+      box-shadow: $shadow;
+      color: $white;
+      font-family: $kor;
+    }
+
+    .library-license {
+      margin: rem(30);
+
+      .library-license-title {
+        border-bottom: solid 1px $light-gray;
+        padding: rem(10);
+        // font-family: $kor;
+      }
+    }
+
+    .library-license-content-container {
+      margin: rem(40);
+
+      .library-license-content {
+        margin-bottom: rem(10);
+
+        .library-license-content-content {
+          color: $gray;
+        }
+      }
+    }
+  }
+}
