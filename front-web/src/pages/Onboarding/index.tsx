@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useEffect } from 'react';
 import Header from 'component/Header';
 import './style.scss';
@@ -31,7 +32,6 @@ export default function Onboarding() {
   useEffect(() => {
     const checkDB = async () => {
       const checkResp = await axios.get('/initializers/app');
-      console.log(checkResp);
       if (checkResp.data === 'false') {
         await axios.patch('/initializers/app&flag=true');
         window.location.href =

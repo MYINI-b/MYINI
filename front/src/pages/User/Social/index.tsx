@@ -10,7 +10,6 @@ export default function Social() {
 
   useEffect(() => {
     localStorage.setItem('accessToken', token);
-    alert(appFlag);
     // 어플리케이션에서 클릭했을 때
     if (appFlag === 'true') window.location.href = '/main';
     // 마이크로페이지에서 클릭했을 때
