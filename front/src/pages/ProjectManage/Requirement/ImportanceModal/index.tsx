@@ -31,7 +31,6 @@ export default function ImportanceModal({
         `/requirementdocs/requirements/${rowId}/priorities`,
         body,
       );
-      console.log(data);
 
       store.pjt.rows[idx].importance = importance;
       setIsImportanceOpen(false);

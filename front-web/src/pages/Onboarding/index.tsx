@@ -23,31 +23,7 @@ export default function Onboarding() {
 
   const onDownClick = async () => {
     window.location.href = 'https://www.myini.tk';
-    //   await axios.patch(
-    //     `${process.env.REACT_APP_API_URL}/initializers/app?flag=false`,
-    //   );
-    //   localStorage.setItem('isApp', 'false');
-    //   window.location.href =
-    //     'https://k7b203.p.ssafy.io/oauth2/authorization/google';
   };
-
-  useEffect(() => {
-    // const checkDB = async () => {
-    //   const checkResp = await axios.get(
-    //     `${process.env.REACT_APP_API_URL}/initializers/app`,
-    //   );
-    //   console.log(checkResp.data);
-    //   if (checkResp.data === 'false') {
-    //     console.log('다운로드 들어옴');
-    //     await axios.patch(
-    //       `${process.env.REACT_APP_API_URL}/initializers/app?flag=true`,
-    //     );
-    //     window.location.href =
-    //       'https://k7b203.p.ssafy.io/api/initializers/downloads';
-    //   }
-    // };
-    // checkDB();
-  }, []);
 
   return (
     <div>

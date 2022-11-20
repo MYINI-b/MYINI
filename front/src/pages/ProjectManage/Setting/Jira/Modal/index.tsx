@@ -21,8 +21,6 @@ function Modal({ store, modalClose, pid }: Props) {
   const [initialLoading, setInitialLoading] = useState(false);
 
   const onCloseModal = (e: any) => {
-    // console.log('e.target: ', e.target);
-    // console.log('e.tarcurrentTargetget: ', e.currentTarget);
     if (e.target === e.currentTarget) {
       modalClose();
     }
@@ -99,7 +97,6 @@ function Modal({ store, modalClose, pid }: Props) {
     const resp1: any = await putApi(`/jiras/${pid}/jiradomain`, body1);
     // 등록된 지라 계정, 도메인 바탕으로 지라 프로젝트 리스트 조회
     const jiraResp: any = await getApi(`/jiras/${pid}/projects`);
-    console.log(jiraResp.data);
     store.pjt.jiraProject = jiraResp.data;
     setIsLoading(false);
   }, [store]);

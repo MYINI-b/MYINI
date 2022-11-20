@@ -47,7 +47,6 @@ export default function ProjectMember({ store, pid, editProjectInfo }: Props) {
         `/projects/${pid}/members/${mem.memberId}`,
       );
 
-      console.log(addResp);
       if (addResp.status === 201) {
         const copyMem = {
           id: mem.memberId,

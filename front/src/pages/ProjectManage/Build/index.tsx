@@ -128,7 +128,6 @@ export default function Build({ pid, store }: Props) {
     const ConfirmCode: any = await getApi(
       `/initializers/${pid}/previews?springType=${selectObj.Type}&springLanguage=${selectObj.Language}&springPlatformVersion=${selectObj.Platform}&springPackaging=${selectObj.Packaging}&springJvmVersion=${selectObj.Jvm}&springGroupId=${selectObj.textGroup}&springArtifactId=${selectObj.textArtifact}&springName=${selectObj.textName}&springDescription=${selectObj.textDescription}&springPackageName=${selectObj.textPackage}&springDependencyName=${selectObj.depDatas}`,
     );
-    console.log(ConfirmCode);
     setConfirmData(ConfirmCode.data);
     window.scrollTo({
       top: window.innerHeight,
@@ -164,7 +163,6 @@ export default function Build({ pid, store }: Props) {
   useEffect(() => {
     const initSettings = async () => {
       const InitSet: any = await getApi(`/initializers/settings`);
-      console.log(InitSet.data);
       setInitSelectJvmList(
         InitSet.data['single-select'].springJvmVersion.values,
       );
@@ -195,7 +193,6 @@ export default function Build({ pid, store }: Props) {
   };
   const handleTextArtifactNameArea = (e: any) => {
     const { name, value } = e.target;
-    console.log(selectObj.textGroup);
     setSelectObj({
       ...selectObj,
       textName: value,

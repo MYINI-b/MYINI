@@ -28,7 +28,6 @@ function AccordionItem({ data }: { data: any }) {
   // }, [isOpen]);
 
   const btnOnClick = () => {
-    console.log('hi');
     setIsOpen((prev) => !prev);
   };
 

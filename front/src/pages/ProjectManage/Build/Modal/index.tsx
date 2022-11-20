@@ -29,8 +29,6 @@ function Modal({
   const [keyword, setKeyword] = useState('');
 
   const onCloseModal = (e: any) => {
-    // console.log('e.target: ', e.target);
-    // console.log('e.tarcurrentTargetget: ', e.currentTarget);
     if (e.target === e.currentTarget) {
       modalClose();
     }
@@ -39,16 +37,13 @@ function Modal({
   // Handle the onChange event of the select
   const getDependenciesData = useCallback(
     (item: any) => {
-      console.log(item);
       const sampleData = [...selectObj.depDatas];
       const findIdx = sampleData.findIndex((x: any) => x === item.id);
-      console.log(findIdx);
       if (findIdx >= 0) {
         sampleData.splice(findIdx, 1);
       } else {
         sampleData.push(item.id);
       }
-      console.log(sampleData);
       getDependencies(sampleData);
     },
     [selectObj, initDependenciesList],
