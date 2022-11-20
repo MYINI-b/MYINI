@@ -9,6 +9,8 @@
 > myINI는 프로젝트의 설계 및 초기 개발 단계에서 도움을 드립니다.
 >
 > myINI를 통해 쉽고 빠르게 프로젝트를 관리해보세요! 
+>
+> **[🔗 마이크로페이지 바로가기 Click !](https://k7b203.p.ssafy.io/)** 👈
 
 
 ## 🌠기술스택
@@ -230,3 +232,17 @@
 ## 📖 문서
 
 #### [📑Notion](https://flawless-yarn-6c8.notion.site/SSAFY-63a8275c69fd47a09f7db03750507aa2)
+
+<br />
+
+## 🔑 라이센스
+```bash
+MIT LICENSE
+Copyright (c) 2022 MYINI
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
