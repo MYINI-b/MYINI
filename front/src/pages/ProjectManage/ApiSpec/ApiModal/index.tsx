@@ -44,7 +44,6 @@ export default function ApiModal({
       const editRow = store.pjt.controllers[controllerIdx].responses[apiRowIdx];
 
       const { data }: any = await getApi(`/apidocs/apis/${editRow.id}`);
-      console.log(data);
 
       setApiId(data.apiResponse.apiId);
       setApiName(data.apiResponse.apiName);
@@ -197,7 +196,6 @@ export default function ApiModal({
         apiCode: apiCode === 200 ? 'OK' : 'CREATED',
       };
 
-      console.log(reqItems, resItems, dtoResponse);
       if (isEdit) {
         pathVarList.forEach(async (path) => {
           const body = {
@@ -205,7 +203,6 @@ export default function ApiModal({
             pathVariableType: path.type,
           };
           if (path.key !== '') {
-            console.log(path);
             if (path.id < 0) {
               // 새로 생성된 것
               await postApi(`/apidocs/${apiId}/pathvariables`, body);
@@ -285,7 +282,6 @@ export default function ApiModal({
 
         newApiObj.updateApiDtoRequest = updatedRequest;
         await putApi(`/apidocs/apis/${apiId}`, newApiObj);
-        console.log(newApiObj);
 
         store.pjt.controllers[controllerIdx].responses[apiRowIdx].apiName =
           newApiObj.apiName;
@@ -424,8 +420,6 @@ export default function ApiModal({
         dtoIsList: dtoResponse[1].dtoIsList ? 'Y' : 'N',
       };
 
-      console.log(reqBody, resBody);
-      console.log(reqItems, resItems);
       const reqDtoResp: any = await postApi(`/apidocs/${apiId}/dtos`, reqBody);
       const resDtoResp: any = await postApi(`/apidocs/${apiId}/dtos`, resBody);
 

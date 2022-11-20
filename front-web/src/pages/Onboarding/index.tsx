@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useEffect } from 'react';
 import Header from 'component/Header';
 import './style.scss';
@@ -20,22 +21,9 @@ export default function Onboarding() {
     AOS.init();
   });
 
-  // const onClick = async () => {
-  //   console.log('nothing')
-  //   await axios({
-  //     url: `initializers/downloads`,
-  //     method: 'GET',
-  //     responseType: 'blob', // important
-  //     data: 'data',
-  //   }).then((response) => {
-  //     const url = window.URL.createObjectURL(new Blob([response.data]));
-  //     const link = document.createElement('a');
-  //     link.href = url;
-  //     link.setAttribute('download', `myini.exe`);
-  //     document.body.appendChild(link);
-  //     link.click();
-  //   });
-  // };
+  const onDownClick = async () => {
+    window.location.href = 'https://www.myini.tk';
+  };
 
   return (
     <div>
@@ -49,13 +37,9 @@ export default function Onboarding() {
             </h1>
             <h1 className="head-line"> MYINI로 쉽고 간편하게</h1>
           </div>
-          <a
-            href="https://k7b203.p.ssafy.io/api/initializers/downloads"
-            type="button"
-            className="download-btn"
-          >
-            DOWNLOAD
-          </a>
+          <button type="button" onClick={onDownClick} className="download-btn">
+            시작하기
+          </button>
           <div className="wave-container">
             <div className="wave -one" />
             <div className="wave -two" />

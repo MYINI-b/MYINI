@@ -104,7 +104,6 @@ export default function ApiSpec({ store, pid }: Props) {
       const controllerListResp: any = await getApi(
         `/apidocs/${pid}/controllers/list`,
       );
-      console.log(controllerListResp);
       const newControllers = controllerListResp.data.map((res: any) => {
         return {
           id: res.apiControllerId,

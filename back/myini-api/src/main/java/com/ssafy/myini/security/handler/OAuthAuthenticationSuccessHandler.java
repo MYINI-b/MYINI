@@ -1,5 +1,7 @@
 package com.ssafy.myini.security.handler;
 
+import com.ssafy.myini.initializer.domain.repository.IsAppRepository;
+import com.ssafy.myini.initializer.service.InitializerService;
 import com.ssafy.myini.member.service.MemberService;
 import com.ssafy.myini.security.oauth.CustomOAuth2User;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +18,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Component
 public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private final String AUTHENTICATION_REDIRECT_URI = "http://k7b203.p.ssafy.io:3000/social/redirect";
+    private final String AUTHENTICATION_REDIRECT_URI = "https://www.myini.tk/social/redirect";
     private final MemberService memberService;
 
     @Override

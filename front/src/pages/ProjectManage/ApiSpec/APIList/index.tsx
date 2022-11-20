@@ -52,7 +52,6 @@ export default function APIList({ store, controllerIdx }: Props) {
           img: memberProfileImg,
           name: `controller${store.pjt.controllers[controllerIdx].id}`,
         });
-      console.log(store.pjt.controllers[controllerIdx].id);
     },
     [controllerIdx],
   );

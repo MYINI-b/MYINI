@@ -67,7 +67,6 @@ export default function DatatypeModal({
       const { data }: any = await postApi(`/apidocs/${pid}/customdtos`, body);
       const copyDto = { ...dto };
       copyDto.dtoId = data.dtoId;
-      console.log(copyDto, data);
       setDto(copyDto);
     }
     const copyArr = [...attributes];
@@ -150,7 +149,6 @@ export default function DatatypeModal({
         dtoItemResponses: [...attributes],
       };
       copyDtoArr.push(newDto);
-      console.log(copyDtoArr);
       setAttributes([]);
       setDto({
         dtoId: -1,

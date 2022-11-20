@@ -63,7 +63,7 @@ export default function DataTypeList({
         dtoIsList: isListCheck,
       };
       copyArr.push(newDatatype);
-      console.log(copyArr);
+
       setAttribute(copyArr);
       closeModal();
     },
@@ -81,7 +81,6 @@ export default function DataTypeList({
         ...dtResp.data.primitiveTypeResponses,
         ...dtResp.data.classTypeResponses,
       ];
-      console.log(totalArr);
       setTypes(totalArr);
     };
 

@@ -76,8 +76,7 @@ export default function MainPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(getCrewInfo, '3');
-      await getApi(`members`)
+      await getApi(`/members`)
         .then((res: any) => {
           const data = {
             memberEmail: res.data.memberEmail,
@@ -106,7 +105,6 @@ export default function MainPage() {
     const getMembers = async () => {
       const getMemberData: any = await getApi(`/members/crew`);
       setMyMember(getMemberData.data);
-      console.log(getMemberData.data, '1');
       if (getMemberData.data) {
         if (getMemberData.data.length <= 4) {
           dispatch(CrewOnlyFour(getMemberData.data));

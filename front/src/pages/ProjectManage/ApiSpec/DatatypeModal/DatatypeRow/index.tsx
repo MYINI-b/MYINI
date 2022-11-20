@@ -66,13 +66,11 @@ export default function DatatypeRow({
       };
     });
     copyDto.dtoIsList = copyDto.dtoIsList ? 'Y' : 'N';
-    console.log(copyDto);
     await putApi(`/apidocs/dtos/${dto.dtoId}`, copyDto);
 
     let cnt = 0;
     copyDto.dtoItemResponses.forEach(async (attr: any) => {
       if (attr.dtoItemName !== '') {
-        console.log(attr);
         cnt++;
       }
     });
@@ -115,7 +113,6 @@ export default function DatatypeRow({
         );
         data.dtoIsList = data.dtoIsList === 'Y';
         copyAttrs[i] = { ...data };
-        console.log(copyAttrs);
       } else copyAttrs[i].dtoItemName = e.target.value;
 
       setAttributes(copyAttrs);
@@ -171,7 +168,6 @@ export default function DatatypeRow({
           : null,
         dtoIsList: attributes[idx].dtoIsList ? 'Y' : 'N',
       };
-      console.log(attributes[idx]);
       if (attributes[idx].dtoItemName !== '')
         await putApi(`/apidocs/dtoitems/${attributes[idx].dtoItemId}`, body);
     },
@@ -185,14 +181,12 @@ export default function DatatypeRow({
       setDto(data);
       setAttributes(
         data.dtoItemResponses.map((item: any) => {
-          console.log(item);
           return {
             ...item,
             dtoIsList: item.dtoIsList === 'Y',
           };
         }),
       );
-      console.log(data);
     };
 
     setTimeout(() => {
