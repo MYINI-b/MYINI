@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import AOS from 'aos';
+import axios from 'axios';
 import Background from '../../assets/main-bg.png';
 import BackgroundOne from '../../assets/main-bg1.png';
 import BackgroundTwo from '../../assets/main-bg2.png';
@@ -20,18 +21,25 @@ export default function Onboarding() {
     AOS.init();
   });
 
-  const onDownClick = () => {
+  const onDownClick = async () => {
+    await axios.patch('/initializers/app&flag=false');
     localStorage.setItem('isApp', 'false');
     window.location.href =
       'https://k7b203.p.ssafy.io/oauth2/authorization/google';
   };
 
   useEffect(() => {
-    if (localStorage.getItem('isApp')) {
-      localStorage.removeItem('isApp');
-      window.location.href =
-        'https://k7b203.p.ssafy.io/api/initializers/downloads';
-    }
+    const checkDB = async () => {
+      const checkResp = await axios.get('/initializers/app');
+      console.log(checkResp);
+      if (checkResp.data === 'false') {
+        await axios.patch('/initializers/app&flag=true');
+        window.location.href =
+          'https://k7b203.p.ssafy.io/api/initializers/downloads';
+      }
+    };
+
+    checkDB();
   }, []);
 
   return (
