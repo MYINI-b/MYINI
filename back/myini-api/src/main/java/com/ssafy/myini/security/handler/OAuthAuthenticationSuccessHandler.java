@@ -18,9 +18,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Component
 public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private final String AUTHENTICATION_REDIRECT_URI = "http://k7b203.p.ssafy.io:3000/social/redirect";
+    private final String AUTHENTICATION_REDIRECT_URI = "https://www.myini.tk/social/redirect";
     private final MemberService memberService;
-    private final InitializerService initializerService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -28,7 +27,6 @@ public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
         String accessToken = memberService.generateToken(customOAuth2User.getUserId());
         String target = UriComponentsBuilder.fromUriString(AUTHENTICATION_REDIRECT_URI)
                 .queryParam("accessToken", accessToken)
-                .queryParam("appFlag",initializerService.initializerApp2())
                 .build().toString();
 
         getRedirectStrategy().sendRedirect(request, response, target);
