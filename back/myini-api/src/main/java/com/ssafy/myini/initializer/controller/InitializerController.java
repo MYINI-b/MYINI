@@ -77,4 +77,17 @@ public class InitializerController {
         JSONObject body = initializerService.initializerSettings();
         return ResponseEntity.ok(body);
     }
+
+    @PatchMapping("/app")
+    public String initializerApp(@RequestParam("flag") String flag) {
+        String body = initializerService.initializerApp(flag);
+        return body;
+    }
+
+    @GetMapping("/app")
+    public String initializerApp2() {
+        String body = initializerService.initializerApp2();
+        return body;
+    }
+
 }

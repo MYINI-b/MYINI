@@ -6,6 +6,8 @@ import com.ssafy.myini.apidocs.response.ProjectInfoListResponse;
 import com.ssafy.myini.config.S3Uploader;
 import com.ssafy.myini.fileio.*;
 import com.ssafy.myini.NotFoundException;
+import com.ssafy.myini.initializer.domain.entity.IsApp;
+import com.ssafy.myini.initializer.domain.repository.IsAppRepository;
 import com.ssafy.myini.initializer.request.InitializerRequest;
 import com.ssafy.myini.initializer.response.InitializerPossibleResponse;
 import com.ssafy.myini.initializer.response.InitializerStartResponse;
@@ -39,6 +41,7 @@ public class InitializerServiceImpl implements InitializerService {
     private final ProjectRepository projectRepository;
     private final S3Uploader s3Uploader;
     private final ApiDocsQueryRepository apiDocsQueryRepository;
+    private final IsAppRepository isAppRepository;
 
     @Override
     public InitializerPossibleResponse initializerIsPossible(Long projectId) {
@@ -307,6 +310,22 @@ public class InitializerServiceImpl implements InitializerService {
         }
     }
 
+    @Override
+    public String initializerApp(String flag){
+        Long id = 1L;
+        IsApp isApp = isAppRepository.findById(id).orElseThrow();
+        isApp.updateIsApp(flag);
+
+        return flag;
+    }
+
+    @Override
+    public String initializerApp2(){
+        Long id = 1L;
+        IsApp isApp = isAppRepository.findById(id).orElseThrow();
+
+        return isApp.getIsApp();
+    }
 
     private JSONObject addDependencies(JSONObject dependency) {
         JSONObject jsonObject = new JSONObject();
