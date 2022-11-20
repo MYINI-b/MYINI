@@ -10,7 +10,10 @@ export default function Social() {
     localStorage.setItem('accessToken', token);
     const isApp = localStorage.getItem('isApp');
 
+    alert(isApp);
+    // 어플리케이션에서 클릭했을 때
     if (isApp === 'true') window.location.href = '/main';
+    // 마이크로페이지에서 클릭했을 때
     else {
       window.location.href = 'https://k7b203.p.ssafy.io/';
     }
