@@ -40,6 +40,11 @@ export default function MainHeader({ needStepper, step, setStep }: Props) {
     window.location.href = '/';
   };
 
+  const onDownClick = () => {
+    window.location.href =
+      'https://k7b203.p.ssafy.io/api/initializers/downloads';
+  };
+
   // TODO: tokencheck
   // const checkToken = () => {
   //   if (
@@ -81,6 +86,7 @@ export default function MainHeader({ needStepper, step, setStep }: Props) {
             <p>공식홈페이지</p>
           </a>
           <p onClick={getLogout}>로그아웃</p>
+          <p onClick={onDownClick}>앱 다운로드</p>
         </div>
       </div>
 
