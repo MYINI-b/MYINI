@@ -37,7 +37,6 @@ export default function Requirement({ pid, store }: Props) {
   useEffect(() => {
     const getRequirements = async () => {
       const { data }: any = await getApi(`/requirementdocs/${pid}`);
-      console.log(data);
       if (data) {
         const requirementsArray = data.map((req: any) => {
           return {
