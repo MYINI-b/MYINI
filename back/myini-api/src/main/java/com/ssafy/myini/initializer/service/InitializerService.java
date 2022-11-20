@@ -20,5 +20,9 @@ public interface InitializerService {
 
     JSONObject initializerSettings();
 
+    String initializerApp(String flag);
+
+    String initializerApp2();
+
     void deleteZipfile(String fileName);
 }
