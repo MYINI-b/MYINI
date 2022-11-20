@@ -22,7 +22,7 @@ export default function Onboarding() {
   });
 
   const onDownClick = async () => {
-    await axios.patch('/initializers/app&flag=false');
+    await axios.patch('/initializers/app?flag=false');
     localStorage.setItem('isApp', 'false');
     window.location.href =
       'https://k7b203.p.ssafy.io/oauth2/authorization/google';
