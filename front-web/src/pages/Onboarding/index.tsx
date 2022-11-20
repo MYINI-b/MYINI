@@ -37,6 +37,12 @@ export default function Onboarding() {
   //   });
   // };
 
+  const onDownClick = () => {
+    localStorage.setItem('isApp', 'false');
+    window.location.href =
+      'https://k7b203.p.ssafy.io/oauth2/authorization/google';
+  };
+
   return (
     <div>
       <Header />
@@ -49,13 +55,14 @@ export default function Onboarding() {
             </h1>
             <h1 className="head-line"> MYINI로 쉽고 간편하게</h1>
           </div>
-          <a
-            href="https://k7b203.p.ssafy.io/api/initializers/downloads"
+          <button
+            // href="https://k7b203.p.ssafy.io/api/initializers/downloads"
             type="button"
+            onClick={onDownClick}
             className="download-btn"
           >
             DOWNLOAD
-          </a>
+          </button>
           <div className="wave-container">
             <div className="wave -one" />
             <div className="wave -two" />
