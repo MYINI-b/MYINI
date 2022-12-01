@@ -52,10 +52,10 @@ export default function Setting({ store, pid }: Props) {
   useEffect(() => {
     const getProjectDetail = async () => {
       const { data }: any = await getApi(`/projects/${pid}`);
-
+      const url = process.env.REACT_APP_AWS_URL;
       if (store && pid !== '') {
         store.pjt.img = data.projectImg
-          ? `${process.env.REACT_APP_AWS_URL}projectProfile/${data.projectImg}`
+          ? `${url}/projectProfile/${data.projectImg}`
           : DefaultProfile;
         store.pjt.title = data.projectName ? data.projectName : '';
         store.pjt.desc = data.projectDescription ? data.projectDescription : '';
