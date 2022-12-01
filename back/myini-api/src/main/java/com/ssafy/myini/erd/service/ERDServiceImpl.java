@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,7 @@ import static com.ssafy.myini.NotFoundException.*;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ERDServiceImpl implements ERDService{
+public class ERDServiceImpl implements ERDService {
     private final ErdTableRepository erdTableRepository;
     private final ProjectRepository projectRepository;
     private final TableRelationRepository tableRelationRepository;
@@ -38,6 +39,9 @@ public class ERDServiceImpl implements ERDService{
     private final RelationItemRepository relationItemRepository;
     private final ConditionItemRepository conditionItemRepository;
     private final ColumnConditionRepository columnConditionRepository;
+
+    @Value("${cloud.aws.s3.path}")
+    private String S3URL;
 
     @Override
     @Transactional
@@ -49,7 +53,7 @@ public class ERDServiceImpl implements ERDService{
     }
 
     @Override
-    public List<ErdTableListResponse> findAllErdTable(Long projectId){
+    public List<ErdTableListResponse> findAllErdTable(Long projectId) {
         Project findProject = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
         List<ErdTable> findErdTable = erdTableRepository.findAllByProject(findProject);
         return findErdTable.stream().map(ErdTableListResponse::from).collect(Collectors.toList());
@@ -86,7 +90,7 @@ public class ERDServiceImpl implements ERDService{
     @Transactional
     public void deleteTableRelation(Long tableRelationId) {
         TableRelation findTableRelation = tableRelationRepository.findById(tableRelationId).orElseThrow(() -> new NotFoundException(RELATION_NOT_FOUND));
-          tableRelationRepository.delete(findTableRelation);
+        tableRelationRepository.delete(findTableRelation);
     }
 
     @Override
@@ -115,9 +119,9 @@ public class ERDServiceImpl implements ERDService{
     @Override
     @Transactional
     public void updateTableColumn(Long tableColumnId, TableColumnUpdateRequest tableColumnUpdateRequest) {
-         TableColumn tableColumn = tableColumnRepository.findById(tableColumnId).orElseThrow(() -> new NotFoundException(TABLE_COLUMN_NOT_FOUND));
+        TableColumn tableColumn = tableColumnRepository.findById(tableColumnId).orElseThrow(() -> new NotFoundException(TABLE_COLUMN_NOT_FOUND));
 
-         //컬럼이름 바꾸기
+        //컬럼이름 바꾸기
         tableColumn.updateTableColumn(tableColumnUpdateRequest.getTableColumnName(), tableColumnUpdateRequest.getTableColumnType());
         //컬럼에 딸린 제약조건 다 삭제하고
         columnConditionRepository.deleteAllInBatchByTableColumn_TableColumnId(tableColumn.getTableColumnId());
@@ -131,18 +135,18 @@ public class ERDServiceImpl implements ERDService{
 
     @Override
     @Transactional
-    public void deleteTableColumn( Long tableColumnId) {
+    public void deleteTableColumn(Long tableColumnId) {
         TableColumn findTableColumn = tableColumnRepository.findById(tableColumnId).orElseThrow(() -> new NotFoundException(TABLE_COLUMN_NOT_FOUND));
-          tableColumnRepository.delete(findTableColumn);
+        tableColumnRepository.delete(findTableColumn);
     }
 
     @Override
     public JSONObject getErdJson(Long projectId) {
         try {
-            URL url = new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/"+projectId+".myini.json");
+            URL url = new URL(S3URL + "ERD/" + projectId + ".myini.json");
 
-            File file = new File(projectId+"_vuerd");
-            FileUtils.copyURLToFile(url,file);
+            File file = new File(projectId + "_vuerd");
+            FileUtils.copyURLToFile(url, file);
 
             FileReader fileReader = new FileReader(file);
 
@@ -152,13 +156,13 @@ public class ERDServiceImpl implements ERDService{
 
             fileReader.close();
 
-            if(file.exists()){
+            if (file.exists()) {
                 file.delete();
             }
 
             return jsonObject;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("먼저 ERD 작성 후 저장해주세요");
         }
     }

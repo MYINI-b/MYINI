@@ -20,6 +20,7 @@ import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +44,9 @@ public class InitializerServiceImpl implements InitializerService {
     private final ApiDocsQueryRepository apiDocsQueryRepository;
     private final IsAppRepository isAppRepository;
 
+    @Value("${cloud.aws.s3.path}")
+    private String S3URL;
+
     @Override
     public InitializerPossibleResponse initializerIsPossible(Long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(PROJECT_NOT_FOUND));
@@ -64,7 +68,7 @@ public class InitializerServiceImpl implements InitializerService {
         try {
             JSONParser jsonParser = new JSONParser();
             File file = new File(projectId + "_erd");
-            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/" + projectId + ".myini.json"), file);
+            FileUtils.copyURLToFile(new URL(S3URL + "ERD/" + projectId + ".myini.json"), file);
 
             Reader reader = new FileReader(file);
             JSONObject erd = (JSONObject) jsonParser.parse(reader);
@@ -155,7 +159,7 @@ public class InitializerServiceImpl implements InitializerService {
         try {
             JSONParser jsonParser = new JSONParser();
             File file = new File(projectId + "_erd");
-            FileUtils.copyURLToFile(new URL("https://myini.s3.ap-northeast-2.amazonaws.com/ERD/" + projectId + ".myini.json"), file);
+            FileUtils.copyURLToFile(new URL(S3URL + "ERD/" + projectId + ".myini.json"), file);
 
             Reader reader = new FileReader(file);
             JSONObject erd = (JSONObject) jsonParser.parse(reader);
@@ -311,7 +315,7 @@ public class InitializerServiceImpl implements InitializerService {
     }
 
     @Override
-    public String initializerApp(String flag){
+    public String initializerApp(String flag) {
         Long id = 1L;
         IsApp isApp = isAppRepository.findById(id).orElseThrow();
         isApp.updateIsApp(flag);
@@ -320,7 +324,7 @@ public class InitializerServiceImpl implements InitializerService {
     }
 
     @Override
-    public String initializerApp2(){
+    public String initializerApp2() {
         Long id = 1L;
         IsApp isApp = isAppRepository.findById(id).orElseThrow();
 
