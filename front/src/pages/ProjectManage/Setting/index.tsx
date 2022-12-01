@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useOthers, useUpdatePresence } from '@y-presence/react';
 import { UserPresence } from 'types/main';
 
