@@ -55,7 +55,7 @@ export default function Setting({ store, pid }: Props) {
 
       if (store && pid !== '') {
         store.pjt.img = data.projectImg
-          ? `https://myini.s3.ap-northeast-2.amazonaws.com/projectProfile/${data.projectImg}`
+          ? `${process.env.REACT_APP_AWS_URL}/projectProfile/${data.projectImg}`
           : DefaultProfile;
         store.pjt.title = data.projectName ? data.projectName : '';
         store.pjt.desc = data.projectDescription ? data.projectDescription : '';

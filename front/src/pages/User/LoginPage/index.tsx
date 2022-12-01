@@ -14,8 +14,7 @@ export default function LoginPage() {
   const moveToMain = async () => {
     // await patchApi('/initializers/app&flag=true');
 
-    window.location.href =
-      'https://k7b203.p.ssafy.io/oauth2/authorization/google';
+    window.location.href = `${process.env.REACT_APP_URL}/oauth2/authorization/google`;
   };
 
   useEffect(() => {

@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable object-shorthand */
 import { useEffect, useLayoutEffect, useState, useRef } from 'react';
-// import { useParams } from 'react-router-dom';
 import AWS from 'aws-sdk';
 import { connect } from 'react-redux';
 
@@ -10,10 +9,6 @@ import { getApi } from 'api';
 
 // 3rd party
 import 'vuerd';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave } from '@fortawesome/free-regular-svg-icons';
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
-
 import { assignCurrentErd } from 'modules/vuerd';
 
 const S3_BUCKET = 'myini/ERD';

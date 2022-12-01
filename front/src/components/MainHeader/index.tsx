@@ -1,4 +1,4 @@
-import { Dispatch, useState, useEffect, useCallback } from 'react';
+import React, { Dispatch, useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import './style.scss';
@@ -40,9 +40,10 @@ export default function MainHeader({ needStepper, step, setStep }: Props) {
   };
 
   const onDownClick = () => {
-    window.location.href =
-      'https://k7b203.p.ssafy.io/api/initializers/downloads';
+    window.location.href = `${process.env.REACT_APP_API_URL}/initializers/downloads`;
   };
+
+  const mainUrl = process.env.REACT_APP_URL;
 
   useEffect(() => {}, []);
 
@@ -70,7 +71,7 @@ export default function MainHeader({ needStepper, step, setStep }: Props) {
           <Link to="/main">
             <p>홈</p>
           </Link>
-          <a href="https://k7b203.p.ssafy.io/" target="_blank" rel="noreferrer">
+          <a href={mainUrl} target="_blank" rel="noreferrer">
             <p>공식홈페이지</p>
           </a>
           <p onClick={onDownClick}>앱 다운로드</p>
