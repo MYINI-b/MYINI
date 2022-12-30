@@ -1,14 +1,17 @@
 ![main2](https://user-images.githubusercontent.com/62869982/202833584-5b77f43d-db79-48bd-80db-6d7656233ed2.gif)
 
-# myINI
+# MYINI
 
-**스프링 기반 프로젝트를 쉽고 빠르게 이니셜라이징해드립니다**
+**🏆 삼성 청년 SW 아카데미 7th 2학기 자율 프로젝트(오픈소스) 대전 2등 1등 수상**  
+**🏆 삼성 청년 SW 아카데미 7th 2학기 자율 프로젝트(오픈소스) 결선 발표 2등 수상**
+
+### 스프링 기반 프로젝트를 쉽고 빠르게 이니셜라이징해드립니다
 
 > 똑같은 **기획 -> 설계 -> 개발 -> 배포**를 하면서 시간 단축의 필요성을 느꼈나요?
 >
-> myINI는 프로젝트의 설계 및 초기 개발 단계에서 도움을 드립니다.
+> MYINI는 프로젝트의 설계 및 초기 개발 단계에서 도움을 드립니다.
 >
-> myINI를 통해 쉽고 빠르게 프로젝트를 관리해보세요! 
+> MYINI를 통해 쉽고 빠르게 프로젝트를 관리해보세요! 
 >
 > **[🔗 마이크로페이지 바로가기 Click !](https://k7b203.p.ssafy.io/)** 👈
 
@@ -68,7 +71,7 @@
 >
 >- 동시편집 기술을 사용하여 팀원들이 동시에 함께 요구사항 산출
 >  - CRDT기반의 Yjs 라이브러리를 도입하여 데이터의 신뢰도를 높임
->- myINI만의 자세한 기준을 통해 더 명확하게 명세서 작성 가능
+>- MYINI만의 자세한 기준을 통해 더 명확하게 명세서 작성 가능
 >- JIRA API와 연동하여 생성된 요구사항으로 이슈를 등록할 수 있게 함
 >
 
@@ -99,7 +102,7 @@
 >- Vuerd 라이브러리를 사용하여 사용자의 프로젝트에 따른 E-R Diagram 생성기능을 제공
 >- 사용자가 ERD를 생성하면, 빌드 시에 ERD를 기반으로 Entity와 Repository가 생성됨
 
-- 자세한 사용 가이드는[myINI 가이드](https://github.com/wooobinkim/myini/blob/main/docs/MYINIGuide.md)의 E-R 다이어그램 가이드를 참고해주세요.
+- 자세한 사용 가이드는[MYINI 가이드](https://github.com/wooobinkim/myini/blob/main/docs/MYINIGuide.md)의 E-R 다이어그램 가이드를 참고해주세요.
 
 
 #### 4. API 명세서
@@ -112,7 +115,7 @@
 >  - CRDT기반의 Yjs 라이브러리를 도입하여 데이터의 신뢰도를 높임
 >- 사용자가 프로젝트에 필요한 API를 생성하면, 빌드 시에 API를 기반으로 코드를 이니셜라이징
 
-- 자세한 사용 가이드는[myINI 가이드](https://github.com/wooobinkim/myini/blob/main/docs/MYINIGuide.md)의 API 가이드를 참고해주세요.
+- 자세한 사용 가이드는[MYINI 가이드](https://github.com/wooobinkim/myini/blob/main/docs/MYINIGuide.md)의 API 가이드를 참고해주세요.
 
 
 #### 5. 빌드
